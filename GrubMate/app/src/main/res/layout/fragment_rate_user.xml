@@ -9,9 +9,10 @@
 
 
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <QuickContactBadge
             android:id="@+id/quickContactBadge"
@@ -56,6 +57,6 @@
             tools:layout_editor_absoluteX="33dp"
             tools:layout_editor_absoluteY="29dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </FrameLayout>

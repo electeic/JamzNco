@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="jamilaappinc.grubmate.PostFragment">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +24,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="29dp"
             android:ems="10"
-            android:inputType="textPostName"
             android:text="Title of Post" />
 
         <EditText
@@ -36,7 +34,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="59dp"
             android:ems="10"
-            android:inputType="textTags"
             android:text="Tags" />
 
         <EditText
@@ -47,7 +44,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="89dp"
             android:ems="10"
-            android:inputType="textDietary"
             android:text="Dietary Restrictions" />
 
         <EditText
@@ -58,7 +54,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="119dp"
             android:ems="10"
-            android:inputType="textDescription"
             android:text="Tags" />
 
         <EditText
@@ -69,7 +64,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="149dp"
             android:ems="10"
-            android:inputType="textGroups"
             android:text="Groups" />
 
         <EditText
@@ -80,7 +74,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="179dp"
             android:ems="10"
-            android:inputType="textLocation"
             android:text="Location" />
 
         <EditText
@@ -91,7 +84,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="209dp"
             android:ems="10"
-            android:inputType="textDate"
             android:text="Date" />
 
         <EditText
@@ -102,7 +94,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="239dp"
             android:ems="10"
-            android:inputType="textServings"
             android:text="Servings" />
 
         <EditText
@@ -113,7 +104,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="269dp"
             android:ems="10"
-            android:inputType="textStart"
             android:text="Start Time" />
 
         <EditText
@@ -121,7 +111,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textEnd"
             android:text="End Time"
             android:layout_alignBaseline="@+id/StartText"
             android:layout_alignBottom="@+id/StartText"
