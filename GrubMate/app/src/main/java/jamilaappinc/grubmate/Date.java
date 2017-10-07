@@ -5,25 +5,38 @@ package jamilaappinc.grubmate;
  */
 
 public class Date {
-    String mStartTime;
+    Integer mStartTimeHour;
+    Integer mStartTimeMinute;
     String mStartTimeDetail;
-    String mEndTime;
+    Integer mEndTimeHour;
+    Integer mEndTimeMinute;
     String mEndTimeDetail;
 
-    Date(String startTime, String startTimeDetail, String endTime, String endTimeDetail){
-        mStartTime = startTime;
+    Date(Integer startTimeHour, Integer startTimeMinute, String startTimeDetail, Integer endTimeHour,
+         Integer endTimeMinute, String endTimeDetail){
+        mStartTimeHour = startTimeHour;
+        mStartTimeMinute = startTimeMinute;
         mStartTimeDetail = startTimeDetail;
-        mEndTime = endTime;
+        mEndTimeHour = endTimeHour;
+        mEndTimeMinute = endTimeMinute;
         mEndTimeDetail = endTimeDetail;
     }
 
-    public String getmStartTime() { return mStartTime; }
+    public Integer getmStartTimeHour() { return mStartTimeHour; }
 
-    public void setmStartTime(String startTime) { mStartTime = startTime; }
+    public Integer getmStartTimeMinute() { return mStartTimeMinute; }
 
-    public String getmEndTime() { return mEndTime; }
+    public void setmStartTimeHour(Integer startTimeHour) { mStartTimeHour = startTimeHour; }
 
-    public void setmEndTime(String endTime) { mEndTime = endTime; }
+    public void setmStartTimeMinute(Integer startTimeMinute) { mStartTimeMinute = startTimeMinute; }
+
+    public Integer getmEndTimeHour() { return mEndTimeHour; }
+
+    public Integer getmEndTimeMinute() { return mEndTimeMinute; }
+
+    public void setmEndTimeHour(Integer endTimeHour) { mEndTimeHour = endTimeHour; }
+
+    public void setmEndTimeMinute(Integer endTimeMinute) { mEndTimeMinute = endTimeMinute; }
 
     public String getmEndTimeDetail() {return mEndTimeDetail; }
 
@@ -34,6 +47,20 @@ public class Date {
     public void setmStartTimeDetail(String startTimeDetail) { mStartTimeDetail = startTimeDetail; }
 
     public Boolean isInTime(Date otherDate){
-        if(otherDate.)
+        if(otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())){
+            if(otherDate.getmStartTimeHour() < this.getmEndTimeHour()){
+                if(otherDate.getmEndTimeHour() > this.getmStartTimeHour()){
+                    return TRUE;
+                }
+
+            }
+            else if(otherDate.getmStartTimeHour() == this.getmEndTimeHour()){
+                
+            }
+        }
+        if(otherDate.getmEndTimeDetail().equals(this.getmEndTimeDetail())){
+
+        }
+        return FALSE;
     }
 }
