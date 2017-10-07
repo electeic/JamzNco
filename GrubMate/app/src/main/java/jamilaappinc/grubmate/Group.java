@@ -8,6 +8,8 @@ import java.util.Vector;
 
 public class Group {
     String mName;
+    Vector<User> mGroupMembers;
+    int mId;
 
     public Group(String mName, Vector<User> mGroupMembers) {
         this.mName = mName;
@@ -30,6 +32,8 @@ public class Group {
         this.mGroupMembers = groupMembers;
     }
 
+    public void setGroupMember(User member) {this.mGroupMembers.add(member);}
+
     public int getId() {
         return mId;
     }
@@ -37,8 +41,5 @@ public class Group {
     public void setId(int id) {
         this.mId = id;
     }
-
-    Vector<User> mGroupMembers;
-    int mId;
 
 }
