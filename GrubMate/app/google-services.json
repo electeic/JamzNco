@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "203143122897",
+    "firebase_url": "https://grubmate-eb6d4.firebaseio.com",
+    "project_id": "grubmate-eb6d4",
+    "storage_bucket": "grubmate-eb6d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203143122897:android:6466bfacc9c18578",
+        "android_client_info": {
+          "package_name": "jamilaappinc.grubmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "203143122897-om71nve1oma9dv03skmd23k5goi5kcg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jamilaappinc.grubmate",
+            "certificate_hash": "427a6c566e4a90f0e18f3be971388e2c0a697318"
+          }
+        },
+        {
+          "client_id": "203143122897-lq86e0snbjj0kkvvb1kf5g1o7cq4rfhv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcubi1YehTOBHJa6iqi-sFzw4EhgbvhGY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "203143122897-lq86e0snbjj0kkvvb1kf5g1o7cq4rfhv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
