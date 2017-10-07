@@ -28,24 +28,24 @@ public class User {
         return mUserPosts;
     }
 
-    public void setUserPosts(Vector<Post> mUserPosts) {
-        this.mUserPosts = mUserPosts;
+    public void addUserPost(Post mUserPost) {
+        this.mUserPosts.add(mUserPost);
     }
 
     public Vector<Request> getUserRequests() {
         return mUserRequests;
     }
 
-    public void setUserRequests(Vector<Request> mUserRequests) {
-        this.mUserRequests = mUserRequests;
+    public void addUserRequest(Request mUserRequest) {
+        this.mUserRequests.add(mUserRequest);
     }
 
     public Vector<Group> getUserGroups() {
         return mUserGroups;
     }
 
-    public void setUserGroups(Vector<Group> mUserGroups) {
-        this.mUserGroups = mUserGroups;
+    public void addUserGroup(Group group) {
+        this.mUserGroups.add(group);
     }
 
     public Vector<Rating> getRatings() {
@@ -100,7 +100,7 @@ public class User {
         return mSubscriptions;
     }
 
-    public void setmSubscription(Subscription mSubscription) {
+    public void addmSubscription(Subscription mSubscription) {
         mSubscriptions.add(mSubscription);
     }
 
