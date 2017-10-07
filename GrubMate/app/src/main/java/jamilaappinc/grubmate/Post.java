@@ -9,7 +9,9 @@ import java.util.Vector;
 public class Post {
     String mTitle;
 
-    public Post(String mTitle, String mDescription, String mLocation, String mDate, String startTime, String endTime, Vector<String> mCategories, Vector<String> mTags, Vector<Group> mGroups, Vector<String>  photos) {
+    public Post(String mTitle, String mDescription, String mLocation, String mDate,
+                String startTime, String endTime, Vector<String> mCategories, Vector<String> mTags,
+                Vector<Group> mGroups, Vector<String>  photos) {
         this.mTitle = mTitle;
         this.mDescription = mDescription;
         this.mLocation = mLocation;
