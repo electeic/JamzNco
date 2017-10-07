@@ -65,19 +65,66 @@ public class Date {
     public void setmStartTimeDetail(String startTimeDetail) { mStartTimeDetail = startTimeDetail; }
 
     public Boolean isInTime(Date otherDate){
-        if(otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())){
-            if(otherDate.getmStartTimeHour() < this.getmEndTimeHour()){
-                if(otherDate.getmEndTimeHour() > this.getmStartTimeHour()){
-                    return Boolean.TRUE;
-                }
+        if(isSameDate(otherDate)) {
+            if (otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())) {
+                if (otherDate.getmStartTimeHour() < this.getmEndTimeHour()) {
+                    if (otherDate.getmEndTimeHour() > this.getmStartTimeHour()) {
+                        return Boolean.TRUE;
+                    }
+                    if (otherDate.getmEndTimeHour() == this.getmStartTimeHour()) {
+                        if (otherDate.getmEndTimeMinute() >= this.getmStartTimeMinute()) {
+                            return Boolean.TRUE;
+                        }
+                    }
 
+                } else if (otherDate.getmStartTimeHour() == this.getmEndTimeHour()) {
+                    if (otherDate.getmStartTimeMinute() < this.getmEndTimeMinute()) {
+                        if (otherDate.getmEndTimeHour() > this.getmStartTimeHour()) {
+                            return Boolean.TRUE;
+                        }
+                        if (otherDate.getmEndTimeHour() == this.getmEndTimeHour()) {
+                            if (otherDate.getmEndTimeMinute() >= this.getmStartTimeMinute()) {
+                                return Boolean.TRUE;
+                            }
+                        }
+                    }
+                }
             }
-            else if(otherDate.getmStartTimeHour() == this.getmEndTimeHour()){
-                
+            if (otherDate.getmEndTimeDetail().equals(this.getmEndTimeDetail())) {
+                if (otherDate.getmStartTimeHour() < this.getmEndTimeHour()) {
+                    if (otherDate.getmEndTimeHour() > this.getmStartTimeHour()) {
+                        return Boolean.TRUE;
+                    }
+                    if (otherDate.getmEndTimeHour() == this.getmStartTimeHour()) {
+                        if (otherDate.getmEndTimeMinute() >= this.getmStartTimeMinute()) {
+                            return Boolean.TRUE;
+                        }
+                    }
+
+                } else if (otherDate.getmStartTimeHour() == this.getmEndTimeHour()) {
+                    if (otherDate.getmStartTimeMinute() < this.getmEndTimeMinute()) {
+                        if (otherDate.getmEndTimeHour() > this.getmStartTimeHour()) {
+                            return Boolean.TRUE;
+                        }
+                        if (otherDate.getmEndTimeHour() == this.getmEndTimeHour()) {
+                            if (otherDate.getmEndTimeMinute() >= this.getmStartTimeMinute()) {
+                                return Boolean.TRUE;
+                            }
+                        }
+                    }
+                }
             }
         }
-        if(otherDate.getmEndTimeDetail().equals(this.getmEndTimeDetail())){
+        return Boolean.FALSE;
+    }
 
+    public Boolean isSameDate(Date otherDate){
+        if(otherDate.getmMonth().equals(this.getmMonth())){
+            if(otherDate.getmDay() == this.getmDay()){
+                if(otherDate.getmYear() == this.getmYear()){
+                    return Boolean.TRUE;
+                }
+            }
         }
         return Boolean.FALSE;
     }
