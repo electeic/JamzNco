@@ -8,11 +8,19 @@ import java.util.Vector;
 
 public class Subscription {
 
+    User mUser;
+    Date mDate;
+    Vector<String> mTags;
+    Vector<String> mCategories;
+    boolean mHomeMade;
+    int mId;
+    Post mPost;
 
-    public Subscription(User mUser, String mTimeStart, String mTimeEnd, Vector<String> mTags, Vector<String> mCategories, boolean mHomeMade) {
+
+    public Subscription(User mUser, Date mDate, Vector<String> mTags,
+                        Vector<String> mCategories, boolean mHomeMade) {
         this.mUser = mUser;
-        this.mTimeStart = mTimeStart;
-        this.mTimeEnd = mTimeEnd;
+        this.mDate = mDate;
         this.mTags = mTags;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
@@ -26,21 +34,9 @@ public class Subscription {
         this.mUser = mUser;
     }
 
-    public String getmTimeStart() {
-        return mTimeStart;
-    }
+    public Date getmDate() { return mDate; }
 
-    public void setmTimeStart(String mTimeStart) {
-        this.mTimeStart = mTimeStart;
-    }
-
-    public String getmTimeEnd() {
-        return mTimeEnd;
-    }
-
-    public void setmTimeEnd(String mTimeEnd) {
-        this.mTimeEnd = mTimeEnd;
-    }
+    public void setmDate (Date date) { mDate = date;}
 
     public Vector<String> getmTags() {
         return mTags;
@@ -81,15 +77,5 @@ public class Subscription {
     public void setmPost(Post mPost) {
         this.mPost = mPost;
     }
-
-    User mUser;
-    String mTimeStart;
-    String mTimeEnd;
-    Vector<String> mTags;
-    Vector<String> mCategories;
-    boolean mHomeMade;
-    int mId;
-    Post mPost;
-
 
 }
