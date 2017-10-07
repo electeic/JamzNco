@@ -12,12 +12,12 @@ public class User {
     Vector<Group> mUserGroups;
     Vector<Rating> mRatings;
     Vector<Notification> mNotifications;
+    Vector<Subscription> mSubscriptions;
 
     double mAvgRating;
     String mName;
     String mProfilePhoto;
     int mId;
-    Subscription mSubscription;
 
     public User(String mName, String mPic) {
         this.mName = mName;
@@ -96,12 +96,12 @@ public class User {
         this.mId = mId;
     }
 
-    public Subscription getmSubscription() {
-        return mSubscription;
+    public Vector<Subscription> getmSubscription() {
+        return mSubscriptions;
     }
 
     public void setmSubscription(Subscription mSubscription) {
-        this.mSubscription = mSubscription;
+        mSubscriptions.add(mSubscription);
     }
 
 
