@@ -8,6 +8,16 @@ import java.util.Vector;
 
 public class User {
     Vector<Post> mUserPosts;
+    Vector<Request> mUserRequests;
+    Vector<Group> mUserGroups;
+    Vector<Rating> mRatings;
+    Vector<Notification> mNotifications;
+
+    double mAvgRating;
+    String mName;
+    String mProfilePhoto;
+    int mId;
+    Subscription mSubscription;
 
     public User(String mName, String mPic) {
         this.mName = mName;
@@ -94,15 +104,5 @@ public class User {
         this.mSubscription = mSubscription;
     }
 
-    Vector<Request> mUserRequests;
-    Vector<Group> mUserGroups;
-    Vector<Rating> mRatings;
-    Vector<Notification> mNotifications;
-
-    double mAvgRating;
-    String mName;
-    String mProfilePhoto;
-    int mId;
-    Subscription mSubscription;
 
 }

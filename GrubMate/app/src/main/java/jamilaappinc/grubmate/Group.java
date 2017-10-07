@@ -34,6 +34,15 @@ public class Group {
 
     public void setGroupMember(User member) {this.mGroupMembers.add(member);}
 
+    public Boolean isInGroup(User member) {
+        for(User temp: mGroupMembers){
+            if(temp.equals(member)){
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
     public int getId() {
         return mId;
     }
