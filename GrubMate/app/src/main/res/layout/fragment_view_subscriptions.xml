@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     tools:context="jamilaappinc.grubmate.ViewSubscriptionsFragment">
 
-    <!-- List elements is made up of notification_info_view or notification_info_request_view
-            depends on what kind of notification it is.
+    <!-- List elements is made up of subscription_info_view
         -->
 <RelativeLayout
     android:layout_width="match_parent"
