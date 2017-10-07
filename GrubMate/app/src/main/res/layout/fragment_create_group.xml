@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jamilaappinc.grubmate.CreateGroupFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/createGroup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="Create a New Group"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/createGroup_groupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/createGroup_title"
+            android:layout_marginTop="27dp"
+            android:layout_toStartOf="@+id/createGroup_cancelButton"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Group Name" />
+
+        <Button
+            android:id="@+id/createGroup_addbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/createGroup_groupName"
+            android:layout_marginEnd="19dp"
+            android:text="+"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/createGroup_createButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:text="Create"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/createGroup_title" />
+
+        <Button
+            android:id="@+id/createGroup_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/createGroup_createButton"
+            android:layout_alignEnd="@+id/createGroup_addbutton"
+            android:layout_marginEnd="52dp"
+            android:text="Cancel" />
+
+        <ListView
+            android:id="@+id/createGroup_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/createGroup_createButton"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/createGroup_addbutton" />
+
+    </RelativeLayout>
+</FrameLayout>
