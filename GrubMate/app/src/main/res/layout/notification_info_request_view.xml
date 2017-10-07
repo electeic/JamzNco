@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/notificationInfoReq_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:text="Title of Notification"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/notificationInfoReq_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:layout_alignBottom="@+id/notificationInfoReq_title"
+        android:layout_toEndOf="@+id/notificationInfoReq_detail"
+        android:layout_marginStart="13dp" />
+
+    <ImageButton
+        android:id="@+id/notificationInfoReq_denyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:layout_alignTop="@+id/notificationInfoReq_title"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:id="@+id/notificationInfoReq_confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/notificationInfoReq_denyButton"
+        android:layout_alignTop="@+id/notificationInfoReq_denyButton"
+        android:layout_toStartOf="@+id/notificationInfoReq_denyButton"
+        app:srcCompat="?android:attr/textCheckMark" />
+
+    <TextView
+        android:id="@+id/notificationInfoReq_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/notificationInfoReq_confirmButton"
+        android:layout_alignStart="@+id/notificationInfoReq_title"
+        android:text="Extra information about the post" />
+
+</RelativeLayout>
