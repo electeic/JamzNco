@@ -18,9 +18,10 @@
         </activity>
 
         <activity android:name=".ViewGroupsActivity"></activity>
+
         <uses-permission android:name="android.permission.INTERNET"/>
 
-        <!-- <activity android:name=".LoginActivity"></activity> -->
+         <!--<activity android:name=".LoginActivity"></activity>-->
         <!--<activity-->
             <!--android:name=".ViewGroupsActivity"-->
             <!--android:label="@string/title_activity_view_groups"-->

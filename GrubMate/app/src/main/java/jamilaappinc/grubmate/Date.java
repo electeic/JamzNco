@@ -65,6 +65,7 @@ public class Date {
     public void setmStartTimeDetail(String startTimeDetail) { mStartTimeDetail = startTimeDetail; }
 
     public Boolean isInTime(Date otherDate){
+
         if(isSameDate(otherDate)) {
             if (otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())) {
                 if (otherDate.getmStartTimeHour() < this.getmEndTimeHour()) {
@@ -127,5 +128,6 @@ public class Date {
             }
         }
         return Boolean.FALSE;
+
     }
 }
