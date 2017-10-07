@@ -24,7 +24,7 @@ public class Request {
     }
 
     public User getmRequestingUser(){ return mRequestingUser; }
-    
+
     public String getmLocation() {
         return mLocation;
     }
