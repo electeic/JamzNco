@@ -7,22 +7,24 @@ package jamilaappinc.grubmate;
 public class Request {
 
     String mLocation;
-    String mTimeStart;
-    String mTimeEnd;
+    Date mDate;
     Post mRequestedPost;
     int mServings;
     int mId;
+    User mRequestingUser;
     boolean mResponded;
     boolean mAccepted;
 
-    public Request(String mLocation, String mTimeStart, String mTimeEnd, Post mRequestedPost, int mServings) {
+    public Request(String mLocation, Date date, Post mRequestedPost, int mServings, User muser) {
         this.mLocation = mLocation;
-        this.mTimeStart = mTimeStart;
-        this.mTimeEnd = mTimeEnd;
+        this.mDate = date;
         this.mRequestedPost = mRequestedPost;
         this.mServings = mServings;
+        mRequestingUser = muser;
     }
 
+    public User getmRequestingUser(){ return mRequestingUser; }
+    
     public String getmLocation() {
         return mLocation;
     }
@@ -31,20 +33,10 @@ public class Request {
         this.mLocation = mLocation;
     }
 
-    public String getmTimeStart() {
-        return mTimeStart;
-    }
+    public Date getmDate() { return mDate; }
 
-    public void setmTimeStart(String mTimeStart) {
-        this.mTimeStart = mTimeStart;
-    }
-
-    public String getmTimeEnd() {
-        return mTimeEnd;
-    }
-
-    public void setmTimeEnd(String mTimeEnd) {
-        this.mTimeEnd = mTimeEnd;
+    public void setmDate(Date mTime) {
+        this.mDate = mTime;
     }
 
     public Post getmRequestedPost() {
