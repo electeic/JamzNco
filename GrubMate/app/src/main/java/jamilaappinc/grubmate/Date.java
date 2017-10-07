@@ -11,16 +11,34 @@ public class Date {
     Integer mEndTimeHour;
     Integer mEndTimeMinute;
     String mEndTimeDetail;
+    String mMonth;
+    Integer mDay;
+    Integer mYear;
 
     Date(Integer startTimeHour, Integer startTimeMinute, String startTimeDetail, Integer endTimeHour,
-         Integer endTimeMinute, String endTimeDetail){
+         Integer endTimeMinute, String endTimeDetail, String month, Integer day, Integer year){
         mStartTimeHour = startTimeHour;
         mStartTimeMinute = startTimeMinute;
         mStartTimeDetail = startTimeDetail;
         mEndTimeHour = endTimeHour;
         mEndTimeMinute = endTimeMinute;
         mEndTimeDetail = endTimeDetail;
+        mMonth = month;
+        mDay = day;
+        mYear = year;
     }
+
+    public Integer getmDay() { return mDay; }
+
+    public Integer getmYear() { return mYear; }
+
+    public String getmMonth() { return mMonth; }
+
+    public void setmDay(Integer day) { mDay = day;}
+
+    public void setmMonth (String month) { mMonth = month;}
+
+    public void setmYear (Integer year) { mYear = year;}
 
     public Integer getmStartTimeHour() { return mStartTimeHour; }
 
@@ -50,7 +68,7 @@ public class Date {
         if(otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())){
             if(otherDate.getmStartTimeHour() < this.getmEndTimeHour()){
                 if(otherDate.getmEndTimeHour() > this.getmStartTimeHour()){
-                    return TRUE;
+                    return Boolean.TRUE;
                 }
 
             }
@@ -61,6 +79,6 @@ public class Date {
         if(otherDate.getmEndTimeDetail().equals(this.getmEndTimeDetail())){
 
         }
-        return FALSE;
+        return Boolean.FALSE;
     }
 }
