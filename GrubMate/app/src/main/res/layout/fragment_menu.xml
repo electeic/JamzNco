@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jamilaappinc.grubmate.MenuFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Menu"
+            android:textAlignment="center"
+            android:textSize="27dp" />
+
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="11dp"
+            android:text="Home"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="51dp"
+            android:text="Profile"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="91dp"
+            android:text="Notifications"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="131dp"
+            android:text="Request"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="171dp"
+            android:text="Post"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="211dp"
+            android:text="Groups"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/subscriptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="251dp"
+            android:text="Subscriptions"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="291dp"
+            android:text="Search"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="331dp"
+            android:text="Logout"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+
+
+
+    </RelativeLayout>
+</FrameLayout>
