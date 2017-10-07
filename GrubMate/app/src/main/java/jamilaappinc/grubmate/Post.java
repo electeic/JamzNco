@@ -8,16 +8,24 @@ import java.util.Vector;
 
 public class Post {
     String mTitle;
+    String mDescription;
+    String mLocation;
+    Date mDate;
+    Vector<String> mCategories;
+    Vector<String> mTags;
+    Vector <Group> mGroups;
+    int id;
+    Vector<String> photos;
+    User mPoster;
 
-    public Post(String mTitle, String mDescription, String mLocation, String mDate,
-                String startTime, String endTime, Vector<String> mCategories, Vector<String> mTags,
-                Vector<Group> mGroups, Vector<String>  photos) {
+    public Post(String mTitle, String mDescription, String mLocation, Date mDate,
+                Vector<String> mCategories, Vector<String> mTags,
+                Vector<Group> mGroups, Vector<String>  photos, User poster) {
+        this.mPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
         this.mLocation = mLocation;
         this.mDate = mDate;
-        StartTime = startTime;
-        EndTime = endTime;
         this.mCategories = mCategories;
         this.mTags = mTags;
         this.mGroups = mGroups;
@@ -48,29 +56,11 @@ public class Post {
         this.mLocation = mLocation;
     }
 
-    public String getmDate() {
+    public Date getmDate() {
         return mDate;
     }
 
-    public void setmDate(String mDate) {
-        this.mDate = mDate;
-    }
-
-    public String getStartTime() {
-        return StartTime;
-    }
-
-    public void setStartTime(String startTime) {
-        StartTime = startTime;
-    }
-
-    public String getEndTime() {
-        return EndTime;
-    }
-
-    public void setEndTime(String endTime) {
-        EndTime = endTime;
-    }
+    public void setmDate(Date mDate) {this.mDate = mDate;}
 
     public Vector<String> getmCategories() {
         return mCategories;
@@ -96,6 +86,16 @@ public class Post {
         this.mGroups = mGroups;
     }
 
+    public void addmGroup(Group group){ mGroups.add(group);}
+
+    public void removemGroup(Group group) {
+        for(Group temp: mGroups){
+            if(temp.equals(group)){
+                mGroups.remove(group);
+            }
+        }
+    }
+
     public int getId() {
         return id;
     }
@@ -112,15 +112,5 @@ public class Post {
         this.photos = photos;
     }
 
-    String mDescription;
-    String mLocation;
-    String mDate;
-    String StartTime; // TODO: make a date class instead?
-    String EndTime;
-    Vector<String> mCategories;
-    Vector<String> mTags;
-    Vector <Group> mGroups;
-    int id;
-    Vector<String> photos;
 
 }
