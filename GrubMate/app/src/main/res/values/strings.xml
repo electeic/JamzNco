@@ -3,10 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<<<<<<< Updated upstream
     <string name="facebook_app_id">119989445345412</string>
     <string name="fb_login_protocol_scheme">fb119989445345412</string>
-=======
 
     <string-array name="categories">
         <item>Asian</item>
@@ -17,5 +15,5 @@
         <item>Other</item>
     </string-array>
 
->>>>>>> Stashed changes
+    <string name="title_activity_view_groups">ViewGroupsActivity</string>
 </resources>
