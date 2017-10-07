@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/groups_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/groups_edit_button"
+        android:layout_marginStart="14dp"
+        android:text="Name of the Group"
+        android:textSize="26sp" />
+
+    <ImageButton
+        android:id="@+id/groups_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/groups_name"
+        android:layout_marginStart="32dp" />
+
+    <TextView
+        android:id="@+id/groups_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/groups_edit_button"
+        android:layout_alignStart="@+id/groups_name"
+        android:text="List out members of group" />
+
+    <ImageButton
+        android:id="@+id/groups_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/groups_edit_button"
+        app:srcCompat="@android:drawable/ic_delete" />
+</RelativeLayout>

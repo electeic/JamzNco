@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jamilaappinc.grubmate.RateUserFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <QuickContactBadge
+            android:id="@+id/quickContactBadge"
+            android:layout_width="134dp"
+            android:layout_height="128dp"
+            app:srcCompat="@mipmap/ic_launcher_round"
+            tools:layout_editor_absoluteY="71dp"
+            tools:layout_editor_absoluteX="125dp" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="319dp"
+            android:layout_height="144dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:text="Write a review"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="288dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="447dp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="74dp"
+            tools:layout_editor_absoluteY="212dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How would you rate this user?"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="33dp"
+            tools:layout_editor_absoluteY="29dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
