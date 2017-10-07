@@ -6,47 +6,47 @@ package jamilaappinc.grubmate;
 
 public class Rating {
 
-    String review;
-    double rating;
-    int id;
-    User user;
+    String mReview;
+    double mRating;
+    int mId;
+    User mUser;
 
     public Rating(String review, double rating, User user) {
-        this.review = review;
-        this.rating = rating;
-        this.user = user;
+        this.mReview = review;
+        this.mRating = rating;
+        this.mUser = user;
     }
 
     public User getUser() {
-        return user;
+        return mUser;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.mUser = user;
     }
 
     public String getReview() {
-        return review;
+        return mReview;
     }
 
     public void setReview(String review) {
-        this.review = review;
+        this.mReview = review;
     }
 
     public double getRating() {
-        return rating;
+        return mRating;
     }
 
     public void setRating(double rating) {
-        this.rating = rating;
+        this.mRating = rating;
     }
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.mId = id;
     }
 
 
