@@ -7,20 +7,28 @@ package jamilaappinc.grubmate;
 public class Notification {
     User mFromUser;
     Post mAboutPost;
+    User mToUser;
     int mId;
 
-    public Notification(User mFromUser, Post mAboutPost) {
+    public Notification(User mFromUser, Post mAboutPost, User mToUser) {
         this.mFromUser = mFromUser;
         this.mAboutPost = mAboutPost;
+        this.mToUser = mToUser;
     }
 
     public User getmFromUser() {
         return mFromUser;
     }
 
+    public User getmToUser() {
+        return mToUser;
+    }
+
     public void setmFromUser(User mFromUser) {
         this.mFromUser = mFromUser;
     }
+
+    public void setmToUser(User mToUser) { this.mToUser = mToUser; }
 
     public Post getmAboutPost() {
         return mAboutPost;

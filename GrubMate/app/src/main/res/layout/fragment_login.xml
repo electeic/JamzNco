@@ -6,31 +6,31 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:text="Grubmate"
-        android:fontFamily="serif"
-        android:textSize="50dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/logincover">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="Login With Facebook"
-        android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Grubmate"
+            android:textSize="50dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp"
+            android:textAlignment="center"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@string/hello_blank_fragment" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+        <Button
+            android:layout_centerInParent="true"
+            android:text="Login with Facebook"
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF">
+        </Button>
+    </RelativeLayout>
 
 </FrameLayout>
