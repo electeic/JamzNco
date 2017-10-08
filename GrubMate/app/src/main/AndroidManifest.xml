@@ -45,6 +45,7 @@
         <uses-permission android:name="android.permission.INTERNET" />
 
         <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <!-- <activity -->
         <!-- android:name=".ViewGroupsActivity" -->
         <!-- android:label="@string/title_activity_view_groups" -->
