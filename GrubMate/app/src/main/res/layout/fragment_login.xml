@@ -22,15 +22,12 @@
             tools:layout_editor_absoluteY="0dp"
             android:textAlignment="center"/>
 
-        <Button
-            android:layout_centerInParent="true"
-            android:text="Login with Facebook"
-            android:id="@+id/button1"
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF">
-        </Button>
+            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 </FrameLayout>
