@@ -16,6 +16,9 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -29,6 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.fragment_login);
+
+        //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
+        startSplashTimer();
+        ////////////////////////////////////////////////////////////////
 
         //get intent data
         Intent i = getIntent();
@@ -60,6 +67,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    // THIS IS TEMPORARY, AND ALLOWS FOR TESTING FOR THE MAIN ACTIVITY //
+    // TO USE THIS, CHANGE 2nd PARAM OF INTENT TO THE ACTIVITY YOU WANT //
+    ////////////////////////////////////////////////////////////////////
+    private void startSplashTimer() {
+        try {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 3000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

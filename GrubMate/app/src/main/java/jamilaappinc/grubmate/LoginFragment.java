@@ -36,32 +36,6 @@ public class LoginFragment extends Fragment {
 
 
     /////////////////////////////////////////////////////////////////////
-    // THIS IS TEMPORARY, AND ALLOWS FOR TESTING FOR THE MAIN ACTIVITY //
-    // TO USE THIS, CHANGE 2nd PARAM OF INTENT TO THE ACTIVITY YOU WANT //
-    ////////////////////////////////////////////////////////////////////
-    private void startSplashTimer() {
-        try {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }
-            }, 3000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public CallbackManager getCallbackManager()
-    {
-        return mCallbackManager;
-    }
-
-    /////////////////////////////////////////////////////////////////////
 
     //TODO modify for id
     public static LoginFragment newInstance(int pos) {
