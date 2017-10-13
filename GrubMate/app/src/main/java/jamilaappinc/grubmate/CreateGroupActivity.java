@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class ViewGroupsActivity extends AppCompatActivity {
+public class CreateGroupActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
 
@@ -30,7 +30,7 @@ public class ViewGroupsActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = new ViewGroupsFragment();
+            f = new CreateGroupFragment();
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

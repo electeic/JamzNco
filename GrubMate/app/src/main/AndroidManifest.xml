@@ -31,14 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewGroupsActivity" />
+        <activity android:name=".ViewGroupsAction" />
 
         <uses-permission android:name="android.permission.INTERNET" />
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
         <!-- <activity -->
-        <!-- android:name=".ViewGroupsActivity" -->
+        <!-- android:name=".ViewGroupsAction" -->
         <!-- android:label="@string/title_activity_view_groups" -->
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <meta-data
@@ -50,7 +50,14 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity android:name=".DetailedPostActivity" />
-        <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".CreateGroupActivity" />
+        <activity android:name=".EditGroupActivity" />
+        <activity android:name=".RateUserActivity" />
+        <activity android:name=".UserRatingsActivity" />
+        <activity android:name=".ViewGroupsActivity" />
+        <activity android:name=".ViewNotificationsActivity" />
+        <activity android:name=".ViewSubscriptionsActivity"></activity>
     </application>
 
 </manifest>
