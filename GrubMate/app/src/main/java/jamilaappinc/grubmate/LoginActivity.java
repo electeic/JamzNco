@@ -10,15 +10,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
         loginButton.setReadPermissions("email", "public_profile", "user_friends");
 
@@ -54,13 +64,35 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess");
+                AccessToken token = AccessToken.getCurrentAccessToken();
+                final Vector<User> currUsers = new Vector<User>();
+                loginButton.setReadPermissions("user_friends");
 
+                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+                        loginResult.getAccessToken(),
+                        "/me/friends",
+                        null,
+                        HttpMethod.GET,
+                        new GraphRequest.Callback() {
+                            public void onCompleted(GraphResponse response) {
+                                try {
+                                    JSONArray rawName = response.getJSONObject().getJSONArray("data");
+                                    User newUser =
+                                            new User(rawName.getJSONObject(0).getString("name"), "defaultPic");//defaultPic is just a placeholder for image.
+                                    newUser.setmId(rawName.getJSONObject(0).getInt("id"));
+                                    currUsers.add(newUser);
+                                    Log.d(TAG,rawName.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                ).executeAsync();
+                //intent that links curr screen to mainactivity.
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("Users",currUsers);//places users vector in intent and passes to main screen
                 startActivity(intent);
                 finish();
-                //call the main screen and pass any necessary things over
-
-
             }
 
             @Override
@@ -77,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
 
     /////////////////////////////////////////////////////////////////////
     // THIS IS TEMPORARY, AND ALLOWS FOR TESTING FOR THE MAIN ACTIVITY //
