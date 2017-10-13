@@ -34,6 +34,17 @@ public class Post {
         mServings = servings;
     }
 
+    public boolean outOfServings() {
+        if(mServings ==0){
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    public int getmServings(){ return mServings; };
+
+    public void removemServings(int numToRemove){ mServings -= numToRemove;}
+
     public String getmTitle() {
         return mTitle;
     }
