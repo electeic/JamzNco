@@ -62,8 +62,7 @@ public class MainFragment extends Fragment {
 
         //todo get database
         database = FirebaseDatabase.getInstance();
-//        dbRefNotes = database.getReference(FirebaseReferences.NOTES);
-//        dbRefCount = database.getReference(FirebaseReferences.NOTE_COUNT);
+        dbRefPosts = database.getReference(FirebaseReferences.POSTS);
         //todo get database reference paths
     }
 
