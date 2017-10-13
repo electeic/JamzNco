@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
+
+//import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -28,6 +35,11 @@ public class MainFragment extends Fragment {
     private List<Post> postList;
     private PostListAdapter postAdapter;
     ListView mListView;
+
+    FirebaseDatabase database;
+    DatabaseReference dbRefNotes;
+    DatabaseReference dbRefCount;
+//    FirebaseListAdapter mAdapter;
 
     public MainFragment() {
         // Required empty public constructor
