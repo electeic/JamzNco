@@ -15,7 +15,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("id","hey");
+        Log.d("id","heyfrommenu");
         setContentView(R.layout.activity_main);
 
         //get intent data

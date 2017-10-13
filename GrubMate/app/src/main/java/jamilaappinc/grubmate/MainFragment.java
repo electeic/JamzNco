@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -34,14 +35,14 @@ public class MainFragment extends Fragment {
 
     public static final String ARGS_POSITION = "args_position";
 
-    private List<Post> postList;
-    private PostListAdapter postAdapter;
+//    private List<Post> postList;
+//    private PostListAdapter postAdapter;
+    android.support.design.widget.FloatingActionButton floatButton;
     ListView mListView;
 
+    FirebaseListAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
-    DatabaseReference dbRefCount;
-    FirebaseListAdapter mAdapter;
 
     public MainFragment() {
         // Required empty public constructor
@@ -60,9 +61,9 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //todo get database
+//        //todo get database
         database = FirebaseDatabase.getInstance();
-        dbRefPosts = database.getReference(FirebaseReferences.POSTS);
+        dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
         //todo get database reference paths
     }
 
@@ -72,15 +73,18 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
+        mAdapter = new PostListAdapter(getActivity(), Post.class, R.layout.list_active_posts_item, dbRefPosts);
         mListView = (ListView)v.findViewById(R.id.active_post_list);
+//        database = FirebaseDatabase.getInstance();
+//        dbRefPosts = database.getInstance().getReference(FirebaseReferences.POSTS);
 
-        postList = PostSingleton.get(getActivity()).getMovies();
-        postAdapter = new PostListAdapter(getActivity(), Post.class,
-                R.layout.list_active_posts_item,
-                dbRefPosts);
-        mListView.setAdapter(postAdapter);
+//        postList = PostSingleton.get(getActivity()).getMovies();
+//        postAdapter = new PostListAdapter(getActivity(), Post.class,
+//                R.layout.list_active_posts_item,
+//                dbRefPosts);
+        mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,19 +99,27 @@ public class MainFragment extends Fragment {
             }
         });
 
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
 
 
         return v;
     }
 
     public void refresh(){
-        postAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     //todo create custom FirebaseListAdapter
 
 
-    public class PostListAdapter extends FirebaseListAdapter<Post>{
+    private class PostListAdapter extends FirebaseListAdapter<Post>{
 
         public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
             super(activity, modelClass, modelLayout, ref);
