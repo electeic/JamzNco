@@ -28,17 +28,30 @@
             android:id="@+id/notifications_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/notifications_title"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/notifications_clear"
-            android:layout_marginStart="17dp" />
+            android:layout_marginTop="28dp" />
 
         <Button
             android:id="@+id/notifications_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/notifications_title"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="11dp"
-            android:text="Clear All"
-            android:layout_alignBottom="@+id/notifications_title" />
+            android:text="Clear All" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/gmlogo"
+            android:layout_marginEnd="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/notifications_clear" />
     </RelativeLayout>
 </FrameLayout>
