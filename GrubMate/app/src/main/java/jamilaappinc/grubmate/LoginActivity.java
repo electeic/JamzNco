@@ -51,7 +51,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-//                handleFacebookAccessToken(loginResult.getAccessToken());
+                //call the main screen and pass any necessary things over
+
+
+//
+//              handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
