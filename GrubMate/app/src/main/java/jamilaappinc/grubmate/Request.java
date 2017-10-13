@@ -21,6 +21,8 @@ public class Request {
         this.mRequestedPost = mRequestedPost;
         this.mServings = mServings;
         mRequestingUser = muser;
+        mAccepted = Boolean.FALSE;
+        mResponded = Boolean.FALSE;
     }
 
     public User getmRequestingUser(){ return mRequestingUser; }
