@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-        startSplashTimer();
+        //startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data
@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                System.out.println(loginResult + "fuck");
                 Log.d(TAG, "facebook:onSuccess");
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -62,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                 //call the main screen and pass any necessary things over
 
 
-//
-//              handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
