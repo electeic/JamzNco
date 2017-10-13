@@ -30,7 +30,7 @@ public class ViewGroupsActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = new ViewGroupsFragment();
+            f = ViewGroupsFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

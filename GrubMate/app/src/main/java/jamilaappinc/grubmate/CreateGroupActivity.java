@@ -16,7 +16,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_create_group);
 
         //get intent data
         Intent i = getIntent();
@@ -30,7 +30,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = new CreateGroupFragment();
+            f = CreateGroupFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

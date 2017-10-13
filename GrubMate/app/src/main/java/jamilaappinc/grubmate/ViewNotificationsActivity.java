@@ -15,7 +15,7 @@ public class ViewNotificationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_view_notifications);
 
         //get intent data
         Intent i = getIntent();
@@ -29,7 +29,7 @@ public class ViewNotificationsActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = new ViewNotificationsFragment();
+            f = ViewNotificationsFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

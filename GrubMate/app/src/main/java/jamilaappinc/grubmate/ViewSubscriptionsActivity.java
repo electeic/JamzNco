@@ -29,7 +29,7 @@ public class ViewSubscriptionsActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = new ViewSubscriptionsFragment();
+            f = ViewSubscriptionsFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

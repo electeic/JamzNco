@@ -66,8 +66,8 @@ public class MenuFragment extends Fragment {
         fNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -90,16 +90,16 @@ public class MenuFragment extends Fragment {
         fGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
         fSubscriptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 

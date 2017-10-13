@@ -22,6 +22,7 @@ public class ViewNotificationsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String ARGS_POSITION = "args_position";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -37,18 +38,16 @@ public class ViewNotificationsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ViewNotificationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewNotificationsFragment newInstance(String param1, String param2) {
-        ViewNotificationsFragment fragment = new ViewNotificationsFragment();
+    public static ViewNotificationsFragment newInstance(int pos) {
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, pos);
+        ViewNotificationsFragment fragment = new ViewNotificationsFragment();
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -67,15 +66,15 @@ public class ViewNotificationsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_view_notifications, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
-    @Override
-    public void onAttach(Context context) {
+//    @Override
+/*    public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -83,13 +82,13 @@ public class ViewNotificationsFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
+    }*/
 
-    @Override
+/*    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
