@@ -10,7 +10,7 @@ public class Post {
     String mTitle;
     String mDescription;
     String mLocation;
-    Date mDate;
+    DateAndTime mDate;
     Vector<String> mCategories;
     Vector<String> mTags;
     Vector <Group> mGroups;
@@ -18,8 +18,10 @@ public class Post {
     Vector<String> mPhotos;
     User mPoster;
     int mServings;
+    boolean mActive;
 
-    public Post(String mTitle, String mDescription, String mLocation, Date mDate,
+
+    public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
                 Vector<String> mCategories, Vector<String> mTags,
                 Vector<Group> mGroups, Vector<String>  photos, int servings,  User poster) {
         this.mPoster = poster;
@@ -32,10 +34,16 @@ public class Post {
         this.mGroups = mGroups;
         this.mPhotos = photos;
         mServings = servings;
+        mActive = Boolean.TRUE;
     }
+
+    public boolean isActive(){ return mActive;}
+
+    public void setmActive(boolean active){ mActive = active;}
 
     public boolean outOfServings() {
         if(mServings ==0){
+            mActive = Boolean.FALSE;
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
@@ -69,11 +77,11 @@ public class Post {
         this.mLocation = mLocation;
     }
 
-    public Date getmDate() {
+    public DateAndTime getmDate() {
         return mDate;
     }
 
-    public void setmDate(Date mDate) {this.mDate = mDate;}
+    public void setmDate(DateAndTime mDate) {this.mDate = mDate;}
 
     public Vector<String> getmCategories() {
         return mCategories;

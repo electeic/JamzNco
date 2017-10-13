@@ -1,10 +1,13 @@
 package jamilaappinc.grubmate;
 
+
+import java.util.Date;
+
 /**
  * Created by Jamila on 10/7/2017.
  */
 
-public class Date {
+public class DateAndTime {
     Integer mStartTimeHour;
     Integer mStartTimeMinute;
     String mStartTimeDetail;
@@ -15,7 +18,7 @@ public class Date {
     Integer mDay;
     Integer mYear;
 
-    Date(Integer startTimeHour, Integer startTimeMinute, String startTimeDetail, Integer endTimeHour,
+    DateAndTime (Integer startTimeHour, Integer startTimeMinute, String startTimeDetail, Integer endTimeHour,
          Integer endTimeMinute, String endTimeDetail, String month, Integer day, Integer year){
         mStartTimeHour = startTimeHour;
         mStartTimeMinute = startTimeMinute;
@@ -64,7 +67,7 @@ public class Date {
 
     public void setmStartTimeDetail(String startTimeDetail) { mStartTimeDetail = startTimeDetail; }
 
-    public Boolean isInTime(Date otherDate){
+    public Boolean isInTime(DateAndTime otherDate){
 
         if(isSameDate(otherDate)) {
             if (otherDate.getmStartTimeDetail().equals(this.getmStartTimeDetail())) {
@@ -119,7 +122,7 @@ public class Date {
         return Boolean.FALSE;
     }
 
-    public Boolean isSameDate(Date otherDate){
+    public Boolean isSameDate(DateAndTime otherDate){
         if(otherDate.getmMonth().equals(this.getmMonth())){
             if(otherDate.getmDay() == this.getmDay()){
                 if(otherDate.getmYear() == this.getmYear()){

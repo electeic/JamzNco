@@ -9,23 +9,28 @@ import java.util.Vector;
 public class Subscription {
 
     User mUser;
-    Date mDate;
+    DateAndTime mDate;
     Vector<String> mTags;
     Vector<String> mCategories;
     boolean mHomeMade;
+    boolean mActive;
     int mId;
     Post mPost;
 
 
-    public Subscription(User mUser, Date mDate, Vector<String> mTags,
+    public Subscription(User mUser, DateAndTime mDate, Vector<String> mTags,
                         Vector<String> mCategories, boolean mHomeMade) {
         this.mUser = mUser;
         this.mDate = mDate;
         this.mTags = mTags;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
+        mActive = Boolean.TRUE;
     }
 
+    public boolean getmActive(){return mActive;}
+
+    public void setmActive(boolean isActive){mActive = isActive;}
     public User getmUser() {
         return mUser;
     }
@@ -34,9 +39,9 @@ public class Subscription {
         this.mUser = mUser;
     }
 
-    public Date getmDate() { return mDate; }
+    public DateAndTime getmDate() { return mDate; }
 
-    public void setmDate (Date date) { mDate = date;}
+    public void setmDate (DateAndTime date) { mDate = date;}
 
     public Vector<String> getmTags() {
         return mTags;
