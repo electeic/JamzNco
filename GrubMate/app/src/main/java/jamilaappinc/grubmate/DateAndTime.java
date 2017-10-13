@@ -14,12 +14,12 @@ public class DateAndTime {
     Integer mEndTimeHour;
     Integer mEndTimeMinute;
     String mEndTimeDetail;
-    String mMonth;
+    Integer mMonth;
     Integer mDay;
     Integer mYear;
 
     DateAndTime (Integer startTimeHour, Integer startTimeMinute, String startTimeDetail, Integer endTimeHour,
-         Integer endTimeMinute, String endTimeDetail, String month, Integer day, Integer year){
+         Integer endTimeMinute, String endTimeDetail, Integer month, Integer day, Integer year){
         mStartTimeHour = startTimeHour;
         mStartTimeMinute = startTimeMinute;
         mStartTimeDetail = startTimeDetail;
@@ -35,11 +35,11 @@ public class DateAndTime {
 
     public Integer getmYear() { return mYear; }
 
-    public String getmMonth() { return mMonth; }
+    public Integer getmMonth() { return mMonth; }
 
     public void setmDay(Integer day) { mDay = day;}
 
-    public void setmMonth (String month) { mMonth = month;}
+    public void setmMonth (Integer month) { mMonth = month;}
 
     public void setmYear (Integer year) { mYear = year;}
 
@@ -127,6 +127,91 @@ public class DateAndTime {
             if(otherDate.getmDay() == this.getmDay()){
                 if(otherDate.getmYear() == this.getmYear()){
                     return Boolean.TRUE;
+                }
+            }
+        }
+        return Boolean.FALSE;
+
+    }
+
+    public boolean isExpired(){
+        Date currentDate = new Date();
+        int currentMinute = currentDate.getMinutes();
+        int currentHour = currentDate.getHours();
+        int currentDay = currentDate.getDay();
+        int currentMonth = currentDate.getMonth();
+        int currentYear = currentDate.getYear();
+
+        if(currentYear == this.getmYear()){
+            if(currentMonth == this.getmMonth()){
+                if(currentDay == this.getmDay()){
+                    if(getmEndTimeDetail() == "pm"){
+                       currentHour -= 12;
+                        if(currentHour < getmEndTimeHour()){
+                            return Boolean.FALSE;
+                        }
+                        if(currentHour == getmEndTimeHour()){
+                            if(currentMinute < getmEndTimeMinute()) {
+                                return Boolean.FALSE;
+                            }
+                        }
+                        return Boolean.TRUE;
+                    }
+                    else{
+                        if(currentHour < getmEndTimeHour()){
+                            return Boolean.FALSE;
+                        }
+                        if(currentHour == getmEndTimeHour()){
+                            if(currentMinute < getmEndTimeMinute()) {
+                                return Boolean.FALSE;
+                            }
+                        }
+                        return Boolean.TRUE;
+
+                    }
+                }
+            }
+        }
+        return Boolean.TRUE;
+
+    }
+
+    public boolean hasStarted(){
+        Date currentDate = new Date();
+        int currentMinute = currentDate.getMinutes();
+        int currentHour = currentDate.getHours();
+        int currentDay = currentDate.getDay();
+        int currentMonth = currentDate.getMonth();
+        int currentYear = currentDate.getYear();
+
+
+        if(currentYear == this.getmYear()){
+            if(currentMonth == this.getmMonth()){
+                if(currentDay == this.getmDay()){
+                    if(getmEndTimeDetail() == "pm"){
+                        currentHour -= 12;
+                        if(currentHour > getmStartTimeHour()){
+                            return Boolean.TRUE;
+                        }
+                        if(currentHour == getmStartTimeHour()){
+                            if(currentMinute > getmStartTimeMinute()) {
+                                return Boolean.TRUE;
+                            }
+                        }
+                        return Boolean.FALSE;
+                    }
+                    else{
+                        if(currentHour > getmStartTimeHour()){
+                            return Boolean.TRUE;
+                        }
+                        if(currentHour == getmStartTimeHour()){
+                            if(currentMinute > getmStartTimeMinute()) {
+                                return Boolean.TRUE;
+                            }
+                        }
+                        return Boolean.FALSE;
+
+                    }
                 }
             }
         }
