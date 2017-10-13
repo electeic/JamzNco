@@ -52,6 +52,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivityForResult(intent, 0);
+                getActivity().finish();
             }
         });
         fProfile.setOnClickListener(new View.OnClickListener() {

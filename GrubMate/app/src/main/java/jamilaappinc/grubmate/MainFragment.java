@@ -104,6 +104,7 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivityForResult(intent, 0);
+                getActivity().finish();
             }
         });
 
