@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-        startSplashTimer();
+       // startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data
@@ -46,11 +47,18 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(this);
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
         loginButton.setReadPermissions("email", "public_profile", "user_friends");
+
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                System.out.println(loginResult + "fuck");
+                Log.d(TAG, "facebook:onSuccess");
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
                 //call the main screen and pass any necessary things over
 
 
@@ -73,26 +81,26 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    /////////////////////////////////////////////////////////////////////
-    // THIS IS TEMPORARY, AND ALLOWS FOR TESTING FOR THE MAIN ACTIVITY //
-    // TO USE THIS, CHANGE 2nd PARAM OF INTENT TO THE ACTIVITY YOU WANT //
-    ////////////////////////////////////////////////////////////////////
-    private void startSplashTimer() {
-        try {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 3000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    /////////////////////////////////////////////////////////////////////
+//    // THIS IS TEMPORARY, AND ALLOWS FOR TESTING FOR THE MAIN ACTIVITY //
+//    // TO USE THIS, CHANGE 2nd PARAM OF INTENT TO THE ACTIVITY YOU WANT //
+//    ////////////////////////////////////////////////////////////////////
+//    private void startSplashTimer() {
+//        try {
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }, 3000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
