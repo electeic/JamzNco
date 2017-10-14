@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -117,14 +119,23 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-                // ...
+                Context context = getApplicationContext();
+                CharSequence text = "Incorrect Login.  Pls try again";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // ...
+                Context context = getApplicationContext();
+                CharSequence text = "Error with Login.  Pls try again";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
 
