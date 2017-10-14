@@ -19,7 +19,7 @@ import android.util.Log;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final String EXTRA_POSITION = "profile_position";
+    public static final String EXTRA_POSITION = "main_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = MainFragment.newInstance(pos);
+            f = ProfileFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

@@ -1,14 +1,9 @@
 package jamilaappinc.grubmate;
 
-//import android.app.FragmentManager;
-//import android.app.FragmentTransaction;
-//import android.content.Intent;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-//import android.app.Fragment;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +15,7 @@ import android.util.Log;
 
 public class PostActivity extends AppCompatActivity {
 
-    public static final String EXTRA_POSITION = "post_position";
+    public static final String EXTRA_POSITION = "main_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +35,7 @@ public class PostActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = MainFragment.newInstance(pos);
+            f = PostFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

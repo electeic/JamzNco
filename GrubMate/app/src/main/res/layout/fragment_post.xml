@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="jamilaappinc.grubmate.PostFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -110,12 +111,12 @@
             android:id="@+id/EndText"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="End Time"
             android:layout_alignBaseline="@+id/StartText"
             android:layout_alignBottom="@+id/StartText"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="14dp" />
+            android:layout_marginEnd="14dp"
+            android:ems="10"
+            android:text="End Time" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -124,7 +125,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/StartText"
             android:layout_marginTop="13dp"
-            android:entries="@array/categories"/>
+            android:entries="@array/categories" />
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -140,28 +141,41 @@
             android:id="@+id/checkBox2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Restaurant"
+            android:layout_alignStart="@+id/checkBox"
             android:layout_below="@+id/checkBox"
-            android:layout_alignStart="@+id/checkBox" />
+            android:text="Restaurant" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit"
             android:layout_alignBaseline="@+id/button2"
             android:layout_alignBottom="@+id/button2"
+            android:layout_marginEnd="24dp"
             android:layout_toStartOf="@+id/button2"
-            android:layout_marginEnd="24dp" />
+            android:text="Submit" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
             android:layout_below="@+id/checkBox2"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/StartText"
-            android:layout_marginTop="10dp" />
+            android:text="Cancel" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/gmlogo"
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/button2"
+            android:layout_alignEnd="@+id/EndText"
+            android:layout_marginEnd="14dp" />
 
 
     </RelativeLayout>

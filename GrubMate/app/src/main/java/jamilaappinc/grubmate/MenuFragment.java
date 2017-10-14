@@ -58,8 +58,8 @@ public class MenuFragment extends Fragment {
         fProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -82,8 +82,8 @@ public class MenuFragment extends Fragment {
         fPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), PostActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
