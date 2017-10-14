@@ -1,5 +1,6 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +12,8 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Post Food Form"
             android:textAlignment="center"
             android:textSize="30dp" />
@@ -25,7 +26,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="29dp"
             android:ems="10"
-            android:text="Title of Post" />
+            android:hint="Title of Post" />
 
         <EditText
             android:id="@+id/tagsText"
@@ -35,7 +36,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="59dp"
             android:ems="10"
-            android:text="Tags" />
+            android:hint="Tags" />
 
         <EditText
             android:id="@+id/dietaryText"
@@ -45,7 +46,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="89dp"
             android:ems="10"
-            android:text="Dietary Restrictions" />
+            android:hint="Dietary Restrictions" />
 
         <EditText
             android:id="@+id/descriptionText"
@@ -55,7 +56,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="119dp"
             android:ems="10"
-            android:text="Tags" />
+            android:hint="Description" />
 
         <EditText
             android:id="@+id/groupsText"
@@ -65,7 +66,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="149dp"
             android:ems="10"
-            android:text="Groups" />
+            android:hint="Groups" />
 
         <EditText
             android:id="@+id/locationText"
@@ -75,7 +76,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="179dp"
             android:ems="10"
-            android:text="Location" />
+            android:hint="Location" />
 
         <EditText
             android:id="@+id/DateText"
@@ -85,7 +86,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="209dp"
             android:ems="10"
-            android:text="Date" />
+            android:hint="Date" />
 
         <EditText
             android:id="@+id/ServingsText"
@@ -95,7 +96,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="239dp"
             android:ems="10"
-            android:text="Servings" />
+            android:hint="Servings" />
 
         <EditText
             android:id="@+id/StartText"
@@ -105,7 +106,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="269dp"
             android:ems="10"
-            android:text="Start Time" />
+            android:hint="Start Time" />
 
         <EditText
             android:id="@+id/EndText"
@@ -116,7 +117,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="14dp"
             android:ems="10"
-            android:text="End Time" />
+            android:hint="End Time" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -149,33 +150,41 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Submit"
             android:layout_alignBaseline="@+id/button2"
             android:layout_alignBottom="@+id/button2"
-            android:layout_marginEnd="24dp"
-            android:layout_toStartOf="@+id/button2"
-            android:text="Submit" />
+            android:layout_alignEnd="@+id/StartText" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Cancel"
             android:layout_below="@+id/checkBox2"
-            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/StartText"
-            android:text="Cancel" />
+            android:layout_marginStart="14dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/checkBox"
+            android:layout_marginStart="18dp"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu_from_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/EndText"
+            android:layout_below="@+id/button2"
             android:layout_gravity="bottom|end"
+            android:layout_marginEnd="14dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:src="@drawable/gmlogo"
             android:layout_marginTop="12dp"
-            android:layout_below="@+id/button2"
-            android:layout_alignEnd="@+id/EndText"
-            android:layout_marginEnd="14dp" />
+            android:src="@drawable/gmlogo" />
 
 
     </RelativeLayout>
