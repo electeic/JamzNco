@@ -1,6 +1,5 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,181 +7,311 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Post Food Form"
-            android:textAlignment="center"
-            android:textSize="30dp" />
 
-        <EditText
-            android:id="@+id/titleText"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post Food Form"
+                android:textAlignment="center"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="* required"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
+        </LinearLayout>
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="29dp"
-            android:ems="10"
-            android:hint="Title of Post" />
-
-        <EditText
-            android:id="@+id/tagsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="59dp"
-            android:ems="10"
-            android:hint="Tags" />
-
-        <EditText
-            android:id="@+id/dietaryText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="89dp"
-            android:ems="10"
-            android:hint="Dietary Restrictions" />
-
-        <EditText
-            android:id="@+id/descriptionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="119dp"
-            android:ems="10"
-            android:hint="Description" />
-
-        <EditText
-            android:id="@+id/groupsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="149dp"
-            android:ems="10"
-            android:hint="Groups" />
-
-        <EditText
-            android:id="@+id/locationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="179dp"
-            android:ems="10"
-            android:hint="Location" />
-
-        <EditText
-            android:id="@+id/DateText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="209dp"
-            android:ems="10"
-            android:hint="Date" />
-
-        <EditText
-            android:id="@+id/ServingsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="239dp"
-            android:ems="10"
-            android:hint="Servings" />
-
-        <EditText
-            android:id="@+id/StartText"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="269dp"
-            android:ems="10"
-            android:hint="Start Time" />
-
-        <EditText
-            android:id="@+id/EndText"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/StartText"
-            android:layout_alignBottom="@+id/StartText"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="14dp"
-            android:ems="10"
-            android:hint="End Time" />
+            android:layout_marginTop="2dp">
 
-        <Spinner
-            android:id="@+id/spinner"
+            <EditText
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Title of Post *" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/StartText"
-            android:layout_marginTop="13dp"
-            android:entries="@array/categories" />
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
+
+            <Button
+                android:id="@+id/post_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose Category(s)"
+                android:onClick="clickCategories"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/post_homemadeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="30dp"
+                    android:text="Homemade?"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/dietaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Dietary Restrictions *" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/locationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Location *" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/ServingsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Serving Size *" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/tagsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Custom Tags (optional)" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/EndText"
-            android:layout_below="@+id/spinner"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="17dp"
-            android:text="Homemade" />
+            android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/post_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoText="true"
+                        android:ems="10"
+                        android:inputType="date"
+                        android:hint="Enter Date (MM/DD/YYYY) *" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/post_startText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Start Time: *"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/post_startHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/hour"
+                        android:spinnerMode="dialog" />
+
+                    <Spinner
+                        android:id="@+id/post_startMinute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/minute"
+                        android:spinnerMode="dialog" />
+
+                    <Spinner
+                        android:id="@+id/post_startTimePeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/timePeriod"
+                        android:spinnerMode="dialog" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/post_endText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="End Time: *"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/post_endHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/hour" />
+
+                    <Spinner
+                        android:id="@+id/post_endMinute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/minute" />
+
+                    <Spinner
+                        android:id="@+id/post_endTimePeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/timePeriod" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/post_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:hint="Description (optional)"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/checkBox"
-            android:layout_below="@+id/checkBox"
-            android:text="Restaurant" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:layout_alignBaseline="@+id/button2"
-            android:layout_alignBottom="@+id/button2"
-            android:layout_alignEnd="@+id/StartText" />
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Submit" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:layout_below="@+id/checkBox2"
-            android:layout_toEndOf="@+id/StartText"
-            android:layout_marginStart="14dp" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/checkBox"
-            android:layout_marginStart="18dp"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Cancel" />
 
 
-    </RelativeLayout>
 
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/menu_from_main"
-        android:layout_margin="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginEnd="27dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_weight="1"
         android:src="@drawable/gmlogo"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp" />
 
+
+    </RelativeLayout>
 </FrameLayout>
+
