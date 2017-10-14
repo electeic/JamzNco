@@ -19,6 +19,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-        startSplashTimer();
+        //startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data
@@ -66,7 +67,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "facebook:onSuccess");
                 AccessToken token = AccessToken.getCurrentAccessToken();
                 final Vector<User> currUsers = new Vector<User>();
-                loginButton.setReadPermissions("user_friends");
+
+
+//                Profile profile = Profile.getCurrentProfile();
+//                String userId = profile.getId();
+//                Log.d(TAG,userId);
 
                 GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
                         loginResult.getAccessToken(),
@@ -88,11 +93,26 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                 ).executeAsync();
+
+
                 //intent that links curr screen to mainactivity.
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("Users",currUsers);//places users vector in intent and passes to main screen
+
+                //gets the current user's ID & name and puts it into intent.
+                final AccessToken accessToken = loginResult.getAccessToken();
+                GraphRequestAsyncTask request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+                        intent.putExtra("Name",user.optString("name"));
+                        intent.putExtra("ID",user.optString("id"));
+
+                    }
+                }).executeAsync();
+
                 startActivity(intent);
                 finish();
+
             }
 
             @Override
