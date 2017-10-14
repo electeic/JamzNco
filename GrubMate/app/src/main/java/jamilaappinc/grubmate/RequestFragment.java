@@ -8,16 +8,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link ViewSubscriptionsFragment#newInstance} factory method to
+ * Use the {@link RequestFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewSubscriptionsFragment extends Fragment {
+public class RequestFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,11 +26,11 @@ public class ViewSubscriptionsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    android.support.design.widget.FloatingActionButton floatButton;
 
 //    private OnFragmentInteractionListener mListener;
+    android.support.design.widget.FloatingActionButton floatButton;
 
-    public ViewSubscriptionsFragment() {
+    public RequestFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class ViewSubscriptionsFragment extends Fragment {
      *
 //     * @param param1 Parameter 1.
 //     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewSubscriptionsFragment.
+     * @return A new instance of fragment RequestFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewSubscriptionsFragment newInstance(int pos) {
-        ViewSubscriptionsFragment fragment = new ViewSubscriptionsFragment();
+    public static RequestFragment newInstance(int pos) {
+        RequestFragment fragment = new RequestFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
         fragment.setArguments(args);
@@ -64,7 +64,7 @@ public class ViewSubscriptionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
+        View v = inflater.inflate(R.layout.fragment_request, container, false);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -85,6 +84,17 @@
             android:layout_marginTop="104dp"
             android:layout_below="@+id/EndText"
             android:layout_alignStart="@+id/EndText" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/gmlogo"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/button2"
+            android:layout_alignEnd="@+id/EndText"
+            android:layout_marginTop="61dp" />
 
     </RelativeLayout>
 </FrameLayout>

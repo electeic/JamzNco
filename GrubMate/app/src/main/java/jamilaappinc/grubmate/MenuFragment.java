@@ -74,8 +74,8 @@ public class MenuFragment extends Fragment {
         fRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), RequestActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 

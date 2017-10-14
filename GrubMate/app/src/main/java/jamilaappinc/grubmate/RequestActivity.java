@@ -13,12 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-/**
- * Created by ericajung on 10/13/17.
- */
+
 
 public class RequestActivity extends AppCompatActivity {
-    public static final String EXTRA_POSITION = "request_position";
+    public static final String EXTRA_POSITION = "main_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class RequestActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = MainFragment.newInstance(pos);
+            f = RequestFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
