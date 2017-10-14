@@ -104,7 +104,21 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivityForResult(intent, 0);
-                getActivity().finish();
+//                getActivity().finish();
+            }
+        });
+
+        // Attach a listener to read the data at our posts reference
+        dbRefPosts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Post post = dataSnapshot.getValue(Post.class);
+                System.out.println(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
 

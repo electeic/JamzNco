@@ -173,20 +173,16 @@
             android:layout_marginStart="18dp"
             app:srcCompat="@android:drawable/ic_input_add" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/menu_from_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/EndText"
-            android:layout_below="@+id/button2"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="14dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/gmlogo" />
-
 
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/menu_from_main"
+        android:layout_margin="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/gmlogo"
+        />
 
 </FrameLayout>
