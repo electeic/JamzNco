@@ -51,7 +51,7 @@
             android:layout_marginTop="2dp">
 
             <EditText
-                android:id="@+id/titleText"
+                android:id="@+id/post_titleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class PostActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
-    Button category;
     String[] listCategories;
     boolean [] checkedItems;
     ArrayList<Integer> selectedCategories = new ArrayList<Integer>();
