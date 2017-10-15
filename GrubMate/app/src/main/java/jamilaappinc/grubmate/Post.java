@@ -38,6 +38,10 @@ public class Post {
         mActive = Boolean.TRUE;
     }
 
+    public Post(){
+
+    }
+
     public boolean isActive(){ return mActive;}
 
     public void setmActive(boolean active){ mActive = active;}

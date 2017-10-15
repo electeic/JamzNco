@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-        //startSplashTimer();
+        startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data

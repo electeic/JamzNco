@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Vector;
 
 
 /**
@@ -27,6 +32,7 @@ public class ViewGroupsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
+    private ArrayList<Group> groups = new ArrayList<Group>();
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -64,6 +70,11 @@ public class ViewGroupsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
 
+        populateList();
+        GroupsAdapter adapter= new GroupsAdapter(getActivity(), groups);
+        ListView list = (ListView) v.findViewById(R.id.GroupsListView);
+        Log.d("POPULATE", "BOO");
+        list.setAdapter(adapter);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +88,17 @@ public class ViewGroupsFragment extends Fragment {
         return v;
     }
 
+
+    private void populateList() {
+        Vector<User> group = new Vector<User>();
+        for (int i = 0; i < 4; i++) {
+            group.addElement(new User("nameity name nameson", "lol"));
+        }
+        groups.add(new Group("CSCI310", group));
+        groups.add(new Group("Group 2", group));
+        groups.add(new Group("yAsKwEEN", group));
+
+    }
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
