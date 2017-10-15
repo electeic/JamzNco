@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -144,6 +145,15 @@ public class MainFragment extends Fragment {
         protected void populateView(View v, Post model, int position) {
             // get references to row widgets
             // copy data from model to widgets
+            ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
+
+            Glide.with(MainFragment.this)
+                    .load(model.getmPhotos())
+                    .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
+                    .crossFade()
+                    .into(mImage);
+
 //            ImageView pFoodPic = (ImageView) v.findViewById(R.id.imagePic);
 //            ImageView pPersonPic = (ImageView) v.findViewById(R.id.active_post_person_image);
             TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);

@@ -15,7 +15,8 @@ public class Post {
     Vector<String> mTags;
     Vector <Group> mGroups;
     int id;
-    Vector<String> mPhotos;
+//    Vector<String> mPhotos;
+    String mPhotos;
     User mPoster;
     int mServings;
     boolean mActive;
@@ -23,7 +24,7 @@ public class Post {
 
     public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
                 Vector<String> mCategories, Vector<String> mTags,
-                Vector<Group> mGroups, Vector<String>  photos, int servings,  User poster) {
+                Vector<Group> mGroups, String photos, int servings,  User poster) {
         this.mPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
@@ -125,11 +126,11 @@ public class Post {
         this.id = id;
     }
 
-    public Vector<String> getmPhotos() {
+    public String getmPhotos() {
         return mPhotos;
     }
 
-    public void setmPhotos(Vector<String> photos) {
+    public void setmPhotos(String photos) {
         this.mPhotos = photos;
     }
 
