@@ -13,11 +13,12 @@ public class User {
     Vector<Rating> mRatings;
     Vector<Notification> mNotifications;
     Vector<Subscription> mSubscriptions;
+    Vector<User> mFriends;
 
     double mAvgRating;
     String mName;
     String mProfilePhoto;
-    int mId;
+    String mId;
 
     public User(String mName, String mPic) {
         this.mName = mName;
@@ -88,11 +89,11 @@ public class User {
         this.mProfilePhoto = mProfilePhoto;
     }
 
-    public int getmId() {
+    public String getmId() {
         return mId;
     }
 
-    public void setmId(int mId) {
+    public void setmId(String mId) {
         this.mId = mId;
     }
 
@@ -102,6 +103,14 @@ public class User {
 
     public void addmSubscription(Subscription mSubscription) {
         mSubscriptions.add(mSubscription);
+    }
+
+    public Vector<User> getFriends(){
+        return mFriends;
+    }
+
+    public void setFriends(Vector<User> newFriends){
+        mFriends = newFriends;
     }
 
 
