@@ -24,6 +24,8 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final String TAG = "TAG";
     CallbackManager mCallbackManager;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("Name",user.optString("name"));
                         intent.putExtra("ID",user.optString("id"));
 
+                        writeNewUser(user.optString("id"),user.optString("name"),"fuckPic",currUsers);
+
                     }
                 }).executeAsync();
 
@@ -170,4 +175,14 @@ public class LoginActivity extends AppCompatActivity {
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void writeNewUser(String userId, String name, String picture, Vector<User> friends) {
+        DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
+        databaseRef.child("userId").setValue(userId);
+        databaseRef.child("name").setValue(name);
+        databaseRef.child("friends").setValue(friends);
+        databaseRef.child("picture").setValue(picture);
+
+    }
+
 }
