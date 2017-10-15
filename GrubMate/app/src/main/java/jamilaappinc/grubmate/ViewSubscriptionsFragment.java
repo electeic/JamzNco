@@ -8,6 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Vector;
 
 
 /**
@@ -22,6 +28,7 @@ public class ViewSubscriptionsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +72,10 @@ public class ViewSubscriptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
-
+        populateList();
+        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity());
+        ListView list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
+        list.setAdapter(adapter);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +87,67 @@ public class ViewSubscriptionsFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    /**
+     * NOTE: I added another constructer into Subscription to make testing easier
+     *
+     */
+    public void populateList(){
+        Vector<String> categories = new Vector<>();
+        Vector<String> tags = new Vector<>();
+
+        for(int i = 0; i < 5; i++){
+            categories.add("Category " + i);
+            tags.add("Tag " + i);
+        }
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+        subscriptions.add(new Subscription(tags,categories));
+
+    }
+
+    private class SubscriptionAdapter extends ArrayAdapter<Subscription> {
+        public SubscriptionAdapter(Context context){
+            super(context, 0 , subscriptions);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if(itemView == null){
+                itemView = LayoutInflater.from(getContext()).inflate(R.layout.subscription_info_view, parent, false);
+
+            }
+
+
+            Subscription subscription = subscriptions.get(position);
+            Vector<String> categories = subscription.getmCategories();
+            Vector<String> tags = subscription.getmTags();
+            String list = "";
+            for(int i = 0; i < categories.size(); i++){
+                list = list+" " + categories.get(i)+", ";
+            }
+            for(int i=0; i< tags.size(); i++){
+                if(i < (tags.size() -1)){
+                    list = list+" " + tags.get(i)+", ";
+                }else{
+                    list = list+" " + tags.get(i);
+
+                }
+            }
+
+            if(list.length() > 100){
+                list = list.substring(0, 100);
+                list+=" ...";
+            }
+            TextView detail = (TextView) itemView.findViewById(R.id.viewSubscriptionInfo__detail);
+            detail.setText(list);
+            return itemView;
+        }
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event

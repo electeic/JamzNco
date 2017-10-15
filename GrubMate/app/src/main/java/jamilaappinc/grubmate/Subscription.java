@@ -17,6 +17,10 @@ public class Subscription {
     int mId;
     Post mPost;
 
+    public Subscription(Vector<String> mTags, Vector<String> mCategories){
+        this.mTags = mTags;
+        this.mCategories = mCategories;
+    }
 
     public Subscription(User mUser, DateAndTime mDate, Vector<String> mTags,
                         Vector<String> mCategories, boolean mHomeMade) {
