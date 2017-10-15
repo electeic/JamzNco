@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONArray rawName = response.getJSONObject().getJSONArray("data");
                                     User newUser =
                                             new User(rawName.getJSONObject(0).getString("name"), "defaultPic");//defaultPic is just a placeholder for image.
-                                    newUser.setmId(rawName.getJSONObject(0).getInt("id"));
+                                    newUser.setmId(Integer.toString(rawName.getJSONObject(0).getInt("id")));
                                     currUsers.add(newUser);
                                     Log.d(TAG,rawName.toString());
                                 } catch (JSONException e) {
@@ -178,10 +178,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void writeNewUser(String userId, String name, String picture, Vector<User> friends) {
         DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
-        databaseRef.child("userId").setValue(userId);
-        databaseRef.child("name").setValue(name);
-        databaseRef.child("friends").setValue(friends);
-        databaseRef.child("picture").setValue(picture);
+        User u = new User(name,picture);
+        u.setmId(userId);
+        u.setFriends(friends);
+
+        databaseRef.setValue(u);
 
     }
 
