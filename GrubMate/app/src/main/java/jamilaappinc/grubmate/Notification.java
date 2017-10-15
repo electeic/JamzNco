@@ -5,10 +5,14 @@ package jamilaappinc.grubmate;
  */
 
 public class Notification {
-    User mFromUser;
-    Post mAboutPost;
-    User mToUser;
-    int mId;
+   protected User mFromUser;
+    protected Post mAboutPost;
+    protected User mToUser;
+    protected int mId;
+
+    public Notification(){
+
+    }
 
     public Notification(User mFromUser, Post mAboutPost, User mToUser) {
         this.mFromUser = mFromUser;

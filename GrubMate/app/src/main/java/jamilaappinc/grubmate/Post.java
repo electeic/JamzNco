@@ -21,6 +21,10 @@ public class Post {
     int mServings;
     boolean mActive;
 
+    public Post(String title){
+        mTitle = title;
+    }
+
 
     public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
                 Vector<String> mCategories, Vector<String> mTags,

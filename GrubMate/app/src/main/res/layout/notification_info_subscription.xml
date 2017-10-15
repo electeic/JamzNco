@@ -15,50 +15,43 @@
         android:id="@+id/view">
 
         <LinearLayout
-            android:id="@+id/groups_layout"
+            android:id="@+id/notification_info_subscription_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/groups_layout2"
+                android:id="@+id/notification_info_subscription_layout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/groups_name"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/notification_info_subscription_title"
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="GROUP NAME"
-                    android:textStyle="bold"
-                    android:textSize="24dp" />
+                    android:layout_marginBottom="5dp"
+                    android:text="Post X has matched with a subscription!"
+                    android:textSize="15dp"
+                    android:textAlignment="gravity"
+                    android:textStyle="italic"/>
                 <Button
-                    android:id="@+id/groups_button"
-                    android:layout_width="100dp"
+                    android:id="@+id/notification_info_subscription_button"
+                    android:layout_width="160dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:text="edit"
-                    android:textSize="14dp"
+                    android:text="Dismiss"
+                    android:textSize="12dp"
                     android:textStyle="italic"
                     android:textAlignment="center"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"/>
 
             </LinearLayout>
-            <TextView
-                android:id="@+id/groups_members"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="2dp"
-                android:text="List out members of group"
-                android:textSize="16dp"
-                android:textStyle="italic"
-                android:textAlignment="textStart"/>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </FrameLayout>

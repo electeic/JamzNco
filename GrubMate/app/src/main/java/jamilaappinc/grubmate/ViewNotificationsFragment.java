@@ -5,9 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -29,6 +37,8 @@ public class ViewNotificationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
+    ArrayList<Notification> notifications = new ArrayList<>();
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,6 +76,10 @@ public class ViewNotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_notifications, container, false);
+        populateList();
+        NotifAdapter adapter = new NotifAdapter(getActivity());
+        ListView list = (ListView) v.findViewById(R.id.notifications_list);
+        list.setAdapter(adapter);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
@@ -80,6 +94,71 @@ public class ViewNotificationsFragment extends Fragment {
         return v;
     }
 
+    private void populateList() {
+        //NOTE: I created another constructer in Post so that testing would be easier
+        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+
+    }
+
+    private class NotifAdapter extends ArrayAdapter<Notification> {
+        public NotifAdapter(Context context){
+            super(context,0,notifications );
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent){
+            View itemView = convertView;
+            //find the notification to work with
+            Notification notif = notifications.get(position);
+/*            if(itemView == null){
+                if(notif instanceof SubscriptionNotification){
+                    Log.d("subscrip item", "I am in subscript notif for itemview");
+                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
+                }
+                else if(notif instanceof RequestedNotification){
+                    Log.d("request item", "I am in request notif for itemview");
+                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
+                }else{
+                    Log.d("accet item", "I am in accept notif for itemview");
+                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
+                }
+            }*/
+
+
+            Post relevantPost = notif.getmAboutPost();
+            User fromUser = notif.getmFromUser();
+
+            if(notif instanceof SubscriptionNotification){
+                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
+                TextView title = (TextView)itemView.findViewById(R.id.notification_info_subscription_title);
+                title.setText( relevantPost.getmTitle() + " has matched a subscription!");
+
+            }
+            else if(notif instanceof RequestedNotification){
+                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
+                TextView title = (TextView)itemView.findViewById(R.id.notification_info_request_title);
+                title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
+
+
+            }else{
+                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
+                TextView title = (TextView)itemView.findViewById(R.id.notification_info_accept_title);
+                title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");
+
+            }
+
+            return itemView;
+// return  super.getView(position convertView, parent)
+        }
+
+    }
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
