@@ -2,251 +2,106 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/menu_from_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="27dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/gmlogo" />
+    <RelativeLayout
+        android:id="@+id/RequestOnPost"
+        android:layout_width="758dp"
+        android:layout_height="933dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginTop="127dp"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Request Food"
-                android:textAlignment="center"
-                android:textSize="30dp" />
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="* required"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="10dp" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp">
-
-                <EditText
-                    android:id="@+id/request_titleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Title of Post *" />
-            </android.support.design.widget.TextInputLayout>
-
-
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <Button
-                    android:id="@+id/request_cat"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="clickCategories"
-                    android:text="Choose Category(s)" />
+                    android:text="Number of Servings: "
+                    android:layout_marginRight="100dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/request_homemadeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:paddingLeft="30dp"
-                        android:text="Homemade?"
-                        android:textAlignment="center"
-                        android:textSize="20sp" />
-
-                    <CheckBox
-                        android:id="@+id/request_homemade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:id="@+id/servingsWanted"/>
 
             </LinearLayout>
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/request_tagsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Custom Tags (optional)" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/request_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoText="true"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:hint="Enter Date (MM/DD/YYYY) *" />
-            </android.support.design.widget.TextInputLayout>
-
-            <LinearLayout
+            <SeekBar
+                android:id="@+id/possibleServings"
+                android:paddingBottom="10dp"
+                android:paddingTop="20dp"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp">
+                android:max="10"
+                android:progress="3"
+               />
 
-                <LinearLayout
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:paddingBottom="20dp"
+                    android:id="@+id/locationText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Location *" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            
 
 
 
-                    <TextView
-                        android:id="@+id/request_startText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Start Time: *"
-                        android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <Spinner
-                            android:id="@+id/request_startHour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/hour"
-                            android:spinnerMode="dialog" />
-
-                        <Spinner
-                            android:id="@+id/request_startMinute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/minute"
-                            android:spinnerMode="dialog" />
-
-                        <Spinner
-                            android:id="@+id/request_startTimePeriod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/timePeriod"
-                            android:spinnerMode="dialog" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
-
-                    <TextView
-                        android:id="@+id/request_endText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="End Time: *"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <Spinner
-                            android:id="@+id/request_endHour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/hour" />
-
-                        <Spinner
-                            android:id="@+id/request_endMinute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/minute" />
-
-                        <Spinner
-                            android:id="@+id/request_endTimePeriod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/timePeriod" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_marginTop="60dp">
+                android:gravity="center"
+                android:paddingTop="20dp"
+                >
 
                 <Button
                     android:id="@+id/request_submitButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="100dp"
                     android:text="Submit" />
 
                 <Button
                     android:id="@+id/request_cancelButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="20dp"
                     android:text="Cancel" />
-
-
 
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/postTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Request On Post"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
 
     </RelativeLayout>

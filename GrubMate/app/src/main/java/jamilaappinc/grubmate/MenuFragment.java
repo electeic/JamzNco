@@ -18,7 +18,6 @@ public class MenuFragment extends Fragment {
     TextView fHome;
     TextView fProfile;
     TextView fNotifications;
-    TextView fRequest;
     TextView fPost;
     TextView fGroups;
     TextView fSubscriptions;
@@ -40,7 +39,6 @@ public class MenuFragment extends Fragment {
         fHome = (TextView) v.findViewById(R.id.home);
         fProfile = (TextView) v.findViewById(R.id.profile);
         fNotifications = (TextView) v.findViewById(R.id.notifications);
-        fRequest = (TextView) v.findViewById(R.id.request);
         fPost = (TextView) v.findViewById(R.id.post);
         fGroups = (TextView) v.findViewById(R.id.groups);
         fSubscriptions = (TextView) v.findViewById(R.id.subscriptions);
@@ -67,14 +65,6 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
-
-        fRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RequestActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
