@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -12,9 +13,9 @@ public class Post {
     String mDescription;
     String mLocation;
     Date mStartDate, mEndDate;
-    Vector<String> mCategories;
-    Vector<String> mTags;
-    Vector <Group> mGroups;
+    ArrayList<String> mCategories;
+    ArrayList<String> mTags;
+    ArrayList <Group> mGroups;
     int id;
 //    Vector<String> mPhotos;
     String mPhotos;
@@ -31,8 +32,8 @@ public class Post {
 
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
-                Vector<String> mCategories, Vector<String> mTags,
-                Vector<Group> mGroups, String photos, int servings, boolean homemade, User poster) {
+                ArrayList<String> mCategories, ArrayList<String> mTags,
+                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, User poster) {
         this.mActualPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
@@ -109,27 +110,27 @@ public class Post {
 
     public void setmEndDate(Date mEndDate) {this.mEndDate = mEndDate;}
 
-    public Vector<String> getmCategories() {
+    public ArrayList<String> getmCategories() {
         return mCategories;
     }
 
-    public void setmCategories(Vector<String> mCategories) {
+    public void setmCategories(ArrayList<String> mCategories) {
         this.mCategories = mCategories;
     }
 
-    public Vector<String> getmTags() {
+    public ArrayList<String> getmTags() {
         return mTags;
     }
 
-    public void setmTags(Vector<String> mTags) {
+    public void setmTags(ArrayList<String> mTags) {
         this.mTags = mTags;
     }
 
-    public Vector<Group> getmGroups() {
+    public ArrayList<Group> getmGroups() {
         return mGroups;
     }
 
-    public void setmGroups(Vector<Group> mGroups) {
+    public void setmGroups(ArrayList<Group> mGroups) {
         this.mGroups = mGroups;
     }
 

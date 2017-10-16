@@ -29,8 +29,8 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     String[] listCategories,listGroups;
 
     boolean [] checkedItems, groupCheckedItems;
-    Vector<String> selectedCategories = new Vector<String>();
-    Vector<String> selectedGroups = new Vector<>();
+    ArrayList<String> selectedCategories = new ArrayList<String>();
+    ArrayList<String> selectedGroups = new ArrayList<>();
 
     private Button startDate, endDate;
     String startDateString;
@@ -44,8 +44,8 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         void sendEndDate(String data);
         void sendStartTime(String time);
         void sendEndTime(String time);
-        void sendCategories(Vector<String>cat);
-        void sendGroups(Vector<String> _group);
+        void sendCategories(ArrayList<String>cat);
+        void sendGroups(ArrayList<String> _group);
     }
 
     /**

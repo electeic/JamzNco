@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
 
     public static final String ARGS_POSITION = "args_position";
 
-//    private List<Post> postList;
+    //    private List<Post> postList;
 //    private PostListAdapter postAdapter;
     android.support.design.widget.FloatingActionButton floatButton;
     ListView mListView;

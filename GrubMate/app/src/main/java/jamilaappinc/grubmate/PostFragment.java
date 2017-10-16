@@ -1,11 +1,14 @@
 package jamilaappinc.grubmate;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,45 +17,55 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Vector;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import static android.app.Activity.RESULT_OK;
 
 
-/**
- *
- * TO DO: in method submitButton.setOnClickListener(new View.OnClickListener(){ the Post object created
- * doesn't have a Vector<Groups> or a User
- *
- * Send USER ID instead of sending the actual user object itself?
- *
- * Figure out how to set up the Group stuff in dialog/ activity
- *
- *
- */
-
-
-
-
-public class PostFragment extends Fragment implements PostActivity.DataFromActivityToFragment {
-
+public class PostFragment extends Fragment implements PostActivity.DataFromActivityToFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    private static final int PICK_IMAGE_REQUEST = 123;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     FirebaseDatabase database;
     private DatabaseReference dbRefNotes;
     private DatabaseReference dbNoteToEdit;
+    private StorageReference mStorageRef;
+
+
+    private Button cancelButton, startDateButton,endDateButton, startTimeButton, endTimeButton;
+    private EditText _title, _dietary, _location, _servings, _tags, _descriptions;
+    private CheckBox _homemade;
+    private String title, dietary, location, servings, tags, date, descriptions, startTimeString, endTimeString,startDateString, endDateString;
+    private SimpleDateFormat sdf;
+    private Date startDateTime, endDateTime;
+
+    private ArrayList<String> categories = new ArrayList<>();
+    private ArrayList<String> groups = new ArrayList<>();
+    private ArrayList<String> tagsVec = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,21 +77,14 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     EditText pServingsText;
     EditText pTagsText;
     EditText pPostDescription;
+    ImageView pImage;
     Button pSubmitpostbutton;
+    Button pAddPictureButton;
+
+    private Uri filePath;
+    Bitmap mBitmap;
 
     android.support.design.widget.FloatingActionButton floatButton;
-    private Button cancelButton, submitButton, startDateButton,endDateButton, startTimeButton, endTimeButton;
-    private EditText _title, _dietary, _location, _servings, _tags, _descriptions;
-    private CheckBox _homemade;
-    private String title, dietary, location, servings, tags, date, descriptions, startTimeString, endTimeString,startDateString, endDateString;
-    private SimpleDateFormat sdf;
-    private Date startDateTime, endDateTime;
-    private CheckBox homemade;
-
-    private Vector<String> categories = new Vector<>();
-    private Vector<String> groups = new Vector<>();
-    private Vector<String> tagsVec = new Vector<>();
-
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -86,6 +92,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         // Required empty public constructor
     }
 
+    // TODO: Rename and change types and number of parameters
     public static PostFragment newInstance(int pos) {
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
@@ -105,6 +112,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         //todo get database
         database = FirebaseDatabase.getInstance();
 
+        //for pictures
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         //todo get database reference paths
         dbRefNotes = database.getReference(FirebaseReferences.POSTS);
 
@@ -119,11 +129,24 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_post, container, false);
+        pImage = (ImageView) v.findViewById(R.id.post_food_pic);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        pPostTitle = (EditText) v.findViewById(R.id.post_titleText);
 
-            // Inflate the layout for this fragment
-            View v = inflater.inflate(R.layout.fragment_post, container, false);
-            initGUIComp(v);
-            addListeners();
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
+
+        initGUIComp(v);
+        addListeners();
+
 
             return v;
     }
@@ -131,14 +154,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private void initGUIComp(View v){
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         cancelButton = (Button) v.findViewById(R.id.post_cancel);
-        submitButton = (Button) v.findViewById(R.id.post_submit);
+        pSubmitpostbutton = (Button) v.findViewById(R.id.post_submit);
         startDateButton =(Button) v.findViewById(R.id.post_startDateButton);
         endDateButton = (Button)v.findViewById(R.id.post_endDateButton);
         startTimeButton =(Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
-        _homemade = (CheckBox) v.findViewById(R.id.post_homemadeCheck);
-
-
+//        pAddPictureButton = (Button) v.findViewById(R.id.post_add_picture);
 
 
         _title = (EditText) v.findViewById(R.id.post_titleText);
@@ -154,6 +175,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         sdf.setLenient(false);
 
     }
+
+
 
     /**
      *
@@ -176,31 +199,26 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     }
 
-    /**
-     *
-     * @return if the date and time for start/ end is a valid time period then return TRUE
-     */
-    private boolean checkDateTime(){
+    private boolean checkDateTime() {
         boolean check = false;
         try {
-            startDateTime = sdf.parse(startDateString+ " " + startTimeString);
+            startDateTime = sdf.parse(startDateString + " " + startTimeString);
             endDateTime = sdf.parse(endDateString + " " + endTimeString);
 
             check = startDateTime.before(endDateTime);
-        }catch(ParseException e){
+        } catch (ParseException e) {
             Log.d("PARSE FAIL", "failed");
             return false;
         }
 
         return check;
-
     }
 
     /**
      *
      * @return Changes the String of tags into a Vector<String> so that can be used in new Post
      */
-    private Vector<String> getTags(){
+    private ArrayList<String> getTags(){
         String[] temp = tags.split(",");
         for(String s : temp){
             tagsVec.add(s);
@@ -219,7 +237,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
-
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -227,35 +244,109 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 getActivity().finish();
             }
         });
-        submitButton.setOnClickListener(new View.OnClickListener(){
+
+//        pAddPictureButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showFileChooser();
+//            }
+//        });
+
+        pSubmitpostbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+
                 if(checkAllFilled()){
                     //all forms filled out correctly
+                    DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
                     Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),null);
-
+                    databaseRef.setValue(post);
                     //send this post to the DB
-
-                    DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS");
-
-//                 String mTitle, String mDescription, String mLocation, DateAndTime mDate,
-//                         Vector<String> mCategories, Vector<String> mTags,
-//                         Vector<Group> mGroups, String photos, int servings, String poster
-
-                    Post p = new Post(title,"IVANNULL");
-//                 p.setmId(userId);
-//                 p.setFriends(friends);
-
-                    databaseRef.setValue(p);
-                    getActivity().finish();
 
                 }else{
                     //something is wrong so send a toast
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
                 }
+                DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
+//                 uploadFile();
+                getActivity().finish();
             }
         });
 
+    }
+
+
+
+//    public void uploadFile()
+//    {
+//        if(filePath != null) {
+//
+//            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//            progressDialog.setMessage("Uploading...");
+//            progressDialog.show();
+//
+//
+//            StorageReference riversRef = mStorageRef.child("images/food.jpg");
+//
+//            riversRef.putFile(filePath)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // Get a URL to the uploaded content
+////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                            progressDialog.dismiss();
+//                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+//                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+////                            uploadMeta(downloadUri.toString());
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            // Handle unsuccessful uploads
+//                            // ...
+//                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
+//                        }
+//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                    double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+//                    progressDialog.setMessage(((int)progress) + "% uploaded");
+//                }
+//            });
+//        }
+//        else
+//        {
+//
+//        }
+//    }
+
+    public void showFileChooser()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null)
+        {
+            filePath = data.getData();
+
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                pImage.setImageBitmap(mBitmap);
+//                mBitmap = BitmapFactory.decodeFile(filePath.getPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -292,40 +383,35 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
-    /**
-     *
-     * @param cat Activity sends the categories/groups chosen to the fragment
-     */
-
-    public void sendCategories(Vector<String> cat){
+    public void sendCategories(ArrayList<String> cat){
         if(cat!=null){
-            categories = (Vector<String>)cat.clone();
+            categories = (ArrayList<String>)cat.clone();
         }
     }
 
-    public void sendGroups(Vector<String> _group){
+    public void sendGroups(ArrayList<String> _group){
         if(_group!=null){
-            groups = (Vector<String>)_group.clone();
+            groups = (ArrayList<String>)_group.clone();
         }
     }
+//
+//    void uploadMeta(String uri)
+//    {
+////        if()
+//        String id = FirebaseRef.push().getKey();
+//        Pictures picUri = new Pictures(uri);
+//        PictureSingleton.get(this).addMovie(picUri);
+//
+//        DatabaseReference dbChild = FirebaseRef.push();
+//        dbChild.setValue(picUri);
+//
+////        FirebaseRef.child(id).setValue(picUri); //part of og code
+//
+//        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+//    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
+    /*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -333,19 +419,18 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         if (activity instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) activity;
-        } else {
+             } else {
+            throw new RuntimeException(context.toString()
             throw new RuntimeException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
-/*
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -361,10 +446,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
-     */
-   /* public interface OnFragmentInteractionListener {
+     *//*
+    public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void getStartDate();
-    }
-    */
+        void onFragmentInteraction(Uri uri);
+    }*/
 }
