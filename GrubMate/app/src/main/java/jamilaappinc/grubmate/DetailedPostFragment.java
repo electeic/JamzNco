@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -16,6 +18,18 @@ import android.view.ViewGroup;
  * to handle interaction events.
  */
 public class DetailedPostFragment extends Fragment {
+
+    TextView fPostName;
+    ImageView fProfilePicture;
+    ImageView fFoodPicture;
+    TextView fTags;
+    TextView fDietaryInfo;
+    TextView fCategories;
+    TextView fDescription;
+    TextView fHomeOrRestuarant;
+    TextView fDate;
+    TextView fStartTime;
+    TextView fEndTime;
 
     private OnFragmentInteractionListener mListener;
 
@@ -28,7 +42,7 @@ public class DetailedPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detailed_post, container, false);
+        return inflater.inflate(R.layout.fragment_detail_post, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
