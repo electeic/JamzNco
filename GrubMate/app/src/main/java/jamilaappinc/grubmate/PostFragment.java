@@ -53,6 +53,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     FirebaseDatabase database;
     private DatabaseReference dbRefNotes;
     private DatabaseReference dbNoteToEdit;
+    DatabaseReference FirebaseRef;
     private StorageReference mStorageRef;
 
 
@@ -159,7 +160,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         endDateButton = (Button)v.findViewById(R.id.post_endDateButton);
         startTimeButton =(Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
-//        pAddPictureButton = (Button) v.findViewById(R.id.post_add_picture);
+        pAddPictureButton = (Button) v.findViewById(R.id.post_add_picture);
 
 
         _title = (EditText) v.findViewById(R.id.post_titleText);
@@ -244,12 +245,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
-//        pAddPictureButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showFileChooser();
-//            }
-//        });
+        pAddPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
 
         pSubmitpostbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,16 +259,19 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 if(checkAllFilled()){
                     //all forms filled out correctly
                     DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
-                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),null);
+                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),"HARDCODEDIVAN");
                     databaseRef.setValue(post);
+
+
+//                    uploadFile();
+//                    getActivity().finish();
                     //send this post to the DB
 
                 }else{
                     //something is wrong so send a toast
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
                 }
-                DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
-//                 uploadFile();
+
                 getActivity().finish();
             }
         });
@@ -276,6 +280,14 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
 
 
+//    public void uploadFile()
+//    {
+//        if(filePath != null) {
+//
+//            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//            progressDialog.setMessage("Uploading...");
+//            progressDialog.show();
+//
 //    public void uploadFile()
 //    {
 //        if(filePath != null) {
@@ -296,7 +308,42 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //                            progressDialog.dismiss();
 //                            Uri downloadUri = taskSnapshot.getDownloadUrl();
 //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-////                            uploadMeta(downloadUri.toString());
+//                            uploadMeta(downloadUri.toString());
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            // Handle unsuccessful uploads
+//                            // ...
+//                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
+//                        }
+//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                    double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+//                    progressDialog.setMessage(((int)progress) + "% uploaded");
+//                }
+//            });
+//        }
+//        else
+//        {
+//
+//        }
+//    }
+//            StorageReference riversRef = mStorageRef.child("images/food.jpg");
+//
+//            riversRef.putFile(filePath)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // Get a URL to the uploaded content
+////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                            progressDialog.dismiss();
+//                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+//                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+//                            uploadMeta(downloadUri.toString());
 //                        }
 //                    })
 //                    .addOnFailureListener(new OnFailureListener() {
@@ -360,7 +407,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
-
     public void sendEndDate(String data) {
         if(data != null){
             endDateButton.setText("End Date: " + data);
@@ -394,60 +440,59 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 //
-//    void uploadMeta(String uri)
-//    {
-////        if()
+    void uploadMeta(String uri)
+    {
+//        if()
 //        String id = FirebaseRef.push().getKey();
-//        Pictures picUri = new Pictures(uri);
-//        PictureSingleton.get(this).addMovie(picUri);
-//
-//        DatabaseReference dbChild = FirebaseRef.push();
-//        dbChild.setValue(picUri);
-//
-////        FirebaseRef.child(id).setValue(picUri); //part of og code
-//
-//        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
-//    }
+        Pictures picUri = new Pictures(uri);
+        PictureSingleton.get(getActivity()).addMovie(picUri);
 
+        DatabaseReference dbChild = FirebaseRef.push();
+        dbChild.setValue(uri);
 
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+//        FirebaseRef.child(id).setValue(picUri); //part of og code
+
+        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
     }
 
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (activity instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) activity;
-             } else {
-            throw new RuntimeException(context.toString()
-            throw new RuntimeException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    *//**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
+//    /*
+    //    // TODO: Rename method, update argument and hook method into UI event
+    //    public void onButtonPressed(Uri uri) {
+    //        if (mListener != null) {
+    //            mListener.onFragmentInteraction(uri);
+    //        }
+    //    }
+    //
+    //    public void onAttach(Activity activity) {
+    //        super.onAttach(activity);
+    //
+    //        if (activity instanceof OnFragmentInteractionListener) {
+    //            mListener = (OnFragmentInteractionListener) activity;
+    //             } else {
+    //            throw new RuntimeException(context.toString()
+    //            throw new RuntimeException(activity.toString()
+    //                    + " must implement OnFragmentInteractionListener");
+    //        }
+    //    }
+    //
+    //    @Override
+    //    public void onDetach() {
+    //        super.onDetach();
+    //        mListener = null;
+    //    }
+    //
+    //    *//**
+    //     * This interface must be implemented by activities that contain this
+    //     * fragment to allow an interaction in this fragment to be communicated
+    //     * to the activity and potentially other fragments contained in that
+    //     * activity.
+    //     * <p>
+    //     * See the Android Training lesson <a href=
+    //     * "http://developer.android.com/training/basics/fragments/communicating.html"
+    //     * >Communicating with Other Fragments</a> for more information.
+    //     *//*
+    //    public interface OnFragmentInteractionListener {
+    //        // TODO: Update argument type and name
+    //        void onFragmentInteraction(Uri uri);
+//    }*/
 }

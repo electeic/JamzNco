@@ -17,13 +17,12 @@ public class Post {
     ArrayList<String> mTags;
     ArrayList <Group> mGroups;
     int id;
-//    Vector<String> mPhotos;
     String mPhotos;
     String mAuthorId;
     int mServings;
     boolean mActive;
     boolean homemade;
-    User mActualPoster;
+    String mActualPoster;
 
     public Post(String title){
         mTitle = title;
@@ -33,7 +32,7 @@ public class Post {
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
-                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, User poster) {
+                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String poster) {
         this.mActualPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
