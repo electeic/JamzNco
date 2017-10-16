@@ -27,7 +27,7 @@ public class RateUserFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
     public RateUserFragment() {
         // Required empty public constructor
@@ -37,20 +37,19 @@ public class RateUserFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
      * @return A new instance of fragment RateUserFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RateUserFragment newInstance(String param1, String param2) {
-        RateUserFragment fragment = new RateUserFragment();
+    public static RateUserFragment newInstance(int pos) {
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, pos);
+        RateUserFragment fragment = new RateUserFragment();
         fragment.setArguments(args);
         return fragment;
-    }
 
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +66,7 @@ public class RateUserFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_rate_user, container, false);
     }
 
+/*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -90,6 +90,7 @@ public class RateUserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -101,8 +102,8 @@ public class RateUserFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    /*public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }

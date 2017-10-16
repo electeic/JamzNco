@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class RateUserActivity extends AppCompatActivity {
+public class ViewRequestNotificationActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("id","hey");
-        setContentView(R.layout.fragment_rate_user);
+        setContentView(R.layout.activity_main);
 
         //get intent data
         Intent i = getIntent();
@@ -27,7 +29,7 @@ public class RateUserActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = RateUserFragment.newInstance(pos);
+            f = ViewRequestNotificationFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

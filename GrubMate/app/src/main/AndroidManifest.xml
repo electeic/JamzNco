@@ -57,10 +57,11 @@
         <activity android:name=".UserRatingsActivity" />
         <activity android:name=".ViewGroupsActivity" />
         <activity android:name=".ViewNotificationsActivity" />
-        <activity android:name=".ViewSubscriptionsActivity"/>
+        <activity android:name=".ViewSubscriptionsActivity" />
         <activity android:name=".PostActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".RequestActivity"/>
+        <activity android:name=".RequestActivity" />
+        <activity android:name=".ViewRequestNotificationActivity"></activity>
     </application>
 
 </manifest>

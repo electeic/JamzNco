@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,7 +41,8 @@ public class ViewNotificationsFragment extends Fragment {
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
     ArrayList<Notification> notifications = new ArrayList<>();
-
+    ListView list;
+    NotifAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,8 +81,8 @@ public class ViewNotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_notifications, container, false);
         populateList();
-        NotifAdapter adapter = new NotifAdapter(getActivity());
-        ListView list = (ListView) v.findViewById(R.id.notifications_list);
+        adapter = new NotifAdapter(getActivity());
+        list = (ListView) v.findViewById(R.id.notifications_list);
         list.setAdapter(adapter);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -91,7 +95,41 @@ public class ViewNotificationsFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d("KITKAT", "Went into the itemclick listener");
+                Notification notification = (Notification) list.getItemAtPosition(position);
+
+                if (notification instanceof RequestedNotification) {
+                    /*if notification is a request notification then go to the request page
+                        to show the request information
+                    */
+                    Log.d("1", "it's request");
+
+                    Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
+//                    i.putExtra();
+                    startActivity(i);
+
+                }
+                else{
+                    /* tell database to delete/deactivate the notification & delete from screen */
+                    Log.d("Damn", "it didn't recognize the type");
+                }
+
+            }
+        });
+
         return v;
+    }
+
+
+    private void addListeners(){
+
+
+
     }
 
     private void populateList() {
@@ -113,24 +151,9 @@ public class ViewNotificationsFragment extends Fragment {
             super(context,0,notifications );
         }
 
-        public View getView(int position, View convertView, ViewGroup parent){
-            View itemView = convertView;
+        public View getView(int position, View itemView, ViewGroup parent){
             //find the notification to work with
             Notification notif = notifications.get(position);
-/*            if(itemView == null){
-                if(notif instanceof SubscriptionNotification){
-                    Log.d("subscrip item", "I am in subscript notif for itemview");
-                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
-                }
-                else if(notif instanceof RequestedNotification){
-                    Log.d("request item", "I am in request notif for itemview");
-                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
-                }else{
-                    Log.d("accet item", "I am in accept notif for itemview");
-                    itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
-                }
-            }*/
-
 
             Post relevantPost = notif.getmAboutPost();
             User fromUser = notif.getmFromUser();
@@ -157,6 +180,37 @@ public class ViewNotificationsFragment extends Fragment {
             return itemView;
 // return  super.getView(position convertView, parent)
         }
+
+    }
+
+
+
+
+
+
+    public void clickRequest(View v){
+
+    }
+    public void myClickHandler(View v)
+    {
+
+        //reset all the listView items background colours
+        //before we set the clicked one..
+
+
+/*        for (int i=0; i < list.getChildCount(); i++)
+        {
+           list.getChildAt(i).setBackgroundColor(Color.BLUE);
+        }*/
+
+
+        //get the row the clicked button is in
+        RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
+
+        TextView child = (TextView)vwParentRow.getChildAt(0);
+        Button btnChild = (Button)vwParentRow.getChildAt(1);
+        btnChild.setText(child.getText());
+        btnChild.setText("I've been clicked!");
 
     }
 /*    // TODO: Rename method, update argument and hook method into UI event
