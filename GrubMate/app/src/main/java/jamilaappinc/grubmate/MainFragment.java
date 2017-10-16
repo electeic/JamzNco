@@ -132,6 +132,13 @@ public class MainFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    //todo onDetach
+    public void onDetach()
+    {
+        super.onDetach();
+        mAdapter.cleanup();
+    }
+
     //todo create custom FirebaseListAdapter
 
 

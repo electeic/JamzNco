@@ -17,7 +17,7 @@ public class Post {
     int id;
 //    Vector<String> mPhotos;
     String mPhotos;
-    User mPoster;
+    String mPoster;
     int mServings;
     boolean mActive;
 
@@ -26,19 +26,20 @@ public class Post {
     }
 
 
-    public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
-                Vector<String> mCategories, Vector<String> mTags,
-                Vector<Group> mGroups, String photos, int servings,  User poster) {
-        this.mPoster = poster;
+//    public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
+//                Vector<String> mCategories, Vector<String> mTags,
+//                Vector<Group> mGroups, String photos, int servings,  String poster) {
+    public Post(String mTitle, String mDescription){
+//        this.mPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
-        this.mLocation = mLocation;
-        this.mDate = mDate;
-        this.mCategories = mCategories;
-        this.mTags = mTags;
-        this.mGroups = mGroups;
-        this.mPhotos = photos;
-        mServings = servings;
+//        this.mLocation = mLocation;
+//        this.mDate = mDate;
+//        this.mCategories = mCategories;
+//        this.mTags = mTags;
+//        this.mGroups = mGroups;
+//        this.mPhotos = photos;
+//        mServings = servings;
         mActive = Boolean.TRUE;
     }
 
