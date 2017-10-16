@@ -53,50 +53,5 @@ public class RequestActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void clickCategories(View v){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(RequestActivity.this);
-        mBuilder.setTitle("Select Category(s)");
-        mBuilder.setMultiChoiceItems(listCategories,checkedItems, new DialogInterface.OnMultiChoiceClickListener(){
-            public void onClick(DialogInterface di, int pos, boolean isChecked){
-                if(isChecked){
-                    //if current item isn't already part of list, add it to list
-                    if(! selectedCategories.contains(pos)){
-                        selectedCategories.add(pos);
-                    }
-                }else if(selectedCategories.contains(pos)){
-                    selectedCategories.remove(pos); //user unchecked the item
-                }
-            }
-        });
 
-        mBuilder.setCancelable(false);
-                /* TODO
-                ** After user is done selecting the categories, then we want to send
-                ** store the selected items somewhere
-                 */
-        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-
-            }
-        });
-
-        mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                di.dismiss();
-            }
-        });
-        mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                for(int i = 0; i < checkedItems.length; i++){
-                    checkedItems[i] = false;
-                    selectedCategories.clear();
-
-                }
-            }
-        });
-
-
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
 }
