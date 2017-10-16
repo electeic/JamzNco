@@ -114,7 +114,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Post post = dataSnapshot.getValue(Post.class);
-//                System.out.println(post);
+                System.out.println(post);
             }
 
             @Override
