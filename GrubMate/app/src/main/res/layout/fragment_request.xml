@@ -64,59 +64,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            
-
-
-
-<<<<<<< HEAD
-=======
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-
-                    <TextView
-                        android:id="@+id/request_startText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Start Time: *"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
-
-                    <TextView
-                        android:id="@+id/request_endText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="End Time: *"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-
-                    </LinearLayout>
-                </LinearLayout>
->>>>>>> origin/master
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
