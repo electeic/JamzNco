@@ -65,14 +65,14 @@ public class DetailedPostFragment extends Fragment {
         fTags = (TextView) v.findViewById(R.id.tags);
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
         fRequestButton = (Button) v.findViewById(R.id.requestButton);
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.floatingActionButton);
 
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
                 startActivityForResult(intent, 0);
-                getActivity().finish();
+                //getActivity().finish();
             }
         });
 
@@ -81,7 +81,7 @@ public class DetailedPostFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivityForResult(intent, 0);
-                getActivity().finish();
+               // getActivity().finish();
             }
         });
 
