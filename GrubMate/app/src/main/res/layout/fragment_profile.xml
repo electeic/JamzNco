@@ -24,7 +24,6 @@
             android:id="@+id/imageButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editText"
             android:layout_marginTop="18dp"
             android:elevation="0dp"
             app:srcCompat="@drawable/com_facebook_button_send_icon_blue"
@@ -52,15 +51,6 @@
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/ratingBar6"
-            android:layout_marginEnd="10dp"
-            android:text="Rate User" />
-
         <RatingBar
             android:id="@+id/ratingBar6"
             android:layout_width="wrap_content"
@@ -73,13 +63,24 @@
             android:id="@+id/editText3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="posts"
+            android:layout_below="@+id/editText4"
+            android:layout_alignStart="@+id/editText4" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ratingBar6"
             android:layout_marginStart="10dp"
             android:layout_marginTop="19dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="posts" />
+            android:text="reviews" />
 
     </RelativeLayout>
 

@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView"
@@ -16,17 +17,18 @@
             android:fontFamily="serif"
             android:text="Menu"
             android:textAlignment="center"
-            android:textSize="27dp"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="36dp"
+            android:layout_marginBottom="10dp"/>
+
 
         <TextView
             android:id="@+id/home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="0dp"
             android:text="Home"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
@@ -35,9 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="51dp"
-            android:text="Profile"
-            android:textSize="15dp"
+            android:layout_marginTop="20dp"
+            android:text="My Profile"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
@@ -46,20 +48,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="91dp"
-            android:text="Notifications"
-            android:textSize="15dp"
+            android:layout_marginTop="20dp"
+            android:text=" My Notifications"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
         <TextView
+<<<<<<< HEAD
+=======
+            android:id="@+id/request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="20dp"
+            android:text="Create Request"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+>>>>>>> origin/master
             android:id="@+id/post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="171dp"
-            android:text="Post"
-            android:textSize="15dp"
+            android:layout_marginTop="20dp"
+            android:text="Create Post"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
@@ -68,9 +84,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="211dp"
-            android:text="Groups"
-            android:textSize="15dp"
+            android:layout_marginTop="20dp"
+            android:text="My Groups"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
@@ -79,9 +95,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="251dp"
+            android:layout_marginTop="20dp"
             android:text="Subscriptions"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
@@ -90,9 +106,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="291dp"
+            android:layout_marginTop="20dp"
             android:text="Search"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textAlignment="center"/>
 
         <TextView
@@ -100,13 +116,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
-            android:layout_marginTop="331dp"
+            android:layout_marginTop="20dp"
             android:text="Logout"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:layout_alignParentStart="true" />
 
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </FrameLayout>

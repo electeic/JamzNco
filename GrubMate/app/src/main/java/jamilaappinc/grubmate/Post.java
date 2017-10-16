@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -10,7 +11,7 @@ public class Post {
     String mTitle;
     String mDescription;
     String mLocation;
-    DateAndTime mDate;
+    Date mStartDate, mEndDate;
     Vector<String> mCategories;
     Vector<String> mTags;
     Vector <Group> mGroups;
@@ -20,26 +21,35 @@ public class Post {
     String mPoster;
     int mServings;
     boolean mActive;
+    boolean homemade;
+    User mActualPoster;
 
     public Post(String title){
         mTitle = title;
     }
 
 
-//    public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
-//                Vector<String> mCategories, Vector<String> mTags,
-//                Vector<Group> mGroups, String photos, int servings,  String poster) {
-    public Post(String mTitle, String mDescription){
-//        this.mPoster = poster;
+
+    public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
+                Vector<String> mCategories, Vector<String> mTags,
+                Vector<Group> mGroups, String photos, int servings, boolean homemade, User poster) {
+        this.mActualPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
-//        this.mLocation = mLocation;
-//        this.mDate = mDate;
-//        this.mCategories = mCategories;
-//        this.mTags = mTags;
-//        this.mGroups = mGroups;
-//        this.mPhotos = photos;
-//        mServings = servings;
+        this.mLocation = mLocation;
+        this.mStartDate = mStart;
+        this.mEndDate = mEnd;
+        this.mCategories = mCategories;
+        this.mTags = mTags;
+        this.mGroups = mGroups;
+        this.mPhotos = photos;
+        mServings = servings;
+        mActive = Boolean.TRUE;
+    }
+
+    public Post(String mTitle, String mDescription){
+        this.mTitle = mTitle;
+        this.mDescription = mDescription;
         mActive = Boolean.TRUE;
     }
 
@@ -87,11 +97,17 @@ public class Post {
         this.mLocation = mLocation;
     }
 
-    public DateAndTime getmDate() {
-        return mDate;
+    public Date getmStartDate() {
+        return mStartDate;
     }
 
-    public void setmDate(DateAndTime mDate) {this.mDate = mDate;}
+    public Date getmEndDate() {
+        return mEndDate;
+    }
+
+    public void setmStartDate(Date mStartDate) {this.mStartDate = mStartDate;}
+
+    public void setmEndDate(Date mEndDate) {this.mEndDate = mEndDate;}
 
     public Vector<String> getmCategories() {
         return mCategories;
