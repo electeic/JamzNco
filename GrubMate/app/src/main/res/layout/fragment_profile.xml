@@ -52,15 +52,6 @@
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/ratingBar6"
-            android:layout_marginEnd="10dp"
-            android:text="Rate User" />
-
         <RatingBar
             android:id="@+id/ratingBar6"
             android:layout_width="wrap_content"
