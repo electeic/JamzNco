@@ -113,7 +113,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         database = FirebaseDatabase.getInstance();
 
         //for pictures
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+//        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //todo get database reference paths
         dbRefNotes = database.getReference(FirebaseReferences.POSTS);
