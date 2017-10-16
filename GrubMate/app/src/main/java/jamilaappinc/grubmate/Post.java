@@ -19,7 +19,7 @@ public class Post {
     int id;
 //    Vector<String> mPhotos;
     String mPhotos;
-    String mPoster;
+    String mAuthorId;
     int mServings;
     boolean mActive;
     boolean homemade;
@@ -160,5 +160,11 @@ public class Post {
         this.mPhotos = photos;
     }
 
+    public String getmAuthorId(){
+        return mAuthorId;
+    }
+    public void setmAuthorId(String newID){
+        mAuthorId = newID;
+    }
 
 }
