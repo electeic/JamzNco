@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 /**
  *
@@ -37,19 +39,36 @@ import java.util.Vector;
  *
  *
  */
+
+
+
+
 public class PostFragment extends Fragment implements PostActivity.DataFromActivityToFragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    FirebaseDatabase database;
+    private DatabaseReference dbRefNotes;
+    private DatabaseReference dbNoteToEdit;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    EditText pPostTitle;
+    EditText pDietaryText;
+    EditText pLocationText;
+    EditText pServingsText;
+    EditText pTagsText;
+    EditText pPostDescription;
+    Button pSubmitpostbutton;
+
     android.support.design.widget.FloatingActionButton floatButton;
     private Button cancelButton, submitButton, startDateButton,endDateButton, startTimeButton, endTimeButton;
     private EditText _title, _dietary, _location, _servings, _tags, _descriptions;
-    private Spinner _startH, _startM, _startTP, _endH, _endM, _endTP;
     private CheckBox _homemade;
     private String title, dietary, location, servings, tags, date, descriptions, startTimeString, endTimeString,startDateString, endDateString;
     private SimpleDateFormat sdf;
@@ -82,11 +101,25 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //todo get database
+        database = FirebaseDatabase.getInstance();
+
+        //todo get database reference paths
+        dbRefNotes = database.getReference(FirebaseReferences.POSTS);
+
+        Bundle args = getArguments();
+        //todo get reference to note to be edited (if it exists)
+        String urlToEdit = args.getString(mParam1);
+        if(urlToEdit != null) { // NULL if we are adding a new record
+            dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
             // Inflate the layout for this fragment
             View v = inflater.inflate(R.layout.fragment_post, container, false);
             initGUIComp(v);
@@ -103,6 +136,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         endDateButton = (Button)v.findViewById(R.id.post_endDateButton);
         startTimeButton =(Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
+        _homemade = (CheckBox) v.findViewById(R.id.post_homemadeCheck);
+
+
 
 
         _title = (EditText) v.findViewById(R.id.post_titleText);
@@ -183,6 +219,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
+
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -195,9 +232,22 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             public void onClick(View v) {
                 if(checkAllFilled()){
                     //all forms filled out correctly
-                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings),null);
+                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),null);
 
                     //send this post to the DB
+
+                    DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS");
+
+//                 String mTitle, String mDescription, String mLocation, DateAndTime mDate,
+//                         Vector<String> mCategories, Vector<String> mTags,
+//                         Vector<Group> mGroups, String photos, int servings, String poster
+
+                    Post p = new Post(title,"IVANNULL");
+//                 p.setmId(userId);
+//                 p.setFriends(friends);
+
+                    databaseRef.setValue(p);
+                    getActivity().finish();
 
                 }else{
                     //something is wrong so send a toast

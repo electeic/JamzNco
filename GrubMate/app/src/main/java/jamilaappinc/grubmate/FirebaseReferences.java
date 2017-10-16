@@ -5,5 +5,5 @@ package jamilaappinc.grubmate;
  */
 
 public class FirebaseReferences {
-    public static final String POSTS = "POSTS";
+    public static final String POSTS = "Post";
 }
