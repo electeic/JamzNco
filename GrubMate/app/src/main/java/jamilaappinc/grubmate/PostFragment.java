@@ -228,9 +228,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     }
 
     private void addListeners(){
-        floatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        floatButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivityForResult(intent, 0);
                 getActivity().finish();

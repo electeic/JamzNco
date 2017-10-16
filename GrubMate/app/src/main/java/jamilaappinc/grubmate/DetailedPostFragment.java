@@ -1,6 +1,7 @@
 package jamilaappinc.grubmate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -30,6 +35,10 @@ public class DetailedPostFragment extends Fragment {
     TextView fDate;
     TextView fStartTime;
     TextView fEndTime;
+    Button fRequestButton;
+    FirebaseDatabase database;
+    DatabaseReference dbRefPosts;
+    android.support.design.widget.FloatingActionButton floatButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,8 +64,31 @@ public class DetailedPostFragment extends Fragment {
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fTags = (TextView) v.findViewById(R.id.tags);
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
+        fRequestButton = (Button) v.findViewById(R.id.requestButton);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
+        fRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RequestActivity.class);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
 
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
+
+        //now update information using the posts information
+
+        //database = FirebaseDatabase.getInstance();
+        //dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
 
 
         return v;

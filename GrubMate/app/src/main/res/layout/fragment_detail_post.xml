@@ -109,7 +109,7 @@
             app:srcCompat="@drawable/logincover" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/requestButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
@@ -119,5 +119,15 @@
             android:layout_toStartOf="@+id/postName" />
 
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="30dp"
+        android:src="@drawable/gmlogo" />
+
+
 
 </FrameLayout>
