@@ -42,7 +42,24 @@ public class DetailedPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_post, container, false);
+        View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
+
+        fPostName = (TextView) v.findViewById(R.id.postName);
+        fCategories = (TextView) v.findViewById(R.id.categories);
+        fDate = (TextView) v.findViewById(R.id.date);
+        fDescription = (TextView) v.findViewById(R.id.description);
+        fDietaryInfo = (TextView) v.findViewById(R.id.dietInfo);
+        fEndTime = (TextView) v.findViewById(R.id.endTime);
+        fStartTime = (TextView) v.findViewById(R.id.startTime);
+        fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
+        fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
+        fTags = (TextView) v.findViewById(R.id.tags);
+        fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
+
+
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
