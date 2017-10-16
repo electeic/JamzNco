@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -10,7 +11,7 @@ public class Post {
     String mTitle;
     String mDescription;
     String mLocation;
-    DateAndTime mDate;
+    Date mStartDate, mEndDate;
     Vector<String> mCategories;
     Vector<String> mTags;
     Vector <Group> mGroups;
@@ -26,14 +27,15 @@ public class Post {
     }
 
 
-    public Post(String mTitle, String mDescription, String mLocation, DateAndTime mDate,
+    public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 Vector<String> mCategories, Vector<String> mTags,
                 Vector<Group> mGroups, String photos, int servings,  User poster) {
         this.mPoster = poster;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
         this.mLocation = mLocation;
-        this.mDate = mDate;
+        this.mStartDate = mStart;
+        this.mEndDate = mEnd;
         this.mCategories = mCategories;
         this.mTags = mTags;
         this.mGroups = mGroups;
@@ -86,11 +88,17 @@ public class Post {
         this.mLocation = mLocation;
     }
 
-    public DateAndTime getmDate() {
-        return mDate;
+    public Date getmStartDate() {
+        return mStartDate;
     }
 
-    public void setmDate(DateAndTime mDate) {this.mDate = mDate;}
+    public Date getmEndDate() {
+        return mEndDate;
+    }
+
+    public void setmStartDate(Date mStartDate) {this.mStartDate = mStartDate;}
+
+    public void setmEndDate(Date mEndDate) {this.mEndDate = mEndDate;}
 
     public Vector<String> getmCategories() {
         return mCategories;

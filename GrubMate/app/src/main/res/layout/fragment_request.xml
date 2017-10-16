@@ -146,29 +146,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <Spinner
-                            android:id="@+id/request_startHour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/hour"
-                            android:spinnerMode="dialog" />
 
-                        <Spinner
-                            android:id="@+id/request_startMinute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/minute"
-                            android:spinnerMode="dialog" />
-
-                        <Spinner
-                            android:id="@+id/request_startTimePeriod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/timePeriod"
-                            android:spinnerMode="dialog" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -191,26 +169,6 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <Spinner
-                            android:id="@+id/request_endHour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/hour" />
-
-                        <Spinner
-                            android:id="@+id/request_endMinute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/minute" />
-
-                        <Spinner
-                            android:id="@+id/request_endTimePeriod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:entries="@array/timePeriod" />
 
                     </LinearLayout>
                 </LinearLayout>

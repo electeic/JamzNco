@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/post_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="jamilaappinc.grubmate.PostFragment">
@@ -38,7 +39,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="* required"
+                android:text="*fields required"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
@@ -69,7 +70,7 @@
                 android:id="@+id/post_cat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose Category(s)"
+                android:text="Choose Category(s)*"
                 android:onClick="clickCategories"
                 />
             <LinearLayout
@@ -87,7 +88,7 @@
                     android:textSize="20sp" />
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/post_homemadeCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -105,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Dietary Restrictions *" />
+                android:hint="Dietary Restrictions (optional)" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -131,7 +132,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Serving Size *" />
+                android:hint="Serving Size *"
+                android:inputType="number"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -143,7 +145,7 @@
                 android:id="@+id/tagsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Custom Tags (optional)" />
+                android:hint="Custom Tag(s) *" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -151,104 +153,54 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/post_date"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:autoText="true"
-                        android:ems="10"
-                        android:inputType="date"
-                        android:hint="Enter Date (MM/DD/YYYY) *" />
-                </android.support.design.widget.TextInputLayout>
-
-
-                <TextView
-                    android:id="@+id/post_startText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Start Time: *"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/post_startHour"
-                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/post_startDateButton"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="180dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/hour"
-                        android:spinnerMode="dialog" />
+                        android:onClick="selectStartDate"
+                        android:text="Start Date: * " />
 
-                    <Spinner
-                        android:id="@+id/post_startMinute"
-                        android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/post_startTimeButton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:onClick="selectStartTime"
+                            android:text="Start Time: *" />
+                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/minute"
-                        android:spinnerMode="dialog" />
+                        android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/post_startTimePeriod"
-                        android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/post_endDateButton"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="180dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/timePeriod"
-                        android:spinnerMode="dialog" />
+                        android:onClick="selectEndDate"
+                        android:text="End Date: *" />
+
+                        <Button
+                            android:id="@+id/post_endTimeButton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:onClick="selectEndTime"
+                            android:text="End Time: *" />
+                        </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="5dp">
-
-                <TextView
-                    android:id="@+id/post_endText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="End Time: *"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/post_endHour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/hour" />
-
-                    <Spinner
-                        android:id="@+id/post_endMinute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/minute" />
-
-                    <Spinner
-                        android:id="@+id/post_endTimePeriod"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/timePeriod" />
-
-                </LinearLayout>
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -261,8 +213,15 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textMultiLine"
-                android:hint="Description (optional)"/>
+                android:hint="Description *"/>
         </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/post_groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Group(s)*"
+            android:onClick="clickGroups"
+            />
 
 
 
@@ -273,7 +232,7 @@
             android:weightSum="1">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/post_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="80dp"
@@ -282,7 +241,7 @@
                 android:text="Submit" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/post_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
