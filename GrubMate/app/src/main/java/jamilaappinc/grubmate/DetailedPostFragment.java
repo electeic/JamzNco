@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DetailedPostFragment.OnFragmentInteractionListener} interface
+ * {@link DetailedPostFragment} interface
  * to handle interaction events.
  */
 public class DetailedPostFragment extends Fragment {
@@ -39,11 +39,22 @@ public class DetailedPostFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
     android.support.design.widget.FloatingActionButton floatButton;
+    private static final String ARG_PARAM1 = "param1";
 
-    private OnFragmentInteractionListener mListener;
+
+//    private OnFragmentInteractionListener mListener;
 
     public DetailedPostFragment() {
         // Required empty public constructor
+    }
+
+    public static DetailedPostFragment newInstance(int pos) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_PARAM1, pos);
+        DetailedPostFragment fragment = new DetailedPostFragment();
+        fragment.setArguments(args);
+        return fragment;
+
     }
 
 
@@ -65,7 +76,7 @@ public class DetailedPostFragment extends Fragment {
         fTags = (TextView) v.findViewById(R.id.tags);
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
         fRequestButton = (Button) v.findViewById(R.id.requestButton);
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.floatingActionButton);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_detailPost);
 
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +104,7 @@ public class DetailedPostFragment extends Fragment {
 
         return v;
     }
-
+/*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -116,7 +127,7 @@ public class DetailedPostFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -128,8 +139,8 @@ public class DetailedPostFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+  /*  public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }
