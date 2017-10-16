@@ -2,6 +2,7 @@ package jamilaappinc.grubmate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -51,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-        startSplashTimer();
+        //startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data
@@ -71,14 +73,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess");
                 AccessToken token = AccessToken.getCurrentAccessToken();
-                final Vector<User> currUsers = new Vector<User>();
+                final ArrayList<String> currUsers = new ArrayList<String>();
 
+                //intent that links curr screen to mainactivity.
+                final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-//                Profile profile = Profile.getCurrentProfile();
-//                String userId = profile.getId();
-//                Log.d(TAG,userId);
+                System.out.println("BEFORE FIRST TASK");
 
-                GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+                final GraphRequest graphRequestAsyncTask = new GraphRequest(
                         loginResult.getAccessToken(),
                         "/me/friends",
                         null,
@@ -87,22 +89,21 @@ public class LoginActivity extends AppCompatActivity {
                             public void onCompleted(GraphResponse response) {
                                 try {
                                     JSONArray rawName = response.getJSONObject().getJSONArray("data");
-                                    User newUser =
-                                            new User(rawName.getJSONObject(0).getString("name"), "defaultPic");//defaultPic is just a placeholder for image.
-                                    newUser.setmId(Integer.toString(rawName.getJSONObject(0).getInt("id")));
-                                    currUsers.add(newUser);
+
+                                    for(int i = 0; i < rawName.length(); i++){
+                                        currUsers.add(Integer.toString(rawName.getJSONObject(i).getInt("id")));
+                                    }
+                                    intent.putExtra("Users",currUsers);//places users vector in intent and passes to main screen
+                                  startActivity(intent);
+                                  finish();
                                     Log.d(TAG,rawName.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
-                ).executeAsync();
+                );
 
-
-                //intent that links curr screen to mainactivity.
-                final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("Users",currUsers);//places users vector in intent and passes to main screen
 
                 //gets the current user's ID & name and puts it into intent.
                 final AccessToken accessToken = loginResult.getAccessToken();
@@ -111,14 +112,13 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted(JSONObject user, GraphResponse graphResponse) {
                         intent.putExtra("Name",user.optString("name"));
                         intent.putExtra("ID",user.optString("id"));
-
                         writeNewUser(user.optString("id"),user.optString("name"),"fuckPic",currUsers);
+                        graphRequestAsyncTask.executeAsync();
 
                     }
                 }).executeAsync();
 
-                startActivity(intent);
-                finish();
+
 
             }
 
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void writeNewUser(String userId, String name, String picture, Vector<User> friends) {
+    private void writeNewUser(String userId, String name, String picture, ArrayList<String> friends) {
         DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
         User u = new User(name,picture);
         u.setmId(userId);

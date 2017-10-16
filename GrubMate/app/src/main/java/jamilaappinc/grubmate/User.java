@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -13,7 +14,7 @@ public class User {
     Vector<Rating> mRatings;
     Vector<Notification> mNotifications;
     Vector<Subscription> mSubscriptions;
-    Vector<User> mFriends;
+    ArrayList<String> mFriends;
 
     double mAvgRating;
     String mName;
@@ -105,11 +106,11 @@ public class User {
         mSubscriptions.add(mSubscription);
     }
 
-    public Vector<User> getFriends(){
+    public ArrayList<String> getFriends(){
         return mFriends;
     }
 
-    public void setFriends(Vector<User> newFriends){
+    public void setFriends(ArrayList<String> newFriends){
         mFriends = newFriends;
     }
 
