@@ -194,7 +194,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
         Log.d("error check", ""+dateTime+(title.length()>0)+(location.length()>0)+(servings.length()>0)+(tags.length()>0)+(descriptions.length()>0)+(categories.size() > 0));
-        filled = (groups.size() >0 && dateTime && (title.length()>0) && (dietary.length()>0) && (location.length()>0) && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+        filled = (groups.size() >0 && dateTime && (title.length()>0)&& (location.length()>0) && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
 
@@ -261,6 +261,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
                     Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),"HARDCODEDIVAN");
                     databaseRef.setValue(post);
+                    getActivity().finish();
 
 
 //                    uploadFile();
@@ -272,7 +273,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
                 }
 
-                getActivity().finish();
+
             }
         });
 
