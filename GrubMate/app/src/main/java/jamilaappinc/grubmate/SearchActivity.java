@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = MainFragment.newInstance(pos);
+            f = SearchFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

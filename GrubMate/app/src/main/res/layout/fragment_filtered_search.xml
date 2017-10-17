@@ -8,7 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/filterSearch_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Advanced Search"
+            android:textSize="20dp"
+            android:textAlignment="center"/>
 
         <SearchView
             android:id="@+id/searchView"
