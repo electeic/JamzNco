@@ -124,6 +124,8 @@ public class RequestFragment extends Fragment {
         submitButton = (Button) v.findViewById(R.id.request_submitButton);
         rServingsChosen = (SeekBar) v.findViewById(R.id.possibleServings);
         rNumOfServingsLabel = (TextView) v.findViewById(R.id.servingsWanted);
+        rNumOfServingsLabel.setText("1");
+        
 
         rServingsChosen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -140,7 +142,6 @@ public class RequestFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
                 // TODO Auto-generated method stub
-
                 rNumOfServingsLabel.setText(Integer.toString(rServingsChosen.getProgress()));
 
             }
@@ -174,6 +175,13 @@ public class RequestFragment extends Fragment {
 
                     Request request = new Request(location,null, numOfServings, null);
                     databaseRef.setValue(request);
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivityForResult(intent,0);
+                    getActivity().finish();
+
+                    Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
+
                     //send this post to the DB
 
                 }else{
