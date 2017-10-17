@@ -175,8 +175,14 @@ public void onClick(View view) {
 
 
             Request request = new Request(location,null, numOfServings, null);
-            DatabaseReference databaseRef = database.getReference().child("Request").child(Integer.toString(request.getmId()));
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            String key = database.getReference("jobs").push().getKey();
+            request.setmId(key);
+
+            DatabaseReference databaseRef = database.getReference().child("Request").child(key);
             databaseRef.setValue(request);
+
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivityForResult(intent,0);

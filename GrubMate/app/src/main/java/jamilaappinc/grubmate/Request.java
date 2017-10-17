@@ -8,12 +8,10 @@ import java.io.Serializable;
 
 public class Request implements Serializable{
 
-    private static Integer countForId=0;
-
     String mLocation;
     Post mRequestedPost;
     int mServings;
-    int mId;
+    String mId;
     User mRequestingUser;
     boolean mResponded;
     boolean mAccepted;
@@ -27,8 +25,6 @@ public class Request implements Serializable{
         mAccepted = Boolean.FALSE;
         mResponded = Boolean.FALSE;
         mActive = Boolean.TRUE;
-        mId = countForId;
-        countForId++;
     }
 
     public boolean getmActive(){return mActive;}
@@ -61,9 +57,11 @@ public class Request implements Serializable{
         this.mServings = mServings;
     }
 
-    public int getmId() {
+    public String getmId() {
         return mId;
     }
+
+    public void setmId(String id) {mId = id; }
 
 
     public boolean ismResponded() {
