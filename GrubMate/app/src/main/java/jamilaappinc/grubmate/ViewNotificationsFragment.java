@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,9 +114,16 @@ public class ViewNotificationsFragment extends Fragment {
 //                    i.putExtra();
                     startActivity(i);
 
+                }else if (notification instanceof RateNotification){
+                    Intent i = new Intent(getActivity(), RateUserActivity.class);
+                    startActivity(i);
                 }
                 else{
                     /* tell database to delete/deactivate the notification & delete from screen */
+                    notifications.remove(position);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE NOTIFICATION FROM DB" , Toast.LENGTH_SHORT).show();
+
                     Log.d("Damn", "it didn't recognize the type");
                 }
 
@@ -137,12 +145,14 @@ public class ViewNotificationsFragment extends Fragment {
         notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
         notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
         notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RateNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RateNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 
     }
 
@@ -170,7 +180,14 @@ public class ViewNotificationsFragment extends Fragment {
                 title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
 
 
-            }else{
+            }
+            else if(notif instanceof RateNotification){
+                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
+                TextView title = (TextView)itemView.findViewById(R.id.notification_info_rate_title);
+                title.setText("Please rate " + fromUser.getName() + ".");
+
+            }
+                else{
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
                 TextView title = (TextView)itemView.findViewById(R.id.notification_info_accept_title);
                 title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");

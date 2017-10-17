@@ -40,15 +40,24 @@
             android:textAlignment="center"
             android:textSize="24sp" />
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/rateUser_ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/rateUser_ratingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:onClick="changeRatingText"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="24sp" />
 
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/rateUser_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -57,7 +66,7 @@
   />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/rateUser_submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
