@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 
 public class createsSubscriptionActivity extends AppCompatActivity implements TimeStartPickerFragment.TimeStartDialogListener, TimeEndPickerFragment.TimeEndDialogListener, DatePickerFragment.DateDialogListener, EndDatePickerFragment.EndDateDialogListener{
 
@@ -67,14 +69,13 @@ public class createsSubscriptionActivity extends AppCompatActivity implements Ti
 
         if (f == null ) {
             //TODO modify for id
-            f = PostFragment.newInstance(pos);
+            f = createsSubscriptionFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
         //this is how you initialize the connection bt fragment and activity
         dataFromActivityToFragment = (DataFromActivityToFragment)f;
-
     }
 
     /**

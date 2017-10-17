@@ -23,6 +23,7 @@ public class MenuFragment extends Fragment {
     TextView fSubscriptions;
     TextView fSearch;
     TextView fLogout;
+    TextView fCreateSubscription;
 
 
     public MenuFragment() {
@@ -47,6 +48,7 @@ public class MenuFragment extends Fragment {
         fSubscriptions = (TextView) v.findViewById(R.id.subscriptions);
         fSearch = (TextView) v.findViewById(R.id.search);
         fLogout = (TextView) v.findViewById(R.id.logout);
+        fCreateSubscription = (TextView) v.findViewById(R.id.createSubscription);
 
         fHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +59,15 @@ public class MenuFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        fCreateSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), createsSubscriptionActivity.class);
+                intent.putExtra("ID",id);
+                startActivityForResult(intent, 0);
+            }
+        });
+
         fProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

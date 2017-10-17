@@ -1,13 +1,9 @@
-package layout;
+package jamilaappinc.grubmate;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,17 +25,11 @@ import java.util.Date;
 
 import jamilaappinc.grubmate.FirebaseReferences;
 import jamilaappinc.grubmate.MenuActivity;
-import jamilaappinc.grubmate.PictureSingleton;
-import jamilaappinc.grubmate.Pictures;
-import jamilaappinc.grubmate.Post;
-import jamilaappinc.grubmate.PostFragment;
 import jamilaappinc.grubmate.R;
 import jamilaappinc.grubmate.Subscription;
 
-import static android.app.Activity.RESULT_OK;
 
-
-public class createsSubscriptionFragment extends Fragment {
+public class createsSubscriptionFragment extends Fragment implements createsSubscriptionActivity.DataFromActivityToFragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,7 +48,7 @@ public class createsSubscriptionFragment extends Fragment {
     private Button cancelButton, startDateButton,endDateButton, startTimeButton, endTimeButton;
     private EditText _title, _dietary, _tags, _descriptions;
     private CheckBox _homemade;
-    private String title, dietary, tags, date, descriptions, startTimeString, endTimeString, startDateString, endDateString;
+    private String title, dietary, tags, descriptions, startTimeString, endTimeString, startDateString, endDateString;
     private SimpleDateFormat sdf;
     private Date startDateTime, endDateTime;
 
@@ -74,9 +61,6 @@ public class createsSubscriptionFragment extends Fragment {
     private String mParam2;
 
     EditText sSubscriptionTitle;
-    EditText sDietaryText;
-    EditText sTagsText;
-    EditText sServingDescription;
     Button sSubmitSubscriptionButton;
 
 
@@ -89,8 +73,8 @@ public class createsSubscriptionFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static PostFragment newInstance(int pos) {
-        PostFragment fragment = new PostFragment();
+    public static createsSubscriptionFragment newInstance(int pos) {
+        createsSubscriptionFragment fragment = new createsSubscriptionFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
         fragment.setArguments(args);
@@ -108,8 +92,6 @@ public class createsSubscriptionFragment extends Fragment {
         //todo get database
         database = FirebaseDatabase.getInstance();
 
-        //for pictures
-//        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //todo get database reference paths
         dbRefNotes = database.getReference(FirebaseReferences.POSTS);
@@ -126,7 +108,7 @@ public class createsSubscriptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.create_subscription, container, false);
+        View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText) v.findViewById(R.id.subscription_titleText);
 
@@ -147,8 +129,7 @@ public class createsSubscriptionFragment extends Fragment {
     }
 
     private void initGUIComp(View v){
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
-        cancelButton = (Button) v.findViewById(R.id.post_cancel);
+        cancelButton = (Button) v.findViewById(R.id.subscription_cancel);
         sSubmitSubscriptionButton = (Button) v.findViewById(R.id.subscription_submit);
         startDateButton =(Button) v.findViewById(R.id.subscription_startDateButton);
         endDateButton = (Button)v.findViewById(R.id.subscription_endDateButton);
@@ -156,13 +137,13 @@ public class createsSubscriptionFragment extends Fragment {
         endTimeButton = (Button)v.findViewById(R.id.subscription_endTimeButton);
 
 
-        _title = (EditText) v.findViewById(R.id.post_titleText);
+        _title = (EditText) v.findViewById(R.id.subscription_titleText);
         _dietary = (EditText) v.findViewById(R.id.dietaryText);
         _tags = (EditText) v.findViewById(R.id.tagsText);
         _descriptions = (EditText) v.findViewById(R.id.subscription_description);
 
 
-        _homemade = (CheckBox) v.findViewById(R.id.post_homemadeCheck);
+        _homemade = (CheckBox) v.findViewById(R.id.subscription_homemadeCheck);
         sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         sdf.setLenient(false);
 
@@ -218,13 +199,6 @@ public class createsSubscriptionFragment extends Fragment {
     }
 
     private void addListeners(){
-        floatButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
-            }
-        });
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
@@ -412,20 +386,6 @@ public class createsSubscriptionFragment extends Fragment {
         }
     }
     //
-    void uploadMeta(String uri)
-    {
-//        if()
-//        String id = FirebaseRef.push().getKey();
-        Pictures picUri = new Pictures(uri);
-        PictureSingleton.get(getActivity()).addMovie(picUri);
-
-        DatabaseReference dbChild = FirebaseRef.push();
-        dbChild.setValue(uri);
-
-//        FirebaseRef.child(id).setValue(picUri); //part of og code
-
-        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
-    }
 
 //    /*
     //    // TODO: Rename method, update argument and hook method into UI event
