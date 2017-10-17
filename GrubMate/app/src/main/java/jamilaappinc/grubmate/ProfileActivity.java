@@ -26,8 +26,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
         setContentView(R.layout.activity_main);
-
-        //get intent data
         Intent i = getIntent();
 
         //TODO modify for id

@@ -36,6 +36,9 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        Intent i = getActivity().getIntent();
+        final String id = i.getStringExtra("ID");
+
         fHome = (TextView) v.findViewById(R.id.home);
         fProfile = (TextView) v.findViewById(R.id.profile);
         fNotifications = (TextView) v.findViewById(R.id.notifications);
@@ -49,6 +52,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("ID",id);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -57,6 +61,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("ID",id);
                 startActivityForResult(intent, 0);
             }
         });
@@ -65,6 +70,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -73,6 +80,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -81,6 +90,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -89,6 +100,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });

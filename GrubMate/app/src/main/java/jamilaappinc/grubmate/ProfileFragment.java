@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -18,6 +22,11 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    FirebaseListAdapter mAdapter;
+    FirebaseDatabase database;
+    DatabaseReference dbRefUsers;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -38,6 +47,9 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        database = FirebaseDatabase.getInstance();
+        dbRefUsers = database.getInstance().getReference().child("Users");
     }
 
 
@@ -46,6 +58,12 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        //get intent data
+        Intent i = getActivity().getIntent();
+        String id = i.getStringExtra("ID");
+        
+
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
