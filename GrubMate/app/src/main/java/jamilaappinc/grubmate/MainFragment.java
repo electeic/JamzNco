@@ -172,6 +172,10 @@ public class MainFragment extends Fragment {
             userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
             /*for(int j = 0; j < userFriends.size(); j++){
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> a2a45d02b8db6c4938fc0d2c4a112e033f53a153
                 String x = model.getmAuthorId();
 
                 if(x.equals(userFriends.get(j))){

@@ -23,6 +23,7 @@ public class MenuFragment extends Fragment {
     TextView fSubscriptions;
     TextView fSearch;
     TextView fLogout;
+    TextView fCreateSubscription;
 
 
     public MenuFragment() {
@@ -36,6 +37,9 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        Intent i = getActivity().getIntent();
+        final String id = i.getStringExtra("ID");
+
         fHome = (TextView) v.findViewById(R.id.home);
         fProfile = (TextView) v.findViewById(R.id.profile);
         fNotifications = (TextView) v.findViewById(R.id.notifications);
@@ -44,19 +48,31 @@ public class MenuFragment extends Fragment {
         fSubscriptions = (TextView) v.findViewById(R.id.subscriptions);
         fSearch = (TextView) v.findViewById(R.id.search);
         fLogout = (TextView) v.findViewById(R.id.logout);
+        fCreateSubscription = (TextView) v.findViewById(R.id.createSubscription);
 
         fHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("ID",id);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
         });
+        fCreateSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), createsSubscriptionActivity.class);
+                intent.putExtra("ID",id);
+                startActivityForResult(intent, 0);
+            }
+        });
+
         fProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("ID",id);
                 startActivityForResult(intent, 0);
             }
         });
@@ -65,6 +81,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -73,6 +91,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -81,6 +101,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -89,6 +111,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
+                intent.putExtra("ID",id);
+
                 startActivityForResult(intent, 0);
             }
         });
@@ -96,8 +120,8 @@ public class MenuFragment extends Fragment {
         fSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
         fLogout.setOnClickListener(new View.OnClickListener() {

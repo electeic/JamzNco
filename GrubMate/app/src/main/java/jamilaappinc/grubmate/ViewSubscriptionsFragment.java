@@ -94,8 +94,8 @@ public class ViewSubscriptionsFragment extends Fragment {
      *
      */
     public void populateList(){
-        Vector<String> categories = new Vector<>();
-        Vector<String> tags = new Vector<>();
+        ArrayList<String> categories = new ArrayList<>();
+        ArrayList<String> tags = new ArrayList<>();
 
         for(int i = 0; i < 5; i++){
             categories.add("Category " + i);
@@ -125,8 +125,8 @@ public class ViewSubscriptionsFragment extends Fragment {
 
 
             Subscription subscription = subscriptions.get(position);
-            Vector<String> categories = subscription.getmCategories();
-            Vector<String> tags = subscription.getmTags();
+            ArrayList<String> categories = subscription.getmCategories();
+            ArrayList<String> tags = subscription.getmTags();
             String list = "";
             for(int i = 0; i < categories.size(); i++){
                 list = list+" " + categories.get(i)+", ";

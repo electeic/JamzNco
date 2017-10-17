@@ -14,10 +14,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Created by ericajung on 10/13/17.
+ * Created by ericajung on 10/16/17.
  */
 
-public class ProfileActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
 
@@ -26,6 +26,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
         setContentView(R.layout.activity_main);
+
+        //get intent data
         Intent i = getIntent();
 
         //TODO modify for id
@@ -37,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = ProfileFragment.newInstance(pos);
+            f = MainFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
