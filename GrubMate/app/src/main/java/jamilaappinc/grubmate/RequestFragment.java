@@ -129,73 +129,73 @@ public class RequestFragment extends Fragment {
 
         rServingsChosen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
+@Override
+public void onStopTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
+        }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
+@Override
+public void onStartTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
+        }
 
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                // TODO Auto-generated method stub
-                rNumOfServingsLabel.setText(Integer.toString(rServingsChosen.getProgress()));
+@Override
+public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+        // TODO Auto-generated method stub
+        rNumOfServingsLabel.setText(Integer.toString(rServingsChosen.getProgress()));
 
-            }
+        }
         });
 
         floatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
-            }
+@Override
+public void onClick(View view) {
+        Intent intent = new Intent(getActivity(), MenuActivity.class);
+        startActivityForResult(intent, 0);
+        getActivity().finish();
+        }
         });
 
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivityForResult(intent,0);
-                getActivity().finish();
-            }
+public void onClick(View view){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivityForResult(intent,0);
+        getActivity().finish();
+        }
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+@Override
+public void onClick(View view) {
 
-                if(checkAllFilled()){
-                    //all forms filled out correctly
-                    DatabaseReference databaseRef = database.getReference().child("Request").child("DELTETHIS2");
+        if(checkAllFilled()){
+        //all forms filled out correctly
+        DatabaseReference databaseRef = database.getReference().child("Request").child("requestId");
 
-                    Request request = new Request(location,null, numOfServings, null);
-                    databaseRef.setValue(request);
+        Request request = new Request(location,null, numOfServings, null);
+        databaseRef.setValue(request);
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivityForResult(intent,0);
-                    getActivity().finish();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivityForResult(intent,0);
+        getActivity().finish();
 
-                    Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
 
-                    //send this post to the DB
+        //send this post to the DB
 
-                }else{
-                    //something is wrong so send a toast
-                    Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
-                }
+        }else{
+        //something is wrong so send a toast
+        Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
+        }
                /* DatabaseReference databaseRef = database.getReference().child("Request").child("DELTETHIS2");
 //                 uploadFile();
                 getActivity().finish();*/
-            }
+        }
         });
 
         return v;
-    }
+        }
 /*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -222,17 +222,17 @@ public class RequestFragment extends Fragment {
     }
 
     *//**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
+ * This interface must be implemented by activities that contain this
+ * fragment to allow an interaction in this fragment to be communicated
+ * to the activity and potentially other fragments contained in that
+ * activity.
+ * <p>
+ * See the Android Training lesson <a href=
+ * "http://developer.android.com/training/basics/fragments/communicating.html"
+ * >Communicating with Other Fragments</a> for more information.
+ *//*
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }*/
-}
+        }
