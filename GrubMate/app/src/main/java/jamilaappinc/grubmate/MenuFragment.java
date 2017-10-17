@@ -96,8 +96,8 @@ public class MenuFragment extends Fragment {
         fSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
         fLogout.setOnClickListener(new View.OnClickListener() {
