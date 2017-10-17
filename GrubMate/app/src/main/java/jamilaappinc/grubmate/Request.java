@@ -9,19 +9,19 @@ import java.io.Serializable;
 public class Request implements Serializable{
 
     String mLocation;
-    Post mRequestedPost;
+    String mRequestedPostId;
     int mServings;
     String mId;
-    User mRequestingUser;
+    String mRequestUserId;
     boolean mResponded;
     boolean mAccepted;
     boolean mActive;
 
-    public Request(String mLocation, Post mRequestedPost, int mServings, User muser) {
+    public Request(String mLocation, String mRequestedPost, int mServings, String muser) {
         this.mLocation = mLocation;
-        this.mRequestedPost = mRequestedPost;
+        this.mRequestedPostId = mRequestedPost;
         this.mServings = mServings;
-        mRequestingUser = muser;
+        mRequestUserId = muser;
         mAccepted = Boolean.FALSE;
         mResponded = Boolean.FALSE;
         mActive = Boolean.TRUE;
@@ -31,7 +31,7 @@ public class Request implements Serializable{
 
     public void setmActive(boolean isActive){mActive = isActive;}
 
-    public User getmRequestingUser(){ return mRequestingUser; }
+    public String getmRequestUserId(){ return mRequestUserId; }
 
     public String getmLocation() {
         return mLocation;
@@ -41,12 +41,12 @@ public class Request implements Serializable{
         this.mLocation = mLocation;
     }
 
-    public Post getmRequestedPost() {
-        return mRequestedPost;
+    public String getmRequestedPost() {
+        return mRequestedPostId;
     }
 
-    public void setmRequestedPost(Post mRequestedPost) {
-        this.mRequestedPost = mRequestedPost;
+    public void setmRequestedPost(String mRequestedPost) {
+        this.mRequestedPostId = mRequestedPost;
     }
 
     public int getmServings() {
