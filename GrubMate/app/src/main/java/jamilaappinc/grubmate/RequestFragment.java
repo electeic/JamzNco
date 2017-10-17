@@ -173,7 +173,7 @@ public void onClick(View view) {
         //all forms filled out correctly
             Intent i = getActivity().getIntent();
             String ID= i.getStringExtra("ID");
-            DatabaseReference databaseRef = database.getReference().child("Request").child(ID);
+            DatabaseReference databaseRef = database.getReference().child("Request").child("createID");
 
             Request request = new Request(location,null, numOfServings, null);
             databaseRef.setValue(request);

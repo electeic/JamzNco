@@ -29,14 +29,13 @@ public class Subscription implements Serializable{
     }
 
     public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
-                         ArrayList<String> mTags,User mUser, boolean mHomeMade, int mID) {
+                         ArrayList<String> mTags,User mUser, boolean mHomeMade) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUser = mUser;
         this.mStartDate = mStartDate;
         this.mEndDate = mEndDate;
         this.mTags = mTags;
-        this.mId = mID;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
