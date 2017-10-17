@@ -18,15 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import jamilaappinc.grubmate.FirebaseReferences;
-import jamilaappinc.grubmate.MenuActivity;
-import jamilaappinc.grubmate.R;
-import jamilaappinc.grubmate.Subscription;
 
 
 public class createsSubscriptionFragment extends Fragment implements createsSubscriptionActivity.DataFromActivityToFragment{
@@ -226,13 +222,18 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                 if(checkAllFilled()){
                     //all forms filled out correctly
-                    DatabaseReference databaseRef = database.getReference().child("Subscription").child("DELTETHIS2");
                     Intent i = getActivity().getIntent();
                     String ID = i.getStringExtra("ID");
-
-                     Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), null, _homemade.isChecked(),Integer.parseInt(ID));
+                    DatabaseReference databaseRef = database.getReference().child("Subscription").child(ID);
+                    Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), null, _homemade.isChecked(),Integer.parseInt(ID));
                     databaseRef.setValue(subscription);
+
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivityForResult(intent,0);
                     getActivity().finish();
+
+                    Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
 
 
 //                    uploadFile();

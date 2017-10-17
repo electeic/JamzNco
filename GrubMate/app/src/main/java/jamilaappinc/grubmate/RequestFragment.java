@@ -171,16 +171,18 @@ public void onClick(View view) {
 
         if(checkAllFilled()){
         //all forms filled out correctly
-        DatabaseReference databaseRef = database.getReference().child("Request").child("requestId");
+            Intent i = getActivity().getIntent();
+            String ID= i.getStringExtra("ID");
+            DatabaseReference databaseRef = database.getReference().child("Request").child(ID);
 
-        Request request = new Request(location,null, numOfServings, null);
-        databaseRef.setValue(request);
+            Request request = new Request(location,null, numOfServings, null);
+            databaseRef.setValue(request);
 
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivityForResult(intent,0);
-        getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivityForResult(intent,0);
+            getActivity().finish();
 
-        Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
 
         //send this post to the DB
 
