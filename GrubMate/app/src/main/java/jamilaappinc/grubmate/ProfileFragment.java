@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,22 +62,7 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         String id = i.getStringExtra("ID");
-
-        ValueEventListener postListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-        // Get Post object and use the values to update the UI
-        Post post = dataSnapshot.getValue(Post.class);
-        // ...
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-        // Getting Post failed, log a message
-        Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-        // ...  }
-        };
-        mPostReference.addValueEventListener(postListener);
+        
 
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
