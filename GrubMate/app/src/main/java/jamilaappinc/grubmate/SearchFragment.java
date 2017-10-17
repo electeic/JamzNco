@@ -91,15 +91,7 @@ public class SearchFragment extends Fragment {
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
-       // mAdapter = new PostListAdapter(getActivity(), Post.class, R.layout.list_active_posts_item, dbRefPosts);
         mListView = (ListView)v.findViewById(R.id.active_post_list);
-        //        database = FirebaseDatabase.getInstance();
-        //        dbRefPosts = database.getInstance().getReference(FirebaseReferences.POSTS);
-
-        //        postList = PostSingleton.get(getActivity()).getMovies();
-        //        postAdapter = new PostListAdapter(getActivity(), Post.class,
-        //                R.layout.list_active_posts_item,
-        //                dbRefPosts);
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -142,16 +134,5 @@ public class SearchFragment extends Fragment {
 
 
         return v;
-    }
-
-    public void refresh(){
-        mAdapter.notifyDataSetChanged();
-    }
-
-    //todo onDetach
-    public void onDetach()
-    {
-        super.onDetach();
-        mAdapter.cleanup();
     }
 }
