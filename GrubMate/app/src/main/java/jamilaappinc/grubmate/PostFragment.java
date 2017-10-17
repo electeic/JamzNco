@@ -262,19 +262,15 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                 if (checkAllFilled()) {
                     //all forms filled out correctly
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     final String key = database.getReference("Post").push().getKey();
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key);
+
                     Intent i = getActivity().getIntent();
                     final String ID = i.getStringExtra("ID");
-
-
-//                    Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
-//                    databaseRef.setValue(post);
-//                    getActivity().finish();
-
-
+//
                     if(filePath != null) {
 
 //                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -290,11 +286,11 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         // Get a URL to the uploaded content
 //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                       Uri downloadUri = taskSnapshot.getDownloadUrl();
+                                        Uri downloadUri = taskSnapshot.getDownloadUrl();
 //                                        Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
 
                                         Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, downloadUri.toString(), Integer.parseInt(servings), _homemade.isChecked(), ID);
-//                                        databaseRef.setValue(post);
+//                                      databaseRef.setValue(post);
                                         post.setmId(key);
                                         PostSingleton.get(getActivity()).addMovie(post);
 //                                        uploadMeta(downloadUri.toString());

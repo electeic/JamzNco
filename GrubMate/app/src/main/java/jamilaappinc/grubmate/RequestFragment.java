@@ -177,7 +177,7 @@ public void onClick(View view) {
             Request request = new Request(location,null, numOfServings, null);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            String key = database.getReference("Request").push().getKey();
+            String key = database.getReference("jobs").push().getKey();
             request.setmId(key);
 
             DatabaseReference databaseRef = database.getReference().child("Request").child(key);
