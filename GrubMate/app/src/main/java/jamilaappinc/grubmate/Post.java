@@ -22,7 +22,6 @@ public class Post {
     int mServings;
     boolean mActive;
     boolean homemade;
-    String mActualPoster;
 
     public Post(String title){
         mTitle = title;
@@ -32,8 +31,8 @@ public class Post {
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
-                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String poster) {
-        this.mActualPoster = poster;
+                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId) {
+        this.mAuthorId = mAuthorId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
         this.mLocation = mLocation;

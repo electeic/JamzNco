@@ -24,6 +24,10 @@ public class RequestActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
     String[] listCategories;
     boolean [] checkedItems;
+
+
+    PostActivity.DataFromActivityToFragment dataFromActivityToFragment;
+
     ArrayList<Integer> selectedCategories = new ArrayList<Integer>();
 
     @Override
@@ -51,6 +55,7 @@ public class RequestActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
+        dataFromActivityToFragment = (PostActivity.DataFromActivityToFragment)f;
     }
 
 

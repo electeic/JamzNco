@@ -113,6 +113,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID",currUserId);
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
             }

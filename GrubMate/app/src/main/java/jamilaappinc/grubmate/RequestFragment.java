@@ -5,10 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +35,24 @@ public class RequestFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    FirebaseDatabase database;
+    private DatabaseReference dbRefNotes;
+    private DatabaseReference dbNoteToEdit;
+    private StorageReference mStorageRef;
+
+    private String location;
+    private Integer numOfServings;
+    Button cancelButton, submitButton;
+
+
+    TextView rNumOfServingsLabel;
+    SeekBar rServingsChosen;
+    EditText rLocation;
+
+
+
 
 //    private OnFragmentInteractionListener mListener;
     android.support.design.widget.FloatingActionButton floatButton;
@@ -58,6 +85,30 @@ public class RequestFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        database = FirebaseDatabase.getInstance();
+
+        //todo get database reference paths
+        dbRefNotes = database.getReference(FirebaseReferences.POSTS);
+
+        Bundle args = getArguments();
+        //todo get reference to note to be edited (if it exists)
+        String urlToEdit = args.getString(mParam1);
+        if(urlToEdit != null) { // NULL if we are adding a new record
+            dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
+        }
+    }
+
+    private Boolean checkAllFilled(){
+        boolean filled = false;
+        location = rLocation.getText().toString().trim();
+        numOfServings = Integer.parseInt(rNumOfServingsLabel.getText().toString().trim());
+
+        Log.d("error check",""+(location.length()>0)+(numOfServings>0));
+        filled = ((location.length()>0) && (numOfServings>0));
+
+        return filled;
+
     }
 
     @Override
@@ -68,6 +119,33 @@ public class RequestFragment extends Fragment {
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
+        rLocation = (EditText) v.findViewById(R.id.locationText);
+        cancelButton = (Button) v.findViewById(R.id.request_cancelButton);
+        submitButton = (Button) v.findViewById(R.id.request_submitButton);
+        rServingsChosen = (SeekBar) v.findViewById(R.id.possibleServings);
+        rNumOfServingsLabel = (TextView) v.findViewById(R.id.servingsWanted);
+
+        rServingsChosen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                rNumOfServingsLabel.setText(Integer.toString(rServingsChosen.getProgress()));
+
+            }
+        });
+
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +154,38 @@ public class RequestFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+        cancelButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivityForResult(intent,0);
+                getActivity().finish();
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(checkAllFilled()){
+                    //all forms filled out correctly
+                    DatabaseReference databaseRef = database.getReference().child("Request").child("DELTETHIS2");
+
+                    Request request = new Request(location,null, numOfServings, null);
+                    databaseRef.setValue(request);
+                    //send this post to the DB
+
+                }else{
+                    //something is wrong so send a toast
+                    Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
+                }
+               /* DatabaseReference databaseRef = database.getReference().child("Request").child("DELTETHIS2");
+//                 uploadFile();
+                getActivity().finish();*/
+            }
+        });
+
         return v;
     }
 /*

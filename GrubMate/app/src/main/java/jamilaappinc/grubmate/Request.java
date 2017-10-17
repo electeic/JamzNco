@@ -7,7 +7,6 @@ package jamilaappinc.grubmate;
 public class Request {
 
     String mLocation;
-    DateAndTime mDate;
     Post mRequestedPost;
     int mServings;
     int mId;
@@ -16,9 +15,8 @@ public class Request {
     boolean mAccepted;
     boolean mActive;
 
-    public Request(String mLocation, DateAndTime date, Post mRequestedPost, int mServings, User muser) {
+    public Request(String mLocation, Post mRequestedPost, int mServings, User muser) {
         this.mLocation = mLocation;
-        this.mDate = date;
         this.mRequestedPost = mRequestedPost;
         this.mServings = mServings;
         mRequestingUser = muser;
@@ -39,12 +37,6 @@ public class Request {
 
     public void setmLocation(String mLocation) {
         this.mLocation = mLocation;
-    }
-
-    public DateAndTime getmDate() { return mDate; }
-
-    public void setmDate(DateAndTime mTime) {
-        this.mDate = mTime;
     }
 
     public Post getmRequestedPost() {
