@@ -135,15 +135,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
 
-        floatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
-            }
-        });
-
         initGUIComp(v);
         addListeners();
 
