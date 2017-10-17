@@ -25,9 +25,6 @@ public class RequestActivity extends AppCompatActivity {
     String[] listCategories;
     boolean [] checkedItems;
 
-
-    PostActivity.DataFromActivityToFragment dataFromActivityToFragment;
-
     ArrayList<Integer> selectedCategories = new ArrayList<Integer>();
 
     @Override
@@ -55,7 +52,6 @@ public class RequestActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
-        dataFromActivityToFragment = (PostActivity.DataFromActivityToFragment)f;
     }
 
 

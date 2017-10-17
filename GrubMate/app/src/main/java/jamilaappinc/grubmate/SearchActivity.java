@@ -1,15 +1,27 @@
 package jamilaappinc.grubmate;
 
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
+//import android.content.Intent;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+//import android.app.Fragment;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class RateUserActivity extends AppCompatActivity {
+/**
+ * Created by ericajung on 10/16/17.
+ */
+
+public class SearchActivity extends AppCompatActivity {
+
     public static final String EXTRA_POSITION = "main_position";
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
@@ -27,7 +39,7 @@ public class RateUserActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = RateUserFragment.newInstance(pos);
+            f = MainFragment.newInstance(pos);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
