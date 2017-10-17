@@ -173,11 +173,11 @@ public class MainFragment extends Fragment {
             for(int j = 0; j < userFriends.size(); j++){
                 String x = model.getmAuthorId();
 
-                if(x.equals(userFriends.get(j))){
+                /*if(x.equals(userFriends.get(j))){
 
                     System.out.println("this_is_true");
                     isFriendPost = true;
-                }
+                }*/
             }
 //
             //System.out.println("USFRIENDPOST" + isFriendPost);

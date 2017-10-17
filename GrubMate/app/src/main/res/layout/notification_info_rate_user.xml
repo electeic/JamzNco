@@ -15,36 +15,37 @@
         android:id="@+id/view">
 
         <LinearLayout
-            android:id="@+id/notification_info_accept_layout"
+            android:id="@+id/notification_info_rate_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/notification_info_accept_layout2"
+                android:id="@+id/notification_info_rate_layout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/notification_info_accept_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/notification_info_rate_title"
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:text="X has accepted your request for post Y"
+                    android:text="Please rate user X"
                     android:textSize="20dp"
                     android:textAlignment="gravity"
-                    android:textStyle="italic"/>
+                    />
+
                 <TextView
-                    android:id="@+id/notification_info_accept_view"
+                    android:id="@+id/notification_info_rate_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Click to dismiss"
+                    android:text="Click to rate"
                     android:textSize="15dp"
                     android:textAlignment="gravity"
                     android:textStyle="italic"/>
@@ -55,6 +56,7 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </FrameLayout>
+
 
 
 

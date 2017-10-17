@@ -1,7 +1,9 @@
 package jamilaappinc.grubmate;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -239,9 +241,21 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivityForResult(intent,0);
-                getActivity().finish();
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                    adb.setTitle("Cancel?");
+                    adb.setMessage("Are you sure you want to cancel? ");
+                    adb.setNegativeButton("Cancel", null);
+                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            /*Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivityForResult(intent,0);
+                            getActivity().finish();*/
+                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+
+                        }});
+                    adb.show();
+
+
             }
         });
 
