@@ -45,6 +45,7 @@ public class Post implements Serializable{
         this.mPhotos = photos;
         mServings = servings;
         mActive = Boolean.TRUE;
+        this.homemade = homemade;
     }
 
     public Post(String mTitle, String mDescription){

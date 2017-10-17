@@ -66,6 +66,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private String title, dietary, location, servings, tags, date, descriptions, startTimeString, endTimeString,startDateString, endDateString;
     private SimpleDateFormat sdf;
     private Date startDateTime, endDateTime;
+    String ID;
 
     private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<String> groups = new ArrayList<>();
@@ -263,68 +264,27 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 if (checkAllFilled()) {
                     //all forms filled out correctly
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    final String key = database.getReference("Post").push().getKey();
+                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                    final String key = database2.getReference("Post").push().getKey();
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key);
 
                     Intent i = getActivity().getIntent();
-                    final String ID = i.getStringExtra("ID");
+                    ID = i.getStringExtra("ID");
 //
-                    if(filePath != null) {
 
-//                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-//                        progressDialog.setMessage("Uploading...");
-//                        progressDialog.show();
+//                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+//                        post.setmId(key);
+//                        databaseRef.setValue(post);
 
-
-                        StorageReference riversRef = mStorageRef.child("images/food.jpg");
-
-                        riversRef.putFile(filePath)
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-//                                        Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-
-                                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, downloadUri.toString(), Integer.parseInt(servings), _homemade.isChecked(), ID);
-//                                      databaseRef.setValue(post);
-                                        post.setmId(key);
-                                        PostSingleton.get(getActivity()).addMovie(post);
-//                                        uploadMeta(downloadUri.toString());
-
-                                        DatabaseReference dbChild = FirebaseRef.push();
-                                        dbChild.setValue(post);
-
-//                                        progressDialog.dismiss();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle unsuccessful uploads
-                                        // ...
-                                        Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-//                                        progressDialog.dismiss();
-                                    }
-                                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                                double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-//                                progressDialog.setMessage(((int)progress) + "% uploaded");
-                            }
-                        });
-                    }
+                    if(filePath != null)
+                    uploadFile(key);
                     else
                     {
                         Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
                         post.setmId(key);
                         databaseRef.setValue(post);
-
                     }
-//                    uploadFile();
                     getActivity().finish();
 //
                 }
@@ -341,50 +301,50 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
 
 
-//    private void uploadFile()
-//    {
-//        if(filePath != null) {
-//
-//            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-//            progressDialog.setMessage("Uploading...");
-//            progressDialog.show();
-//
-//
-//            StorageReference riversRef = mStorageRef.child("images/food.jpg");
-//
-//            riversRef.putFile(filePath)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // Get a URL to the uploaded content
-////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                            progressDialog.dismiss();
-//                            Uri downloadUri = taskSnapshot.getDownloadUrl();
-//                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-//                            uploadMeta(downloadUri.toString());
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            // Handle unsuccessful uploads
-//                            // ...
-//                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-//                            progressDialog.dismiss();
-//                        }
-//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-//                    progressDialog.setMessage(((int)progress) + "% uploaded");
-//                }
-//            });
-//        }
-//        else
-//        {
-//
-//        }
-//    }
+    private void uploadFile(String key)
+    {
+        if(filePath != null) {
+
+            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Uploading...");
+            progressDialog.show();
+            final String key2 = key;
+
+            StorageReference riversRef = mStorageRef.child("images/" + key + ".jpg");
+
+            riversRef.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            progressDialog.dismiss();
+                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+                            uploadMeta(downloadUri.toString(), key2);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            // ...
+                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage(((int)progress) + "% uploaded");
+                }
+            });
+        }
+        else
+        {
+
+        }
+    }
 
     public void showFileChooser()
     {
@@ -457,21 +417,22 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             groups = (ArrayList<String>)_group.clone();
         }
     }
-//
-//    void uploadMeta(String uri)
-//    {
-////        if()
-////        String id = FirebaseRef.push().getKey();
-//        Pictures picUri = new Pictures(uri);
+
+    void uploadMeta(String uri, String key)
+    {
+//        if()
+//        String id = FirebaseRef.push().getKey();
+            Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID);
+
 //        PictureSingleton.get(getActivity()).addMovie(picUri);
-//
-//        DatabaseReference dbChild = FirebaseRef.push();
-//        dbChild.setValue(uri);
-//
-////        FirebaseRef.child(id).setValue(picUri); //part of og code
-//
-//        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
-//    }
+
+        DatabaseReference dbChild = database.getReference().child("Post").child(key);
+        dbChild.setValue(post);
+
+//        FirebaseRef.child(id).setValue(picUri); //part of og code
+
+        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+    }
 
 //    /*
     //    // TODO: Rename method, update argument and hook method into UI event

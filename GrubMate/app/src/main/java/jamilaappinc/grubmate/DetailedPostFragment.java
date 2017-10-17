@@ -138,6 +138,17 @@ public class DetailedPostFragment extends Fragment {
                     fPostName.setText(n.getmTitle());
 //                    fCategories.setText(n.getmCategories());
                     fDescription.setText(n.getmDescription());
+
+//                    fProfilePicture
+//                    fFoodPicture;
+//                    fTags.setText(); //passes in an array so o.o
+//                    fDietaryInfo.setText(n);
+//                    fCategories.setText(n.getmCategories());
+//                    if(n.get)
+//                    fHomeOrRestuarant.setText();
+//                    TextView fDate;
+                    fStartTime.setText(n.getmStartDate().toString());
+                    fEndTime.setText(n.getmEndDate().toString());
                 }
 
                 @Override
