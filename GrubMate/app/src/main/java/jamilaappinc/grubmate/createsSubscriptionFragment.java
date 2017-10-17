@@ -223,7 +223,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 if(checkAllFilled()){
                     //all forms filled out correctly
                     Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), null, _homemade.isChecked());
-                    DatabaseReference databaseRef = database.getReference().child("Subscription").child(Integer.toString(subscription.getmId()));
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    String key = database.getReference("Subscription").push().getKey();
+                    DatabaseReference databaseRef = database.getReference().child("Subscription").child(key);
+                    subscription.setmId(key);
                     databaseRef.setValue(subscription);
 
 

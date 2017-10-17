@@ -13,15 +13,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
     public class Subscription implements Serializable{
 
-    private static Integer countForID = 0;
-
     User mUser;
     Date mStartDate, mEndDate;
     ArrayList<String> mTags;
     ArrayList<String> mCategories;
     boolean mHomeMade;
     boolean mActive;
-    int mId;
+    String mId;
     String mTitle;
     String mDescription;
 
@@ -41,8 +39,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
-        mId = countForID;
-        countForID++;
     }
 
     public boolean getmActive(){return mActive;}
@@ -88,8 +84,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
         this.mHomeMade = mHomeMade;
     }
 
-    public int getmId() {
-        return mId;
+    public void setmId(String key) {
+        mId = key;
     }
 
 
