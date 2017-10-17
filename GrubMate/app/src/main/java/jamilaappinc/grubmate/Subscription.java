@@ -11,7 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by ivanchen on 10/2/17.
  */
 
-public class Subscription implements Serializable{
+    public class Subscription implements Serializable{
+
+    private static Integer countForID = 0;
 
     User mUser;
     Date mStartDate, mEndDate;
@@ -39,6 +41,8 @@ public class Subscription implements Serializable{
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
+        mId = countForID;
+        countForID++;
     }
 
     public boolean getmActive(){return mActive;}
@@ -88,9 +92,6 @@ public class Subscription implements Serializable{
         return mId;
     }
 
-    public void setmId(int mId) {
-        this.mId = mId;
-    }
 
 
 }

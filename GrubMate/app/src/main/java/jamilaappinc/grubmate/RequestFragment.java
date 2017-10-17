@@ -171,11 +171,11 @@ public void onClick(View view) {
 
         if(checkAllFilled()){
         //all forms filled out correctly
-            Intent i = getActivity().getIntent();
-            String ID= i.getStringExtra("ID");
-            DatabaseReference databaseRef = database.getReference().child("Request").child("createID");
+
+
 
             Request request = new Request(location,null, numOfServings, null);
+            DatabaseReference databaseRef = database.getReference().child("Request").child(Integer.toString(request.getmId()));
             databaseRef.setValue(request);
 
             Intent intent = new Intent(getActivity(), MainActivity.class);

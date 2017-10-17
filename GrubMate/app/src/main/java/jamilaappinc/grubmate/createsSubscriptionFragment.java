@@ -222,10 +222,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                 if(checkAllFilled()){
                     //all forms filled out correctly
-                    Intent i = getActivity().getIntent();
-                    String ID = i.getStringExtra("ID");
-                    DatabaseReference databaseRef = database.getReference().child("Subscription").child("createID");
                     Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), null, _homemade.isChecked());
+                    DatabaseReference databaseRef = database.getReference().child("Subscription").child(Integer.toString(subscription.getmId()));
                     databaseRef.setValue(subscription);
 
 
