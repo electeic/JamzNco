@@ -259,7 +259,10 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 if(checkAllFilled()){
                     //all forms filled out correctly
                     DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
-                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),"HARDCODEDIVAN");
+                    Intent i = getActivity().getIntent();
+                    String ID = i.getStringExtra("ID");
+
+                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),ID);
                     databaseRef.setValue(post);
                     getActivity().finish();
 
