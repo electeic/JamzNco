@@ -171,7 +171,7 @@ public class MainFragment extends Fragment {
             currUserName = i.getStringExtra("Name");
             userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
-           /* for(int j = 0; j < userFriends.size(); j++){
+           for(int j = 0; j < userFriends.size(); j++){
                 String x = model.getmAuthorId();
 
                 if(x.equals(userFriends.get(j))){
@@ -179,7 +179,7 @@ public class MainFragment extends Fragment {
                     System.out.println("this_is_true");
                     isFriendPost = true;
                 }
-            }*/
+            }
 //
             //System.out.println("USFRIENDPOST" + isFriendPost);
             if(isFriendPost){

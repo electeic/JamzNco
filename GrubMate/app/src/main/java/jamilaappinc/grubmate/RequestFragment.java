@@ -125,7 +125,7 @@ public class RequestFragment extends Fragment {
         rServingsChosen = (SeekBar) v.findViewById(R.id.possibleServings);
         rNumOfServingsLabel = (TextView) v.findViewById(R.id.servingsWanted);
         rNumOfServingsLabel.setText("1");
-        
+
 
         rServingsChosen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
