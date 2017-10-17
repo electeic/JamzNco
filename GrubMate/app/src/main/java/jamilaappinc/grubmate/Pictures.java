@@ -1,10 +1,12 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchen on 4/15/17.
  */
 
-public class Pictures {
+public class Pictures implements Serializable{
 
 //    String description;
     public String imageURL;

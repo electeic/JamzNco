@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -7,7 +8,7 @@ import java.util.Vector;
  * Created by ivanchen on 10/2/17.
  */
 
-public class User {
+public class User implements Serializable{
     Vector<Post> mUserPosts;
     Vector<Request> mUserRequests;
     Vector<Group> mUserGroups;

@@ -11,6 +11,7 @@ import android.util.Log;
 public class EditGroupActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
+    public static final String GET_GROUP = "group";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,12 @@ public class EditGroupActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
+
+        Group group = (Group)getIntent().getSerializableExtra(GET_GROUP);
+
         if (f == null ) {
             //TODO modify for id
-            f = new EditGroupFragment();
+            f = EditGroupFragment.newInstance(group);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

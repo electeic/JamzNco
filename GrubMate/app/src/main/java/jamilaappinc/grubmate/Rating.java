@@ -1,10 +1,12 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchen on 10/2/17.
  */
 
-public class Rating {
+public class Rating implements Serializable{
 
     String mReview;
     double mRating;

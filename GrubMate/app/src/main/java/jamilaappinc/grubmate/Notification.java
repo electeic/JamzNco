@@ -1,10 +1,12 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchen on 10/2/17.
  */
 
-public class Notification {
+public class Notification implements Serializable{
    protected User mFromUser;
     protected Post mAboutPost;
     protected User mToUser;

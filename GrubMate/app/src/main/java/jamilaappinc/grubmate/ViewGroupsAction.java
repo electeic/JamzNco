@@ -14,6 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ *  FROM MY UNDERSTANDING, this class is useless but i'm too afraid to delete it rn = melody
+ */
 public class ViewGroupsAction extends AppCompatActivity {
     private ArrayList<Group> groups = new ArrayList<Group>();
     @Override
@@ -48,7 +51,7 @@ public class ViewGroupsAction extends AppCompatActivity {
 
     private void populateListView() {
         ArrayAdapter<Group> adapter= new GroupAdapter();
-        ListView list = (ListView) findViewById(R.id.GroupsListView);
+        ListView list = (ListView) findViewById(R.id.groups_ListView);
         list.setAdapter(adapter);
 
     }

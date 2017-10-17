@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -8,7 +9,7 @@ import java.util.Vector;
  * Created by ivanchen on 10/2/17.
  */
 
-public class Post {
+public class Post implements Serializable{
     String mTitle;
     String mDescription;
     String mLocation;

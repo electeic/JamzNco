@@ -1,12 +1,13 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
  * Created by ivanchen on 10/2/17.
  */
 
-public class Group {
+public class Group implements Serializable{
     String mName;
     Vector<User> mGroupMembers;
     int mId;

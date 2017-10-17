@@ -1,10 +1,12 @@
 package jamilaappinc.grubmate;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchen on 10/2/17.
  */
 
-public class Request {
+public class Request implements Serializable{
 
     String mLocation;
     Post mRequestedPost;

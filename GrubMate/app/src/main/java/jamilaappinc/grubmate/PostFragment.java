@@ -134,9 +134,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
-        pImage = (ImageView) v.findViewById(R.id.post_food_pic);
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
-        pPostTitle = (EditText) v.findViewById(R.id.post_titleText);
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +152,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     }
 
     private void initGUIComp(View v){
+        pImage = (ImageView) v.findViewById(R.id.post_food_pic);
+
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         cancelButton = (Button) v.findViewById(R.id.post_cancel);
         pSubmitpostbutton = (Button) v.findViewById(R.id.post_submit);

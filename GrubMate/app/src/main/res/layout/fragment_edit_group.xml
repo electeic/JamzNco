@@ -16,39 +16,63 @@
             android:id="@+id/editGroup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:text="Group Name"
-            android:textSize="30sp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="14dp"
+            android:text="Group Name"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/editGroup_instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click to delete a member"
+
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:layout_below="@+id/editGroup_deleteButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
 
         <Button
             android:id="@+id/editGroup_submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="13dp"
-            android:layout_marginStart="83dp"
-            android:text="Submit" />
+            android:text="Done" />
 
-        <Button
-            android:id="@+id/editGroup_cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/editGroup_submitButton"
-            android:layout_marginStart="74dp"
-            android:layout_toEndOf="@+id/editGroup_submitButton"
-            android:text="Cancel" />
 
         <ListView
             android:id="@+id/editGroup_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/editGroup_name"
-            android:layout_marginTop="19dp"
-            android:layout_above="@+id/editGroup_submitButton" />
+            android:layout_below="@+id/editGroup_deleteButton"
+            android:layout_marginTop="36dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editGroup_list"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/gmlogo" />
+
+        <Button
+            android:id="@+id/editGroup_deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/menu_from_main"
+            android:layout_alignTop="@+id/editGroup_name"
+            android:text="Delete Group" />
 
     </RelativeLayout>
+
 </FrameLayout>

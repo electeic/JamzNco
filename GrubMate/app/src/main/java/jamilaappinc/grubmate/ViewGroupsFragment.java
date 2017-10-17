@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -31,9 +34,12 @@ public class ViewGroupsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
     android.support.design.widget.FloatingActionButton floatButton;
     private ArrayList<Group> groups = new ArrayList<Group>();
-
+    ListView list;
+    GroupsAdapter adapter;
+    Button addGroupButton;
 //    private OnFragmentInteractionListener mListener;
 
     public ViewGroupsFragment() {
@@ -64,6 +70,8 @@ public class ViewGroupsFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,12 +79,24 @@ public class ViewGroupsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
 
         populateList();
-        GroupsAdapter adapter= new GroupsAdapter(getActivity(), groups);
-        ListView list = (ListView) v.findViewById(R.id.GroupsListView);
-        Log.d("POPULATE", "BOO");
+        initComponents(v);
         list.setAdapter(adapter);
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        addListeners();
 
+
+
+        return v;
+
+    }
+
+    private void initComponents(View v){
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        addGroupButton = (Button) v.findViewById(R.id.groups_button);
+        list = (ListView) v.findViewById(R.id.groups_ListView);
+        adapter= new GroupsAdapter(getActivity(), groups);
+    }
+
+    private void addListeners(){
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,14 +105,32 @@ public class ViewGroupsFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        return v;
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Group group = (Group) list.getItemAtPosition(position);
+                Intent i = new Intent(getActivity(), EditGroupActivity.class);
+                if(group == null)System.out.println("Why");
+                i.putExtra(EditGroupActivity.GET_GROUP, group);
+                startActivity(i);
+
+            }
+        });
+        addGroupButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "@JAMILAAPPCORP: Create fragment or can we do it with just an Alert dialog? " , Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 
 
     private void populateList() {
         Vector<User> group = new Vector<User>();
         for (int i = 0; i < 4; i++) {
-            group.addElement(new User("nameity name nameson blah blah blah blah", "lol"));
+            group.addElement(new User("Melody Chai " +i, "lol"));
         }
         groups.add(new Group("CSCI310", group));
         groups.add(new Group("Group 2", group));

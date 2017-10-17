@@ -87,7 +87,14 @@ public class ViewNotificationsFragment extends Fragment {
         list.setAdapter(adapter);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        addListeners();
 
+
+        return v;
+    }
+
+
+    private void addListeners(){
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,15 +108,12 @@ public class ViewNotificationsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.d("KITKAT", "Went into the itemclick listener");
                 Notification notification = (Notification) list.getItemAtPosition(position);
 
                 if (notification instanceof RequestedNotification) {
                     /*if notification is a request notification then go to the request page
                         to show the request information
                     */
-                    Log.d("1", "it's request");
-
                     Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
 //                    i.putExtra();
                     startActivity(i);
@@ -129,13 +133,6 @@ public class ViewNotificationsFragment extends Fragment {
 
             }
         });
-
-        return v;
-    }
-
-
-    private void addListeners(){
-
 
 
     }
