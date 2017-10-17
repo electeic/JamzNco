@@ -13,6 +13,11 @@ import android.widget.TextView;
  * Created by ericajung on 10/16/17.
  */
 
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class SearchFragment extends Fragment {
 
     android.support.design.widget.FloatingActionButton floatButton;
@@ -59,6 +64,7 @@ public class SearchFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
         return v;
     }
 

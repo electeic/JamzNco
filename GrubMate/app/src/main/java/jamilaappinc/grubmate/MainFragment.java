@@ -171,9 +171,6 @@ public class MainFragment extends Fragment {
             currUserName = i.getStringExtra("Name");
             userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
-<<<<<<< Updated upstream
-           for(int j = 0; j < userFriends.size(); j++){
-=======
             /*for(int j = 0; j < userFriends.size(); j++){
 >>>>>>> Stashed changes
                 String x = model.getmAuthorId();
