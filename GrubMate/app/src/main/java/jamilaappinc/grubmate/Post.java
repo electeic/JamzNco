@@ -17,7 +17,7 @@ public class Post implements Serializable{
     ArrayList<String> mCategories;
     ArrayList<String> mTags;
     ArrayList <Group> mGroups;
-    int id;
+    String id;
     String mPhotos;
     String mAuthorId;
     int mServings;
@@ -143,11 +143,11 @@ public class Post implements Serializable{
         }
     }
 
-    public int getId() {
+    public String getmId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setmId(String id) {
         this.id = id;
     }
 
