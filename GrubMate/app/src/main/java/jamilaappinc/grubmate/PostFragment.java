@@ -57,6 +57,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private DatabaseReference dbNoteToEdit;
     DatabaseReference FirebaseRef;
     private StorageReference mStorageRef;
+    String mPicURL;
 
 
     private Button cancelButton, startDateButton,endDateButton, startTimeButton, endTimeButton;
@@ -116,7 +117,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         database = FirebaseDatabase.getInstance();
 
         //for pictures
-//        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //todo get database reference paths
         dbRefNotes = database.getReference(FirebaseReferences.POSTS);
@@ -220,9 +221,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     }
 
-    private void addListeners(){
-        floatButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+    private void addListeners() {
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
@@ -232,19 +233,18 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-                    adb.setTitle("Cancel?");
-                    adb.setMessage("Are you sure you want to cancel? ");
-                    adb.setNegativeButton("Cancel", null);
-                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            /*Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivityForResult(intent,0);
-                            getActivity().finish();*/
-                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+                adb.setTitle("Cancel?");
+                adb.setMessage("Are you sure you want to cancel? ");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
-                        }});
-                    adb.show();
-
+                    }});
+                adb.show();
 
             }
         });
@@ -260,35 +260,87 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             @Override
             public void onClick(View view) {
 
-                if(checkAllFilled()){
+                if (checkAllFilled()) {
                     //all forms filled out correctly
                     DatabaseReference databaseRef = database.getReference().child("Post").child("DELTETHIS2");
                     Intent i = getActivity().getIntent();
-                    String ID = i.getStringExtra("ID");
-
-                    Post post = new Post(title,descriptions,location,startDateTime,endDateTime,categories,getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(),ID);
-                    databaseRef.setValue(post);
-                    getActivity().finish();
+                    final String ID = i.getStringExtra("ID");
 
 
-//                    uploadFile();
+//                    Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+//                    databaseRef.setValue(post);
 //                    getActivity().finish();
-                    //send this post to the DB
 
-                }else{
+
+                    if(filePath != null) {
+
+//                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//                        progressDialog.setMessage("Uploading...");
+//                        progressDialog.show();
+
+
+                        StorageReference riversRef = mStorageRef.child("images/food.jpg");
+
+                        riversRef.putFile(filePath)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        Uri downloadUri = taskSnapshot.getDownloadUrl();
+//                                        Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+
+                                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, downloadUri.toString(), Integer.parseInt(servings), _homemade.isChecked(), ID);
+//                                        databaseRef.setValue(post);
+                                        PostSingleton.get(getActivity()).addMovie(post);
+//                                        uploadMeta(downloadUri.toString());
+
+                                        DatabaseReference dbChild = FirebaseRef.push();
+                                        dbChild.setValue(post);
+
+//                                        progressDialog.dismiss();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle unsuccessful uploads
+                                        // ...
+                                        Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+//                                        progressDialog.dismiss();
+                                    }
+                                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                                double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+//                                progressDialog.setMessage(((int)progress) + "% uploaded");
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+                        databaseRef.setValue(post);
+
+                    }
+//                    uploadFile();
+                    getActivity().finish();
+//
+                }
+                else{
                     //something is wrong so send a toast
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
+
                 }
-
-
             }
-        });
 
+        });
     }
 
 
 
-//    public void uploadFile()
+
+//    private void uploadFile()
 //    {
 //        if(filePath != null) {
 //
@@ -296,50 +348,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //            progressDialog.setMessage("Uploading...");
 //            progressDialog.show();
 //
-//    public void uploadFile()
-//    {
-//        if(filePath != null) {
 //
-//            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-//            progressDialog.setMessage("Uploading...");
-//            progressDialog.show();
-//
-//
-//            StorageReference riversRef = mStorageRef.child("images/food.jpg");
-//
-//            riversRef.putFile(filePath)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // Get a URL to the uploaded content
-////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                            progressDialog.dismiss();
-//                            Uri downloadUri = taskSnapshot.getDownloadUrl();
-//                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-//                            uploadMeta(downloadUri.toString());
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            // Handle unsuccessful uploads
-//                            // ...
-//                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-//                            progressDialog.dismiss();
-//                        }
-//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-//                    progressDialog.setMessage(((int)progress) + "% uploaded");
-//                }
-//            });
-//        }
-//        else
-//        {
-//
-//        }
-//    }
 //            StorageReference riversRef = mStorageRef.child("images/food.jpg");
 //
 //            riversRef.putFile(filePath)
@@ -448,20 +457,20 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 //
-    void uploadMeta(String uri)
-    {
-//        if()
-//        String id = FirebaseRef.push().getKey();
-        Pictures picUri = new Pictures(uri);
-        PictureSingleton.get(getActivity()).addMovie(picUri);
-
-        DatabaseReference dbChild = FirebaseRef.push();
-        dbChild.setValue(uri);
-
-//        FirebaseRef.child(id).setValue(picUri); //part of og code
-
-        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
-    }
+//    void uploadMeta(String uri)
+//    {
+////        if()
+////        String id = FirebaseRef.push().getKey();
+//        Pictures picUri = new Pictures(uri);
+//        PictureSingleton.get(getActivity()).addMovie(picUri);
+//
+//        DatabaseReference dbChild = FirebaseRef.push();
+//        dbChild.setValue(uri);
+//
+////        FirebaseRef.child(id).setValue(picUri); //part of og code
+//
+//        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+//    }
 
 //    /*
     //    // TODO: Rename method, update argument and hook method into UI event

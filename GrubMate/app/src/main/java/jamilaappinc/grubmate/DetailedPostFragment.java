@@ -12,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -41,6 +44,13 @@ public class DetailedPostFragment extends Fragment {
     android.support.design.widget.FloatingActionButton floatButton;
     private static final String ARG_PARAM1 = "param1";
 
+    //todo database references
+    private DatabaseReference dbRefNotes;
+    private DatabaseReference dbNoteToEdit;
+    DatabaseReference dbRefCount;
+
+    private static final String ARG_URL = "itp341.firebase.ARG_URL";
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -48,14 +58,35 @@ public class DetailedPostFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DetailedPostFragment newInstance(int pos) {
+    public static DetailedPostFragment newInstance(String reference) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pos);
+//        args.putInt(ARG_PARAM1, pos);
+        args.putString(ARG_URL, reference);
         DetailedPostFragment fragment = new DetailedPostFragment();
         fragment.setArguments(args);
         return fragment;
 
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //todo get database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //todo get database reference paths
+        dbRefNotes = database.getReference(FirebaseReferences.POSTS);
+        dbRefCount = database.getReference(FirebaseReferences.POST_COUNT);
+
+        Bundle args = getArguments();
+        //todo get reference to note to be edited (if it exists)
+        String urlToEdit = args.getString(ARG_URL);
+        if(urlToEdit != null) { // NULL if we are adding a new record
+            dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
+        }
+    }
+
 
 
     @Override
@@ -95,6 +126,26 @@ public class DetailedPostFragment extends Fragment {
                // getActivity().finish();
             }
         });
+
+        //todo read selected note
+        if(dbNoteToEdit != null) {  // null if urlToEdit is null
+            // read from the note to update
+            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // convert this "data snapshot" to a model class
+                    Post n = dataSnapshot.getValue(Post.class);
+                    fPostName.setText(n.getmTitle());
+//                    fCategories.setText(n.getmCategories());
+                    fDescription.setText(n.getmDescription());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         //now update information using the posts information
 

@@ -64,6 +64,7 @@
         <activity android:name=".ViewRequestNotificationActivity" />
         <activity android:name=".createsSubscriptionActivity"/>
         <activity android:name=".SearchActivity"/>
+
     </application>
 
 </manifest>

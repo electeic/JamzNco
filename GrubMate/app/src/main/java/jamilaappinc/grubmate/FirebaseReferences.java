@@ -6,4 +6,5 @@ package jamilaappinc.grubmate;
 
 public class FirebaseReferences {
     public static final String POSTS = "Post";
+    public static final String POST_COUNT = "PostCount";
 }

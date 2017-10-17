@@ -24,7 +24,8 @@ public class DetailedPostActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         //TODO modify for id
-        int pos = i.getIntExtra(EXTRA_POSITION, -1);
+        String reference = i.getStringExtra(EXTRA_URL);
+//        int pos = i.getIntExtra(EXTRA_POSITION, -1);
 
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
@@ -32,7 +33,7 @@ public class DetailedPostActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = DetailedPostFragment.newInstance(pos);
+            f = DetailedPostFragment.newInstance(reference);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

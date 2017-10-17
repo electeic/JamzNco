@@ -82,14 +82,10 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
         mAdapter = new PostListAdapter(getActivity(), Post.class, R.layout.list_active_posts_item, dbRefPosts);
-        mListView = (ListView)v.findViewById(R.id.active_post_list);
-        //        database = FirebaseDatabase.getInstance();
-        //        dbRefPosts = database.getInstance().getReference(FirebaseReferences.POSTS);
-
+        mListView = (ListView) v.findViewById(R.id.active_post_list);
         //        postList = PostSingleton.get(getActivity()).getMovies();
         //        postAdapter = new PostListAdapter(getActivity(), Post.class,
         //                R.layout.list_active_posts_item,
@@ -98,9 +94,10 @@ public class MainFragment extends Fragment {
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView <?> adapterView, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // we know a row was clicked but we need to know WHERE specifically
                 // is that data stored in the database
+
                 DatabaseReference dbRefClicked = mAdapter.getRef(position);
                 Intent i = new Intent(getActivity(), DetailedPostActivity.class);
                 // toString instead of sending over the whole DatabaseReference because it's easier
@@ -113,7 +110,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
-                intent.putExtra("ID",currUserId);
+                intent.putExtra("ID", currUserId);
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
             }
@@ -133,18 +130,15 @@ public class MainFragment extends Fragment {
             }
         });
 
-
-
         return v;
     }
 
-    public void refresh(){
+    public void refresh() {
         mAdapter.notifyDataSetChanged();
     }
 
     //todo onDetach
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
         mAdapter.cleanup();
     }
@@ -152,7 +146,7 @@ public class MainFragment extends Fragment {
 //todo create custom FirebaseListAdapter
 
 
-    private class PostListAdapter extends FirebaseListAdapter<Post>{
+    private class PostListAdapter extends FirebaseListAdapter<Post> {
 
         public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
             super(activity, modelClass, modelLayout, ref);
@@ -171,28 +165,25 @@ public class MainFragment extends Fragment {
             currUserName = i.getStringExtra("Name");
             userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
-            /*for(int j = 0; j < userFriends.size(); j++){
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> a2a45d02b8db6c4938fc0d2c4a112e033f53a153
-                String x = model.getmAuthorId();
 
-                if(x.equals(userFriends.get(j))){
-
-                    System.out.println("this_is_true");
-                    isFriendPost = true;
-                }
-            }*/
+//            for (int j = 0; j < userFriends.size(); j++) {
+//                String x = model.getmAuthorId();
 //
+//                if (x.equals(userFriends.get(j))) {
+//
+//                    System.out.println("this_is_true");
+                    isFriendPost = true;
+//                }
+//            }
+
             //System.out.println("USFRIENDPOST" + isFriendPost);
-            if(isFriendPost){
+            if (isFriendPost) {
                 ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
 
                 Glide.with(MainFragment.this)
                         .load(model.getmPhotos())
                         .centerCrop()
-                        .placeholder(R.drawable.gmlogo)
+                        .placeholder(R.drawable.hamburger)
                         .crossFade()
                         .into(mImage);
 
@@ -206,52 +197,52 @@ public class MainFragment extends Fragment {
         }
     }
 
-//    public class PostListAdapter extends ArrayAdapter<Post>{
-    //        List<Post> Posts;
-    //        Context context;
-    //
-    //        public PostListAdapter(Context context, int resource, List<Post> objects) {
-    //            super(context, resource, objects);
-    //            this.context = context;
-    //            this.Posts = objects;
-    //        }
-    //
-    //        @Override
-    //        public View getView(int position, View convertView, ViewGroup parent) {
-    //            if (convertView == null) {
-    //                convertView = getActivity().getLayoutInflater().inflate(
-    //                        R.layout.list_active_posts_item, null);
-    //            }
-    //
-    //            ImageView image = (ImageView) convertView.findViewById(R.id.imagePic);
-    //            ImageView imagePerson = (ImageView) convertView.findViewById(R.id.active_post_person_image);
-    //            TextView textTitle = (TextView) convertView.findViewById(R.id.listNoteTitle);
-    //            TextView textDescription = (TextView) convertView.findViewById(R.id.listNoteContent);
-    //
-    ////            findOutMore.setTag(position);
-    ////            findOutMore.setOnClickListener(new View.OnClickListener() {
-    ////                @Override
-    ////                public void onClick(View v) {
-    ////                    Intent i = new Intent(getActivity(),
-    ////                            DetailActivity.class);
-    ////
-    ////                    //TODO change position to id
-    //////                i.putExtra(DetailActivity.EXTRA_POSITION, position);
-    ////                    i.putExtra(DetailActivity.ARGS_ID, (int) v.getTag());
-    ////                    startActivityForResult(i, 0);
-    ////                }
-    ////            });
-    //
-    ////            Movies = MovieSingleton.get(context).getMovies();
-    //            Post mv = Posts.get(position);
-    //
-    //            image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
-    //
-    //
-    //
-    //            textTitle.setText(mv.getmTitle());
-    //            textDescription.setText(mv.getmDescription());
-    //            return convertView;
-    //        }
-    //    }
+//    public class PostListAdapter extends ArrayAdapter<Post> {
+//        List<Post> Posts;
+//        Context context;
+//
+//        public PostListAdapter(Context context, int resource, List<Post> objects) {
+//            super(context, resource, objects);
+//            this.context = context;
+//            this.Posts = objects;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            if (convertView == null) {
+//                convertView = getActivity().getLayoutInflater().inflate(
+//                        R.layout.list_active_posts_item, null);
+//            }
+//
+//            ImageView image = (ImageView) convertView.findViewById(R.id.imagePic);
+//            ImageView imagePerson = (ImageView) convertView.findViewById(R.id.active_post_person_image);
+//            TextView textTitle = (TextView) convertView.findViewById(R.id.listNoteTitle);
+//            TextView textDescription = (TextView) convertView.findViewById(R.id.listNoteContent);
+//
+//            //            findOutMore.setTag(position);
+//            //            findOutMore.setOnClickListener(new View.OnClickListener() {
+//            //                @Override
+//            //                public void onClick(View v) {
+//            //                    Intent i = new Intent(getActivity(),
+//            //                            DetailActivity.class);
+//            //
+//            //                    //TODO change position to id
+//            ////                i.putExtra(DetailActivity.EXTRA_POSITION, position);
+//            //                    i.putExtra(DetailActivity.ARGS_ID, (int) v.getTag());
+//            //                    startActivityForResult(i, 0);
+//            //                }
+//            //            });
+//
+//            //            Movies = MovieSingleton.get(context).getMovies();
+//            Post mv = Posts.get(position);
+//
+//            image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
+//
+//
+//            textTitle.setText(mv.getmTitle());
+//            textDescription.setText(mv.getmDescription());
+//            return convertView;
+//        }
+//    }
+
 }
