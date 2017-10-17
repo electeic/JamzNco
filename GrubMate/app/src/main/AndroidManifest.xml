@@ -61,7 +61,8 @@
         <activity android:name=".PostActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".RequestActivity" />
-        <activity android:name=".ViewRequestNotificationActivity"></activity>
+        <activity android:name=".ViewRequestNotificationActivity" />
+        <activity android:name=".createsSubscriptionActivity"></activity>
     </application>
 
 </manifest>

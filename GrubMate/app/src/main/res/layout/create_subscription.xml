@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/subscriptionFormTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Subscription for Food Form"
+                        android:textAlignment="center"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:id="@+id/requiredLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="*fields required"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp">
+
+                    <EditText
+                        android:id="@+id/subscription_titleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Title of Subscription *" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <Button
+                        android:id="@+id/subscription_cat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Choose Category(s)*"
+                        android:onClick="clickCategories"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/subscription_homemadeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="20dp"
+                            android:text="Homemade?"
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
+
+                        <CheckBox
+                            android:id="@+id/subscription_homemadeCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/dietaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Dietary Restrictions (optional)" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/tagsText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Custom Tag(s) *" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <Button
+                                android:id="@+id/subscription_startDateButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectStartDate"
+                                android:text="Start Date: * " />
+
+                            <Button
+                                android:id="@+id/subscription_startTimeButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectStartTime"
+                                android:text="Start Time: *" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/subscription_endDateButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectEndDate"
+                                android:text="End Date: *" />
+
+                            <Button
+                                android:id="@+id/subscription_endTimeButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectEndTime"
+                                android:text="End Time: *" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/subscription_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:hint="Description *"/>
+                </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/subscription_groups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Group(s)*"
+                    android:onClick="clickGroups"
+                    />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/subscription_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Submit" />
+
+                    <Button
+                        android:id="@+id/subscription_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Cancel" />
+
+
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="27dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/gmlogo"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="16dp" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
