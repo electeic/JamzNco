@@ -41,9 +41,15 @@ public class ViewNotificationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
-    ArrayList<Notification> notifications = new ArrayList<>();
     ListView list;
     NotifAdapter adapter;
+
+/*
+            THIS IS FOR DYNAMIC MAYBE
+            ArrayList<Notification> notifications;
+            IF YES THEN DELETE THE BOTTOM ONE
+ */
+    ArrayList<Notification> notifications = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 

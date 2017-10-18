@@ -29,7 +29,6 @@ public class ViewSubscriptionsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
     ListView list;
     SubscriptionAdapter adapter;
 
@@ -37,6 +36,15 @@ public class ViewSubscriptionsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
+
+    /*
+        THIS IS FOR DYNAMIC MAYBE NOT REALLY SURE
+        private ArrayList<Subscription> subscriptions;
+
+        IF IT IS THEN DELETE THE BOTTOM ONE
+     */
+    private ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -53,10 +61,21 @@ public class ViewSubscriptionsFragment extends Fragment {
      * @return A new instance of fragment ViewSubscriptionsFragment.
      */
     // TODO: Rename and change types and number of parameters
+
+
+    /*
+        THIS IS FOR DYNAMIC
+        public static ViewSubscriptionsFragment newInstance(ArrayList<Subscription> subscriptions){
+     */
     public static ViewSubscriptionsFragment newInstance(int pos) {
         ViewSubscriptionsFragment fragment = new ViewSubscriptionsFragment();
         Bundle args = new Bundle();
-        args.putInt(ViewSubscriptionsActivity.SUBSCRIPTION, pos);
+        /*
+            THIS IS FOR DYNAMIC
+             args.putInt(ViewSubscriptionsActivity.GET_SUBSCRIPTION, subscriptions);
+
+         */
+        args.putInt(ViewSubscriptionsActivity.GET_SUBSCRIPTION, pos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,6 +104,10 @@ public class ViewSubscriptionsFragment extends Fragment {
         return v;
     }
     private void initComponents(View v){
+        /*
+            subscriptions = (ArrayList<Subscription>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_SUBSCRIPTION);
+         */
+
         adapter = new SubscriptionAdapter(getActivity());
         list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
