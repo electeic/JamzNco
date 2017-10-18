@@ -86,6 +86,16 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/num_portions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/detail_UserAndPic"
+                android:layout_marginTop="10dp"
+                android:text="Portions"
+                android:textSize="20dp" />
+
+            <TextView
                 android:id="@+id/tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,6 +124,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Categories"
                 android:textSize="20dp" />
+
 
             <TextView
                 android:id="@+id/description"

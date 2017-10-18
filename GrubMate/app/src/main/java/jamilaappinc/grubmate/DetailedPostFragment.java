@@ -40,7 +40,9 @@ public class DetailedPostFragment extends Fragment {
     TextView fDate;
     TextView fStartTime;
     TextView fEndTime;
+    TextView fRating;
     Button fRequestButton;
+    TextView fServings;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
     android.support.design.widget.FloatingActionButton floatButton;
@@ -111,6 +113,8 @@ public class DetailedPostFragment extends Fragment {
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
         fRequestButton = (Button) v.findViewById(R.id.requestButton);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_detailPost);
+        fServings = (TextView) v.findViewById(R.id.num_portions);
+        fRating = (TextView) v.findViewById(R.id.userRatings);
 
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +145,9 @@ public class DetailedPostFragment extends Fragment {
                     fPostName.setText(n.getmTitle());
 //                    fCategories.setText(n.getmCategories());
                     fDescription.setText(n.getmDescription());
-
+                    String s = Integer.toString(n.getmServings()) + " Shares Left";
+                    fServings.setText(s);
+//                    String s2 = "Rating " + Float.toString();
 //                    fProfilePicture
 //                    fFoodPicture;
 //                    fTags.setText(); //passes in an array so o.o
@@ -149,7 +155,7 @@ public class DetailedPostFragment extends Fragment {
 //                    fCategories.setText(n.getmCategories());
 //                    if(n.get)
 //                    fHomeOrRestuarant.setText();
-//                    TextView fDate;
+//                    fDate;
 
                     fStartTime.setText(n.getmStartDate().toString());
                     fEndTime.setText(n.getmEndDate().toString());

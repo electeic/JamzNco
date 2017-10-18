@@ -285,7 +285,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         post.setmId(key);
                         databaseRef.setValue(post);
                     }
-                    getActivity().finish();
 //
                 }
                 else{
@@ -293,6 +292,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
 
                 }
+
+                getActivity().finish();
             }
 
         });
@@ -305,9 +306,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     {
         if(filePath != null) {
 
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Uploading...");
-            progressDialog.show();
+//            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//            progressDialog.setMessage("Uploading...");
+//            progressDialog.show();
             final String key2 = key;
 
             StorageReference riversRef = mStorageRef.child("images/" + key + ".jpg");
@@ -318,9 +319,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Get a URL to the uploaded content
 //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
-                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
                             uploadMeta(downloadUri.toString(), key2);
                         }
                     })
@@ -329,14 +330,14 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         public void onFailure(@NonNull Exception exception) {
                             // Handle unsuccessful uploads
                             // ...
-                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+//                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+//                            progressDialog.dismiss();
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-                    progressDialog.setMessage(((int)progress) + "% uploaded");
+//                    progressDialog.setMessage(((int)progress) + "% uploaded");
                 }
             });
         }
@@ -431,7 +432,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
 //        FirebaseRef.child(id).setValue(picUri); //part of og code
 
-        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
     }
 
 //    /*
