@@ -160,7 +160,7 @@ public class MainFragment extends Fragment {
 
 
         new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.searchView, getActivity()))
+                .setTarget(new ViewTarget(R.id.active_post_list, getActivity()))
                 .setContentTitle("Posts made")
                 .setContentText("Click to more details about the post.")
                 .hideOnTouchOutside()
