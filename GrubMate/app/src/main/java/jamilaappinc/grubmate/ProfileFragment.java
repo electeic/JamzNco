@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -38,6 +39,7 @@ public class ProfileFragment extends Fragment {
 
     private TextView nameText;
     private TextView ratingText;
+    private ListView myPosts;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -76,6 +78,7 @@ public class ProfileFragment extends Fragment {
 
         nameText = (TextView)v.findViewById(R.id.nameText);
         ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
+        myPosts = (ListView)v.findViewById(R.id.profile_postList);
 
         System.out.println("READING DB NOW...");
 
@@ -116,6 +119,8 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
         return v;
     }
 
