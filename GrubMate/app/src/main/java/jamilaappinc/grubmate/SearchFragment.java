@@ -164,7 +164,46 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void populateView(View v, Post model, int position) {
+            // get references to row widgets
+            // copy data from model to widgets
+            boolean isFriendPost = false;
+//
+            Intent i = getActivity().getIntent();
+//
+//            //reads in userid, username, and friends from loginactivity
+            currUserId = i.getStringExtra(IDString);
+            currUserName = i.getStringExtra("Name");
+            userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
+
+//            for (int j = 0; j < userFriends.size(); j++) {
+//                String x = model.getmAuthorId();
+//
+//                if (x.equals(userFriends.get(j))) {
+//
+//                    System.out.println("this_is_true");
+            isFriendPost = true;
+//                }
+//            }
+
+            //System.out.println("USFRIENDPOST" + isFriendPost);
+            if (isFriendPost) {
+                ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
+
+                Glide.with(SearchFragment.this)
+                        .load(model.getmPhotos())
+                        .centerCrop()
+                        .placeholder(R.drawable.hamburger)
+                        .crossFade()
+                        .into(mImage);
+
+                TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);
+                TextView pPostTitle = (TextView) v.findViewById(R.id.listNoteTitle);
+
+
+                pPostContent.setText(model.getmTitle());
+                pPostTitle.setText(model.getmDescription());
+            }
         }
     }
 }
