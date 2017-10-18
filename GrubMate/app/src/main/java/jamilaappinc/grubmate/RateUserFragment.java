@@ -16,6 +16,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 
 /**
  * TextView rateUser_name : Where we put in the user getting rated's name
@@ -77,7 +80,6 @@ public class RateUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Rate and write a review for this user!", Toast.LENGTH_LONG).show();
         initGUIComponents(v);
         addListeners();
         fillPage(notification.getmFromUser().getName());
@@ -91,6 +93,16 @@ public class RateUserFragment extends Fragment {
         ratingAmt = (TextView) v.findViewById(R.id.rateUser_ratingText);
         review = (EditText)v.findViewById(R.id.rateUser_review);
         submit = (Button) v.findViewById(R.id.rateUser_submitButton);
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.rateUser_ratingBar, getActivity()))
+                .setContentTitle("Rating/Review")
+                .setContentText("Give users a rating and review.")
+                .hideOnTouchOutside()
+                .build();
     }
 
     private void fillPage(String _userName){

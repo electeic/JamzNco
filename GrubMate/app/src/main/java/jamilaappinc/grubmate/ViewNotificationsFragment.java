@@ -98,7 +98,6 @@ public class ViewNotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_notifications, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Viewing your notifications!", Toast.LENGTH_LONG).show();
         initComponents(v);
         populateList();
         list.setAdapter(adapter);

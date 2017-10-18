@@ -95,7 +95,6 @@ public class ViewSubscriptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Viewing your subscriptions!", Toast.LENGTH_LONG).show();
         populateList();
         initComponents(v);
         addListeners();;

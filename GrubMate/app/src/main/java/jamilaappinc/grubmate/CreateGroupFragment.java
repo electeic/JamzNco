@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,8 +62,24 @@ public class CreateGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Toast.makeText(getActivity().getApplicationContext(), "Add your friends to create a group!", Toast.LENGTH_LONG).show();
         return inflater.inflate(R.layout.fragment_create_group, container, false);
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
+                .setContentTitle("Add button")
+                .setContentText("Add more members to your group.")
+                .hideOnTouchOutside()
+                .build();
+
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.createGroup_createButton, getActivity()))
+                .setContentTitle("Create button")
+                .setContentText("Create your Grubmate group.")
+                .hideOnTouchOutside()
+                .build();
     }
 
 /*    // TODO: Rename method, update argument and hook method into UI event

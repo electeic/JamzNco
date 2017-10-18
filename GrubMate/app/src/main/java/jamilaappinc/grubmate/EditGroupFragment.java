@@ -17,6 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import org.w3c.dom.Text;
 
 
@@ -75,8 +78,6 @@ public class EditGroupFragment extends Fragment {
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
-        Toast.makeText(getActivity().getApplicationContext(), "Add/Delete your friends to edit a group!", Toast.LENGTH_LONG).show();
-
 
         return v;
     }
@@ -89,6 +90,16 @@ public class EditGroupFragment extends Fragment {
         submitButton =(Button)v.findViewById(R.id.editGroup_submitButton);
         deleteAllButton = (Button)v.findViewById(R.id.editGroup_deleteButton);
 
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.editGroup_deleteButton, getActivity()))
+                .setContentTitle("Remove members")
+                .setContentText("Choose members you want to delete.")
+                .hideOnTouchOutside()
+                .build();
     }
 
     private void addListeners(){

@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.util.ArrayList;
 
 
@@ -41,8 +44,6 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-
-        Toast.makeText(getActivity().getApplicationContext(), "Click on an option to be redirected to that page!.", Toast.LENGTH_LONG).show();
 
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
@@ -156,6 +157,16 @@ public class MenuFragment extends Fragment {
 
 
         return v;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
+                .setContentTitle("Menu options")
+                .setContentText("Choose an option to be redirected to.")
+                .hideOnTouchOutside()
+                .build();
     }
 
 }

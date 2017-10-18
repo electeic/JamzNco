@@ -41,7 +41,6 @@ public class ViewRequestNotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_request_notification, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can accept or deny the request!", Toast.LENGTH_LONG).show();
         initComponents(v);
         addListeners();
         fillInScreen();

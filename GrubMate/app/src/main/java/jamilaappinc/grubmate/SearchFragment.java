@@ -32,6 +32,8 @@ import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -109,11 +111,6 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         //find views
         addListeners();
 
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
-
-
-
-
         return v;
     }
 
@@ -122,6 +119,17 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
     CheckBox homeMade;
      */
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.search_title, getActivity()))
+                .setContentTitle("Advanced Search")
+                .setContentText("Make filtered searches to see certain posts.")
+                .hideOnTouchOutside()
+                .build();
+    }
+
 
     private void initComponents(View v){
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);

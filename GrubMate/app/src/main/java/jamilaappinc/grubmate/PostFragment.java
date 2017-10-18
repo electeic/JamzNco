@@ -24,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -137,8 +139,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
 
-        Toast.makeText(getActivity().getApplicationContext(), "Fill out the information to create a post!", Toast.LENGTH_LONG).show();
-
         initGUIComp(v);
         addListeners();
 
@@ -173,6 +173,15 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     }
 
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.post_add_picture, getActivity()))
+                .setContentTitle("Add images")
+                .setContentText("Add images to show your post.")
+                .hideOnTouchOutside()
+                .build();
+    }
 
 
     /**

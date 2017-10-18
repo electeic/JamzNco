@@ -89,8 +89,6 @@ public class ViewGroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can view your groups!", Toast.LENGTH_LONG).show();
-
         populateList();
         initComponents(v);
         list.setAdapter(adapter);

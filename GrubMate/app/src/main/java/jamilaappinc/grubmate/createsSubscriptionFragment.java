@@ -14,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
@@ -105,7 +107,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Create a subscription to be notified of all matching posts!", Toast.LENGTH_LONG).show();
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText) v.findViewById(R.id.subscription_titleText);
 
@@ -124,6 +125,23 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
         return v;
     }
+
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        new ShowcaseView.Builder(getActivity())
+//                .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
+//                .setContentTitle("Add button")
+//                .setContentText("Add more members to your group.")
+//                .hideOnTouchOutside()
+//                .build();
+//
+//        new ShowcaseView.Builder(getActivity())
+//                .setTarget(new ViewTarget(R.id.createGroup_createButton, getActivity()))
+//                .setContentTitle("Create button")
+//                .setContentText("Create your Grubmate group.")
+//                .hideOnTouchOutside()
+//                .build();
+//    }
 
     private void initGUIComp(View v){
         cancelButton = (Button) v.findViewById(R.id.subscription_cancel);
