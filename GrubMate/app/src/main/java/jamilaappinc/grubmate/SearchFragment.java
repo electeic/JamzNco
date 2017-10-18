@@ -154,7 +154,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
-                intent.putExtra("ID",currUserId);
+                intent.putExtra ("ID",currUserId);
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
             }

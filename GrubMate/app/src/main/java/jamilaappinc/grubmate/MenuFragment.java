@@ -163,7 +163,6 @@ public class MenuFragment extends Fragment {
         fLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getActivity().finish();
                 FacebookSdk.sdkInitialize(FacebookSdk.getApplicationContext());
                 LoginManager.getInstance().logOut();
                 Intent intent =  new Intent(getActivity(), LoginActivity.class);

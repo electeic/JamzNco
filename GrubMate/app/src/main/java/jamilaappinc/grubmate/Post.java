@@ -1,5 +1,9 @@
 package jamilaappinc.grubmate;
 
+import android.widget.Toast;
+
+import com.facebook.FacebookActivity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +14,7 @@ import java.util.Vector;
  * Created by ivanchen on 10/2/17.
  */
 
-public class Post implements Serializable{
+public class Post implements Serializable {
     String mTitle;
     String mDescription;
     String mLocation;
@@ -64,11 +68,11 @@ public class Post implements Serializable{
     public boolean isActive(){
         mActive = Boolean.FALSE;
         Date date = Calendar.getInstance().getTime();
-        if(this.mEndDate.before(date)){
+        //if(this.mEndDate.before(date)){
             if(!outOfServings()){
                 mActive = Boolean.TRUE;
             }
-        }
+        //}
         return mActive;
     }
 
