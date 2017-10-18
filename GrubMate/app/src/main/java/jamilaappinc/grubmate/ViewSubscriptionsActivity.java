@@ -10,6 +10,8 @@ import android.util.Log;
 
 public class ViewSubscriptionsActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+    public static final String SUBSCRIPTION = "subscriptions";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

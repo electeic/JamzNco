@@ -10,6 +10,8 @@ import android.util.Log;
 
 public class RateUserActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+    public static final String GET_RATE_REQUEST = "request";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
@@ -25,9 +27,12 @@ public class RateUserActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
+        Notification request = (Notification) getIntent().getSerializableExtra(GET_RATE_REQUEST);
+
+
         if (f == null ) {
             //TODO modify for id
-            f = RateUserFragment.newInstance(pos);
+            f = RateUserFragment.newInstance(request);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

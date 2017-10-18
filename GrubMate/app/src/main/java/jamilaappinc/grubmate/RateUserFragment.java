@@ -3,6 +3,7 @@ package jamilaappinc.grubmate;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,7 @@ public class RateUserFragment extends Fragment {
     private RatingBar ratingBar;
     private EditText review;
     private Button submit;
+    private Notification notification;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -53,10 +55,10 @@ public class RateUserFragment extends Fragment {
      * @return A new instance of fragment RateUserFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RateUserFragment newInstance(int pos) {
+    public static RateUserFragment newInstance(Notification notification) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pos);
         RateUserFragment fragment = new RateUserFragment();
+        args.putSerializable(RateUserActivity.GET_RATE_REQUEST, notification);
         fragment.setArguments(args);
         return fragment;
 
@@ -77,11 +79,12 @@ public class RateUserFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
         initGUIComponents(v);
         addListeners();
-        fillPage("THIS IS TEMP NAME");
+        fillPage(notification.getmFromUser().getName());
         return v;
     }
 
     private void initGUIComponents(View v){
+        notification = (Notification)getArguments().getSerializable(RateUserActivity.GET_RATE_REQUEST);
         userName = (TextView) v.findViewById(R.id.rateUser_name);
         ratingBar = (RatingBar) v.findViewById(R.id.rateUser_ratingBar);
         ratingAmt = (TextView) v.findViewById(R.id.rateUser_ratingText);
@@ -102,6 +105,10 @@ public class RateUserFragment extends Fragment {
                     //if the rating isn't 0 then you can submit the rating
                     Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB" , Toast.LENGTH_SHORT).show();
                     Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), null);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivityForResult(intent,0);
+                    getActivity().finish();
+
                 }else{
                     AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                     adb.setTitle("Zero Rating?");
@@ -109,15 +116,18 @@ public class RateUserFragment extends Fragment {
                     adb.setNegativeButton("Cancel", null);
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            /*Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivityForResult(intent,0);
-                            getActivity().finish();*/
+
                             Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & submit rating to DB" , Toast.LENGTH_SHORT).show();
                             Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), null);
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivityForResult(intent,0);
+                            getActivity().finish();
 
                         }});
                     adb.show();
                 }
+
+
 
             }
         });

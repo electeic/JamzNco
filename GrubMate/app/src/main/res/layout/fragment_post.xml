@@ -163,7 +163,8 @@
                 android:id="@+id/tagsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Custom Tag(s) *" />
+                android:textSize="16dp"
+                android:hint="Custom Tag(s) * (separate tags with commas) " />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout

@@ -8,8 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class ViewNotificationsActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+    public static final String GET_ALL_NOTIFICATIONS = "all notifications";
+    private ArrayList<Notification> notification = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +31,22 @@ public class ViewNotificationsActivity extends AppCompatActivity {
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
+        /*
+            THE LINE FOR SENDING IN ALL OF THE USER'S NOTIFICATIONS VIA INTENT
+
+            notification = getIntent().getSerializableExtra(GET_ALL_NOTIFICATIONS);
+
+         */
 
         if (f == null ) {
             //TODO modify for id
             f = ViewNotificationsFragment.newInstance(pos);
+            /*
+                LINE FOR SENDING ARRAYLIST TO FRAGMENT:
+
+                f. ViewNotificationsFragment.newInstance(notification);
+
+             */
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

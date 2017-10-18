@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class ViewRequestNotificationActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+    public static final String GET_REQUEST = "request";
 
 
     @Override
@@ -27,9 +28,12 @@ public class ViewRequestNotificationActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
+        Notification request = (Notification) getIntent().getSerializableExtra(GET_REQUEST);
+
+
         if (f == null ) {
             //TODO modify for id
-            f = ViewRequestNotificationFragment.newInstance(pos);
+            f = ViewRequestNotificationFragment.newInstance(request);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

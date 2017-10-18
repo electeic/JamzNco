@@ -19,6 +19,8 @@ import java.util.Vector;
 public class ViewGroupsActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
+    public static final String GET_ALL_GROUPS = "all groups";
+
     private ArrayList<Group> groups = new ArrayList<Group>();
 
     @Override
@@ -37,9 +39,24 @@ public class ViewGroupsActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
+        /*
+            THE LINE FOR SENDING IN ALL OF THE USER'S GROUPS VIA INTENT
+
+            group = getIntent().getSerializableExtra(GET_ALL_GROUPS);
+
+         */
+
+
         if (f == null ) {
             //TODO modify for id
             f = ViewGroupsFragment.newInstance(pos);
+
+            /*
+                LINE FOR SENDING ARRAYLIST TO FRAGMENT:
+
+                f. ViewGroupsFragment.newInstance(group);
+
+             */
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

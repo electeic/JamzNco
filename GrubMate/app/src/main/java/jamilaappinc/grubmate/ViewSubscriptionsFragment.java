@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -26,9 +28,10 @@ import java.util.Vector;
 public class ViewSubscriptionsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
+    ListView list;
+    SubscriptionAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -53,7 +56,7 @@ public class ViewSubscriptionsFragment extends Fragment {
     public static ViewSubscriptionsFragment newInstance(int pos) {
         ViewSubscriptionsFragment fragment = new ViewSubscriptionsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pos);
+        args.putInt(ViewSubscriptionsActivity.SUBSCRIPTION, pos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,10 +65,11 @@ public class ViewSubscriptionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,11 +77,20 @@ public class ViewSubscriptionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
         populateList();
-        SubscriptionAdapter adapter = new SubscriptionAdapter(getActivity());
-        ListView list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
+        initComponents(v);
+        addListeners();;
         list.setAdapter(adapter);
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
+
+        return v;
+    }
+    private void initComponents(View v){
+        adapter = new SubscriptionAdapter(getActivity());
+        list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+    }
+
+    private void addListeners(){
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,9 +99,17 @@ public class ViewSubscriptionsFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        return v;
-    }
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Subscription group = (Subscription) list.getItemAtPosition(position);
+                subscriptions.remove(position);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE SUBSCRIPTION FROM DB" , Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     /**
      * NOTE: I added another constructer into Subscription to make testing easier
      *

@@ -24,8 +24,10 @@ public class Post implements Serializable{
     boolean mActive;
     boolean homemade;
 
-    public Post(String title){
+    public Post(String title, int servings){
+
         mTitle = title;
+        mServings = servings;
     }
 
 

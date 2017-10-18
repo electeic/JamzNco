@@ -58,10 +58,21 @@ public class ViewNotificationsFragment extends Fragment {
      * @return A new instance of fragment ViewNotificationsFragment.
      */
     // TODO: Rename and change types and number of parameters
+
+     /*
+            LINE FOR GETTING ALL THE NOTIFICATIONS :
+            public static ViewNotificationsFragment new Instance(ArrayList<Notification> notifications){
+
+       */
     public static ViewNotificationsFragment newInstance(int pos) {
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
         ViewNotificationsFragment fragment = new ViewNotificationsFragment();
+        /*
+            LINE FOR GETTING ALL THE GROUPS :
+            args.putSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
+
+         */
         fragment.setArguments(args);
         return fragment;
 
@@ -81,16 +92,25 @@ public class ViewNotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_notifications, container, false);
+        initComponents(v);
         populateList();
-        adapter = new NotifAdapter(getActivity());
-        list = (ListView) v.findViewById(R.id.notifications_list);
         list.setAdapter(adapter);
 
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         addListeners();
 
 
         return v;
+    }
+
+    private void initComponents(View v){
+        list = (ListView) v.findViewById(R.id.notifications_list);
+        adapter = new NotifAdapter(getActivity());
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+
+        /*
+            LINE FOR GETTING ALL NOTIFICATIONS
+            notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
+         */
     }
 
 
@@ -114,12 +134,14 @@ public class ViewNotificationsFragment extends Fragment {
                     /*if notification is a request notification then go to the request page
                         to show the request information
                     */
+
                     Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
-//                    i.putExtra();
+                    i.putExtra(ViewRequestNotificationActivity.GET_REQUEST,notification);
                     startActivity(i);
 
                 }else if (notification instanceof RateNotification){
                     Intent i = new Intent(getActivity(), RateUserActivity.class);
+                    i.putExtra(RateUserActivity.GET_RATE_REQUEST,notification);
                     startActivity(i);
                 }
                 else{
@@ -139,10 +161,10 @@ public class ViewNotificationsFragment extends Fragment {
 
     private void populateList() {
         //NOTE: I created another constructer in Post so that testing would be easier
-        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RateNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Bless my soul" ,1), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RequestedNotification(new User("Chipotle Cha", "pic"),new Post("Eating food",3), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new AcceptedNotification(new User("Linda Belcher", "pic"),new Post("Posty post post",4), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RateNotification(new User("Tina Fey", "pic"),new Post("Hamburgers",3), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
