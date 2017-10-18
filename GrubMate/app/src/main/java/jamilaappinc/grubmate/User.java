@@ -9,12 +9,12 @@ import java.util.Vector;
  */
 
 public class User implements Serializable {
-    Vector<Post> userPosts;
-    Vector<Request> userRequests;
-    Vector<Group> userGroups;
-    Vector<Rating> ratings;
-    Vector<Notification> notifications;
-    Vector<Subscription> subscriptions;
+    ArrayList<Post> userPosts;
+    ArrayList<Request> userRequests;
+    ArrayList<Group> userGroups;
+    ArrayList<Rating> ratings;
+    ArrayList<Notification> notifications;
+    ArrayList<Subscription> subscriptions;
     ArrayList<String> friends;
 
     double avgRating;
@@ -31,7 +31,95 @@ public class User implements Serializable {
 
     }
 
-    public Vector<Post> getUserPosts() {
+    public ArrayList<Post> getUserPosts() {
+        return userPosts;
+    }
+
+    public void setUserPosts(ArrayList<Post> userPosts) {
+        this.userPosts = userPosts;
+    }
+
+    public ArrayList<Request> getUserRequests() {
+        return userRequests;
+    }
+
+    public void setUserRequests(ArrayList<Request> userRequests) {
+        this.userRequests = userRequests;
+    }
+
+    public ArrayList<Group> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(ArrayList<Group> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    public ArrayList<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(ArrayList<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(ArrayList<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public ArrayList<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(ArrayList<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /* public Vector<Post> getUserPosts() {
         return userPosts;
     }
 
@@ -117,9 +205,9 @@ public class User implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
+    }*/
 
-    public User(Vector<Post> userPosts, Vector<Request> userRequests, Vector<Group> userGroups, Vector<Rating> ratings, Vector<Notification> notifications, Vector<Subscription> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
+    public User(ArrayList<Post> userPosts, ArrayList<Request> userRequests, ArrayList<Group> userGroups, ArrayList<Rating> ratings, ArrayList<Notification> notifications, ArrayList<Subscription> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
 
         this.userPosts = userPosts;
         this.userRequests = userRequests;
