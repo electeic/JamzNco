@@ -52,6 +52,7 @@ public class DetailedPostFragment extends Fragment {
     private DatabaseReference dbRefNotes;
     private DatabaseReference dbNoteToEdit;
     DatabaseReference dbRefCount;
+    Post n;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
 
@@ -120,6 +121,7 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
+                intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 startActivityForResult(intent, 0);
                 //getActivity().finish();
             }
@@ -141,21 +143,40 @@ public class DetailedPostFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // convert this "data snapshot" to a model class
-                    Post n = dataSnapshot.getValue(Post.class);
+                    n = dataSnapshot.getValue(Post.class);
                     fPostName.setText(n.getmTitle());
 //                    fCategories.setText(n.getmCategories());
-                    fDescription.setText(n.getmDescription());
+                    String desc = "Description: " + n.getmDescription();
+                    fDescription.setText(desc);
+
                     String s = Integer.toString(n.getmServings()) + " Shares Left";
                     fServings.setText(s);
 //                    String s2 = "Rating " + Float.toString();
 //                    fProfilePicture
-//                    fFoodPicture;
-//                    fTags.setText(); //passes in an array so o.o
+
+                    String Tags = "Tags: ";
+                    for(String sw: n.getmTags())
+                    {
+                        Tags += sw + ", ";
+                    }
+                    fTags.setText(Tags); //passes in an array so o.o
 //                    fDietaryInfo.setText(n);
-//                    fCategories.setText(n.getmCategories());
-//                    if(n.get)
-//                    fHomeOrRestuarant.setText();
-//                    fDate;
+
+                    String Cates = "Categories: ";
+                    for(String sw: n.getmCategories())
+                    {
+                        Cates += sw + ", ";
+                    }
+                    fCategories.setText(Cates);
+
+                    if(n.getHomemade())
+                    {
+                        fHomeOrRestuarant.setText("Homemade");
+                    }
+                    else
+                    {
+                        fHomeOrRestuarant.setText("Resturaunt");
+                    }
 
                     fStartTime.setText(n.getmStartDate().toString());
                     fEndTime.setText(n.getmEndDate().toString());
