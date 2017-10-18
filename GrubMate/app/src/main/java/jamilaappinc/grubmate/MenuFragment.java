@@ -15,8 +15,6 @@ import android.widget.TextView;
  */
 public class MenuFragment extends Fragment {
 
-    public static final String IDString = "MenuFRAG.ID";
-
     TextView fHome;
     TextView fProfile;
     TextView fNotifications;
@@ -42,21 +40,21 @@ public class MenuFragment extends Fragment {
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
 
-        fHome = (TextView) v.findViewById(R.id.home);
-        fProfile = (TextView) v.findViewById(R.id.profile);
-        fNotifications = (TextView) v.findViewById(R.id.notifications);
-        fPost = (TextView) v.findViewById(R.id.post);
-        fGroups = (TextView) v.findViewById(R.id.groups);
-        fSubscriptions = (TextView) v.findViewById(R.id.subscriptions);
-        fSearch = (TextView) v.findViewById(R.id.search);
-        fLogout = (TextView) v.findViewById(R.id.logout);
-        fCreateSubscription = (TextView) v.findViewById(R.id.createSubscription);
+        fHome = (TextView)v.findViewById(R.id.home);
+        fProfile = (TextView)v.findViewById(R.id.profile);
+        fNotifications = (TextView)v.findViewById(R.id.notifications);
+        fPost = (TextView)v.findViewById(R.id.post);
+        fGroups = (TextView)v.findViewById(R.id.groups);
+        fSubscriptions = (TextView)v.findViewById(R.id.subscriptions);
+        fSearch = (TextView)v.findViewById(R.id.search);
+        fLogout = (TextView)v.findViewById(R.id.logout);
+        fCreateSubscription = (TextView)v.findViewById(R.id.createSubscription);
 
         fHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -65,7 +63,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), createsSubscriptionActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
                 startActivityForResult(intent, 0);
             }
         });
@@ -74,7 +72,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
+                System.out.println("IN MENU FRAGMENT, ID IS" + id);
                 startActivityForResult(intent, 0);
             }
         });
@@ -83,7 +82,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
 
                 startActivityForResult(intent, 0);
             }
@@ -93,7 +92,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
 
                 startActivityForResult(intent, 0);
             }
@@ -103,7 +102,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
 
                 startActivityForResult(intent, 0);
             }
@@ -113,7 +112,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
-                intent.putExtra("ID",id);
+                intent.putExtra("ID", id);
 
                 startActivityForResult(intent, 0);
             }

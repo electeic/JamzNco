@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login);
 
         //THIS IS TO TEST STUFF, IF YOU NEED TO WORK ON DIFFERENT SCREEN
-//        startSplashTimer();
+        //        startSplashTimer();
         ////////////////////////////////////////////////////////////////
 
         //get intent data
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
         mCallbackManager = CallbackManager.Factory.create();
-        final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        final LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
 
         loginButton.setReadPermissions("email", "public_profile", "user_friends");
 
@@ -90,14 +90,15 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     JSONArray rawName = response.getJSONObject().getJSONArray("data");
 
-                                    for(int i = 0; i < rawName.length(); i++){
+                                    for (int i = 0; i < rawName.length(); i++) {
                                         currUsers.add(Integer.toString(rawName.getJSONObject(i).getInt("id")));
                                     }
-                                    intent.putExtra("Users",currUsers);//places users vector in intent and passes to main screen
-                                  startActivity(intent);
-                                  finish();
-                                    Log.d(TAG,rawName.toString());
-                                } catch (JSONException e) {
+                                    intent.putExtra("Users", currUsers);//places users vector in intent and passes to main screen
+                                    startActivity(intent);
+                                    finish();
+                                    Log.d(TAG, rawName.toString());
+                                }
+                                catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -110,9 +111,10 @@ public class LoginActivity extends AppCompatActivity {
                 GraphRequestAsyncTask request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject user, GraphResponse graphResponse) {
-                        intent.putExtra("Name",user.optString("name"));
-                        intent.putExtra("ID",user.optString("id"));
-                        writeNewUser(user.optString("id"),user.optString("name"),"fuckPic",currUsers);
+                        intent.putExtra("Name", user.optString("name"));
+                        intent.putExtra("ID", user.optString("id"));
+                        System.out.println("IN LOGIN, ID IS" + user.optString("id"));
+                        writeNewUser(user.optString("id"), user.optString("name"), "fuckPic", currUsers);
                         graphRequestAsyncTask.executeAsync();
 
                     }
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startSplashTimer() {
         try {
             Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+            timer.schedule(new TimerTask(){
 
                 @Override
                 public void run() {
@@ -163,7 +165,8 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
             }, 3000);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -178,8 +181,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void writeNewUser(String userId, String name, String picture, ArrayList<String> friends) {
         DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
-        User u = new User(name,picture);
-        u.setmId(userId);
+        User u = new User(name, picture);
+        u.setId(userId);
         u.setFriends(friends);
 
         databaseRef.setValue(u);

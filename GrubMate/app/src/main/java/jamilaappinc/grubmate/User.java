@@ -8,112 +8,129 @@ import java.util.Vector;
  * Created by ivanchen on 10/2/17.
  */
 
-public class User implements Serializable{
-    Vector<Post> mUserPosts;
-    Vector<Request> mUserRequests;
-    Vector<Group> mUserGroups;
-    Vector<Rating> mRatings;
-    Vector<Notification> mNotifications;
-    Vector<Subscription> mSubscriptions;
-    ArrayList<String> mFriends;
+public class User implements Serializable {
+    Vector<Post> userPosts;
+    Vector<Request> userRequests;
+    Vector<Group> userGroups;
+    Vector<Rating> ratings;
+    Vector<Notification> notifications;
+    Vector<Subscription> subscriptions;
+    ArrayList<String> friends;
 
-    double mAvgRating;
-    String mName;
-    String mProfilePhoto;
-    String mId;
+    double avgRating;
+    String name;
+    String profilePhoto;
+    String id;
 
     public User(String mName, String mPic) {
-        this.mName = mName;
-        this.mProfilePhoto = mPic;
+        this.name = mName;
+        this.profilePhoto = mPic;
+    }
+
+    public User() {
+
     }
 
     public Vector<Post> getUserPosts() {
-        return mUserPosts;
+        return userPosts;
     }
 
-    public void addUserPost(Post mUserPost) {
-        this.mUserPosts.add(mUserPost);
+    public void setUserPosts(Vector<Post> userPosts) {
+        this.userPosts = userPosts;
     }
 
     public Vector<Request> getUserRequests() {
-        return mUserRequests;
+        return userRequests;
     }
 
-    public void addUserRequest(Request mUserRequest) {
-        this.mUserRequests.add(mUserRequest);
+    public void setUserRequests(Vector<Request> userRequests) {
+        this.userRequests = userRequests;
     }
 
     public Vector<Group> getUserGroups() {
-        return mUserGroups;
+        return userGroups;
     }
 
-    public void addUserGroup(Group group) {
-        this.mUserGroups.add(group);
+    public void setUserGroups(Vector<Group> userGroups) {
+        this.userGroups = userGroups;
     }
 
     public Vector<Rating> getRatings() {
-        return mRatings;
+        return ratings;
     }
 
-    public void setRatings(Vector<Rating> mRatings) {
-        this.mRatings = mRatings;
+    public void setRatings(Vector<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     public Vector<Notification> getNotifications() {
-        return mNotifications;
+        return notifications;
     }
 
     public void setNotifications(Vector<Notification> notifications) {
-        this.mNotifications = notifications;
+        this.notifications = notifications;
     }
 
-    public double getmAvgRating() {
-        return mAvgRating;
+    public Vector<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setAvgRating(double mAvgRating) {
-        this.mAvgRating = mAvgRating;
+    public void setSubscriptions(Vector<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProfilePhoto() {
-        return mProfilePhoto;
+        return profilePhoto;
     }
 
-    public void setProfilePhoto(String mProfilePhoto) {
-        this.mProfilePhoto = mProfilePhoto;
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
-    public String getmId() {
-        return mId;
+    public String getId() {
+        return id;
     }
 
-    public void setmId(String mId) {
-        this.mId = mId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Vector<Subscription> getmSubscription() {
-        return mSubscriptions;
+    public User(Vector<Post> userPosts, Vector<Request> userRequests, Vector<Group> userGroups, Vector<Rating> ratings, Vector<Notification> notifications, Vector<Subscription> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
+
+        this.userPosts = userPosts;
+        this.userRequests = userRequests;
+        this.userGroups = userGroups;
+        this.ratings = ratings;
+        this.notifications = notifications;
+        this.subscriptions = subscriptions;
+        this.friends = friends;
+        this.avgRating = avgRating;
+        this.name = name;
+        this.profilePhoto = profilePhoto;
+        this.id = id;
     }
-
-    public void addmSubscription(Subscription mSubscription) {
-        mSubscriptions.add(mSubscription);
-    }
-
-    public ArrayList<String> getFriends(){
-        return mFriends;
-    }
-
-    public void setFriends(ArrayList<String> newFriends){
-        mFriends = newFriends;
-    }
-
-
 }

@@ -4,14 +4,22 @@ package jamilaappinc.grubmate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,10 +31,12 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public String TAG = "TAG";
     FirebaseListAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
 
+    private TextView nameText;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -43,10 +53,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        //        if (getArguments() != null) {
+        //            mParam1 = getArguments().getString(ARG_PARAM1);
+        //            mParam2 = getArguments().getString(ARG_PARAM2);
+        //        }
 
         database = FirebaseDatabase.getInstance();
         dbRefUsers = database.getInstance().getReference().child("Users");
@@ -61,10 +71,62 @@ public class ProfileFragment extends Fragment {
 
         //get intent data
         Intent i = getActivity().getIntent();
-        String id = i.getStringExtra("ID");
-        
+        final String id = i.getStringExtra("ID");
 
+        nameText = (TextView)v.findViewById(R.id.nameText);
 
+        System.out.println("READING DB NOW...");
+
+        //        ValueEventListener postListener = new ValueEventListener() {
+        //            @Override
+        //            public void onDataChange(DataSnapshot dataSnapshot) {
+        //                // Get Post object and use the values to update the UI
+        //                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+        //                    User user = dataSnapshot.getValue(User.class);
+        //                    System.out.println("USER IS" + user);
+        //                    System.out.println(user.getFriends()+user.getId()+user.getName());
+        //                    //myusername111.setText(model.username);
+        //                }
+        ////                User user = dataSnapshot.getValue(User.class);
+        ////                nameText.setText(user.getName());
+        ////                System.out.println("USER IS" + user);
+        ////                System.out.println(user.getFriends()+user.getmId()+user.getName());
+        //            }
+        //            @Override
+        //            public void onCancelled(DatabaseError databaseError) {
+        //                // Getting Post failed, log a message
+        //                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+        //                // ...
+        //            }
+        //        };
+        //        dbRefUsers.addValueEventListener(postListener);
+
+        dbRefUsers.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                User user = dataSnapshot.getValue(User.class);
+                System.out.println(user.getFriends() + user.getId() + user.getName());
+                System.out.println("ID SENT OVER IS " + id);
+                System.out.println("USER's ID IS" + user.getId());
+                if (user.getId().equals(id)) {
+                    System.out.println("trueee");
+                    nameText.setText(user.getName());
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
         floatButton.setOnClickListener(new View.OnClickListener() {
