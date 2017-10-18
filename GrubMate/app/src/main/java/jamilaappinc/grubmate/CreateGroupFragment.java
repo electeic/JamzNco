@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -58,6 +59,7 @@ public class CreateGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Toast.makeText(getActivity().getApplicationContext(), "Add your friends to create a group!", Toast.LENGTH_LONG).show();
         return inflater.inflate(R.layout.fragment_create_group, container, false);
     }
 

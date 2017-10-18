@@ -105,6 +105,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
+        Toast.makeText(getActivity().getApplicationContext(), "Create a subscription to be notified of all matching posts!", Toast.LENGTH_LONG).show();
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText) v.findViewById(R.id.subscription_titleText);
 

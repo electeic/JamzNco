@@ -137,6 +137,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
 
+        Toast.makeText(getActivity().getApplicationContext(), "Fill out the information to create a post!", Toast.LENGTH_LONG).show();
+
         initGUIComp(v);
         addListeners();
 

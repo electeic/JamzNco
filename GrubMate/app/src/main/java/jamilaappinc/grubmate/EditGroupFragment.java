@@ -75,7 +75,7 @@ public class EditGroupFragment extends Fragment {
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
-
+        Toast.makeText(getActivity().getApplicationContext(), "Add/Delete your friends to edit a group!", Toast.LENGTH_LONG).show();
 
 
         return v;

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -97,6 +98,7 @@ public class DetailedPostFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
+        Toast.makeText(getActivity().getApplicationContext(), "Click REQUEST if you like what you see.", Toast.LENGTH_LONG).show();
 
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);

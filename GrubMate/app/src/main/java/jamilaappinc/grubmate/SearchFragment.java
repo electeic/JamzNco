@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.text.ParseException;
@@ -107,6 +108,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         initComponents(v);
         //find views
         addListeners();
+
+//        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
+
 
 
 
