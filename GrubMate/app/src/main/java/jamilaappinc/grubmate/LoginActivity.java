@@ -113,13 +113,15 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted(JSONObject user, GraphResponse graphResponse) {
                         intent.putExtra("Name", user.optString("name"));
                         intent.putExtra("ID", user.optString("id"));
+                        intent.putExtra("Picture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
                         System.out.println("IN LOGIN, ID IS" + user.optString("id"));
-                        writeNewUser(user.optString("id"), user.optString("name"), "fuckPic", currUsers);
+                        writeNewUser(user.optString("id"), user.optString("name"),
+                                "https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080", currUsers);
                         graphRequestAsyncTask.executeAsync();
 
                     }
                 }).executeAsync();
-
+//graphResponse.getJSONObject().getJSONObject("picture").getJSONObject("data").getString("url")
 
 
             }
