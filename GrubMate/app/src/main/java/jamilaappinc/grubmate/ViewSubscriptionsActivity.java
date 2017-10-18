@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class ViewSubscriptionsActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
-    public static final String GET_SUBSCRIPTION = "subscriptions";
+    public static final String GET_ALL_SUBSCRIPTIONS = "subscriptions";
 
 
     @Override
@@ -29,20 +31,16 @@ public class ViewSubscriptionsActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
-        /*
-            THIS IS FOR DYNAMIC-NESS
-            ArrayList<Subscription> subscriptions = (Subscription) getIntent().getSerializableExtra(GET_SUBSCRIPTION);
+//            THIS IS FOR DYNAMIC-NESS
+            ArrayList<Subscription> subscriptions = (ArrayList<Subscription>) getIntent().getSerializableExtra(GET_ALL_SUBSCRIPTIONS);
 
-         */
 
         if (f == null ) {
             //TODO modify for id
-            f = ViewSubscriptionsFragment.newInstance(pos);
-            /*
-                THIS IS FOR DYNAMIC
+//            f = ViewSubscriptionsFragment.newInstance(pos);
+//                THIS IS FOR DYNAMIC
                 f = ViewSubscriptionsFragment.newInstance(subscriptions);
 
-             */
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

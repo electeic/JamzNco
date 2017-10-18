@@ -56,6 +56,8 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
+    String ID;
+
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
 
 
@@ -102,6 +104,10 @@ public class DetailedPostFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
 
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
         fDate = (TextView) v.findViewById(R.id.date);
@@ -123,8 +129,9 @@ public class DetailedPostFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-                //getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -132,8 +139,9 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-               // getActivity().finish();
+                getActivity().finish();
             }
         });
 

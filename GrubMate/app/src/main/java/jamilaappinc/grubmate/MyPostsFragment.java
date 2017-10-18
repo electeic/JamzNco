@@ -30,6 +30,9 @@ public class MyPostsFragment extends Fragment {
     android.support.design.widget.FloatingActionButton floatButton;
     int _position;
 
+    private String ID;
+
+
 
 
     public MyPostsFragment() {
@@ -50,6 +53,9 @@ public class MyPostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_posts, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         list.setAdapter(adapter);
         addListeners();
@@ -68,7 +74,10 @@ public class MyPostsFragment extends Fragment {
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+  /*              Intent i = getActivity().getIntent();
+                ID = i.getStringExtra("ID");*/
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

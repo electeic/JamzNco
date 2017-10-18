@@ -40,6 +40,8 @@ public class ViewGroupsFragment extends Fragment {
     ListView list;
     GroupsAdapter adapter;
     Button addGroupButton;
+    private String ID;
+
 //    private OnFragmentInteractionListener mListener;
 
     public ViewGroupsFragment() {
@@ -54,21 +56,12 @@ public class ViewGroupsFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    /*
-            LINE FOR GETTING ALL THE GROUPS :
-            public static ViewGroupsFragment new Instance(ArrayList<Group> groups){
-
-       */
-    public static ViewGroupsFragment newInstance(int pos) {
+//            LINE FOR GETTING ALL THE GROUPS :
+    public static ViewGroupsFragment newInstance(ArrayList<Group> groups){
         ViewGroupsFragment fragment = new ViewGroupsFragment();
         Bundle args = new Bundle();
-        /*
-            LINE FOR GETTING ALL THE GROUPS :
-
-            args.putSerializable(ViewGroupsActivity.GET_ALL_GROUPS, group);
-
-         */
-        args.putInt(ARG_PARAM1, pos);
+        args.putSerializable(ViewGroupsActivity.GET_ALL_GROUPS, groups);
+//        args.putInt(ARG_PARAM1, pos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +82,11 @@ public class ViewGroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
-        populateList();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+
+//        populateList();
         initComponents(v);
         list.setAdapter(adapter);
         addListeners();
@@ -105,11 +102,8 @@ public class ViewGroupsFragment extends Fragment {
         addGroupButton = (Button) v.findViewById(R.id.groups_button);
         list = (ListView) v.findViewById(R.id.groups_ListView);
         adapter= new GroupsAdapter(getActivity(), groups);
-
-        /*
-            LINE FOR GETTING ALL GROUPS
-            groups = (ArrayList<Group>)getArguments().getSerializable(EditGroupActivity.GET_GROUP);
-         */
+//            LINE FOR GETTING ALL GROUPS
+        groups = (ArrayList<Group>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_GROUPS);
 
     }
 
@@ -118,6 +112,7 @@ public class ViewGroupsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -128,6 +123,7 @@ public class ViewGroupsFragment extends Fragment {
                 Group group = (Group) list.getItemAtPosition(position);
                 Intent i = new Intent(getActivity(), EditGroupActivity.class);
                 if(group == null)System.out.println("Why");
+                i.putExtra("ID", ID);
                 i.putExtra(EditGroupActivity.GET_GROUP, group);
                 startActivity(i);
 

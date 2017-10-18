@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -39,30 +40,20 @@ public class ViewGroupsActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
-        /*
-            THE LINE FOR SENDING IN ALL OF THE USER'S GROUPS VIA INTENT
+//            THE LINE FOR SENDING IN ALL OF THE USER'S GROUPS VIA INTENT
+            groups = (ArrayList<Group>)getIntent().getSerializableExtra(GET_ALL_GROUPS);
 
-            groups = getIntent().getSerializableExtra(GET_ALL_GROUPS);
-
-         */
 
 
         if (f == null ) {
             //TODO modify for id
-            f = ViewGroupsFragment.newInstance(pos);
-
-            /*
-                LINE FOR SENDING ARRAYLIST TO FRAGMENT:
-
-                f= ViewGroupsFragment.newInstance(groups);
-
-             */
+            f = ViewGroupsFragment.newInstance(groups);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
 
-//        populateList();
+//        populateListView();
 
 
     }
@@ -79,7 +70,7 @@ public class ViewGroupsActivity extends AppCompatActivity {
 //        populateListView();
 //    }
 
-    private void populateListView() {
+   /* private void populateListView() {
         GroupsAdapter adapter= new GroupsAdapter(this, groups);
 //        ListView list = (ListView) findViewById(R.id.GroupsListView);
 //        Log.d("POPULATE", "BOO");

@@ -56,10 +56,13 @@ public class RequestFragment extends Fragment {
 
     Post mPost;
 
+    String ID;
 
 
 
-//    private OnFragmentInteractionListener mListener;
+
+
+    //    private OnFragmentInteractionListener mListener;
     android.support.design.widget.FloatingActionButton floatButton;
 
     public RequestFragment() {
@@ -124,6 +127,10 @@ public class RequestFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_request, container, false);
 
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
         rLocation = (EditText) v.findViewById(R.id.locationText);
@@ -157,18 +164,20 @@ public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
         floatButton.setOnClickListener(new View.OnClickListener() {
 @Override
 public void onClick(View view) {
-        Intent intent = new Intent(getActivity(), MenuActivity.class);
-        startActivityForResult(intent, 0);
-        getActivity().finish();
+            Intent intent = new Intent(getActivity(), MenuActivity.class);
+            intent.putExtra("ID", ID);
+            startActivityForResult(intent, 0);
+            getActivity().finish();
         }
         });
 
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
 public void onClick(View view){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivityForResult(intent,0);
-        getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("ID", ID);
+            startActivityForResult(intent, 0);
+            getActivity().finish();
         }
         });
 
@@ -196,6 +205,7 @@ public void onClick(View view) {
 
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("ID", ID);
             startActivityForResult(intent,0);
             getActivity().finish();
 

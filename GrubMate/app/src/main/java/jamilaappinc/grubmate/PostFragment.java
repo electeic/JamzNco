@@ -68,7 +68,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private String title, dietary, location, servings, tags, date, descriptions, startTimeString, endTimeString,startDateString, endDateString;
     private SimpleDateFormat sdf;
     private Date startDateTime, endDateTime;
-    String ID;
 
     private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<String> groups = new ArrayList<>();
@@ -90,6 +89,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     private Uri filePath;
     Bitmap mBitmap;
+    private String ID;
 
     android.support.design.widget.FloatingActionButton floatButton;
 
@@ -138,6 +138,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         initGUIComp(v);
         addListeners();
@@ -236,7 +239,10 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private void addListeners() {
         floatButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Intent i = getActivity().getIntent();
+                ID = i.getStringExtra("ID");
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -251,6 +257,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                         Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
@@ -282,6 +289,10 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                     Intent i = getActivity().getIntent();
                     ID = i.getStringExtra("ID");
+                    Toast.makeText(getContext(), "The id is "+ID , Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getActivity(), MenuActivity.class);
+
 //
 
 //                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
@@ -297,6 +308,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         databaseRef.setValue(post);
                     }
 
+                    intent.putExtra("ID", ID);
+                    startActivityForResult(intent, 0);
                     getActivity().finish();
 //
                 }
@@ -434,7 +447,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     {
 //        if()
 //        String id = FirebaseRef.push().getKey();
-            Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID);
+        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID);
 
 //        PictureSingleton.get(getActivity()).addMovie(picUri);
 

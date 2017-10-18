@@ -76,6 +76,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     CheckBox homeMade;
 
     SimpleDateFormat sdf;
+
+    private String ID;
+
     private Date startDateTime, endDateTime;
 
     public SearchFragment() {
@@ -107,6 +110,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         //find views
         addListeners();
@@ -154,9 +160,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
-                intent.putExtra("ID",currUserId);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-                //                getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -177,6 +183,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getContext(), "@JAMILAAPPCORP: idk where this goes" , Toast.LENGTH_SHORT).show();
 
             }
 
@@ -191,8 +198,11 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
+                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+
                     }});
                 adb.show();
 

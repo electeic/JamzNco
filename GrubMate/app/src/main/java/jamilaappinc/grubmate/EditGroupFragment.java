@@ -45,6 +45,9 @@ public class EditGroupFragment extends Fragment {
     android.support.design.widget.FloatingActionButton floatButton;
     Button submitButton, deleteAllButton;
 
+    private String ID;
+
+
     int _position;
 
 
@@ -75,6 +78,9 @@ public class EditGroupFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_group, container, false);
         initComp(v);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
@@ -107,6 +113,7 @@ public class EditGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -114,7 +121,15 @@ public class EditGroupFragment extends Fragment {
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Can potentially just send final vector back to DB, if we" +
+                        " go back to home screen then we're going to need to pass the Arraylist of curr users to all" +
+                        " the fragments .... " , Toast.LENGTH_SHORT).show();
+                /*
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("ID", ID);
+                    startActivityForResult(intent, 0);
+                    getActivity().finish();
+                */
             }
         });
 

@@ -63,6 +63,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 
     android.support.design.widget.FloatingActionButton floatButton;
+    String ID;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -107,17 +108,13 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText) v.findViewById(R.id.subscription_titleText);
 
-        floatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
-            }
-        });
+
 
         initGUIComp(v);
         addListeners();
@@ -217,6 +214,15 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     }
 
     private void addListeners(){
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
@@ -226,9 +232,11 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                            /*Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivityForResult(intent,0);
-                            getActivity().finish();*/
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+
 
                     }});
                 adb.show();
@@ -245,7 +253,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                     //all forms filled out correctly
 
 
-                    Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , _homemade.isChecked());
+                    Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),ID , _homemade.isChecked());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     String key = database.getReference("Subscription").push().getKey();
                     DatabaseReference databaseRef = database.getReference().child("Subscription").child(key);
@@ -259,6 +267,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("ID", ID);
                     startActivityForResult(intent,0);
                     getActivity().finish();
 
