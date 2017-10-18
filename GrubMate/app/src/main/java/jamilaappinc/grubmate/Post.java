@@ -29,13 +29,10 @@ public class Post implements Serializable {
     boolean mActive;
     boolean homemade;
 
-    public Post(String title, int servings){
-
-        mTitle = title;
-        mServings = servings;
-    }
-
-
+//    public Post(String title, int servings){
+//        mTitle = title;
+//        mServings = servings;
+//    }
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
@@ -55,11 +52,11 @@ public class Post implements Serializable {
         this.homemade = homemade;
     }
 
-    public Post(String mTitle, String mDescription){
-        this.mTitle = mTitle;
-        this.mDescription = mDescription;
-        mActive = Boolean.TRUE;
-    }
+//    public Post(String mTitle, String mDescription){
+//        this.mTitle = mTitle;
+//        this.mDescription = mDescription;
+//        mActive = Boolean.TRUE;
+//    }
 
     public Post(){
 
@@ -68,11 +65,12 @@ public class Post implements Serializable {
     public boolean isActive(){
         mActive = Boolean.FALSE;
         Date date = Calendar.getInstance().getTime();
-        //if(this.mEndDate.before(date)){
+        System.out.println(mEndDate);
+        if(this.mEndDate.before(date)){
             if(!outOfServings()){
                 mActive = Boolean.TRUE;
             }
-        //}
+        }
         return mActive;
     }
 

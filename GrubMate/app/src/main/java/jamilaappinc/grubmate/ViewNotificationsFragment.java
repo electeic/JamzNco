@@ -167,10 +167,10 @@ public class ViewNotificationsFragment extends Fragment {
 
     private void populateList() {
         //NOTE: I created another constructer in Post so that testing would be easier
-        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Bless my soul" ,1), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RequestedNotification(new User("Chipotle Cha", "pic"),new Post("Eating food",3), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new AcceptedNotification(new User("Linda Belcher", "pic"),new Post("Posty post post",4), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RateNotification(new User("Tina Fey", "pic"),new Post("Hamburgers",3), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Bless my soul" ,1), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RequestedNotification(new User("Chipotle Cha", "pic"),new Post("Eating food",3), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new AcceptedNotification(new User("Linda Belcher", "pic"),new Post("Posty post post",4), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RateNotification(new User("Tina Fey", "pic"),new Post("Hamburgers",3), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 //        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));

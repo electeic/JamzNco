@@ -73,13 +73,6 @@ public class CreateGroupFragment extends Fragment {
                 .setContentText("Add more members to your group.")
                 .hideOnTouchOutside()
                 .build();
-
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.createGroup_createButton, getActivity()))
-                .setContentTitle("Create button")
-                .setContentText("Create your Grubmate group.")
-                .hideOnTouchOutside()
-                .build();
     }
 
 /*    // TODO: Rename method, update argument and hook method into UI event

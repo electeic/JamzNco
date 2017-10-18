@@ -114,9 +114,9 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyPostsActivity.class);
                 ArrayList<Post> posts = new ArrayList<Post>();
-                for(int i =0; i < 5; i++){
-                    posts.add(new Post("Post " + i, i));
-                }
+//                for(int i =0; i < 5; i++){
+//                    posts.add(new Post("Post " + i, i));
+//                }
                 intent.putExtra(MyPostsActivity.GET_POSTS, posts);
 
                 startActivityForResult(intent, 0);
