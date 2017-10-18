@@ -303,6 +303,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     uploadFile(key);
                     else
                     {
+                        System.out.println("post fragment: " + endDateTime);
                         Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
                         post.setmId(key);
                         databaseRef.setValue(post);

@@ -25,7 +25,7 @@ import java.util.Vector;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ViewNotificationsFragment.OnFragmentInteractionListener} interface
+// * {@link ViewNotificationsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ViewNotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -53,7 +53,6 @@ public class ViewNotificationsFragment extends Fragment {
  */
     ArrayList<Notification> notifications = new ArrayList<>();
 
-    private OnFragmentInteractionListener mListener;
 
     public ViewNotificationsFragment() {
         // Required empty public constructor
@@ -171,6 +170,7 @@ public class ViewNotificationsFragment extends Fragment {
 
 
 
+
     private class NotifAdapter extends ArrayAdapter<Notification> {
         public NotifAdapter(Context context){
             super(context,0,notifications );
@@ -273,8 +273,8 @@ public class ViewNotificationsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+   /* public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }
