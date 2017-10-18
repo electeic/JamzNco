@@ -186,7 +186,11 @@ public class LoginActivity extends AppCompatActivity {
         User u = new User(name, picture);
         u.setId(userId);
         u.setFriends(friends);
-
+        u.setAvgRating(1.2);
+        Post newPost = new Post("abc","cba");
+        Vector<Post> vecPosts = new Vector<Post>();
+        vecPosts.add(newPost);
+        u.setUserPosts(vecPosts);
         databaseRef.setValue(u);
 
     }

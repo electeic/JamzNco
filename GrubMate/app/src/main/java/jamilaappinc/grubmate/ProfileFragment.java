@@ -37,6 +37,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference dbRefUsers;
 
     private TextView nameText;
+    private TextView ratingText;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -74,32 +75,10 @@ public class ProfileFragment extends Fragment {
         final String id = i.getStringExtra("ID");
 
         nameText = (TextView)v.findViewById(R.id.nameText);
+        ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
 
         System.out.println("READING DB NOW...");
 
-        //        ValueEventListener postListener = new ValueEventListener() {
-        //            @Override
-        //            public void onDataChange(DataSnapshot dataSnapshot) {
-        //                // Get Post object and use the values to update the UI
-        //                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-        //                    User user = dataSnapshot.getValue(User.class);
-        //                    System.out.println("USER IS" + user);
-        //                    System.out.println(user.getFriends()+user.getId()+user.getName());
-        //                    //myusername111.setText(model.username);
-        //                }
-        ////                User user = dataSnapshot.getValue(User.class);
-        ////                nameText.setText(user.getName());
-        ////                System.out.println("USER IS" + user);
-        ////                System.out.println(user.getFriends()+user.getmId()+user.getName());
-        //            }
-        //            @Override
-        //            public void onCancelled(DatabaseError databaseError) {
-        //                // Getting Post failed, log a message
-        //                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-        //                // ...
-        //            }
-        //        };
-        //        dbRefUsers.addValueEventListener(postListener);
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
             @Override
@@ -111,7 +90,7 @@ public class ProfileFragment extends Fragment {
                 if (user.getId().equals(id)) {
                     System.out.println("trueee");
                     nameText.setText(user.getName());
-
+                    ratingText.setText(String.valueOf(user.getAvgRating()));
                 }
             }
 
