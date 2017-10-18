@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +87,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Toast.makeText(getActivity().getApplicationContext(), "Click on a post for more information!.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), "Click on the logo on the right for more options!", Toast.LENGTH_LONG).show();
+
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
