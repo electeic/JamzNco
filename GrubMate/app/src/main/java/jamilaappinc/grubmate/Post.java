@@ -2,6 +2,7 @@ package jamilaappinc.grubmate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -61,12 +62,13 @@ public class Post implements Serializable{
     }
 
     public boolean isActive(){
-//        mActive = Boolean.FALSE;
-//        if(this.mEndDate.before(new Date())){
-//            if(!outOfServings()){
-//                mActive = Boolean.TRUE;
-//            }
-//        }
+        mActive = Boolean.FALSE;
+        Date date = Calendar.getInstance().getTime();
+        if(this.mEndDate.before(date)){
+            if(!outOfServings()){
+                mActive = Boolean.TRUE;
+            }
+        }
         return mActive;
     }
 
