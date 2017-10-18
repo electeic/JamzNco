@@ -15,6 +15,8 @@ import android.widget.TextView;
  */
 public class MenuFragment extends Fragment {
 
+    public static final String IDString = "MenuFRAG.ID";
+
     TextView fHome;
     TextView fProfile;
     TextView fNotifications;

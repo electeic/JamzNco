@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -147,8 +148,16 @@ public class DetailedPostFragment extends Fragment {
 //                    if(n.get)
 //                    fHomeOrRestuarant.setText();
 //                    TextView fDate;
+
                     fStartTime.setText(n.getmStartDate().toString());
                     fEndTime.setText(n.getmEndDate().toString());
+
+                    Glide.with(DetailedPostFragment.this)
+                            .load(n.getmPhotos())
+                            .centerCrop()
+                            .placeholder(R.drawable.hamburger)
+                            .crossFade()
+                            .into(fFoodPicture);
                 }
 
                 @Override
