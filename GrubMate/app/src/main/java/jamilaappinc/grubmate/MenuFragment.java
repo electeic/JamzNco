@@ -8,13 +8,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +45,6 @@ public class MenuFragment extends Fragment {
     TextView fLogout;
     TextView fCreateSubscription;
     TextView fMyPosts;
-
 
 
     public MenuFragment() {
@@ -150,7 +163,11 @@ public class MenuFragment extends Fragment {
         fLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+                //getActivity().finish();
+                FacebookSdk.sdkInitialize(FacebookSdk.getApplicationContext());
+                LoginManager.getInstance().logOut();
+                Intent intent =  new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
