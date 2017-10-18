@@ -62,9 +62,9 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".RequestActivity" />
         <activity android:name=".ViewRequestNotificationActivity" />
-        <activity android:name=".createsSubscriptionActivity"/>
-        <activity android:name=".SearchActivity"/>
-
+        <activity android:name=".createsSubscriptionActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".MyPostsActivity"/>
     </application>
 
 </manifest>

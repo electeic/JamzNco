@@ -160,8 +160,9 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
+
         Log.d("error check", ""+dateTime+(title.length()>0)+(tags.length()>0)+(descriptions.length()>0)+(categories.size() > 0));
-        filled = (groups.size() >0 && dateTime && (title.length()>0)&& (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+        filled = ((groups.size() >0) && dateTime && (title.length()>0)&& (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
 
@@ -170,6 +171,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private boolean checkDateTime() {
         boolean check = false;
         try {
+            Toast.makeText(getContext(), endDateString + " " + endTimeString +" "+ startDateString + " " + startTimeString, Toast.LENGTH_SHORT).show();
+
             startDateTime = sdf.parse(startDateString + " " + startTimeString);
             endDateTime = sdf.parse(endDateString + " " + endTimeString);
 
@@ -208,7 +211,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             /*Intent intent = new Intent(getActivity(), MainActivity.class);
                             startActivityForResult(intent,0);
                             getActivity().finish();*/
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
                     }});
                 adb.show();
@@ -223,7 +225,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                 if(checkAllFilled()){
                     //all forms filled out correctly
-                    
+
 
                     Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , _homemade.isChecked());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -386,8 +388,14 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
     public void sendCategories(ArrayList<String> cat){
         if(cat!=null){
+            Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NOT NULL" , Toast.LENGTH_SHORT).show();
             categories = (ArrayList<String>)cat.clone();
+            Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NOT NULL" , Toast.LENGTH_SHORT).show();
+
+
         }
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NULL" , Toast.LENGTH_SHORT).show();
+
     }
 
     public void sendGroups(ArrayList<String> _group){

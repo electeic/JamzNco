@@ -42,7 +42,7 @@ public class ViewGroupsActivity extends AppCompatActivity {
         /*
             THE LINE FOR SENDING IN ALL OF THE USER'S GROUPS VIA INTENT
 
-            group = getIntent().getSerializableExtra(GET_ALL_GROUPS);
+            groups = getIntent().getSerializableExtra(GET_ALL_GROUPS);
 
          */
 
@@ -54,7 +54,7 @@ public class ViewGroupsActivity extends AppCompatActivity {
             /*
                 LINE FOR SENDING ARRAYLIST TO FRAGMENT:
 
-                f. ViewGroupsFragment.newInstance(group);
+                f= ViewGroupsFragment.newInstance(groups);
 
              */
         }
