@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         //find views
         addListeners();
 
-//        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
 
 
 
