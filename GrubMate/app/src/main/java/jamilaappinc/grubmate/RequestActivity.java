@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class RequestActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "main_position";
+    public static final String POST_FROM_DETAILED = "post_from_detaieled";
     String[] listCategories;
     boolean [] checkedItems;
 
@@ -37,17 +38,18 @@ public class RequestActivity extends AppCompatActivity {
 
         //get intent data
         Intent i = getIntent();
-
+        Bundle b = i.getExtras();
+        Post p = (Post) b.get("POST_FROM_DETAILED");
         //TODO modify for id
-        int pos = i.getIntExtra(EXTRA_POSITION, -1);
-
+//        int pos = i.getIntExtra(EXTRA_POSITION, -1);
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
 
+
         if (f == null ) {
             //TODO modify for id
-            f = RequestFragment.newInstance(pos);
+            f = RequestFragment.newInstance(p);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

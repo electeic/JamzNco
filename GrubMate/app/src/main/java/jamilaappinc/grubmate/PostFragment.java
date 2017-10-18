@@ -287,6 +287,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         post.setmId(key);
                         databaseRef.setValue(post);
                     }
+
+                    getActivity().finish();
 //
                 }
                 else{
@@ -294,8 +296,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
 
                 }
-
-                getActivity().finish();
             }
 
         });

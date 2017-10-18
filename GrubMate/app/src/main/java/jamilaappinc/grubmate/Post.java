@@ -61,12 +61,12 @@ public class Post implements Serializable{
     }
 
     public boolean isActive(){
-        mActive = Boolean.FALSE;
-        if(this.mEndDate.before(new Date())){
-            if(!outOfServings()){
-                mActive = Boolean.TRUE;
-            }
-        }
+//        mActive = Boolean.FALSE;
+//        if(this.mEndDate.before(new Date())){
+//            if(!outOfServings()){
+//                mActive = Boolean.TRUE;
+//            }
+//        }
         return mActive;
     }
 
@@ -176,5 +176,8 @@ public class Post implements Serializable{
     public void setmAuthorId(String newID){
         mAuthorId = newID;
     }
+
+    public boolean getHomemade(){ return homemade; }
+    public void setHomemade(boolean b) {homemade = b; }
 
 }
