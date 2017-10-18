@@ -16,7 +16,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
-        setContentView(R.layout.fragment_create_group);
+        setContentView(R.layout.activity_main);
 
         //get intent data
         Intent i = getIntent();
