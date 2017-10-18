@@ -87,8 +87,6 @@ public class SearchFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
 
-
-
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
         mListView = (ListView)v.findViewById(R.id.active_post_list);
@@ -117,7 +115,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-// Attach a listener to read the data at our posts reference
+        // Attach a listener to read the data at our posts reference
         dbRefPosts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -131,8 +129,42 @@ public class SearchFragment extends Fragment {
             }
         });
 
-
-
         return v;
+    }
+
+    public void refresh() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    //todo onDetach
+    public void onDetach() {
+        super.onDetach();
+        mAdapter.cleanup();
+    }
+
+//todo create custom FirebaseListAdapter
+
+    /*
+        1. The default search result will be all the posts that are visible to the user.
+        2. can search by the name/tags/description of the post.
+        3. can search by the category of the post(e.g.,Asian,Thai).
+        4. can search by a specific time period that the food will be available.
+        5. the search result can be sorted by at least one of the following:
+            (1) when the food will be available from the current time
+            (2) the rating of the provider(owner of the post)
+            (3) most popular providers(i.e.,the number of successful transactions for each provider)
+            (4) distance from the current location.
+     */
+
+    private class PostListAdapter extends FirebaseListAdapter<Post> {
+
+        public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
+            super(activity, modelClass, modelLayout, ref);
+        }
+
+        @Override
+        protected void populateView(View v, Post model, int position) {
+
+        }
     }
 }
