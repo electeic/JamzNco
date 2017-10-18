@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -86,6 +87,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
+        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views

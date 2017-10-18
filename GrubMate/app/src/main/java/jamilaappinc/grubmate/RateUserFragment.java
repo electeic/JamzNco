@@ -77,6 +77,7 @@ public class RateUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
+        Toast.makeText(getActivity().getApplicationContext(), "Rate and write a review for this user!", Toast.LENGTH_LONG).show();
         initGUIComponents(v);
         addListeners();
         fillPage(notification.getmFromUser().getName());
