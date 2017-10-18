@@ -222,6 +222,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                 if(checkAllFilled()){
                     //all forms filled out correctly
+                    
 
                     Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , _homemade.isChecked());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();

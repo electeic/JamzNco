@@ -176,6 +176,10 @@ public void onClick(View view) {
 
             Request request = new Request(location,null, numOfServings, null);
 
+            Intent i = getActivity().getIntent();
+            String ID = i.getStringExtra("ID");
+            request.setmId(ID);
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             String key = database.getReference("Request").push().getKey();
             request.setmId(key);
