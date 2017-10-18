@@ -45,8 +45,8 @@ public class Post implements Serializable{
         this.mTags = mTags;
         this.mGroups = mGroups;
         this.mPhotos = photos;
-        mServings = servings;
-        mActive = Boolean.TRUE;
+        this.mServings = servings;
+        this.mActive = Boolean.TRUE;
         this.homemade = homemade;
     }
 
