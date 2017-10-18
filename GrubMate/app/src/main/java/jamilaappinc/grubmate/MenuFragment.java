@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +27,8 @@ public class MenuFragment extends Fragment {
     TextView fSearch;
     TextView fLogout;
     TextView fCreateSubscription;
+    TextView fMyPosts;
+
 
 
     public MenuFragment() {
@@ -52,6 +56,7 @@ public class MenuFragment extends Fragment {
         fSearch = (TextView)v.findViewById(R.id.search);
         fLogout = (TextView)v.findViewById(R.id.logout);
         fCreateSubscription = (TextView)v.findViewById(R.id.createSubscription);
+        fMyPosts =(TextView)v.findViewById(R.id.myPosts);
 
         fHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +91,19 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
                 intent.putExtra("ID", id);
+
+                startActivityForResult(intent, 0);
+            }
+        });
+        fMyPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MyPostsActivity.class);
+                ArrayList<Post> posts = new ArrayList<Post>();
+                for(int i =0; i < 5; i++){
+                    posts.add(new Post("Post " + i, i));
+                }
+                intent.putExtra(MyPostsActivity.GET_POSTS, posts);
 
                 startActivityForResult(intent, 0);
             }

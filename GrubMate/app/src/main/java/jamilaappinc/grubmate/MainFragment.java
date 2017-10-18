@@ -24,6 +24,9 @@ import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,13 +47,14 @@ public class MainFragment extends Fragment {
     ListView mListView;
     public static final String IDString = "fuck";
 
-
     FirebaseListAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
     String currUserId;
     String currUserName;
     ArrayList<String> userFriends;
+
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -82,6 +86,7 @@ public class MainFragment extends Fragment {
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
+
     }
 
     @Override
@@ -90,7 +95,6 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
@@ -142,6 +146,25 @@ public class MainFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
+                .setContentTitle("Menu button")
+                .setContentText("Click to see menu options")
+                .hideOnTouchOutside()
+                .build();
+
+
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.active_post_list, getActivity()))
+                .setContentTitle("Posts made")
+                .setContentText("Click to more details about the post.")
+                .hideOnTouchOutside()
+                .build();
     }
 
     public void refresh() {

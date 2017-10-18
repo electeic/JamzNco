@@ -215,6 +215,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
                     groupCheckedItems[i] = true;
                     selectedGroups.add(listGroups[i]);
                 }
+                sendGroups();
             }
         });
         mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
