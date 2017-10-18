@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
     Date mStartDate, mEndDate;
     ArrayList<String> mTags;
     ArrayList<String> mCategories;
+    ArrayList<Post> mPosts;
     boolean mHomeMade;
     boolean mActive;
     String mId;
@@ -29,7 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
     }
 
     public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
-                         ArrayList<String> mTags,String mUser, boolean mHomeMade) {
+                         ArrayList<String> mTags,String mUser, boolean mHomeMade, String mId, ArrayList<Post> mPosts) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
@@ -39,6 +40,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
+        this.mId = mId;
+        this.mPosts = mPosts;
     }
 
     public boolean getmActive(){return mActive;}
