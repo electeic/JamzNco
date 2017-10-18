@@ -2,23 +2,31 @@ package jamilaappinc.grubmate;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
@@ -39,14 +47,13 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchActivity.DataFromActivityToFragment{
 
     public static final String ARGS_POSITION = "args_position";
 
     //    private List<Post> postList;
     //    private PostListAdapter postAdapter;
     android.support.design.widget.FloatingActionButton floatButton;
-    ListView mListView;
     public static final String IDString = "fuck";
 
 
@@ -55,7 +62,18 @@ public class SearchFragment extends Fragment {
     DatabaseReference dbRefPosts;
     String currUserId;
     String currUserName;
+    String startTimeString, endTimeString ,startDateString, endDateString;
     ArrayList<String> userFriends;
+    ArrayList<String> categories = new ArrayList<String>();
+    private ArrayList<String> groups = new ArrayList<>();
+
+
+    EditText title, tags;
+    Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
+    CheckBox homeMade;
+
+    SimpleDateFormat sdf;
+    private Date startDateTime, endDateTime;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -86,24 +104,39 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
-
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        initComponents(v);
         //find views
-        mListView = (ListView)v.findViewById(R.id.active_post_list);
-        mListView.setAdapter(mAdapter);
+        addListeners();
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView <?> adapterView, View view, int position, long id) {
-                // we know a row was clicked but we need to know WHERE specifically
-                // is that data stored in the database
-                DatabaseReference dbRefClicked = mAdapter.getRef(position);
-                Intent i = new Intent(getActivity(), DetailedPostActivity.class);
-                // toString instead of sending over the whole DatabaseReference because it's easier
-                i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
-                startActivity(i);
-            }
-        });
+
+
+        return v;
+    }
+
+    /*
+    EditText title, tags;
+    Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
+    CheckBox homeMade;
+     */
+
+    private void initComponents(View v){
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        title = (EditText) v.findViewById(R.id.search_titleText);
+        tags =(EditText) v.findViewById(R.id.search_tagsText);
+        categoryButton = (Button) v.findViewById(R.id.search_cat);
+        startDateButton = (Button) v.findViewById(R.id.search_startDateButton);
+        startTimeButton = (Button) v.findViewById(R.id.search_startTimeButton);
+        endDateButton = (Button) v.findViewById(R.id.search_startDateButton);
+        endTimeButton = (Button) v.findViewById(R.id.search_endTimeButton);
+        searchButton = (Button) v.findViewById(R.id.search_submit);
+        cancelButton = (Button) v.findViewById(R.id.search_cancel);
+        homeMade = (CheckBox) v.findViewById(R.id.post_homemadeCheck);
+
+        sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
+        sdf.setLenient(false);
+    }
+
+    private void addListeners(){
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +162,83 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        return v;
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Cancel?");
+                adb.setMessage("Are you sure you want to cancel? ");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+                    }});
+                adb.show();
+
+            }
+        });
+    }
+
+    private boolean checkDateTime() {
+        boolean check = false;
+        try {
+            startDateTime = sdf.parse(startDateString + " " + startTimeString);
+            endDateTime = sdf.parse(endDateString + " " + endTimeString);
+
+            check = startDateTime.before(endDateTime);
+        } catch (ParseException e) {
+            Log.d("PARSE FAIL", "failed");
+            return false;
+        }
+
+        return check;
+    }
+    public void sendStartDate(String data) {
+        if(data != null){
+            startDateButton.setText("Start Date: " + data);
+            startDateString = data;
+        }
+    }
+
+    public void sendEndDate(String data) {
+        if(data != null){
+            endDateButton.setText("End Date: " + data);
+            endDateString = data;
+        }
+    }
+
+    public void sendStartTime(String time){
+        if(time!=null){
+            startTimeButton.setText("Start Time: "+ time);
+            startTimeString = time;
+        }
+    }
+
+    public void sendEndTime(String time){
+        if(time!=null){
+            endTimeButton.setText("End Time: " + time);
+            endTimeString = time;
+        }
+    }
+
+    public void sendCategories(ArrayList<String> cat){
+        if(cat!=null){
+            categories = (ArrayList<String>)cat.clone();
+        }
+    }
+    public void sendGroups(ArrayList<String> _group){
+        if(_group!=null){
+            groups = (ArrayList<String>)_group.clone();
+        }
     }
 
     public void refresh() {
@@ -137,11 +246,11 @@ public class SearchFragment extends Fragment {
     }
 
     //todo onDetach
-    public void onDetach() {
+  /*  public void onDetach() {
         super.onDetach();
         mAdapter.cleanup();
     }
-
+*/
 //todo create custom FirebaseListAdapter
 
     /*

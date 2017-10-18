@@ -79,6 +79,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
+
         //this is how you initialize the connection bt fragment and activity
         dataFromActivityToFragment = (DataFromActivityToFragment)f;
 
