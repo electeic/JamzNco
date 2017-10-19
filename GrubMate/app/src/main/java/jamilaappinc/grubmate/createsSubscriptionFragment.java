@@ -40,6 +40,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
     FirebaseDatabase database;
     private DatabaseReference dbRefPosts;
+    private DatabaseReference dbRefUsers;
     private DatabaseReference dbNoteToEdit;
     DatabaseReference FirebaseRef;
     private StorageReference mStorageRef;
@@ -87,7 +88,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            //mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
@@ -97,6 +98,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
         //todo get database reference paths
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
 
         Bundle args = getArguments();
         //todo get reference to note to be edited (if it exists)
@@ -248,42 +250,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             public void onClick(View view) {
 
         if (checkAllFilled()) {
-                    //                    all forms filled out correctly
-
-
-                    //                    dbRefPosts.addValueEventListener(new ValueEventListener(){
-                    //                        @Override
-                    //                        public void onDataChange(DataSnapshot dataSnapshot) {
-                    //                            Post post = dataSnapshot.getValue(Post.class);
-                    //                            System.out.println("POSTY IS " + post);
-                    //                            boolean matchingPost = true;
-                    //                            System.out.println("CURRENT CATEGORIES SIZE" + categories.size());
-                    //                            System.out.println("POST ID" + post.getmId());
-                    //                            System.out.println("POST CATEGORIES SIZE" + post.getmCategories().size());
-                    //                            for(int i = 0; i < categories.size(); i++){
-                    ////                                for(int j = 0; j < post.getmCategories().size(); j++){
-                    ////                                    if(!categories.get(i).equals(post.getmCategories().get(j))){
-                    ////                                        matchingPost = false;
-                    ////                                    }
-                    ////                                }
-                    //                            }
-                    //                            if(post.isActive() == false){
-                    //                                matchingPost = false;
-                    //                            }
-                    //
-                    //                            if(matchingPost == true){//post matches subscription.
-                    //                                allMatchingPosts.add(post);
-                    //                            }
-                    //                        }
-                    //
-                    //                        @Override
-                    //                        public void onCancelled(DatabaseError databaseError) {
-                    //                            System.out.println("The read failed: " + databaseError.getCode());
-                    //                        }
-                    //                    });
-
-
-
                     dbRefPosts.addChildEventListener(new ChildEventListener(){
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
@@ -293,12 +259,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             postsReadCounter.clear();
                             postsReadCounter.add(counter);
 
-                            System.out.println("NUM POSTS READ IS" + counter);
-                            System.out.println("POSTY IS " + post);
                             boolean matchingPost = true;
-                            System.out.println("CURRENT CATEGORIES SIZE" + categories.size());
-                            System.out.println("POST ID" + post.getmId());
-                            System.out.println("POST CATEGORIES SIZE" + post.getmCategories().size());
 
 
                             for (int i = 0; i < categories.size(); i++) {
@@ -317,10 +278,31 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                 allMatchingPosts.add(post.getmId());
                             }
 
+                            Intent i = getActivity().getIntent();
+                            final String ID = i.getStringExtra("ID");
+                            final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
 
 
-                            System.out.println("THE SIZE OF MATCHING POSTS IS " + allMatchingPosts.size());
-                            createSubAndWriteDB();
+                            ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+                            if(tempSubList == null) {
+                                tempSubList = new ArrayList<Subscription>();
+                            }
+                            tempSubList.add(subscription);
+                           // final DatabaseReference ref = database.getReference();
+                            dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    dbRefUsers.child(ID).child("subscriptions").child(subscription.getmId()).setValue(subscription);
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            createSubAndWriteDB(subscription, ID);
                         }
 
                         @Override
@@ -491,17 +473,12 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         }
     }
 
-    public void createSubAndWriteDB() {
+    public void createSubAndWriteDB(Subscription subscription, String ID) {
         System.out.println(postsReadCounter.get(0));
         System.out.println(postCount.get(0));
         if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
-            Intent i = getActivity().getIntent();
-            final String ID = i.getStringExtra("ID");
             System.out.println("ID IS" + ID);
             System.out.println("matches made" + allMatchingPosts.size());
-
-            Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
-
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             String key = database.getReference("Subscription").push().getKey();
@@ -511,6 +488,25 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             subscription.setmId(key);
 
             databaseRef.setValue(subscription);
+
+            //now update on user's subscription arraylist
+//            ValueEventListener subscriptionListener = new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+//                    tempSubList.add(subscription);
+//                    dbRefPosts.child("Users").child(ID).child("subscriptions").setValue(tempSubList);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    //you cancelled
+//
+//                }
+//
+//            };
+//            dbRefPosts.addValueEventListener(subscriptionListener);
+
 
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
