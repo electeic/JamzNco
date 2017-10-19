@@ -21,6 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+import com.facebook.messenger.MessengerUtils;
+import com.facebook.messenger.MessengerThreadParams;
+import com.facebook.messenger.ShareToMessengerParams;
+
 import org.w3c.dom.Text;
 
 /**

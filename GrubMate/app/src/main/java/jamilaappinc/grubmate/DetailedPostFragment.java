@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -106,7 +105,6 @@ public class DetailedPostFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
@@ -153,6 +151,7 @@ public class DetailedPostFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // convert this "data snapshot" to a model class
                     n = dataSnapshot.getValue(Post.class);
+                    System.out.println("FUCK THIS: " + n);
                     fPostName.setText(n.getmTitle());
 //                    fCategories.setText(n.getmCategories());
                     String desc = "Description: " + n.getmDescription();

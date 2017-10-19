@@ -87,6 +87,7 @@ public class RequestFragment extends Fragment {
         RequestFragment fragment = new RequestFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM3, p);
+        System.out.println("FUCK MAN: " + p);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,6 +101,7 @@ public class RequestFragment extends Fragment {
         }
 
         mPost = (Post) getArguments().getSerializable(ARG_PARAM3);
+        System.out.println("FUCK MAN2: " + mPost);
 
         database = FirebaseDatabase.getInstance();
 
@@ -142,6 +144,7 @@ public class RequestFragment extends Fragment {
         cancelButton = (Button) v.findViewById(R.id.request_cancelButton);
         submitButton = (Button) v.findViewById(R.id.request_submitButton);
         rServingsChosen = (SeekBar) v.findViewById(R.id.possibleServings);
+        rServingsChosen.setMax(mPost.getmServings());
         rNumOfServingsLabel = (TextView) v.findViewById(R.id.servingsWanted);
         rNumOfServingsLabel.setText("1");
 
@@ -196,10 +199,8 @@ public void onClick(View view) {
 
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
-            Post post = (Post) i.getExtras().get("POST_FROM_DETAILED");
-            System.out.println(post);
 
-            final Request request = new Request(location,ID, numOfServings, post, post.getmAuthorId());
+            final Request request = new Request(location,ID, numOfServings, mPost, mPost.getmAuthorId());
 
 
 
