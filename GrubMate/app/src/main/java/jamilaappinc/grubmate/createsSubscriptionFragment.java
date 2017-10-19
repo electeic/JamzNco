@@ -499,7 +499,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             final String ID = i.getStringExtra("ID");
             System.out.println("ID IS" + ID);
             System.out.println("matches made" + allMatchingPosts.size());
-            Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , _homemade.isChecked(), ID, allMatchingPosts);
+
+            Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
 
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
