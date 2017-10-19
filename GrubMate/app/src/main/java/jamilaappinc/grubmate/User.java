@@ -36,7 +36,7 @@ public class User implements Serializable {
         this.profilePhoto = profilePhoto;
         this.id = id;
     }
-    
+
 
 
 
