@@ -22,6 +22,21 @@ public class User implements Serializable {
     String profilePhoto;
     String id;
 
+    public User(ArrayList<Post> userPosts, ArrayList<Request> userRequests, ArrayList<Group> userGroups, ArrayList<Rating> ratings, ArrayList<Notification> notifications, ArrayList<Subscription> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
+
+        this.userPosts = userPosts;
+        this.userRequests = userRequests;
+        this.userGroups = userGroups;
+        this.ratings = ratings;
+        this.notifications = notifications;
+        this.subscriptions = subscriptions;
+        this.friends = friends;
+        this.avgRating = avgRating;
+        this.name = name;
+        this.profilePhoto = profilePhoto;
+        this.id = id;
+    }
+
     public User(String mName, String mPic) {
         this.name = mName;
         this.profilePhoto = mPic;
@@ -207,18 +222,5 @@ public class User implements Serializable {
         this.id = id;
     }*/
 
-    public User(ArrayList<Post> userPosts, ArrayList<Request> userRequests, ArrayList<Group> userGroups, ArrayList<Rating> ratings, ArrayList<Notification> notifications, ArrayList<Subscription> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
 
-        this.userPosts = userPosts;
-        this.userRequests = userRequests;
-        this.userGroups = userGroups;
-        this.ratings = ratings;
-        this.notifications = notifications;
-        this.subscriptions = subscriptions;
-        this.friends = friends;
-        this.avgRating = avgRating;
-        this.name = name;
-        this.profilePhoto = profilePhoto;
-        this.id = id;
-    }
 }

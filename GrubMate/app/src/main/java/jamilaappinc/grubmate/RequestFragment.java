@@ -196,10 +196,8 @@ public void onClick(View view) {
 
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
-            Post post = (Post) i.getExtras().get("POST_FROM_DETAILED");
-            System.out.println(post);
 
-            final Request request = new Request(location,ID, numOfServings, post, post.getmAuthorId());
+            final Request request = new Request(location,ID, numOfServings, mPost, mPost.getmAuthorId());
 
 
 
@@ -209,8 +207,8 @@ public void onClick(View view) {
 
             DatabaseReference databaseRef = database.getReference().child("Request").child(key);
             databaseRef.setValue(request);
-            final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
 
+            final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
             // final DatabaseReference ref = database.getReference();
             dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -222,7 +220,6 @@ public void onClick(View view) {
                     }
                     tempReqList.add(request);
                     dbRefUsers.child(ID).child("userRequests").child(request.getmId()).setValue(request);
-
                 }
 
                 @Override
