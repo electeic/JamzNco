@@ -247,40 +247,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onClick(View view) {
 
-<<<<<<< HEAD
-                if(checkAllFilled()){
-                    //all forms filled out correctly
-
-                    Intent i = getActivity().getIntent();
-                    final String ID = i.getStringExtra("ID");
-
-                    Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null, ID, _homemade.isChecked());
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    String key = database.getReference("Subscription").push().getKey();
-                    DatabaseReference databaseRef = database.getReference().child("Subscription").child(key);
-
-                    subscription.setmId(key);
-                    DatabaseReference drf = database.getReference().child("Users").child(ID);
-//                    drf.
-//                    for()
-//
-//                    User user = databaseRef.get
-
-                    databaseRef.setValue(subscription);
-
-
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("ID", ID);
-                    startActivityForResult(intent,0);
-                    getActivity().finish();
-
-                    Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
-
-
-//                    uploadFile();
-//                    getActivity().finish();
-=======
-                if (checkAllFilled()) {
+        if (checkAllFilled()) {
                     //                    all forms filled out correctly
 
 
@@ -374,7 +341,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                     //                    uploadFile();
                     //                    getActivity().finish();
->>>>>>> 9b0ec1dcd99251cc3bed40c66471dc01f3464ba3
                     //send this post to the DB
 
                 }
