@@ -97,7 +97,8 @@ public class ViewSubscriptionsFragment extends Fragment {
 //        populateList();
         initComponents(v);
         addListeners();
-        list.setAdapter(adapter);
+        if(subscriptions != null)
+            list.setAdapter(adapter);
 
 
         return v;
@@ -163,29 +164,33 @@ public class ViewSubscriptionsFragment extends Fragment {
 
             }
 
-
-            Subscription subscription = subscriptions.get(position);
-            ArrayList<String> categories = subscription.getmCategories();
-            ArrayList<String> tags = subscription.getmTags();
-            String list = "";
-            for(int i = 0; i < categories.size(); i++){
-                list = list+" " + categories.get(i)+", ";
-            }
-            for(int i=0; i< tags.size(); i++){
-                if(i < (tags.size() -1)){
-                    list = list+" " + tags.get(i)+", ";
-                }else{
-                    list = list+" " + tags.get(i);
-
+            if(subscriptions != null) {
+                Subscription subscription = subscriptions.get(position);
+                ArrayList<String> categories = subscription.getmCategories();
+                ArrayList<String> tags = subscription.getmTags();
+                String list = "";
+                for (int i = 0; i < categories.size(); i++) {
+                    list = list + " " + categories.get(i) + ", ";
                 }
-            }
+                for (int i = 0; i < tags.size(); i++) {
+                    if (i < (tags.size() - 1)) {
+                        list = list + " " + tags.get(i) + ", ";
+                    } else {
+                        list = list + " " + tags.get(i);
 
-            if(list.length() > 100){
-                list = list.substring(0, 100);
-                list+=" ...";
+                    }
+                }
+
+                if (list.length() > 100) {
+                    list = list.substring(0, 100);
+                    list += " ...";
+                }
+                TextView detail = (TextView) itemView.findViewById(R.id.viewSubscriptionInfo__detail);
+                detail.setText(list);
             }
-            TextView detail = (TextView) itemView.findViewById(R.id.viewSubscriptionInfo__detail);
-            detail.setText(list);
+            else{
+
+            }
             return itemView;
         }
     }

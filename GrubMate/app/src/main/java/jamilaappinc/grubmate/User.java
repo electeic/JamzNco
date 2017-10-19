@@ -37,6 +37,9 @@ public class User implements Serializable {
         this.id = id;
     }
 
+
+
+
     public User(String mName, String mPic) {
         this.name = mName;
         this.profilePhoto = mPic;
@@ -45,6 +48,8 @@ public class User implements Serializable {
     public User() {
 
     }
+
+
 
     public ArrayList<Post> getUserPosts() {
         return userPosts;
@@ -221,6 +226,5 @@ public class User implements Serializable {
     public void setId(String id) {
         this.id = id;
     }*/
-
 
 }

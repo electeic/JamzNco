@@ -175,6 +175,9 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
+                System.out.println("BLAH BLAH BLAH " + myUser.getName());
+//                System.out.println(" JESUS LORD HELP ME I NEED YOU : " + myUser.getFriends().size());
+                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
                 intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
                 startActivityForResult(intent, 0);
             }
