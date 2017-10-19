@@ -15,3 +15,4 @@ Grubmate is a crowdsourcing app that allows for users to request and post food i
 
 
 3. Other bugs
+	1. Occasionally, the menu options page will crash after making a subscription, request, or post.
