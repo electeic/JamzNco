@@ -39,7 +39,7 @@ public class RequestActivity extends AppCompatActivity {
         //get intent data
         Intent i = getIntent();
         Bundle b = i.getExtras();
-        Post p = (Post) b.get("POST_FROM_DETAILED");
+        Post p = (Post) b.get(POST_FROM_DETAILED);
         System.out.println("activity request: " + p);
         //TODO modify for id
 //        int pos = i.getIntExtra(EXTRA_POSITION, -1);

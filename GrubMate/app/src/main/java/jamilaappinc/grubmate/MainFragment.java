@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -231,6 +234,8 @@ public class MainFragment extends Fragment {
 
         }
 
+//        private PostFilter postFilter;
+
         @Override
         protected void populateView(View v, Post model, int position) {
             // get references to row widgets
@@ -265,6 +270,35 @@ public class MainFragment extends Fragment {
                 pPostTitle.setText(model.getmTitle());
             }
         }
+
+//        @Override
+//        public Filter getFilter() {
+//            if (postFilter == null) {
+//                postFilter = new PostFilter();
+//            }
+//            return postFilter;
+//        }
+//
+//        private class PostFilter extends Filter {
+//
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                FilterResults filterResults = new FilterResults();
+//                Query query;
+//                if (constraint != null && constraint.length() > 0) {
+//                    query = FirebaseHelper.getCustomerRef().orderByChild("name").equalTo(constraint.toString());
+//                } else {
+//                    query = FirebaseHelper.getCustomerRef().orderByChild("name");
+//                }
+//                filterResults.values = query;
+//                return filterResults;
+//            }
+//
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                query = (Query) results.values;
+//            }
+//        }
     }
 
 
