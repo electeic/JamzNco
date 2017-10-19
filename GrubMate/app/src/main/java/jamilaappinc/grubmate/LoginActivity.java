@@ -3,6 +3,7 @@ package jamilaappinc.grubmate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.BoolRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,14 +26,22 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -44,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "TAG";
     CallbackManager mCallbackManager;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    ArrayList<Integer> usersCount = new ArrayList<>();
+    ArrayList<Integer> usersReadCounter = new ArrayList<>();
+    final Vector<Boolean> userExists = new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +76,25 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
         mCallbackManager = CallbackManager.Factory.create();
+
+        usersReadCounter.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING USERS KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Users")) {
+                        usersCount.add((int)snap.getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         final LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
 
         loginButton.setReadPermissions("email", "public_profile", "user_friends");
@@ -181,22 +212,72 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void writeNewUser(String userId, String name, String picture, ArrayList<String> friends) {
-        DatabaseReference readRef = database.getReference().child("Users");
-        
-        DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
-        User u = new User(name, picture);
-        u.setId(userId);
-        u.setFriends(friends);
-        u.setAvgRating(1.2);
-        u.setSubscriptions(new ArrayList<Subscription>());
-        u.setUserRequests(new ArrayList<Request>());
-        u.setUserPosts(new ArrayList<Post>());
-        u.setUserGroups(new ArrayList<Group>());
-        u.setNotifications(new ArrayList<Notification>());
-        //Post newPost = new Post("abc","cba");
-        databaseRef.setValue(u);
+    private void writeNewUser(final String userId, final String name, final String picture, final ArrayList<String> friends) {
+        System.out.println("WRITE NEW USER");
+        final DatabaseReference readRef = database.getReference().child("Users");
+        userExists.add(false);
+        readRef.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                System.out.println("WRITE NEW USER = ON CHILD ADDED");
 
+                User u = dataSnapshot.getValue(User.class);
+                int counter = usersReadCounter.get(0);
+                counter++;
+                usersReadCounter.clear();
+                usersReadCounter.add(counter);
+
+                if(u.getId().equals(userId)){
+                    userExists.clear();
+                    userExists.add(true);
+                    System.out.println("I HAVE LOGGED IN BEFORE!!!");
+
+                }
+                addtoDB(userId,name,picture,friends);
+
+
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+
+
+
+    }
+
+    private void addtoDB(final String userId, final String name, final String picture, final ArrayList<String> friends){
+        System.out.println("USERS COUNT" + usersCount.get(0));
+        System.out.println("USERS LIST COUNT" + usersReadCounter.get(0));
+
+        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
+            System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
+            DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
+            User u = new User(name, picture);
+            u.setId(userId);
+            u.setFriends(friends);
+            u.setAvgRating(1.2);
+            u.setSubscriptions(new ArrayList<Subscription>());
+            u.setUserRequests(new ArrayList<Request>());
+            u.setUserPosts(new ArrayList<Post>());
+            u.setUserGroups(new ArrayList<Group>());
+            u.setNotifications(new ArrayList<Notification>());
+            //Post newPost = new Post("abc","cba");
+            databaseRef.setValue(u);
+        }
     }
 
 }
