@@ -11,13 +11,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by ivanchen on 10/2/17.
  */
 
-    public class Subscription implements Serializable{
+public class Subscription implements Serializable {
 
     String mUserAuthorId;
     Date mStartDate, mEndDate;
     ArrayList<String> mTags;
     ArrayList<String> mCategories;
-    ArrayList<Post> mPosts;
+    ArrayList<String> mPostsIds;
     boolean mHomeMade;
     boolean mActive;
     String mId;
@@ -25,13 +25,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
     String mDescription;
     ArrayList<Group> mGroups;
 
-    public Subscription(ArrayList<String> mTags, ArrayList<String> mCategories){
+    public Subscription(ArrayList<String> mTags, ArrayList<String> mCategories) {
         this.mTags = mTags;
         this.mCategories = mCategories;
     }
 
+<<<<<<< HEAD
     public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
                          ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade) {
+=======
+    public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
+                        ArrayList<String> mTags, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
+>>>>>>> 9b0ec1dcd99251cc3bed40c66471dc01f3464ba3
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
@@ -42,13 +47,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
         mGroups = groups;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
-        //this.mId = mId;
-        //this.mPosts = mPosts;
+        this.mId = mId;
+        this.mPostsIds = mPostsIds;
     }
 
-    public boolean getmActive(){return mActive;}
+    public boolean getmActive() { return mActive; }
 
-    public void setmActive(boolean isActive){mActive = isActive;}
+    public void setmActive(boolean isActive) { mActive = isActive; }
     public String getmUserAuthorId() {
         return mUserAuthorId;
     }
@@ -61,9 +66,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
     public Date getmStartDate() { return mStartDate; }
 
-    public void setmStartDate (Date date) { mStartDate = date;}
+    public void setmStartDate(Date date) { mStartDate = date; }
 
-    public void setmEndDate (Date date) { mEndDate = date;}
+    public void setmEndDate(Date date) { mEndDate = date; }
 
     public ArrayList<String> getmTags() {
         return mTags;
@@ -93,8 +98,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
         mId = key;
     }
 
-    public String getmId(){return mId; }
+    public String getmId() { return mId; }
 
+    public void setmUserAuthorId(String mUserAuthorId) {
+        this.mUserAuthorId = mUserAuthorId;
+    }
 
+    public ArrayList<String> getmPosts() {
+        return mPostsIds;
+    }
 
+    public void setmPosts(ArrayList<String> mPosts) {
+        this.mPostsIds = mPosts;
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
+    }
 }

@@ -14,10 +14,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 
@@ -37,7 +39,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private static final String ARG_PARAM2 = "param2";
 
     FirebaseDatabase database;
-    private DatabaseReference dbRefNotes;
+    private DatabaseReference dbRefPosts;
     private DatabaseReference dbNoteToEdit;
     DatabaseReference FirebaseRef;
     private StorageReference mStorageRef;
@@ -54,16 +56,17 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private ArrayList<String> groups = new ArrayList<>();
     private ArrayList<String> tagsVec = new ArrayList<>();
 
+    private ArrayList<String> allMatchingPosts = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     EditText sSubscriptionTitle;
     Button sSubmitSubscriptionButton;
-
+    ArrayList<Integer> postCount = new ArrayList<>();
+    ArrayList<Integer> postsReadCounter = new ArrayList<>();
 
     android.support.design.widget.FloatingActionButton floatButton;
-    String ID;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -93,12 +96,12 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 
         //todo get database reference paths
-        dbRefNotes = database.getReference(FirebaseReferences.POSTS);
+        dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
 
         Bundle args = getArguments();
         //todo get reference to note to be edited (if it exists)
         String urlToEdit = args.getString(mParam1);
-        if(urlToEdit != null) { // NULL if we are adding a new record
+        if (urlToEdit != null) { // NULL if we are adding a new record
             dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
         }
     }
@@ -108,13 +111,36 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
-        Intent i = getActivity().getIntent();
-        ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        // Attach a listener to read the data at our posts reference
+        postsReadCounter.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Post")) {
+                        postCount.add((int)snap.getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
-        sSubscriptionTitle = (EditText) v.findViewById(R.id.subscription_titleText);
+        sSubscriptionTitle = (EditText)v.findViewById(R.id.subscription_titleText);
 
-
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
 
         initGUIComp(v);
         addListeners();
@@ -123,39 +149,22 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         return v;
     }
 
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        new ShowcaseView.Builder(getActivity())
-//                .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
-//                .setContentTitle("Add button")
-//                .setContentText("Add more members to your group.")
-//                .hideOnTouchOutside()
-//                .build();
-//
-//        new ShowcaseView.Builder(getActivity())
-//                .setTarget(new ViewTarget(R.id.createGroup_createButton, getActivity()))
-//                .setContentTitle("Create button")
-//                .setContentText("Create your Grubmate group.")
-//                .hideOnTouchOutside()
-//                .build();
-//    }
-
-    private void initGUIComp(View v){
-        cancelButton = (Button) v.findViewById(R.id.subscription_cancel);
-        sSubmitSubscriptionButton = (Button) v.findViewById(R.id.subscription_submit);
-        startDateButton =(Button) v.findViewById(R.id.subscription_startDateButton);
+    private void initGUIComp(View v) {
+        cancelButton = (Button)v.findViewById(R.id.subscription_cancel);
+        sSubmitSubscriptionButton = (Button)v.findViewById(R.id.subscription_submit);
+        startDateButton = (Button)v.findViewById(R.id.subscription_startDateButton);
         endDateButton = (Button)v.findViewById(R.id.subscription_endDateButton);
-        startTimeButton =(Button)v.findViewById(R.id.subscription_startTimeButton);
+        startTimeButton = (Button)v.findViewById(R.id.subscription_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.subscription_endTimeButton);
 
 
-        _title = (EditText) v.findViewById(R.id.subscription_titleText);
-        _dietary = (EditText) v.findViewById(R.id.dietaryText);
-        _tags = (EditText) v.findViewById(R.id.tagsText);
-        _descriptions = (EditText) v.findViewById(R.id.subscription_description);
+        _title = (EditText)v.findViewById(R.id.subscription_titleText);
+        _dietary = (EditText)v.findViewById(R.id.dietaryText);
+        _tags = (EditText)v.findViewById(R.id.tagsText);
+        _descriptions = (EditText)v.findViewById(R.id.subscription_description);
 
 
-        _homemade = (CheckBox) v.findViewById(R.id.subscription_homemadeCheck);
+        _homemade = (CheckBox)v.findViewById(R.id.subscription_homemadeCheck);
         sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         sdf.setLenient(false);
 
@@ -167,17 +176,16 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
      *
      * @return If the form is filled out correectly then return TRUE
      */
-    private Boolean checkAllFilled(){
+    private Boolean checkAllFilled() {
         boolean filled = false;
         title = _title.getText().toString().trim();
         dietary = _dietary.getText().toString().trim();
-//        date = _date.getText().toString().trim();
+        //        date = _date.getText().toString().trim();
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-
-        Log.d("error check", ""+dateTime+(title.length()>0)+(tags.length()>0)+(descriptions.length()>0)+(categories.size() > 0));
-        filled = ((groups.size() >0) && dateTime && (title.length()>0)&& (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+        Log.d("error check", "" + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
+        filled = (groups.size() >0 && dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
 
@@ -186,13 +194,12 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private boolean checkDateTime() {
         boolean check = false;
         try {
-            Toast.makeText(getContext(), endDateString + " " + endTimeString +" "+ startDateString + " " + startTimeString, Toast.LENGTH_SHORT).show();
-
             startDateTime = sdf.parse(startDateString + " " + startTimeString);
             endDateTime = sdf.parse(endDateString + " " + endTimeString);
 
             check = startDateTime.before(endDateTime);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             Log.d("PARSE FAIL", "failed");
             return false;
         }
@@ -204,41 +211,32 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
      *
      * @return Changes the String of tags into a Vector<String> so that can be used in new Post
      */
-    private ArrayList<String> getTags(){
+    private ArrayList<String> getTags() {
         String[] temp = tags.split(",");
-        for(String s : temp){
+        for (String s : temp) {
             tagsVec.add(s);
         }
         return tagsVec;
 
     }
 
-    private void addListeners(){
-        floatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                intent.putExtra("ID", ID);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
-            }
-        });
+    private void addListeners() {
 
-        cancelButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                 adb.setTitle("Cancel?");
                 adb.setMessage("Are you sure you want to cancel? ");
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra("ID", ID);
-                        startActivityForResult(intent,0);
-                        getActivity().finish();
+					/*Intent intent = new Intent(getActivity(), MainActivity.class);
+					startActivityForResult(intent,0);
+					getActivity().finish();*/
+                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
-
-                    }});
+                    }
+                });
                 adb.show();
 
 
@@ -249,6 +247,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onClick(View view) {
 
+<<<<<<< HEAD
                 if(checkAllFilled()){
                     //all forms filled out correctly
 
@@ -280,10 +279,107 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 //                    uploadFile();
 //                    getActivity().finish();
+=======
+                if (checkAllFilled()) {
+                    //                    all forms filled out correctly
+
+
+                    //                    dbRefPosts.addValueEventListener(new ValueEventListener(){
+                    //                        @Override
+                    //                        public void onDataChange(DataSnapshot dataSnapshot) {
+                    //                            Post post = dataSnapshot.getValue(Post.class);
+                    //                            System.out.println("POSTY IS " + post);
+                    //                            boolean matchingPost = true;
+                    //                            System.out.println("CURRENT CATEGORIES SIZE" + categories.size());
+                    //                            System.out.println("POST ID" + post.getmId());
+                    //                            System.out.println("POST CATEGORIES SIZE" + post.getmCategories().size());
+                    //                            for(int i = 0; i < categories.size(); i++){
+                    ////                                for(int j = 0; j < post.getmCategories().size(); j++){
+                    ////                                    if(!categories.get(i).equals(post.getmCategories().get(j))){
+                    ////                                        matchingPost = false;
+                    ////                                    }
+                    ////                                }
+                    //                            }
+                    //                            if(post.isActive() == false){
+                    //                                matchingPost = false;
+                    //                            }
+                    //
+                    //                            if(matchingPost == true){//post matches subscription.
+                    //                                allMatchingPosts.add(post);
+                    //                            }
+                    //                        }
+                    //
+                    //                        @Override
+                    //                        public void onCancelled(DatabaseError databaseError) {
+                    //                            System.out.println("The read failed: " + databaseError.getCode());
+                    //                        }
+                    //                    });
+
+
+
+                    dbRefPosts.addChildEventListener(new ChildEventListener(){
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                            Post post = dataSnapshot.getValue(Post.class);
+                            int counter = postsReadCounter.get(0);
+                            counter++;
+                            postsReadCounter.clear();
+                            postsReadCounter.add(counter);
+
+                            System.out.println("NUM POSTS READ IS" + counter);
+                            System.out.println("POSTY IS " + post);
+                            boolean matchingPost = true;
+                            System.out.println("CURRENT CATEGORIES SIZE" + categories.size());
+                            System.out.println("POST ID" + post.getmId());
+                            System.out.println("POST CATEGORIES SIZE" + post.getmCategories().size());
+
+
+                            for (int i = 0; i < categories.size(); i++) {
+                                for (int j = 0; j < post.getmCategories().size(); j++) {
+                                    if (!categories.get(i).equals(post.getmCategories().get(j))) {
+                                        matchingPost = false;
+                                    }
+                                }
+                            }
+
+                            if (post.isActive() == false) {
+                                matchingPost = false;
+                            }
+
+                            if (matchingPost == true) {//post matches subscription.
+                                allMatchingPosts.add(post.getmId());
+                            }
+
+
+
+                            System.out.println("THE SIZE OF MATCHING POSTS IS " + allMatchingPosts.size());
+                            createSubAndWriteDB();
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+
+
+
+
+                    //                    uploadFile();
+                    //                    getActivity().finish();
+>>>>>>> 9b0ec1dcd99251cc3bed40c66471dc01f3464ba3
                     //send this post to the DB
 
-                }else{
-                    //something is wrong so send a toast
+                }
+                else {
+                    //                    something is wrong so send a toast
                     Toast.makeText(getContext(), "Please make sure everything is filled out properly" , Toast.LENGTH_SHORT).show();
                 }
 
@@ -390,90 +486,114 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
      *             sets the button text to the chosen time
      */
     public void sendStartDate(String data) {
-        if(data != null){
+        if (data != null) {
             startDateButton.setText("Start Date: " + data);
             startDateString = data;
         }
     }
 
     public void sendEndDate(String data) {
-        if(data != null){
+        if (data != null) {
             endDateButton.setText("End Date: " + data);
             endDateString = data;
         }
     }
 
-    public void sendStartTime(String time){
-        if(time!=null){
-            startTimeButton.setText("Start Time: "+ time);
+    public void sendStartTime(String time) {
+        if (time != null) {
+            startTimeButton.setText("Start Time: " + time);
             startTimeString = time;
         }
     }
 
-    public void sendEndTime(String time){
-        if(time!=null){
+    public void sendEndTime(String time) {
+        if (time != null) {
             endTimeButton.setText("End Time: " + time);
             endTimeString = time;
         }
     }
 
-    public void sendCategories(ArrayList<String> cat){
-        if(cat!=null){
-            Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NOT NULL" , Toast.LENGTH_SHORT).show();
+    public void sendCategories(ArrayList<String> cat) {
+        if (cat != null) {
             categories = (ArrayList<String>)cat.clone();
-            Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NOT NULL" , Toast.LENGTH_SHORT).show();
-
-
         }
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: CAT IS NULL" , Toast.LENGTH_SHORT).show();
-
     }
 
-    public void sendGroups(ArrayList<String> _group){
-        if(_group!=null){
+    public void sendGroups(ArrayList<String> _group) {
+        if (_group != null) {
             groups = (ArrayList<String>)_group.clone();
         }
     }
-    //
+
+    public void createSubAndWriteDB() {
+        System.out.println(postsReadCounter.get(0));
+        System.out.println(postCount.get(0));
+        if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
+            Intent i = getActivity().getIntent();
+            final String ID = i.getStringExtra("ID");
+            System.out.println("ID IS" + ID);
+            System.out.println("matches made" + allMatchingPosts.size());
+            Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , _homemade.isChecked(), ID, allMatchingPosts);
+
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            String key = database.getReference("Subscription").push().getKey();
+            DatabaseReference databaseRef = database.getReference().child("Subscription").child(key);
+
+
+            subscription.setmId(key);
+
+            databaseRef.setValue(subscription);
+
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivityForResult(intent,0);
+            getActivity().finish();
+
+            Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
+        }
+
+    }
+//
 
 //    /*
-    //    // TODO: Rename method, update argument and hook method into UI event
-    //    public void onButtonPressed(Uri uri) {
-    //        if (mListener != null) {
-    //            mListener.onFragmentInteraction(uri);
-    //        }
-    //    }
-    //
-    //    public void onAttach(Activity activity) {
-    //        super.onAttach(activity);
-    //
-    //        if (activity instanceof OnFragmentInteractionListener) {
-    //            mListener = (OnFragmentInteractionListener) activity;
-    //             } else {
-    //            throw new RuntimeException(context.toString()
-    //            throw new RuntimeException(activity.toString()
-    //                    + " must implement OnFragmentInteractionListener");
-    //        }
-    //    }
-    //
-    //    @Override
-    //    public void onDetach() {
-    //        super.onDetach();
-    //        mListener = null;
-    //    }
-    //
-    //    *//**
-    //     * This interface must be implemented by activities that contain this
-    //     * fragment to allow an interaction in this fragment to be communicated
-    //     * to the activity and potentially other fragments contained in that
-    //     * activity.
-    //     * <p>
-    //     * See the Android Training lesson <a href=
-    //     * "http://developer.android.com/training/basics/fragments/communicating.html"
-    //     * >Communicating with Other Fragments</a> for more information.
-    //     *//*
-    //    public interface OnFragmentInteractionListener {
-    //        // TODO: Update argument type and name
-    //        void onFragmentInteraction(Uri uri);
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
+//
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//
+//        if (activity instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) activity;
+//             } else {
+//            throw new RuntimeException(context.toString()
+//            throw new RuntimeException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
+//
+//    *//**
+//     * This interface must be implemented by activities that contain this
+//     * fragment to allow an interaction in this fragment to be communicated
+//     * to the activity and potentially other fragments contained in that
+//     * activity.
+//     * <p>
+//     * See the Android Training lesson <a href=
+//     * "http://developer.android.com/training/basics/fragments/communicating.html"
+//     * >Communicating with Other Fragments</a> for more information.
+//     *//*
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
 //    }*/
 }
