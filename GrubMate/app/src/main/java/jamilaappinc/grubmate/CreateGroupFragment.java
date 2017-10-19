@@ -1,14 +1,25 @@
 package jamilaappinc.grubmate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,7 +29,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
  * Use the {@link CreateGroupFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateGroupFragment extends Fragment {
+public class CreateGroupFragment extends Fragment implements CreateGroupActivity.DataFromActivityToFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,6 +38,17 @@ public class CreateGroupFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ArrayList<User> selectedFriends = new ArrayList<>();
+    private ArrayList<String> friends = new ArrayList<>();
+    private ArrayList<Group> myGroups = new ArrayList<>();
+    private String ID;
+
+
+    private EditText groupName;
+    private Button add,submit,cancel;
+    private TextView list;
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -41,9 +63,9 @@ public class CreateGroupFragment extends Fragment {
      * @return A new instance of fragment CreateGroupFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateGroupFragment newInstance(int pos) {
+    public static CreateGroupFragment newInstance(ArrayList<String> friends) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pos);
+        args.putSerializable(CreateGroupActivity.GET_ALL_FRIENDS, friends);
         CreateGroupFragment fragment = new CreateGroupFragment();
         fragment.setArguments(args);
         return fragment;
@@ -62,8 +84,18 @@ public class CreateGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_group, container, false);
+        View v = inflater.inflate(R.layout.fragment_create_group, container, false);
+
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+
+
+        return v;
+
     }
+
+
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -74,6 +106,49 @@ public class CreateGroupFragment extends Fragment {
                 .hideOnTouchOutside()
                 .build();
     }
+
+    private void initComponent(View v){
+        groupName = (EditText)v.findViewById(R.id.createGroup_groupName);
+        add = (Button)v.findViewById(R.id.createGroup_addbutton);
+        submit = (Button)v.findViewById(R.id.createGroup_createButton);
+        cancel = (Button) v.findViewById(R.id.createGroup_cancelButton);
+        list = (TextView) v.findViewById(R.id.createGroup_listFriends);
+    }
+
+    private void addListeners(){
+        add.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                for(int i =0 ; i <selectedFriends.size(); i++){
+                    if(i < 1) list.setText(selectedFriends.get(i).getName() + "\n");
+                    else list.append(selectedFriends.get(i).getName() + "\n");
+                }
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+                intent.putExtra("ID", ID);
+            }
+        });
+
+    }
+
+    @Override
+    public void sendFriends(ArrayList<User> finalList) {
+        selectedFriends = (ArrayList<User>)finalList.clone();
+    }
+
 
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

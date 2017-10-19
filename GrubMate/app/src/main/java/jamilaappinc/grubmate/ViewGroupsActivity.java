@@ -21,8 +21,10 @@ public class ViewGroupsActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "main_position";
     public static final String GET_ALL_GROUPS = "all groups";
+    public static final String GET_ALL_FRIENDS = "all friends";
 
     private ArrayList<Group> groups = new ArrayList<Group>();
+    private ArrayList<String> friends = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,13 @@ public class ViewGroupsActivity extends AppCompatActivity {
 
 //            THE LINE FOR SENDING IN ALL OF THE USER'S GROUPS VIA INTENT
             groups = (ArrayList<Group>)getIntent().getSerializableExtra(GET_ALL_GROUPS);
+            friends = (ArrayList<String>) getIntent().getSerializableExtra(GET_ALL_FRIENDS);
 
 
 
         if (f == null ) {
             //TODO modify for id
-            f = ViewGroupsFragment.newInstance(groups);
+            f = ViewGroupsFragment.newInstance(groups, friends);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

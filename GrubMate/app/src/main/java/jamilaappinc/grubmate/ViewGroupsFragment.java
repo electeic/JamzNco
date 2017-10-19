@@ -14,6 +14,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -38,6 +44,7 @@ public class ViewGroupsFragment extends Fragment {
 
     android.support.design.widget.FloatingActionButton floatButton;
     private ArrayList<Group> groups = new ArrayList<Group>();
+    private ArrayList<String> friends = new ArrayList<>();
     ListView list;
     GroupsAdapter adapter;
     Button addGroupButton;
@@ -58,10 +65,11 @@ public class ViewGroupsFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
 
 //            LINE FOR GETTING ALL THE GROUPS :
-    public static ViewGroupsFragment newInstance(ArrayList<Group> groups){
+    public static ViewGroupsFragment newInstance(ArrayList<Group> groups, ArrayList<String> friends){
         ViewGroupsFragment fragment = new ViewGroupsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ViewGroupsActivity.GET_ALL_GROUPS, groups);
+        args.putSerializable(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
 //        args.putInt(ARG_PARAM1, pos);
         fragment.setArguments(args);
         return fragment;
@@ -94,6 +102,9 @@ public class ViewGroupsFragment extends Fragment {
 
 
 
+
+
+
         return v;
 
     }
@@ -105,6 +116,7 @@ public class ViewGroupsFragment extends Fragment {
         adapter= new GroupsAdapter(getActivity(), groups);
 //            LINE FOR GETTING ALL GROUPS
         groups = (ArrayList<Group>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_GROUPS);
+        friends = (ArrayList<String>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_FRIENDS);
 
     }
 
@@ -136,6 +148,8 @@ public class ViewGroupsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
 //                intent.putExtra(CREATEGROUP, "create");
 //                startActivity(intent);
+                intent.putExtra("ID", ID);
+                intent.putExtra(CreateGroupActivity.GET_ALL_FRIENDS, friends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

@@ -181,8 +181,18 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    /*ArrayList<Post> userPosts, ArrayList<Request> userRequests,
+    ArrayList<Group> userGroups, ArrayList<Rating> ratings,
+    ArrayList<Notification> notifications, ArrayList<Subscription> subscriptions,
+    ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id
+     */
     private void writeNewUser(String userId, String name, String picture, ArrayList<String> friends) {
         DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
+//        User u = new User(new ArrayList<Post>(), new ArrayList<Request>(),new ArrayList<Group>(), new ArrayList<Rating>(), new ArrayList<Notification>(),new ArrayList<Subscription>(),friends ,0.0, name, picture, userId );
+
+//        Terence's working code
+
+
         User u = new User(name, picture);
         u.setId(userId);
         u.setFriends(friends);
