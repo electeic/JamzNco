@@ -263,8 +263,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
-
                     }});
                 adb.show();
 

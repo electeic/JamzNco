@@ -187,6 +187,8 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id
      */
     private void writeNewUser(String userId, String name, String picture, ArrayList<String> friends) {
+        DatabaseReference readRef = database.getReference().child("Users");
+        
         DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
 //        User u = new User(new ArrayList<Post>(), new ArrayList<Request>(),new ArrayList<Group>(), new ArrayList<Rating>(), new ArrayList<Notification>(),new ArrayList<Subscription>(),friends ,0.0, name, picture, userId );
 
