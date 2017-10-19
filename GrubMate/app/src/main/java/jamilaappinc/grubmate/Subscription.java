@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
     Date mStartDate, mEndDate;
     ArrayList<String> mTags;
     ArrayList<String> mCategories;
-    ArrayList<Post> mPosts;
+    ArrayList<String> mPostsIds;
     boolean mHomeMade;
     boolean mActive;
     String mId;
@@ -29,8 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
         this.mCategories = mCategories;
     }
 
-    public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
-                         ArrayList<String> mTags,String mUser, boolean mHomeMade) {
+    public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
+                        ArrayList<String> mTags, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
@@ -40,8 +40,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
         this.mCategories = mCategories;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
-        //this.mId = mId;
-        //this.mPosts = mPosts;
+        this.mId = mId;
+        this.mPostsIds = mPostsIds;
     }
 
     public boolean getmActive(){return mActive;}
@@ -93,6 +93,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
     public String getmId(){return mId; }
 
+    public void setmUserAuthorId(String mUserAuthorId) {
+        this.mUserAuthorId = mUserAuthorId;
+    }
 
+    public ArrayList<String> getmPosts() {
+        return mPostsIds;
+    }
 
+    public void setmPosts(ArrayList<String> mPosts) {
+        this.mPostsIds = mPosts;
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
+    }
 }
