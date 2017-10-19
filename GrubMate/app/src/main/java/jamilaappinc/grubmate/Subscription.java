@@ -30,13 +30,8 @@ public class Subscription implements Serializable {
         this.mCategories = mCategories;
     }
 
-<<<<<<< HEAD
     public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
-                         ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade) {
-=======
-    public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
-                        ArrayList<String> mTags, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
->>>>>>> 9b0ec1dcd99251cc3bed40c66471dc01f3464ba3
+                         ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
