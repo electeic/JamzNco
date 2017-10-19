@@ -28,8 +28,11 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -304,9 +307,34 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
                         post.setmId(key);
                         databaseRef.setValue(post);
+                        final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+
+
+                        // final DatabaseReference ref = database.getReference();
+                         dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ArrayList<Post> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
+                                if(tempPostList == null) {
+                                    tempPostList = new ArrayList<Post>();
+                                }
+                                tempPostList.add(post);
+                                dbRefUsers.child(ID).child("userPosts").child(post.getmId()).setValue(post);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
                     }
 
                     intent.putExtra("ID", ID);

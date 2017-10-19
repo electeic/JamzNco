@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -190,11 +195,11 @@ public void onClick(View view) {
 
 
             Intent i = getActivity().getIntent();
-            String ID = i.getStringExtra("ID");
-            Bundle bundle = i.getExtras();
-            Post post = (Post) bundle.get("POST_FROM_DETAILED");
+            final String ID = i.getStringExtra("ID");
+            Post post = (Post) i.getExtras().get("POST_FROM_DETAILED");
+            System.out.println(post);
 
-            Request request = new Request(location,ID, numOfServings, post, post.getmAuthorId());
+            final Request request = new Request(location,ID, numOfServings, post, post.getmAuthorId());
 
 
 
@@ -204,6 +209,27 @@ public void onClick(View view) {
 
             DatabaseReference databaseRef = database.getReference().child("Request").child(key);
             databaseRef.setValue(request);
+            final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+
+            // final DatabaseReference ref = database.getReference();
+            dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    ArrayList<Request> tempReqList = dataSnapshot.child("Users").child(ID).child("userRequests").getValue(ArrayList.class);
+                    if(tempReqList == null) {
+                        tempReqList = new ArrayList<Request>();
+                    }
+                    tempReqList.add(request);
+                    dbRefUsers.child(ID).child("userRequests").child(request.getmId()).setValue(request);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
