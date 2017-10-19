@@ -57,7 +57,9 @@ public class MyPostsFragment extends Fragment {
         ID = i.getStringExtra("ID");
         Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
-        list.setAdapter(adapter);
+        if(posts!=null){
+            list.setAdapter(adapter);
+        }
         addListeners();
         return v;
     }
