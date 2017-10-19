@@ -36,6 +36,8 @@ public class ViewSubscriptionsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
+    private String ID;
+
 
     /*
         THIS IS FOR DYNAMIC MAYBE NOT REALLY SURE
@@ -63,19 +65,13 @@ public class ViewSubscriptionsFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
 
 
-    /*
-        THIS IS FOR DYNAMIC
-        public static ViewSubscriptionsFragment newInstance(ArrayList<Subscription> subscriptions){
-     */
-    public static ViewSubscriptionsFragment newInstance(int pos) {
+//        THIS IS FOR DYNAMIC
+     public static ViewSubscriptionsFragment newInstance(ArrayList<Subscription> subscriptions){
         ViewSubscriptionsFragment fragment = new ViewSubscriptionsFragment();
         Bundle args = new Bundle();
-        /*
-            THIS IS FOR DYNAMIC
-             args.putInt(ViewSubscriptionsActivity.GET_SUBSCRIPTION, subscriptions);
-
-         */
-        args.putInt(ViewSubscriptionsActivity.GET_SUBSCRIPTION, pos);
+//            THIS IS FOR DYNAMIC
+        args.putSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS, subscriptions);
+//        args.putInt(ViewSubscriptionsActivity.GET_SUBSCRIPTION, pos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,20 +91,19 @@ public class ViewSubscriptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Viewing your subscriptions!", Toast.LENGTH_LONG).show();
-        populateList();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+//        populateList();
         initComponents(v);
-        addListeners();;
+        addListeners();
         list.setAdapter(adapter);
 
 
         return v;
     }
     private void initComponents(View v){
-        /*
-            subscriptions = (ArrayList<Subscription>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_SUBSCRIPTION);
-         */
-
+        subscriptions = (ArrayList<Subscription>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS);
         adapter = new SubscriptionAdapter(getActivity());
         list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -119,6 +114,7 @@ public class ViewSubscriptionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -126,8 +122,7 @@ public class ViewSubscriptionsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Subscription group = (Subscription) list.getItemAtPosition(position);
+                Subscription subscription = (Subscription) list.getItemAtPosition(position);
                 subscriptions.remove(position);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE SUBSCRIPTION FROM DB" , Toast.LENGTH_SHORT).show();

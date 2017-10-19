@@ -30,6 +30,7 @@ public class ViewGroupsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String CREATEGROUP = "createGroup";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,6 +41,8 @@ public class ViewGroupsFragment extends Fragment {
     ListView list;
     GroupsAdapter adapter;
     Button addGroupButton;
+    private String ID;
+
 //    private OnFragmentInteractionListener mListener;
 
     public ViewGroupsFragment() {
@@ -54,21 +57,12 @@ public class ViewGroupsFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    /*
-            LINE FOR GETTING ALL THE GROUPS :
-            public static ViewGroupsFragment new Instance(ArrayList<Group> groups){
-
-       */
-    public static ViewGroupsFragment newInstance(int pos) {
+//            LINE FOR GETTING ALL THE GROUPS :
+    public static ViewGroupsFragment newInstance(ArrayList<Group> groups){
         ViewGroupsFragment fragment = new ViewGroupsFragment();
         Bundle args = new Bundle();
-        /*
-            LINE FOR GETTING ALL THE GROUPS :
-
-            args.putSerializable(ViewGroupsActivity.GET_ALL_GROUPS, group);
-
-         */
-        args.putInt(ARG_PARAM1, pos);
+        args.putSerializable(ViewGroupsActivity.GET_ALL_GROUPS, groups);
+//        args.putInt(ARG_PARAM1, pos);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,9 +83,11 @@ public class ViewGroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can view your groups!", Toast.LENGTH_LONG).show();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
-        populateList();
+//        populateList();
         initComponents(v);
         list.setAdapter(adapter);
         addListeners();
@@ -107,11 +103,8 @@ public class ViewGroupsFragment extends Fragment {
         addGroupButton = (Button) v.findViewById(R.id.groups_button);
         list = (ListView) v.findViewById(R.id.groups_ListView);
         adapter= new GroupsAdapter(getActivity(), groups);
-
-        /*
-            LINE FOR GETTING ALL GROUPS
-            groups = (ArrayList<Group>)getArguments().getSerializable(EditGroupActivity.GET_GROUP);
-         */
+//            LINE FOR GETTING ALL GROUPS
+        groups = (ArrayList<Group>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_GROUPS);
 
     }
 
@@ -120,6 +113,7 @@ public class ViewGroupsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -130,6 +124,7 @@ public class ViewGroupsFragment extends Fragment {
                 Group group = (Group) list.getItemAtPosition(position);
                 Intent i = new Intent(getActivity(), EditGroupActivity.class);
                 if(group == null)System.out.println("Why");
+                i.putExtra("ID", ID);
                 i.putExtra(EditGroupActivity.GET_GROUP, group);
                 startActivity(i);
 
@@ -138,10 +133,13 @@ public class ViewGroupsFragment extends Fragment {
         addGroupButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Toast.makeText(getContext(), "@JAMILAAPPCORP: Create fragment or can we do it with just an Alert dialog? " , Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+//                intent.putExtra(CREATEGROUP, "create");
+//                startActivity(intent);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
             }
         });
-
     }
 
 

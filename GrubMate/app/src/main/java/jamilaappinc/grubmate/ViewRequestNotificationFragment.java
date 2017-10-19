@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,9 @@ public class ViewRequestNotificationFragment extends Fragment {
     private Notification notification;
     private TextView name, title, size, location;
     private Button accept, deny;
+    private String ID;
+    private ArrayList<Notification> notifications = new ArrayList<Notification>();
+
 
     public ViewRequestNotificationFragment() {
         // Required empty public constructor
@@ -41,7 +46,10 @@ public class ViewRequestNotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_request_notification, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can accept or deny the request!", Toast.LENGTH_LONG).show();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         addListeners();
         fillInScreen();
@@ -66,6 +74,10 @@ public class ViewRequestNotificationFragment extends Fragment {
         location = (TextView) v.findViewById(R.id.requestNotif_locationAddr);
         accept = (Button) v.findViewById(R.id.requestNotif_acceptButton);
         deny =(Button) v.findViewById(R.id.requestNotif_denyButton);
+
+        notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
+
+
     }
 
     private void addListeners() {
@@ -74,6 +86,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), MenuActivity.class);
+                        intent.putExtra("ID", ID);
                         startActivityForResult(intent, 0);
                         getActivity().finish();
                     }
@@ -86,6 +99,8 @@ public class ViewRequestNotificationFragment extends Fragment {
                     public void onClick(View v) {
                         Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
+                        i.putExtra("ID", ID);
+                        i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS,notifications);
                         startActivity(i);
 
 
@@ -99,6 +114,8 @@ public class ViewRequestNotificationFragment extends Fragment {
                     public void onClick(View v) {
                         Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF)  DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
+                        i.putExtra("ID", ID);
+                        i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS,notifications);
                         startActivity(i);
                     }
                 }

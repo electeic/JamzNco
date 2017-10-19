@@ -117,8 +117,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.e(snap.getKey()+ " GETTING NUM KEYS",snap.getChildrenCount() + "");
-                    if(snap.getKey().equals("Post")){
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Post")) {
                         postCount.add((int)snap.getChildrenCount());
                     }
                 }
@@ -491,10 +491,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         }
     }
 
-    public void createSubAndWriteDB(){
+    public void createSubAndWriteDB() {
         System.out.println(postsReadCounter.get(0));
         System.out.println(postCount.get(0));
-        if(postsReadCounter.get(0) == postCount.get(0)){//only call after reading ALL posts
+        if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
             System.out.println("ID IS" + ID);

@@ -25,7 +25,7 @@ import java.util.Vector;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ViewNotificationsFragment.OnFragmentInteractionListener} interface
+// * {@link ViewNotificationsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ViewNotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -43,15 +43,16 @@ public class ViewNotificationsFragment extends Fragment {
     android.support.design.widget.FloatingActionButton floatButton;
     ListView list;
     NotifAdapter adapter;
+    private String ID;
 
-/*
+
+    /*
             THIS IS FOR DYNAMIC MAYBE
             ArrayList<Notification> notifications;
             IF YES THEN DELETE THE BOTTOM ONE
  */
     ArrayList<Notification> notifications = new ArrayList<>();
 
-    private OnFragmentInteractionListener mListener;
 
     public ViewNotificationsFragment() {
         // Required empty public constructor
@@ -65,20 +66,14 @@ public class ViewNotificationsFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-     /*
-            LINE FOR GETTING ALL THE NOTIFICATIONS :
-            public static ViewNotificationsFragment new Instance(ArrayList<Notification> notifications){
-
-       */
-    public static ViewNotificationsFragment newInstance(int pos) {
+//            LINE FOR GETTING ALL THE NOTIFICATIONS :
+    public static ViewNotificationsFragment newInstance(ArrayList<Notification> notifications){
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pos);
+//        args.putInt(ARG_PARAM1, pos);
         ViewNotificationsFragment fragment = new ViewNotificationsFragment();
-        /*
-            LINE FOR GETTING ALL THE GROUPS :
-            args.putSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
+//            LINE FOR GETTING ALL THE NOTIFICATIONS :
+        args.putSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
 
-         */
         fragment.setArguments(args);
         return fragment;
 
@@ -98,9 +93,11 @@ public class ViewNotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_notifications, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Viewing your notifications!", Toast.LENGTH_LONG).show();
         initComponents(v);
-        populateList();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+//        populateList();
         list.setAdapter(adapter);
 
         addListeners();
@@ -114,10 +111,8 @@ public class ViewNotificationsFragment extends Fragment {
         adapter = new NotifAdapter(getActivity());
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
-        /*
-            LINE FOR GETTING ALL NOTIFICATIONS
-            notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
-         */
+//            LINE FOR GETTING ALL NOTIFICATIONS
+        notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
     }
 
 
@@ -126,6 +121,7 @@ public class ViewNotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -141,14 +137,20 @@ public class ViewNotificationsFragment extends Fragment {
                     /*if notification is a request notification then go to the request page
                         to show the request information
                     */
-
+                    notifications.remove(position);
                     Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
+                    i.putExtra("ID", ID);
                     i.putExtra(ViewRequestNotificationActivity.GET_REQUEST,notification);
+                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
                     startActivity(i);
 
                 }else if (notification instanceof RateNotification){
+                    notifications.remove(position);
                     Intent i = new Intent(getActivity(), RateUserActivity.class);
+                    i.putExtra("ID", ID);
+                    i.putExtra(RateUserActivity.GET_RATER_USER,notification.getmToUser());
                     i.putExtra(RateUserActivity.GET_RATE_REQUEST,notification);
+                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
                     startActivity(i);
                 }
                 else{
@@ -166,21 +168,8 @@ public class ViewNotificationsFragment extends Fragment {
 
     }
 
-    private void populateList() {
-        //NOTE: I created another constructer in Post so that testing would be easier
-        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Bless my soul" ,1), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RequestedNotification(new User("Chipotle Cha", "pic"),new Post("Eating food",3), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new AcceptedNotification(new User("Linda Belcher", "pic"),new Post("Posty post post",4), new User("Jacob Badillo", "pic2")  ));
-        notifications.add(new RateNotification(new User("Tina Fey", "pic"),new Post("Hamburgers",3), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
-//        notifications.add(new RateNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 
-    }
+
 
     private class NotifAdapter extends ArrayAdapter<Notification> {
         public NotifAdapter(Context context){
@@ -227,35 +216,29 @@ public class ViewNotificationsFragment extends Fragment {
     }
 
 
-
-
-
-
-    public void clickRequest(View v){
-
-    }
-    public void myClickHandler(View v)
-    {
-
-        //reset all the listView items background colours
-        //before we set the clicked one..
-
-
-/*        for (int i=0; i < list.getChildCount(); i++)
-        {
-           list.getChildAt(i).setBackgroundColor(Color.BLUE);
-        }*/
-
-
-        //get the row the clicked button is in
-        RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
-
-        TextView child = (TextView)vwParentRow.getChildAt(0);
-        Button btnChild = (Button)vwParentRow.getChildAt(1);
-        btnChild.setText(child.getText());
-        btnChild.setText("I've been clicked!");
+    /*
+    private void populateList() {
+        //NOTE: I created another constructer in Post so that testing would be easier
+        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Bless my soul" ,1), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RequestedNotification(new User("Chipotle Cha", "pic"),new Post("Eating food",3), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new AcceptedNotification(new User("Linda Belcher", "pic"),new Post("Posty post post",4), new User("Jacob Badillo", "pic2")  ));
+        notifications.add(new RateNotification(new User("Tina Fey", "pic"),new Post("Hamburgers",3), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new SubscriptionNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RequestedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new AcceptedNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
+//        notifications.add(new RateNotification(new User("Abby Mcpherson", "pic"),new Post("Title of post"), new User("Jacob Badillo", "pic2")  ));
 
     }
+
+
+     */
+
+
+
+
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -290,8 +273,8 @@ public class ViewNotificationsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+   /* public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }

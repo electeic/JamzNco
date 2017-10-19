@@ -1,7 +1,12 @@
 package jamilaappinc.grubmate;
 
+import android.widget.Toast;
+
+import com.facebook.FacebookActivity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -9,7 +14,7 @@ import java.util.Vector;
  * Created by ivanchen on 10/2/17.
  */
 
-public class Post implements Serializable{
+public class Post implements Serializable {
     String mTitle;
     String mDescription;
     String mLocation;
@@ -24,13 +29,10 @@ public class Post implements Serializable{
     boolean mActive;
     boolean homemade;
 
-    public Post(String title, int servings){
-
-        mTitle = title;
-        mServings = servings;
-    }
-
-
+//    public Post(String title, int servings){
+//        mTitle = title;
+//        mServings = servings;
+//    }
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
@@ -50,23 +52,25 @@ public class Post implements Serializable{
         this.homemade = homemade;
     }
 
-    public Post(String mTitle, String mDescription){
-        this.mTitle = mTitle;
-        this.mDescription = mDescription;
-        mActive = Boolean.TRUE;
-    }
+//    public Post(String mTitle, String mDescription){
+//        this.mTitle = mTitle;
+//        this.mDescription = mDescription;
+//        mActive = Boolean.TRUE;
+//    }
 
     public Post(){
 
     }
 
     public boolean isActive(){
-//        mActive = Boolean.FALSE;
-//        if(this.mEndDate.before(new Date())){
-//            if(!outOfServings()){
-//                mActive = Boolean.TRUE;
-//            }
-//        }
+        mActive = Boolean.FALSE;
+        Date date = Calendar.getInstance().getTime();
+        System.out.println(mEndDate);
+        if(this.mEndDate.before(date)){
+            if(!outOfServings()){
+                mActive = Boolean.TRUE;
+            }
+        }
         return mActive;
     }
 

@@ -31,22 +31,17 @@ public class ViewNotificationsActivity extends AppCompatActivity {
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
-        /*
-            THE LINE FOR SENDING IN ALL OF THE USER'S NOTIFICATIONS VIA INTENT
+//            THE LINE FOR SENDING IN ALL OF THE USER'S NOTIFICATIONS VIA INTENT
+            notification = (ArrayList<Notification>)getIntent().getSerializableExtra(GET_ALL_NOTIFICATIONS);
 
-            notification = getIntent().getSerializableExtra(GET_ALL_NOTIFICATIONS);
-
-         */
 
         if (f == null ) {
             //TODO modify for id
-            f = ViewNotificationsFragment.newInstance(pos);
-            /*
-                LINE FOR SENDING ARRAYLIST TO FRAGMENT:
+//            f = ViewNotificationsFragment.newInstance(pos);
+//                LINE FOR SENDING ARRAYLIST TO FRAGMENT:
 
-                f. ViewNotificationsFragment.newInstance(notification);
+                f= ViewNotificationsFragment.newInstance(notification);
 
-             */
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

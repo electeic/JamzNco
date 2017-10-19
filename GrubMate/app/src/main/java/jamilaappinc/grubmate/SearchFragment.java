@@ -32,6 +32,8 @@ import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,6 +76,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     CheckBox homeMade;
 
     SimpleDateFormat sdf;
+
+    private String ID;
+
     private Date startDateTime, endDateTime;
 
     public SearchFragment() {
@@ -105,14 +110,12 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         //find views
         addListeners();
-
-        Toast.makeText(getActivity().getApplicationContext(), "Here you can search by post name,tags,categories, and more!", Toast.LENGTH_LONG).show();
-
-
-
 
         return v;
     }
@@ -122,6 +125,17 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
     CheckBox homeMade;
      */
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.search_title, getActivity()))
+                .setContentTitle("Advanced Search")
+                .setContentText("Make filtered searches to see certain posts.")
+                .hideOnTouchOutside()
+                .build();
+    }
+
 
     private void initComponents(View v){
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -146,9 +160,9 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
-                intent.putExtra("ID",currUserId);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-                //                getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -169,6 +183,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getContext(), "@JAMILAAPPCORP: idk where this goes" , Toast.LENGTH_SHORT).show();
 
             }
 
@@ -183,8 +198,11 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
+                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+
                     }});
                 adb.show();
 

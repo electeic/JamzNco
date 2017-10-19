@@ -16,6 +16,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 
 /**
  * TextView rateUser_name : Where we put in the user getting rated's name
@@ -39,6 +42,9 @@ public class RateUserFragment extends Fragment {
     private EditText review;
     private Button submit;
     private Notification notification;
+    private User rater;
+    private String ID;
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -55,10 +61,12 @@ public class RateUserFragment extends Fragment {
      * @return A new instance of fragment RateUserFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RateUserFragment newInstance(Notification notification) {
+    public static RateUserFragment newInstance(Notification notification, User raterUser) {
         Bundle args = new Bundle();
         RateUserFragment fragment = new RateUserFragment();
         args.putSerializable(RateUserActivity.GET_RATE_REQUEST, notification);
+        args.putSerializable(RateUserActivity.GET_RATER_USER, raterUser);
+
         fragment.setArguments(args);
         return fragment;
 
@@ -77,7 +85,10 @@ public class RateUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Rate and write a review for this user!", Toast.LENGTH_LONG).show();
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+
         initGUIComponents(v);
         addListeners();
         fillPage(notification.getmFromUser().getName());
@@ -86,11 +97,22 @@ public class RateUserFragment extends Fragment {
 
     private void initGUIComponents(View v){
         notification = (Notification)getArguments().getSerializable(RateUserActivity.GET_RATE_REQUEST);
+        rater = (User)getArguments().getSerializable(RateUserActivity.GET_RATER_USER);
         userName = (TextView) v.findViewById(R.id.rateUser_name);
         ratingBar = (RatingBar) v.findViewById(R.id.rateUser_ratingBar);
         ratingAmt = (TextView) v.findViewById(R.id.rateUser_ratingText);
         review = (EditText)v.findViewById(R.id.rateUser_review);
         submit = (Button) v.findViewById(R.id.rateUser_submitButton);
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.rateUser_ratingBar, getActivity()))
+                .setContentTitle("Rating/Review")
+                .setContentText("Give users a rating and review.")
+                .hideOnTouchOutside()
+                .build();
     }
 
     private void fillPage(String _userName){
@@ -104,9 +126,13 @@ public class RateUserFragment extends Fragment {
             public void onClick(View v) {
                 if(getRating()){
                     //if the rating isn't 0 then you can submit the rating
-                    Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB" , Toast.LENGTH_SHORT).show();
-                    Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), null);
+                    Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
+                            " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
+                    Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), rater);
+
+
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("ID", ID);
                     startActivityForResult(intent,0);
                     getActivity().finish();
 
@@ -118,9 +144,11 @@ public class RateUserFragment extends Fragment {
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 
-                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & submit rating to DB" , Toast.LENGTH_SHORT).show();
-                            Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), null);
+                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
+                                    " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
+                            Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), rater);
                             Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtra("ID", ID);
                             startActivityForResult(intent,0);
                             getActivity().finish();
 

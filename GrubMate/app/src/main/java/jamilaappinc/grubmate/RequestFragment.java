@@ -15,6 +15,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
@@ -54,10 +56,13 @@ public class RequestFragment extends Fragment {
 
     Post mPost;
 
+    String ID;
 
 
 
-//    private OnFragmentInteractionListener mListener;
+
+
+    //    private OnFragmentInteractionListener mListener;
     android.support.design.widget.FloatingActionButton floatButton;
 
     public RequestFragment() {
@@ -121,7 +126,10 @@ public class RequestFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_request, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Fill out this form to make a request!", Toast.LENGTH_LONG).show();
+
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
@@ -156,18 +164,20 @@ public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
         floatButton.setOnClickListener(new View.OnClickListener() {
 @Override
 public void onClick(View view) {
-        Intent intent = new Intent(getActivity(), MenuActivity.class);
-        startActivityForResult(intent, 0);
-        getActivity().finish();
+            Intent intent = new Intent(getActivity(), MenuActivity.class);
+            intent.putExtra("ID", ID);
+            startActivityForResult(intent, 0);
+            getActivity().finish();
         }
         });
 
 
         cancelButton.setOnClickListener(new View.OnClickListener(){
 public void onClick(View view){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivityForResult(intent,0);
-        getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("ID", ID);
+            startActivityForResult(intent, 0);
+            getActivity().finish();
         }
         });
 
@@ -195,6 +205,7 @@ public void onClick(View view) {
 
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("ID", ID);
             startActivityForResult(intent,0);
             getActivity().finish();
 
@@ -214,6 +225,17 @@ public void onClick(View view) {
 
         return v;
         }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
+                .setContentTitle("Send Request")
+                .setContentText("Submit a request to the poster.")
+                .hideOnTouchOutside()
+                .build();
+    }
+
 /*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

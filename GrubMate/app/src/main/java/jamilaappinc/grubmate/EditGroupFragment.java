@@ -17,6 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import org.w3c.dom.Text;
 
 
@@ -41,6 +44,9 @@ public class EditGroupFragment extends Fragment {
     GroupAdapter adapter;
     android.support.design.widget.FloatingActionButton floatButton;
     Button submitButton, deleteAllButton;
+
+    private String ID;
+
 
     int _position;
 
@@ -72,11 +78,12 @@ public class EditGroupFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_group, container, false);
         initComp(v);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
-        Toast.makeText(getActivity().getApplicationContext(), "Add/Delete your friends to edit a group!", Toast.LENGTH_LONG).show();
-
 
         return v;
     }
@@ -91,11 +98,22 @@ public class EditGroupFragment extends Fragment {
 
     }
 
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.editGroup_deleteButton, getActivity()))
+                .setContentTitle("Remove members")
+                .setContentText("Choose members you want to delete.")
+                .hideOnTouchOutside()
+                .build();
+    }
+
     private void addListeners(){
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -103,7 +121,15 @@ public class EditGroupFragment extends Fragment {
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Can potentially just send final vector back to DB, if we" +
+                        " go back to home screen then we're going to need to pass the Arraylist of curr users to all" +
+                        " the fragments .... " , Toast.LENGTH_SHORT).show();
+                /*
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("ID", ID);
+                    startActivityForResult(intent, 0);
+                    getActivity().finish();
+                */
             }
         });
 

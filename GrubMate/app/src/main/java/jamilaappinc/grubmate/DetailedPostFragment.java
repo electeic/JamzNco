@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +55,8 @@ public class DetailedPostFragment extends Fragment {
     private DatabaseReference dbNoteToEdit;
     DatabaseReference dbRefCount;
     Post n;
+
+    String ID;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
 
@@ -99,7 +103,10 @@ public class DetailedPostFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_post, container, false);
-        Toast.makeText(getActivity().getApplicationContext(), "Click REQUEST if you like what you see.", Toast.LENGTH_LONG).show();
+
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
@@ -122,8 +129,9 @@ public class DetailedPostFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-                //getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -131,8 +139,9 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
-               // getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -203,6 +212,16 @@ public class DetailedPostFragment extends Fragment {
 
 
         return v;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
+                .setContentTitle("Request button")
+                .setContentText("You can request for food.")
+                .hideOnTouchOutside()
+                .build();
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event
