@@ -69,6 +69,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     ArrayList<String> userFriends;
     ArrayList<String> categories = new ArrayList<String>();
     private ArrayList<String> groups = new ArrayList<>();
+    private ArrayList<String> tagsVec = new ArrayList<>();
 
 
     EditText title, tags;
@@ -79,7 +80,8 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
     private String ID;
 
-    private Date startDateTime, endDateTime;
+    private Date startDateTime = null;
+    private Date endDateTime = null;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -112,7 +114,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         //find views
         addListeners();
@@ -134,6 +136,16 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 .setContentText("Make filtered searches to see certain posts.")
                 .hideOnTouchOutside()
                 .build();
+    }
+
+    private ArrayList<String> getTags(){
+        String tmp = tags.getText().toString();
+        String[] temp = tmp.split(",");
+        for(String s : temp){
+            tagsVec.add(s);
+        }
+        return tagsVec;
+
     }
 
 
@@ -183,8 +195,47 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "@JAMILAAPPCORP: idk where this goes" , Toast.LENGTH_SHORT).show();
+                //check what is filled out
+                // compare to posts and repopulate main with posts that match
+                if(!title.getText().toString().trim().equals("")){
 
+                    boolean isTitleMatched = false;
+//
+                    Intent i = getActivity().getIntent();
+
+                    //System.out.println("USFRIENDPOST" + isFriendPost);
+//                    if (isFriendPost) {
+//                        ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
+//
+//                        Glide.with(SearchFragment.this)
+//                                .load(model.getmPhotos())
+//                                .centerCrop()
+//                                .placeholder(R.drawable.hamburger)
+//                                .crossFade()
+//                                .into(mImage);
+//
+//                        TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);
+//                        TextView pPostTitle = (TextView) v.findViewById(R.id.listNoteTitle);
+//
+//
+//                        pPostContent.setText(model.getmTitle());
+//                        pPostTitle.setText(model.getmDescription());
+//                    }
+//                }
+
+                }
+                if(startDateTime != null) {
+
+                }
+                if(endDateTime != null){
+
+                }
+                if(getTags().size() > 0){
+
+                }
+                if(categories.size() >0){
+
+                }
             }
 
         });
@@ -287,54 +338,4 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             (4) distance from the current location.
      */
 
-    private class PostListAdapter extends FirebaseListAdapter<Post> {
-
-        public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
-            super(activity, modelClass, modelLayout, ref);
-        }
-
-        @Override
-        protected void populateView(View v, Post model, int position) {
-            // get references to row widgets
-            // copy data from model to widgets
-            boolean isFriendPost = false;
-//
-            Intent i = getActivity().getIntent();
-//
-//            //reads in userid, username, and friends from loginactivity
-            currUserId = i.getStringExtra(IDString);
-            currUserName = i.getStringExtra("Name");
-            userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-
-
-//            for (int j = 0; j < userFriends.size(); j++) {
-//                String x = model.getmAuthorId();
-//
-//                if (x.equals(userFriends.get(j))) {
-//
-//                    System.out.println("this_is_true");
-            isFriendPost = true;
-//                }
-//            }
-
-            //System.out.println("USFRIENDPOST" + isFriendPost);
-            if (isFriendPost) {
-                ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
-
-                Glide.with(SearchFragment.this)
-                        .load(model.getmPhotos())
-                        .centerCrop()
-                        .placeholder(R.drawable.hamburger)
-                        .crossFade()
-                        .into(mImage);
-
-                TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);
-                TextView pPostTitle = (TextView) v.findViewById(R.id.listNoteTitle);
-
-
-                pPostContent.setText(model.getmTitle());
-                pPostTitle.setText(model.getmDescription());
-            }
-        }
-    }
 }

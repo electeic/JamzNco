@@ -16,12 +16,14 @@ public class Request implements Serializable{
     boolean mResponded;
     boolean mAccepted;
     boolean mActive;
+    Post mPost;
 
-    public Request(String mLocation, String mRequestedPost, int mServings, String muser) {
+    public Request(String mLocation, String mRequestedPost, int mServings,Post post, String muser) {
         this.mLocation = mLocation;
         this.mRequestedPostId = mRequestedPost;
         this.mServings = mServings;
         mRequestUserId = muser;
+        mPost = post;
         mAccepted = Boolean.FALSE;
         mResponded = Boolean.FALSE;
         mActive = Boolean.TRUE;

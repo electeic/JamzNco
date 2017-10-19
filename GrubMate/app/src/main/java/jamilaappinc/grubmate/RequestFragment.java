@@ -189,12 +189,14 @@ public void onClick(View view) {
         //all forms filled out correctly
 
 
-
-            Request request = new Request(location,null, numOfServings, null);
-
             Intent i = getActivity().getIntent();
             String ID = i.getStringExtra("ID");
-            request.setmId(ID);
+            Bundle bundle = i.getExtras();
+            Post post = (Post) bundle.get("POST_FROM_DETAILED");
+
+            Request request = new Request(location,ID, numOfServings, post, post.getmAuthorId());
+
+
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             String key = database.getReference("Request").push().getKey();
