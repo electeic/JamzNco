@@ -311,24 +311,26 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
 
 
-//                        // final DatabaseReference ref = database.getReference();
-//                         dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                ArrayList<Post> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
-//                                if(tempPostList == null) {
-//                                    tempPostList = new ArrayList<Post>();
-//                                }
-//                                tempPostList.add(post);
-//                                dbRefUsers.child(ID).child("userPosts").child(post.getmId()).setValue(post);
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
+                        // final DatabaseReference ref = database.getReference();
+                         dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ArrayList<String> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
+                                if(tempPostList == null) {
+                                    tempPostList = new ArrayList<String>();
+                                }
+                                int listSize = tempPostList.size()+1;
+                                System.out.println("CURRENT LISTSIZE " + listSize);
+                                tempPostList.add(Integer.toString(listSize));
+                                dbRefUsers.child(ID).child("userPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                     intent.putExtra("ID", ID);
                     startActivityForResult(intent, 0);

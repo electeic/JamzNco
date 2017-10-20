@@ -283,16 +283,18 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
 
 
-                            ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+                            ArrayList<String> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+
                             if(tempSubList == null) {
-                                tempSubList = new ArrayList<Subscription>();
+                                tempSubList = new ArrayList<String>();
                             }
-                            tempSubList.add(subscription);
+                            final String index = Integer.toString(tempSubList.size() + 1);
+                            tempSubList.add(index);
                            // final DatabaseReference ref = database.getReference();
                             dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    dbRefUsers.child(ID).child("subscriptions").child(subscription.getmId()).setValue(subscription);
+                                    dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
 
                                 }
 
