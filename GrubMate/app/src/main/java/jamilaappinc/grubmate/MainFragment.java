@@ -105,7 +105,7 @@ public class MainFragment extends Fragment {
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-//        System.out.println("IN MAIN FRAG, I HAVE " + userFriends.size() + " FRIENDS");
+        System.out.println("IN MAIN FRAG, I HAVE " + userFriends.size() + " FRIENDS");
         System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
 
@@ -124,7 +124,7 @@ public class MainFragment extends Fragment {
                         System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
                     }
                 }
-                dbRefPosts.addChildEventListener(new ChildEventListener() {
+                dbRefPosts.addChildEventListener(new ChildEventListener(){
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         int postsRead = postsReadCounter.get(0);
@@ -135,25 +135,21 @@ public class MainFragment extends Fragment {
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-//                        System.out.println("USER FRIENDS HAS SIZE " + userFriends.size());
-                        if(userFriends != null)
-                        {
-                            for(int i = 0; i < userFriends.size(); i++){
-                                System.out.println("I IS " + i);
-                                System.out.println("POST ID IS " + post.getmId());
-//                            System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
+                        System.out.println("USER FRIENDS HAS SIZE " + userFriends.size());
+                        for (int i = 0; i < userFriends.size(); i++) {
+                            System.out.println("I IS " + i);
+                            System.out.println("POST ID IS " + post.getmId());
+                            System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
 
-                                if(post.getmAuthorId().equals(userFriends.get(i))){
-                                    myPost.add(post);
-                                    System.out.println("I GOT A POST!!" + post);
-                                }
+                            if (post.getmAuthorId().equals(userFriends.get(i))) {
+                                myPost.add(post);
+                                System.out.println("I GOT A POST!!" + post);
                             }
                         }
-
                         System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
                         System.out.println("POSTS COUNTER" + postCount.get(0));
 
-                        if(postsReadCounter.get(0) == postCount.get(0)){
+                        if (postsReadCounter.get(0) == postCount.get(0)) {
                             System.out.println("IN IF, SETTING ADAPTER NOW");
                             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
                             mListView = (ListView)v.findViewById(R.id.active_post_list);
@@ -194,20 +190,20 @@ public class MainFragment extends Fragment {
         });
 
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
-//                // we know a row was clicked but we need to know WHERE specifically
-//                // is that data stored in the database
-//
-//                DatabaseReference dbRefClicked = mAdapter.getRef(position);
-//                Intent i = new Intent(getActivity(), DetailedPostActivity.class);
-//                // toString instead of sending over the whole DatabaseReference because it's easier
-//                i.putExtra("ID", currUserId);
-//                i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
-//                startActivity(i);
-//            }
-//        });
+        //        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //            @Override
+        //            public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+        //                // we know a row was clicked but we need to know WHERE specifically
+        //                // is that data stored in the database
+        //
+        //                DatabaseReference dbRefClicked = mAdapter.getRef(position);
+        //                Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+        //                // toString instead of sending over the whole DatabaseReference because it's easier
+        //                i.putExtra("ID", currUserId);
+        //                i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
+        //                startActivity(i);
+        //            }
+        //        });
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +211,9 @@ public class MainFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 System.out.println("IN MAIN FRAGMENT, USER ID IS" + currUserId);
                 intent.putExtra("ID", currUserId);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name", currUserName);
+
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
             }
@@ -248,145 +247,136 @@ public class MainFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-//    //todo onDetach
-//    public void onDetach() {
-//        super.onDetach();
-//        mAdapter.cleanup();
-//    }
+    //    //todo onDetach
+    //    public void onDetach() {
+    //        super.onDetach();
+    //        mAdapter.cleanup();
+    //    }
 
     //todo create custom FirebaseListAdapter
 
 
-//    private class PostListAdapter extends FirebaseListAdapter<Post> {
-//
-//        public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
-//            super(activity, modelClass, modelLayout, ref);
-//        }
-//
-////        private PostFilter postFilter;
-//
-//        @Override
-//        protected void populateView(View v, Post model, int position) {
-//            // get references to row widgets
-//            // copy data from model to widgets
-//            boolean isFriendPost = false;
-//            //
-//
-//
-//
-//            //            for (int j = 0; j < userFriends.size(); j++) {
-//            //                String x = model.getmAuthorId();
-//            //
-//            //                if (x.equals(userFriends.get(j))) {
-//            //
-//            //                    System.out.println("this_is_true");
-//            isFriendPost = true;
-//            //                }
-//            //            }
-//
-//            //System.out.println("USFRIENDPOST" + isFriendPost);
-//            if (isFriendPost) {
-//                ImageView mImage = (ImageView)v.findViewById(R.id.imagePic);
-//
-//                Glide.with(MainFragment.this)
-//                        .load(model.getmPhotos())
-//                        .centerCrop()
-//                        .placeholder(R.drawable.hamburger)
-//                        .crossFade()
-//                        .into(mImage);
-//
-//                TextView pPostContent = (TextView)v.findViewById(R.id.listNoteContent);
-//                TextView pPostTitle = (TextView)v.findViewById(R.id.listNoteTitle);
-//
-//                pPostContent.setText(model.getmDescription());
-//                pPostTitle.setText(model.getmTitle());
-//            }
-//        }
+    //    private class PostListAdapter extends FirebaseListAdapter<Post> {
+    //
+    //        public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
+    //            super(activity, modelClass, modelLayout, ref);
+    //        }
+    //
+    ////        private PostFilter postFilter;
+    //
+    //        @Override
+    //        protected void populateView(View v, Post model, int position) {
+    //            // get references to row widgets
+    //            // copy data from model to widgets
+    //            boolean isFriendPost = false;
+    //            //
+    //
+    //
+    //
+    //            //            for (int j = 0; j < userFriends.size(); j++) {
+    //            //                String x = model.getmAuthorId();
+    //            //
+    //            //                if (x.equals(userFriends.get(j))) {
+    //            //
+    //            //                    System.out.println("this_is_true");
+    //            isFriendPost = true;
+    //            //                }
+    //            //            }
+    //
+    //            //System.out.println("USFRIENDPOST" + isFriendPost);
+    //            if (isFriendPost) {
+    //                ImageView mImage = (ImageView)v.findViewById(R.id.imagePic);
+    //
+    //                Glide.with(MainFragment.this)
+    //                        .load(model.getmPhotos())
+    //                        .centerCrop()
+    //                        .placeholder(R.drawable.hamburger)
+    //                        .crossFade()
+    //                        .into(mImage);
+    //
+    //                TextView pPostContent = (TextView)v.findViewById(R.id.listNoteContent);
+    //                TextView pPostTitle = (TextView)v.findViewById(R.id.listNoteTitle);
+    //
+    //                pPostContent.setText(model.getmDescription());
+    //                pPostTitle.setText(model.getmTitle());
+    //            }
+    //        }
 
-//        @Override
-//        public Filter getFilter() {
-//            if (postFilter == null) {
-//                postFilter = new PostFilter();
-//            }
-//            return postFilter;
-//        }
-//
-//        private class PostFilter extends Filter {
-//
-//            @Override
-//            protected FilterResults performFiltering(CharSequence constraint) {
-//                FilterResults filterResults = new FilterResults();
-//                Query query;
-//                if (constraint != null && constraint.length() > 0) {
-//                    query = FirebaseHelper.getCustomerRef().orderByChild("name").equalTo(constraint.toString());
-//                } else {
-//                    query = FirebaseHelper.getCustomerRef().orderByChild("name");
-//                }
-//                filterResults.values = query;
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence constraint, FilterResults results) {
-//                query = (Query) results.values;
-//            }
-//        }
+    //        @Override
+    //        public Filter getFilter() {
+    //            if (postFilter == null) {
+    //                postFilter = new PostFilter();
+    //            }
+    //            return postFilter;
+    //        }
+    //
+    //        private class PostFilter extends Filter {
+    //
+    //            @Override
+    //            protected FilterResults performFiltering(CharSequence constraint) {
+    //                FilterResults filterResults = new FilterResults();
+    //                Query query;
+    //                if (constraint != null && constraint.length() > 0) {
+    //                    query = FirebaseHelper.getCustomerRef().orderByChild("name").equalTo(constraint.toString());
+    //                } else {
+    //                    query = FirebaseHelper.getCustomerRef().orderByChild("name");
+    //                }
+    //                filterResults.values = query;
+    //                return filterResults;
+    //            }
+    //
+    //            @Override
+    //            protected void publishResults(CharSequence constraint, FilterResults results) {
+    //                query = (Query) results.values;
+    //            }
+    //        }
 
-        public class MovieAdapter extends ArrayAdapter<Post> {
-            List<Post> Posts;
-            Context context;
+    public class MovieAdapter extends ArrayAdapter<Post> {
+        List<Post> Posts;
+        Context context;
 
-            public MovieAdapter(Context context, int resource, List<Post> objects) {
-                super(context, resource, objects);
-                this.context = context;
-                this.Posts = objects;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getActivity().getLayoutInflater().inflate(
-                            R.layout.list_active_posts_item, null);
-                }
-
-                ImageView image = (ImageView) convertView.findViewById(R.id.imagePic);
-                ImageView imagePerson = (ImageView) convertView.findViewById(R.id.active_post_person_image);
-                TextView textTitle = (TextView) convertView.findViewById(R.id.listNoteTitle);
-                TextView textDescription = (TextView) convertView.findViewById(R.id.listNoteContent);
-
-                //            findOutMore.setTag(position);
-                //            findOutMore.setOnClickListener(new View.OnClickListener() {
-                //                @Override
-                //                public void onClick(View v) {
-                //                    Intent i = new Intent(getActivity(),
-                //                            DetailActivity.class);
-                //
-                //                    //TODO change position to id
-                ////                i.putExtra(DetailActivity.EXTRA_POSITION, position);
-                //                    i.putExtra(DetailActivity.ARGS_ID, (int) v.getTag());
-                //                    startActivityForResult(i, 0);
-                //                }
-                //            });
-
-
-
-                //            Movies = MovieSingleton.get(context).getMovies();
-                Post mv = Posts.get(position);
-
-                Glide.with(MainFragment.this)
-                        .load( mv.getmPhotos())
-                        .centerCrop()
-                        .placeholder(R.drawable.hamburger)
-                        .crossFade()
-                        .into(image);
-
-//                image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
-
-
-                textTitle.setText(mv.getmTitle());
-                textDescription.setText(mv.getmDescription());
-                return convertView;
-            }
+        public MovieAdapter(Context context, int resource, List<Post> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.Posts = objects;
         }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(
+                        R.layout.list_active_posts_item, null);
+            }
+
+            ImageView image = (ImageView)convertView.findViewById(R.id.imagePic);
+            ImageView imagePerson = (ImageView)convertView.findViewById(R.id.active_post_person_image);
+            TextView textTitle = (TextView)convertView.findViewById(R.id.listNoteTitle);
+            TextView textDescription = (TextView)convertView.findViewById(R.id.listNoteContent);
+
+            //            findOutMore.setTag(position);
+            //            findOutMore.setOnClickListener(new View.OnClickListener() {
+            //                @Override
+            //                public void onClick(View v) {
+            //                    Intent i = new Intent(getActivity(),
+            //                            DetailActivity.class);
+            //
+            //                    //TODO change position to id
+            ////                i.putExtra(DetailActivity.EXTRA_POSITION, position);
+            //                    i.putExtra(DetailActivity.ARGS_ID, (int) v.getTag());
+            //                    startActivityForResult(i, 0);
+            //                }
+            //            });
+
+            //            Movies = MovieSingleton.get(context).getMovies();
+            Post mv = Posts.get(position);
+
+            image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
+
+
+            textTitle.setText(mv.getmTitle());
+            textDescription.setText(mv.getmDescription());
+            return convertView;
+        }
+    }
 
 }
