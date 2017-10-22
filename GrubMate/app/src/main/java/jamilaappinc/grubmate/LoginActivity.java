@@ -244,10 +244,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 addtoDB(userId,name,picture,friends);
 
-
-
-
-
             }
 
             @Override

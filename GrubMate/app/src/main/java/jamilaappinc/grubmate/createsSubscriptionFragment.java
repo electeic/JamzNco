@@ -170,7 +170,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                         intent.putExtra("Name", currUserName);
                         startActivityForResult(intent,0);
                         getActivity().finish();
-                    }});
+                    }
+                });
                 adb.show();
             }
         });
@@ -216,7 +217,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-        Log.d("error check", "" +(groups.size() >0) +dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
+        Log.d("error check", "" + (groups.size() >0) + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
         filled = (groups.size() >0 && dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
@@ -282,7 +283,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onClick(View view) {
 
-        if (checkAllFilled()) {
+                if (checkAllFilled()) {
                     dbRefPosts.addChildEventListener(new ChildEventListener(){
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
@@ -319,7 +320,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                                 ArrayList<String> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
 
-                                if(tempSubList == null) {
+                                if (tempSubList == null) {
                                     tempSubList = new ArrayList<String>();
                                 }
                                 final String index = Integer.toString(tempSubList.size() + 1);
@@ -328,7 +329,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                                 createSubAndWriteDB(subscription, ID);
 
-                                if(addedToDB){
+                                if (addedToDB) {
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     String key;
                                     DatabaseReference databaseRef;
@@ -336,27 +337,27 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                                     ArrayList<String> tempNotifList = dataSnapshot.child("Users").child(ID).child("notifications").getValue(ArrayList.class);
 
-                                    if(tempNotifList == null) {
+                                    if (tempNotifList == null) {
                                         tempNotifList = new ArrayList<String>();
                                     }
                                     final String notifIndex = Integer.toString(tempNotifList.size() + 1);
                                     Toast.makeText(getContext(), "notif index is " + notifIndex , Toast.LENGTH_SHORT).show();
                                     tempNotifList.add(notifIndex);
-                                    for(int j =0; j< subscription.getmPosts().size(); j++){
+                                    for (int j = 0; j< subscription.getmPosts().size(); j++) {
                                         Notification notification = new SubscriptionNotification(ID, subscription.getmPosts().get(j) ,ID);
                                         key = database.getReference("Notification").push().getKey();
                                         databaseRef = database.getReference().child("Notification").child(key);
                                         notification.setmId(key);
                                         databaseRef.setValue(notification);
-                                        
+
                                     }
 
 
-                                    dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener(){
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
-//                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
+                                            //                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
 
                                         }
 
@@ -562,22 +563,22 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             databaseRef.setValue(subscription);
 
             //now update on user's subscription arraylist
-//            ValueEventListener subscriptionListener = new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
-//                    tempSubList.add(subscription);
-//                    dbRefPosts.child("Users").child(ID).child("subscriptions").setValue(tempSubList);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    //you cancelled
-//
-//                }
-//
-//            };
-//            dbRefPosts.addValueEventListener(subscriptionListener);
+            //            ValueEventListener subscriptionListener = new ValueEventListener() {
+            //                @Override
+            //                public void onDataChange(DataSnapshot dataSnapshot) {
+            //                    ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+            //                    tempSubList.add(subscription);
+            //                    dbRefPosts.child("Users").child(ID).child("subscriptions").setValue(tempSubList);
+            //                }
+            //
+            //                @Override
+            //                public void onCancelled(DatabaseError databaseError) {
+            //                    //you cancelled
+            //
+            //                }
+            //
+            //            };
+            //            dbRefPosts.addValueEventListener(subscriptionListener);
 
 
 
