@@ -224,17 +224,17 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("WRITE NEW USER = ON CHILD ADDED");
 
                 User u = dataSnapshot.getValue(User.class);
-//                int counter = usersReadCounter.get(0);
-//                counter++;
-//                usersReadCounter.clear();
-//                usersReadCounter.add(counter);
-//
-//                if(u.getId().equals(userId)){
-//                    userExists.clear();
-//                    userExists.add(true);
-//                    System.out.println("I HAVE LOGGED IN BEFORE!!!");
-//
-//                }
+                int counter = usersReadCounter.get(0);
+                counter++;
+                usersReadCounter.clear();
+                usersReadCounter.add(counter);
+
+                if(u.getId().equals(userId)){
+                    userExists.clear();
+                    userExists.add(true);
+                    System.out.println("I HAVE LOGGED IN BEFORE!!!");
+
+                }
                 addtoDB(userId,name,picture,friends);
 
 
@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
 //        System.out.println("USERS COUNT" + usersCount.get(0));
 //        System.out.println("USERS LIST COUNT" + usersReadCounter.get(0));
 //
-//        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
+        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
             System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
             DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
             User u = new User(name, picture);
@@ -282,6 +282,6 @@ public class LoginActivity extends AppCompatActivity {
             //Post newPost = new Post("abc","cba");
             databaseRef.setValue(u);
         }
-    //}
+    }
 
 }
