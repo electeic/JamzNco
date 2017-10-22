@@ -233,14 +233,6 @@ public class MainFragment extends Fragment {
                 .setContentText("Click to see menu options")
                 .hideOnTouchOutside()
                 .build();
-
-
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.active_post_list, getActivity()))
-                .setContentTitle("Posts made")
-                .setContentText("Click to more details about the post.")
-                .hideOnTouchOutside()
-                .build();
     }
 
     public void refresh() {

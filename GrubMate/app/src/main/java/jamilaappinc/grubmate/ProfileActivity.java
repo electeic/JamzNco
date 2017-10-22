@@ -53,56 +53,56 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FacebookSdk.sdkInitialize(this);
-        callbackManager = CallbackManager.Factory.create();
-        //mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        //mToolbar.setTitle(R.string.app_name);
+//        callbackManager = CallbackManager.Factory.create();
+//        //mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        //mToolbar.setTitle(R.string.app_name);
+//
+//        // If we received Intent.ACTION_PICK from Messenger, we were launched from a composer shortcut
+//        // or the reply flow.
+//        Intent intent = getIntent();
+//        if (Intent.ACTION_PICK.equals(intent.getAction())) {
+//            mThreadParams = MessengerUtils.getMessengerThreadParamsForIntent(intent);
+//            mPicking = true;
+//
+//            // Note, if mThreadParams is non-null, it means the activity was launched from Messenger.
+//            // It will contain the metadata associated with the original content, if there was content.
+//        }
+//
+//        //mMessengerButton = (View) findViewById(R.id.messenger_send_button);
+//        final SendButton sendButton = (SendButton)findViewById(R.id.send_button);
+//
+//        sendButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onMessengerButtonClicked();
+//            }
+//        });
+//    }
 
-        // If we received Intent.ACTION_PICK from Messenger, we were launched from a composer shortcut
-        // or the reply flow.
-        Intent intent = getIntent();
-        if (Intent.ACTION_PICK.equals(intent.getAction())) {
-            mThreadParams = MessengerUtils.getMessengerThreadParamsForIntent(intent);
-            mPicking = true;
-
-            // Note, if mThreadParams is non-null, it means the activity was launched from Messenger.
-            // It will contain the metadata associated with the original content, if there was content.
-        }
-
-        //mMessengerButton = (View) findViewById(R.id.messenger_send_button);
-        final SendButton sendButton = (SendButton)findViewById(R.id.send_button);
-
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMessengerButtonClicked();
-            }
-        });
-    }
-
-    private void onMessengerButtonClicked() {
-
-        Uri uri = Uri.parse("android.resource://com.numetriclabz.messengerdemo/" + R.drawable.gmlogo);
-
-        // Create the parameters for what we want to send to Messenger.
-        ShareToMessengerParams shareToMessengerParams =
-                ShareToMessengerParams.newBuilder(uri, "image/jpeg")
-                        .setMetaData("{ \"image\" : \"logo\" }")
-                        .build();
-
-        if (mPicking) {
-            // If we were launched from Messenger, we call MessengerUtils.finishShareToMessenger to return
-            // the content to Messenger.
-            MessengerUtils.finishShareToMessenger(this, shareToMessengerParams);
-        }
-        else {
-            // Otherwise, we were launched directly (for example, user clicked the launcher icon). We
-            // initiate the broadcast flow in Messenger. If Messenger is not installed or Messenger needs
-            // to be upgraded, this will direct the user to the play store.
-            MessengerUtils.shareToMessenger(
-                    this,
-                    REQUEST_CODE_SHARE_TO_MESSENGER,
-                    shareToMessengerParams);
-        }
+//    private void onMessengerButtonClicked() {
+//
+//        Uri uri = Uri.parse("android.resource://com.numetriclabz.messengerdemo/" + R.drawable.gmlogo);
+//
+//        // Create the parameters for what we want to send to Messenger.
+//        ShareToMessengerParams shareToMessengerParams =
+//                ShareToMessengerParams.newBuilder(uri, "image/jpeg")
+//                        .setMetaData("{ \"image\" : \"logo\" }")
+//                        .build();
+//
+//        if (mPicking) {
+//            // If we were launched from Messenger, we call MessengerUtils.finishShareToMessenger to return
+//            // the content to Messenger.
+//            MessengerUtils.finishShareToMessenger(this, shareToMessengerParams);
+//        }
+//        else {
+//            // Otherwise, we were launched directly (for example, user clicked the launcher icon). We
+//            // initiate the broadcast flow in Messenger. If Messenger is not installed or Messenger needs
+//            // to be upgraded, this will direct the user to the play store.
+//            MessengerUtils.shareToMessenger(
+//                    this,
+//                    REQUEST_CODE_SHARE_TO_MESSENGER,
+//                    shareToMessengerParams);
+//        }
 
         Intent i = getIntent();
 
@@ -120,7 +120,6 @@ public class ProfileActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
-
 
 
 
