@@ -190,6 +190,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
                 intent.putExtra("ID", ID);
+                System.out.println("Name from fSubscriptions: " + myUser.getName());
                 intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS,  myUser.getSubscriptions());
                 startActivityForResult(intent, 0);
             }

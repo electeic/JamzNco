@@ -105,7 +105,7 @@ public class MainFragment extends Fragment {
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        System.out.println("IN MAIN FRAG, I HAVE " + userFriends.size() + " FRIENDS");
+//        System.out.println("IN MAIN FRAG, I HAVE " + userFriends.size() + " FRIENDS");
         System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
 
@@ -135,17 +135,21 @@ public class MainFragment extends Fragment {
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-                        System.out.println("USER FRIENDS HAS SIZE " + userFriends.size());
-                        for(int i = 0; i < userFriends.size(); i++){
-                            System.out.println("I IS " + i);
-                            System.out.println("POST ID IS " + post.getmId());
-                            System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
+//                        System.out.println("USER FRIENDS HAS SIZE " + userFriends.size());
+                        if(userFriends != null)
+                        {
+                            for(int i = 0; i < userFriends.size(); i++){
+                                System.out.println("I IS " + i);
+                                System.out.println("POST ID IS " + post.getmId());
+//                            System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
 
-                            if(post.getmAuthorId().equals(userFriends.get(i))){
-                                myPost.add(post);
-                                System.out.println("I GOT A POST!!" + post);
+                                if(post.getmAuthorId().equals(userFriends.get(i))){
+                                    myPost.add(post);
+                                    System.out.println("I GOT A POST!!" + post);
+                                }
                             }
                         }
+
                         System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
                         System.out.println("POSTS COUNTER" + postCount.get(0));
 
@@ -364,10 +368,19 @@ public class MainFragment extends Fragment {
                 //                }
                 //            });
 
+
+
                 //            Movies = MovieSingleton.get(context).getMovies();
                 Post mv = Posts.get(position);
 
-                image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
+                Glide.with(MainFragment.this)
+                        .load( mv.getmPhotos())
+                        .centerCrop()
+                        .placeholder(R.drawable.hamburger)
+                        .crossFade()
+                        .into(image);
+
+//                image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
 
 
                 textTitle.setText(mv.getmTitle());

@@ -10,4 +10,6 @@ public class FirebaseReferences {
     public static final String USERS = "Users";
     public static final String GROUPS = "GROUPS";
     public static final String NOTIFICATIONS = "Notifications";
+    public static final String MYPOSTS = "userPosts";
+
 }
