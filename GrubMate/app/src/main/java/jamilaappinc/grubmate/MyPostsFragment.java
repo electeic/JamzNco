@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static jamilaappinc.grubmate.R.id.view;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,6 +82,21 @@ public class MyPostsFragment extends Fragment {
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
 
         postsReadCounter.add(0);
+
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+//                // we know a row was clicked but we need to know WHERE specifically
+//                // is that data stored in the database
+//
+//                DatabaseReference dbRefClicked = mAdapter.getRef(position);
+//                Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+//                // toString instead of sending over the whole DatabaseReference because it's easier
+//                i.putExtra("ID", currUserId);
+//                i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
+//                startActivity(i);
+//            }
+//        });
 
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -222,6 +239,7 @@ public class MyPostsFragment extends Fragment {
             this.Posts = objects;
         }
 
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
@@ -268,6 +286,7 @@ public class MyPostsFragment extends Fragment {
             return convertView;
         }
     }
+
 
 //        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override

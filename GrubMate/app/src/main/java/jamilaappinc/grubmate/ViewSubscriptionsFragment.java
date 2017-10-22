@@ -5,16 +5,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -37,7 +48,11 @@ public class ViewSubscriptionsFragment extends Fragment {
     private String mParam2;
     android.support.design.widget.FloatingActionButton floatButton;
     private String ID;
+    FirebaseDatabase database;
+    DatabaseReference dbRefSubs;
 
+    ArrayList<Integer> subsReadCounter = new ArrayList<>();
+    ArrayList<Integer> subsCount = new ArrayList<>();
 
     /*
         THIS IS FOR DYNAMIC MAYBE NOT REALLY SURE
@@ -45,7 +60,7 @@ public class ViewSubscriptionsFragment extends Fragment {
 
         IF IT IS THEN DELETE THE BOTTOM ONE
      */
-    private ArrayList<String> subscriptions = new ArrayList<String>();
+    private ArrayList<Subscription> subscript = new ArrayList<Subscription>();
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -53,17 +68,6 @@ public class ViewSubscriptionsFragment extends Fragment {
     public ViewSubscriptionsFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewSubscriptionsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-
 
 //        THIS IS FOR DYNAMIC
      public static ViewSubscriptionsFragment newInstance(ArrayList<Subscription> subscriptions){
@@ -97,15 +101,82 @@ public class ViewSubscriptionsFragment extends Fragment {
 //        populateList();
         initComponents(v);
         addListeners();
-        if(subscriptions != null)
-            list.setAdapter(adapter);
+        database = FirebaseDatabase.getInstance();
+        dbRefSubs = database.getInstance().getReference().child(FirebaseReferences.MYSUBS);
+        subsReadCounter.add(0);
+
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Subscription")) { //if it
+                        subsCount.add((int)snap.getChildrenCount());
+                        System.out.println("ADDED # SUBS, count is " + snap.getChildrenCount());
+                    }
+                }
+                dbRefSubs.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        int postsRead = subsReadCounter.get(0);
+                        postsRead++;
+                        System.out.println("POSTS READ COUNT " + postsRead);
+                        subsReadCounter.clear();
+                        subsReadCounter.add(postsRead);
+
+
+                        Subscription post = dataSnapshot.getValue(Subscription.class);
+
+                        if(post.getmUserAuthorId().equals(ID)){
+                            subscript.add(post);
+                            System.out.println("I GOT A POST!!" + post);
+                        }
+
+                        if(subsReadCounter.get(0) == subsCount.get(0)){
+                            System.out.println("IN IF, SETTING ADAPTER NOW");
+                            adapter = new SubscriptionAdapter(getActivity(), R.layout.list_active_posts_item, subscript);
+                            //        postList = PostSingleton.get(getActivity()).getMovies();
+                            //        postAdapter = new PostListAdapter(getActivity(), Post.class,
+                            //                R.layout.list_active_posts_item,
+                            //                dbRefPosts);
+                            list.setAdapter(adapter);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         return v;
     }
     private void initComponents(View v){
-        subscriptions = (ArrayList<String>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS);
-        adapter = new SubscriptionAdapter(getActivity());
+//        subscript = (ArrayList<String>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS);
+//        adapter = new SubscriptionAdapter(getActivity());
         list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
     }
@@ -124,50 +195,37 @@ public class ViewSubscriptionsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Subscription subscription = (Subscription) list.getItemAtPosition(position);
-                subscriptions.remove(position);
+                subscript.remove(position);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE SUBSCRIPTION FROM DB" , Toast.LENGTH_SHORT).show();
             }
         });
     }
-    /**
-     * NOTE: I added another constructer into Subscription to make testing easier
-     *
-     */
-   /* public void populateList(){
-        ArrayList<String> categories = new ArrayList<>();
-        ArrayList<String> tags = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++){
-            categories.add("Category " + i);
-            tags.add("Tag " + i);
-        }
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
-        subscriptions.add(new Subscription(tags,categories));
 
-    }
-*/
-    private class SubscriptionAdapter extends ArrayAdapter<String> {
-        public SubscriptionAdapter(Context context){
-            super(context, 0 , subscriptions);
+    public class SubscriptionAdapter extends ArrayAdapter<Subscription> {
+        List<Subscription> subs;
+        Context context;
+
+        public SubscriptionAdapter(Context context, int resource, List<Subscription> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.subs = objects;
         }
 
+
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if(itemView == null){
-                itemView = LayoutInflater.from(getContext()).inflate(R.layout.subscription_info_view, parent, false);
-
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(
+                        R.layout.subscription_info_view, null);
             }
 
-            if(subscriptions != null) {
-                /*Subscription subscription = subscriptions.get(position);
-                ArrayList<String> categories = subscription.getmCategories();
-                ArrayList<String> tags = subscription.getmTags();
+            Subscription mv = subs.get(position);
+
+
+            ArrayList<String> categories = mv.getmCategories();
+                ArrayList<String> tags = mv.getmTags();
                 String list = "";
                 for (int i = 0; i < categories.size(); i++) {
                     list = list + " " + categories.get(i) + ", ";
@@ -185,52 +243,11 @@ public class ViewSubscriptionsFragment extends Fragment {
                     list = list.substring(0, 100);
                     list += " ...";
                 }
-                TextView detail = (TextView) itemView.findViewById(R.id.viewSubscriptionInfo__detail);
-                detail.setText(list);*/
-            }
-            else{
+                TextView detail = (TextView) convertView.findViewById(R.id.viewSubscriptionInfo__detail);
+                detail.setText(list);
 
-            }
-            return itemView;
-        }
-    }
-/*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            return convertView;
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    *//**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
 }
