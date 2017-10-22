@@ -71,6 +71,8 @@ public class MenuFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         final String ID = i.getStringExtra("ID");
+        final String currUserName = i.getStringExtra("Name");
+        final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
         fHome = (TextView)v.findViewById(R.id.home);
         fProfile = (TextView)v.findViewById(R.id.profile);
@@ -121,6 +123,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -130,6 +134,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), createsSubscriptionActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
             }
         });
@@ -139,6 +145,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
             }
         });
@@ -148,6 +156,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
                 startActivityForResult(intent, 0);
             }
@@ -157,6 +167,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyPostsActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
 //                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
                 startActivityForResult(intent, 0);
             }
@@ -167,6 +179,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
 
                 startActivityForResult(intent, 0);
             }
@@ -177,6 +191,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 System.out.println("BLAH BLAH BLAH " + myUser.getName());
 //                System.out.println(" JESUS LORD HELP ME I NEED YOU : " + myUser.getFriends().size());
 //                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
@@ -190,6 +206,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ViewSubscriptionsActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS,  myUser.getSubscriptions());
                 startActivityForResult(intent, 0);
             }
@@ -200,6 +218,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
             }
         });

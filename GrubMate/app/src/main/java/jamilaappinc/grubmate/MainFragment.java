@@ -211,6 +211,9 @@ public class MainFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 System.out.println("IN MAIN FRAGMENT, USER ID IS" + currUserId);
                 intent.putExtra("ID", currUserId);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
+
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
             }
