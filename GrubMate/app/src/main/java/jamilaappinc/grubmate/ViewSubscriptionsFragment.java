@@ -45,7 +45,7 @@ public class ViewSubscriptionsFragment extends Fragment {
 
         IF IT IS THEN DELETE THE BOTTOM ONE
      */
-    private ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
+    private ArrayList<String> subscriptions = new ArrayList<String>();
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -104,7 +104,7 @@ public class ViewSubscriptionsFragment extends Fragment {
         return v;
     }
     private void initComponents(View v){
-        subscriptions = (ArrayList<Subscription>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS);
+        subscriptions = (ArrayList<String>)getArguments().getSerializable(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS);
         adapter = new SubscriptionAdapter(getActivity());
         list = (ListView) v.findViewById(R.id.viewSubscriptions_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -134,7 +134,7 @@ public class ViewSubscriptionsFragment extends Fragment {
      * NOTE: I added another constructer into Subscription to make testing easier
      *
      */
-    public void populateList(){
+   /* public void populateList(){
         ArrayList<String> categories = new ArrayList<>();
         ArrayList<String> tags = new ArrayList<>();
 
@@ -151,8 +151,8 @@ public class ViewSubscriptionsFragment extends Fragment {
         subscriptions.add(new Subscription(tags,categories));
 
     }
-
-    private class SubscriptionAdapter extends ArrayAdapter<Subscription> {
+*/
+    private class SubscriptionAdapter extends ArrayAdapter<String> {
         public SubscriptionAdapter(Context context){
             super(context, 0 , subscriptions);
         }
@@ -165,7 +165,7 @@ public class ViewSubscriptionsFragment extends Fragment {
             }
 
             if(subscriptions != null) {
-                Subscription subscription = subscriptions.get(position);
+                /*Subscription subscription = subscriptions.get(position);
                 ArrayList<String> categories = subscription.getmCategories();
                 ArrayList<String> tags = subscription.getmTags();
                 String list = "";
@@ -186,7 +186,7 @@ public class ViewSubscriptionsFragment extends Fragment {
                     list += " ...";
                 }
                 TextView detail = (TextView) itemView.findViewById(R.id.viewSubscriptionInfo__detail);
-                detail.setText(list);
+                detail.setText(list);*/
             }
             else{
 

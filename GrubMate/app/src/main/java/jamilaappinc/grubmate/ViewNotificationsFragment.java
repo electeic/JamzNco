@@ -25,7 +25,7 @@ import java.util.Vector;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
-// * {@link ViewNotificationsFragment.OnFragmentInteractionListener} interface
+// *
  * to handle interaction events.
  * Use the {@link ViewNotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -180,32 +180,32 @@ public class ViewNotificationsFragment extends Fragment {
             //find the notification to work with
             Notification notif = notifications.get(position);
 
-            Post relevantPost = notif.getmAboutPost();
-            User fromUser = notif.getmFromUser();
+//            Post relevantPost = notif.getmAboutPost();
+//            User fromUser = notif.getmFromUser();
 
             if(notif instanceof SubscriptionNotification){
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
                 TextView title = (TextView)itemView.findViewById(R.id.notification_info_subscription_title);
-                title.setText( relevantPost.getmTitle() + " has matched a subscription!");
+//                title.setText( relevantPost.getmTitle() + " has matched a subscription!");
 
             }
             else if(notif instanceof RequestedNotification){
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
                 TextView title = (TextView)itemView.findViewById(R.id.notification_info_request_title);
-                title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
+//                title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
 
 
             }
             else if(notif instanceof RateNotification){
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
                 TextView title = (TextView)itemView.findViewById(R.id.notification_info_rate_title);
-                title.setText("Please rate " + fromUser.getName() + ".");
+//                title.setText("Please rate " + fromUser.getName() + ".");
 
             }
                 else{
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
                 TextView title = (TextView)itemView.findViewById(R.id.notification_info_accept_title);
-                title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");
+//                title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");
 
             }
 

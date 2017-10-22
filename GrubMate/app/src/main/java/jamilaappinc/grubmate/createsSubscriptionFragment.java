@@ -68,6 +68,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
 
     android.support.design.widget.FloatingActionButton floatButton;
+    private String ID;
+    boolean addedToDB = false;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -113,6 +115,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
         // Attach a listener to read the data at our posts reference
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -134,18 +138,40 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText)v.findViewById(R.id.subscription_titleText);
+        initGUIComp(v);
+        addListeners();
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = getActivity().getIntent();
+                ID = i.getStringExtra("ID");
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
         });
 
-        initGUIComp(v);
-        addListeners();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Cancel?");
+                adb.setMessage("Are you sure you want to cancel? ");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+                    }});
+                adb.show();
+            }
+        });
+
+
 
 
         return v;
@@ -186,7 +212,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-        Log.d("error check", "" + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
+        Log.d("error check", "" +(groups.size() >0) +dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
         filled = (groups.size() >0 && dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
@@ -232,11 +258,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-					/*Intent intent = new Intent(getActivity(), MainActivity.class);
-					startActivityForResult(intent,0);
-					getActivity().finish();*/
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
-
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
                     }
                 });
                 adb.show();
@@ -291,20 +316,50 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             final String index = Integer.toString(tempSubList.size() + 1);
                             tempSubList.add(index);
                            // final DatabaseReference ref = database.getReference();
-                            dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
-
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
 
                             createSubAndWriteDB(subscription, ID);
+
+                            if(addedToDB){
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                String key;
+                                DatabaseReference databaseRef;
+
+
+                                ArrayList<String> tempNotifList = dataSnapshot.child("Users").child(ID).child("notifications").getValue(ArrayList.class);
+
+                                if(tempNotifList == null) {
+                                    tempNotifList = new ArrayList<String>();
+                                }
+                                final String notifIndex = Integer.toString(tempNotifList.size() + 1);
+                                Toast.makeText(getContext(), "notif index is " + notifIndex , Toast.LENGTH_SHORT).show();
+                                tempNotifList.add(notifIndex);
+                                for(int j =0; j< subscription.getmPosts().size(); j++){
+                                    Notification notification = new SubscriptionNotification(ID, subscription.getmPosts().get(j) ,ID);
+                                    key = database.getReference("Notification").push().getKey();
+                                    databaseRef = database.getReference().child("Notification").child(key);
+                                    notification.setmId(key);
+                                    databaseRef.setValue(notification);
+
+
+
+                                }
+
+                                dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
+//                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+                            }
                         }
 
                         @Override
@@ -479,6 +534,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         System.out.println(postsReadCounter.get(0));
         System.out.println(postCount.get(0));
         if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
+            addedToDB = true;
             System.out.println("ID IS" + ID);
             System.out.println("matches made" + allMatchingPosts.size());
 

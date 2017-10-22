@@ -5,7 +5,7 @@ package jamilaappinc.grubmate;
  */
 
 public class RateNotification extends Notification {
-    public RateNotification(User mFromUser, Post mAboutPost, User mToUser){
+    public RateNotification(String mFromUser, String mAboutPost, String mToUser){
         super(mFromUser,mAboutPost,mToUser);
     }
 }

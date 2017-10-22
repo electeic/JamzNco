@@ -35,6 +35,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,7 +85,8 @@ public class MenuFragment extends Fragment {
 
         // DATABASE REFERENCING STUFF
         database = FirebaseDatabase.getInstance();
-        dbRefUsers = database.getInstance().getReference().child("Users");
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
             @Override
@@ -155,7 +157,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyPostsActivity.class);
                 intent.putExtra("ID", ID);
-                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
+//                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
                 startActivityForResult(intent, 0);
             }
         });
@@ -177,8 +179,8 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 System.out.println("BLAH BLAH BLAH " + myUser.getName());
 //                System.out.println(" JESUS LORD HELP ME I NEED YOU : " + myUser.getFriends().size());
-                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
-                intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
+//                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
+//                intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
                 startActivityForResult(intent, 0);
             }
         });

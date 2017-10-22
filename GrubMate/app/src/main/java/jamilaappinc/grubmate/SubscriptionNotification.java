@@ -5,7 +5,7 @@ package jamilaappinc.grubmate;
  */
 
 public class SubscriptionNotification extends Notification {
-    public SubscriptionNotification(User mFromUser, Post mAboutPost, User mToUser){
+    public SubscriptionNotification(String mFromUser, String mAboutPost, String mToUser){
         super(mFromUser,mAboutPost,mToUser);
     }
 }
