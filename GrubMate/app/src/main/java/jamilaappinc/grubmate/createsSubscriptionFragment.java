@@ -39,6 +39,11 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private static final String ARG_PARAM2 = "param2";
 
     FirebaseDatabase database;
+
+    private ArrayList<String> userFriends;
+    private String currUserName;
+
+
     private DatabaseReference dbRefPosts;
     private DatabaseReference dbRefUsers;
     private DatabaseReference dbNoteToEdit;
@@ -52,6 +57,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private String title, dietary, tags, descriptions, startTimeString, endTimeString, startDateString, endDateString;
     private SimpleDateFormat sdf;
     private Date startDateTime, endDateTime;
+    private String ID;
 
     private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<String> groups = new ArrayList<>();
@@ -113,6 +119,12 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        currUserName = i.getStringExtra("Name");
+
         // Attach a listener to read the data at our posts reference
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -232,9 +244,12 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(getActivity(), MainActivity.class);
-					startActivityForResult(intent,0);
-					getActivity().finish();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("Users",userFriends);
+                        intent.putExtra("Name", currUserName);
+                        intent.putExtra("ID",ID);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
 					//Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
                     }
@@ -512,6 +527,9 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("Users",userFriends);
+            intent.putExtra("Name", currUserName);
+            intent.putExtra("ID",ID);
             startActivityForResult(intent,0);
             getActivity().finish();
 
