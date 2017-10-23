@@ -271,6 +271,20 @@ public class MyPostsFragment extends Fragment {
             //            Movies = MovieSingleton.get(context).getMovies();
             Post mv = Posts.get(position);
 
+//            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+//                    // we know a row was clicked but we need to know WHERE specifically
+//                    // is that data stored in the database
+//
+//                    Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+//                    // toString instead of sending over the whole DatabaseReference because it's easier
+//                    i.putExtra("ID", currUserId);
+//                    i.putExtra(DetailedPostActivity.EXTRA_POST, mv);
+//                    startActivity(i);
+//                }
+//            });
+
             Glide.with(MyPostsFragment.this)
                     .load( mv.getmPhotos())
                     .centerCrop()

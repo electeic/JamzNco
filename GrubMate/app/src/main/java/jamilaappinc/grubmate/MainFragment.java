@@ -134,16 +134,20 @@ public class MainFragment extends Fragment {
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-                        for (int i = 0; i < userFriends.size(); i++) {
-                            System.out.println("I IS " + i);
-                            System.out.println("POST ID IS " + post.getmId());
-                            System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
+                        if(userFriends != null)
+                        {
+                            for (int i = 0; i < userFriends.size(); i++) {
+                                System.out.println("I IS " + i);
+                                System.out.println("POST ID IS " + post.getmId());
+                                System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
 
-                            if (post.getmAuthorId().equals(userFriends.get(i))) {
-                                myPost.add(post);
-                                System.out.println("I GOT A POST!!" + post);
+                                if (post.getmAuthorId().equals(userFriends.get(i))) {
+                                    myPost.add(post);
+                                    System.out.println("I GOT A POST!!" + post);
+                                }
                             }
                         }
+
                         System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
                         System.out.println("POSTS COUNTER" + postCount.get(0));
 
