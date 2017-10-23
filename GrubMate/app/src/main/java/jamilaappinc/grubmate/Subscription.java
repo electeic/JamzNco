@@ -36,8 +36,8 @@ public class Subscription implements Serializable {
 
     }
 
-    public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
-                         ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
+    public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
+                        ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
@@ -129,11 +129,11 @@ public class Subscription implements Serializable {
         this.mDescription = mDescription;
     }
 
-    public boolean isActive(){
+    public boolean isActive() {
         mActive = Boolean.FALSE;
         Date date = Calendar.getInstance().getTime();
         System.out.println("END DATE IS " + mEndDate);
-        if(this.mEndDate.after(date)){
+        if (this.mEndDate.after(date)) {
             mActive = Boolean.TRUE;
         }
         return mActive;
