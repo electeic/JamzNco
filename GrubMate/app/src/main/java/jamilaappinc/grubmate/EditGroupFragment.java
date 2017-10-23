@@ -80,7 +80,7 @@ public class EditGroupFragment extends Fragment {
         initComp(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
@@ -121,9 +121,9 @@ public class EditGroupFragment extends Fragment {
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Toast.makeText(getContext(), "Can potentially just send final vector back to DB, if we" +
-                        " go back to home screen then we're going to need to pass the Arraylist of curr users to all" +
-                        " the fragments .... " , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Can potentially just send final vector back to DB, if we" +
+//                        " go back to home screen then we're going to need to pass the Arraylist of curr users to all" +
+//                        " the fragments .... " , Toast.LENGTH_SHORT).show();
                 /*
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("ID", ID);
@@ -143,7 +143,7 @@ public class EditGroupFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         group.getGroupMembers().removeAllElements();
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
 
 
                     }});
@@ -166,8 +166,8 @@ public class EditGroupFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         group.getGroupMembers().remove(_position);
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE MEMBER FROM DB or just do it " +
-                                "when you press submit, it depends on how db is passing in info" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE MEMBER FROM DB or just do it " +
+                                //"when you press submit, it depends on how db is passing in info" , Toast.LENGTH_SHORT).show();
                     }});
                 adb.show();
 

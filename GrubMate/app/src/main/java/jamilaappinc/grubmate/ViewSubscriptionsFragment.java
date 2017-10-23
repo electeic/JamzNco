@@ -97,7 +97,7 @@ public class ViewSubscriptionsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
         initComponents(v);
         addListeners();

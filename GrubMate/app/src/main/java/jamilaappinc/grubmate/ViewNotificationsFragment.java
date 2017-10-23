@@ -96,7 +96,7 @@ public class ViewNotificationsFragment extends Fragment {
         initComponents(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
         list.setAdapter(adapter);
 
@@ -157,7 +157,7 @@ public class ViewNotificationsFragment extends Fragment {
                     /* tell database to delete/deactivate the notification & delete from screen */
                     notifications.remove(position);
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE NOTIFICATION FROM DB" , Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE NOTIFICATION FROM DB" , Toast.LENGTH_SHORT).show();
 
                     Log.d("Damn", "it didn't recognize the type");
                 }

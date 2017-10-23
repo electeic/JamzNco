@@ -99,7 +99,7 @@ public class MenuFragment extends Fragment {
                 System.out.println("ID SENT OVER IS " + ID);
                 System.out.println("USER's ID IS" + user.getId());
                 if (user.getId().equals(ID)) {
-                    Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
                     myUser = user;
                 }
             }

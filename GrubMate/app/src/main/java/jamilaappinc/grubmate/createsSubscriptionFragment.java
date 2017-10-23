@@ -603,7 +603,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
 
 
-            Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
         }
 
     }

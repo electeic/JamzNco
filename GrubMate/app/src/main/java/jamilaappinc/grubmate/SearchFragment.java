@@ -252,7 +252,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                         intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
                     }});
                 adb.show();
