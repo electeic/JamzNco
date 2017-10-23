@@ -51,6 +51,12 @@ public class CreateGroupActivity extends AppCompatActivity {
         //get intent data
         Intent i = getIntent();
         friends = (ArrayList<String>) getIntent().getSerializableExtra(GET_ALL_FRIENDS);
+
+            for(int d = 0; d < friends.size(); d++)
+            {
+                System.out.println("IVAN OUT" + friends.get(d));
+            }
+
         ID = i.getStringExtra("ID");
 
 
@@ -81,13 +87,22 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 User user = dataSnapshot.getValue(User.class);
 
-                System.out.println(user.getFriends() + user.getId() + user.getName());
-                System.out.println("ID SENT OVER IS " + ID);
-                System.out.println("USER's ID IS" + user.getId());
-                if (friends.contains(user.getId())) {
-                    myFriends.add(user);
-                    myFriendsNames.add(user.getName());
+                for(String s: friends)
+                {
+                    if(s.equals(user.getId()))
+                    {
+                        myFriends.add(user);
+                        myFriendsNames.add(user.getName());
+                    }
                 }
+
+//                System.out.println(user.getFriends() + user.getId() + user.getName());
+//                System.out.println("ID SENT OVER IS " + ID);
+//                System.out.println("USER's ID IS" + user.getId());
+//                if (friends.contains(user.getId())) {
+//                    myFriends.add(user);
+//                    myFriendsNames.add(user.getName());
+//                }
             }
 
             @Override
@@ -199,7 +214,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     private void sendFriends(){

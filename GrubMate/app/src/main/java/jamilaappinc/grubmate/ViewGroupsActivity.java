@@ -23,8 +23,8 @@ public class ViewGroupsActivity extends AppCompatActivity {
     public static final String GET_ALL_GROUPS = "all groups";
     public static final String GET_ALL_FRIENDS = "all friends";
 
-    private ArrayList<Group> groups = new ArrayList<Group>();
-    private ArrayList<String> friends = new ArrayList<>();
+    private ArrayList<Group> groups;
+    private ArrayList<String> friends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
