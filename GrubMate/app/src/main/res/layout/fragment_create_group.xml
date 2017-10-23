@@ -38,6 +38,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/createGroup_groupName"
             android:layout_marginEnd="19dp"
+            android:onClick="clickFriend"
             android:text="+"
             android:textSize="24sp" />
 

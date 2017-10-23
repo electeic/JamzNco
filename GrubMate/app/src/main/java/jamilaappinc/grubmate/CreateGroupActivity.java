@@ -93,16 +93,17 @@ public class CreateGroupActivity extends AppCompatActivity {
                     {
                         myFriends.add(user);
                         myFriendsNames.add(user.getName());
+                        System.out.println("IVAN CREATE GROUPACTVITY USER NAME: " + user.getName() + " " + myFriendsNames.size());
                     }
                 }
 
-//                System.out.println(user.getFriends() + user.getId() + user.getName());
-//                System.out.println("ID SENT OVER IS " + ID);
-//                System.out.println("USER's ID IS" + user.getId());
-//                if (friends.contains(user.getId())) {
-//                    myFriends.add(user);
-//                    myFriendsNames.add(user.getName());
-//                }
+                listFriends = new String[myFriendsNames.size()];
+                for(int j =0; j<myFriendsNames.size(); j++){
+                    listFriends[j] = myFriendsNames.get(j);
+                }
+                checkedFriends = new boolean[listFriends.length];
+
+
             }
 
             @Override
@@ -117,12 +118,17 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+        /*listFriends = new String[myFriendsNames.size()];
+            for(int j =0; j<myFriendsNames.size(); j++){
+                listFriends[j] = myFriendsNames.get(j);
+            }*/
+//            myFriendsNames.toArray(listFriends);
+//        listFriends = myFriendsNames.toArray(new String[myFriendsNames.size()]);
+//            System.out.println("ivan the size of listFriends is WHUBADUBDUB " + listFriends.length + " " + myFriendsNames.size());
+//        checkedFriends = new boolean[listFriends.length];        checkedFriends = new boolean[listFriends.length];
 
-        listFriends = myFriendsNames.toArray(new String[0]);
-        checkedFriends = new boolean[listFriends.length];
 
-
-    }
+        }
 
 
     /*
