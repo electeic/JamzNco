@@ -232,10 +232,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-					/*Intent intent = new Intent(getActivity(), MainActivity.class);
+					Intent intent = new Intent(getActivity(), MainActivity.class);
 					startActivityForResult(intent,0);
-					getActivity().finish();*/
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
+					getActivity().finish();
+					//Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
                     }
                 });

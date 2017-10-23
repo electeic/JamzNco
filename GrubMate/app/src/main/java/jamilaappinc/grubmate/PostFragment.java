@@ -28,6 +28,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,6 +91,13 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     Button pSubmitpostbutton;
     Button pAddPictureButton;
 
+
+    private ArrayList<String> userFriends;
+    private String currUserName;
+
+    ArrayList<Integer> subscriptionCount = new ArrayList<>();
+    ArrayList<Integer> subscriptionReadCounter = new ArrayList<>();
+
     private Uri filePath;
     Bitmap mBitmap;
     private String ID;
@@ -144,12 +152,66 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        currUserName = i.getStringExtra("Name");
+
+
+
+        subscriptionReadCounter.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Post")) {
+                        subscriptionCount.add((int)snap.getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         initGUIComp(v);
         addListeners();
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Cancel?");
+                adb.setMessage("Are you sure you want to cancel? ");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
+                        intent.putExtra("Users",userFriends);
+                        intent.putExtra("Name", currUserName);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+                    }
+                });
+                adb.show();
+            }
+        });
 
-            return v;
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
+
+        return v;
     }
 
     private void initGUIComp(View v){
@@ -251,24 +313,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-                adb.setTitle("Cancel?");
-                adb.setMessage("Are you sure you want to cancel? ");
-                adb.setNegativeButton("Cancel", null);
-                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra("ID", ID);
-                        startActivityForResult(intent,0);
-                        getActivity().finish();
-                    }});
-                adb.show();
-
-            }
-        });
-
         pAddPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,60 +325,105 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             public void onClick(View view) {
 
                 if (checkAllFilled()) {
-                    //all forms filled out correctly
 
-                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                    final FirebaseDatabase database2 = FirebaseDatabase.getInstance();
                     final String key = database2.getReference("Post").push().getKey();
-
-                    DatabaseReference databaseRef = database.getReference().child("Post").child(key);
-
+                    final DatabaseReference databaseRef = database.getReference().child("Post").child(key);
                     Intent i = getActivity().getIntent();
                     ID = i.getStringExtra("ID");
-                    Toast.makeText(getContext(), "The id is "+ID , Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getActivity(), MenuActivity.class);
-
-//
-
-//                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
-//                        post.setmId(key);
-//                        databaseRef.setValue(post);
+                    final Intent intent = new Intent(getActivity(), MenuActivity.class);
+                    DatabaseReference dbRefSubscriptions = database2.getReference().child("Subscription");
 
                     if(filePath != null)
-                    uploadFile(key);
-                    else
-                    {
-                        System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
-                        post.setmId(key);
-                        databaseRef.setValue(post);
-                        final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
-
-
-                        // final DatabaseReference ref = database.getReference();
-                         dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        uploadFile(key);
+                   /* else {
+                        dbRefSubscriptions.addChildEventListener(new ChildEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                ArrayList<String> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
-                                if(tempPostList == null) {
-                                    tempPostList = new ArrayList<String>();
-                                }
-                                int listSize = tempPostList.size()+1;
-                                System.out.println("CURRENT LISTSIZE " + listSize);
-                                tempPostList.add(Integer.toString(listSize));
-                                dbRefUsers.child(ID).child("userPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+                            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                                Subscription subscription = dataSnapshot.getValue(Subscription.class);
+                                int counter = subscriptionReadCounter.get(0);
+                                counter++;
+                                subscriptionReadCounter.clear();
+                                subscriptionReadCounter.add(counter);
 
+                                boolean matchingSubscription = true;
+
+
+                                for (int i = 0; i < categories.size(); i++) {
+                                    for (int j = 0; j < subscription.getmCategories().size(); j++) {
+                                        if (!categories.get(i).equals(subscription.getmCategories().get(j))) {
+                                            matchingSubscription = false;
+                                        }
+                                    }
+                                }
+
+                                if (subscription.isActive() == false) {
+                                    matchingSubscription = false;
+                                }
+
+                                if (matchingSubscription == true) {
+                                    //post matches subscription.
+                                    //so add post to subscription's list of posts
+                                    //allMatchingSubscriptions.add(Subscro.getmId());
+                                    ArrayList<String> newIdAdded = subscription.getmPosts();
+                                    newIdAdded.add(key);
+                                    subscription.setmPosts(newIdAdded);
+
+                                    //now rewrite the new posts list to the subscription
+                                    DatabaseReference dbRefSubscription = database2.getReference().child("Subscription").child(subscription.getmId());
+                                    dbRefSubscription.child("subscription").child("mPosts").setValue(newIdAdded);
+
+                                }
+
+                                final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+                                post.setmId(key);
+                                final DatabaseReference dbRefUsers = database2.getInstance().getReference().child(FirebaseReferences.USERS);
+
+
+                                // final DatabaseReference ref = database.getReference();
+                                dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ArrayList<String> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
+                                        if (tempPostList == null) {
+                                            tempPostList = new ArrayList<String>();
+                                        }
+                                        int listSize = tempPostList.size() + 1;
+                                        //System.out.println("CURRENT LISTSIZE " + listSize);
+                                      //  tempPostList.add(Integer.toString(listSize));
+                                        //tempPostList.add(post.getmId());
+
+                                        dbRefUsers.child(ID).child("userPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                System.out.println("going to create and write post on next line");
+                                createAndWritePost(post, ID);
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
                             }
                         });
-                    }
-                    intent.putExtra("ID", ID);
-                    startActivityForResult(intent, 0);
-                    getActivity().finish();
+                    }*/
                 }
                 else{
                     //something is wrong so send a toast
@@ -480,6 +569,28 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //        FirebaseRef.child(id).setValue(picUri); //part of og code
 
 //        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+    }
+
+    public void createAndWritePost(Post post, String ID) {
+        System.out.println("ENTERED CREATRE AND WRITE POST");
+
+        if (subscriptionReadCounter.get(0) == subscriptionCount.get(0)) {//only call after reading ALL posts
+            System.out.println("can now go to the main screen");
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference databaseRef = database.getReference().child("Post").child(post.getmId());
+            databaseRef.setValue(post);
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.putExtra("Users",userFriends);
+            intent.putExtra("Name", currUserName);
+            intent.putExtra("ID",ID);
+            startActivityForResult(intent,0);
+            getActivity().finish();
+
+            Toast.makeText(getContext(), "Post Set" , Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 //    /*

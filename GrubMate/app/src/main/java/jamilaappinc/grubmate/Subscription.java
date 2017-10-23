@@ -2,6 +2,7 @@ package jamilaappinc.grubmate;
 
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Vector;
 import java.util.Date;
 import java.util.ArrayList;
@@ -44,6 +45,16 @@ public class Subscription implements Serializable {
         mActive = Boolean.TRUE;
         this.mId = mId;
         this.mPostsIds = mPostsIds;
+    }
+
+    public boolean isActive(){
+        mActive = Boolean.FALSE;
+        Date date = Calendar.getInstance().getTime();
+        System.out.println(mEndDate);
+        if(this.mEndDate.before(date)){
+            mActive = Boolean.TRUE;
+        }
+        return mActive;
     }
 
     public boolean getmActive() { return mActive; }
