@@ -58,6 +58,8 @@ public class DetailedPostFragment extends Fragment {
     String ID;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
+    private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
+
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -66,10 +68,11 @@ public class DetailedPostFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DetailedPostFragment newInstance(String reference) {
+//    public static DetailedPostFragment newInstance(String reference) {
+    public static DetailedPostFragment newInstance(Post reference){
         Bundle args = new Bundle();
 //        args.putInt(ARG_PARAM1, pos);
-        args.putString(ARG_URL, reference);
+        args.putSerializable(ARG_POSTS, reference);
         DetailedPostFragment fragment = new DetailedPostFragment();
         fragment.setArguments(args);
         return fragment;
@@ -88,6 +91,7 @@ public class DetailedPostFragment extends Fragment {
         dbRefCount = database.getReference(FirebaseReferences.POST_COUNT);
 
         Bundle args = getArguments();
+        n = (Post) args.get(ARG_POSTS);
         //todo get reference to note to be edited (if it exists)
         String urlToEdit = args.getString(ARG_URL);
         if(urlToEdit != null) { // NULL if we are adding a new record
@@ -144,65 +148,112 @@ public class DetailedPostFragment extends Fragment {
         });
 
         //todo read selected note
-        if(dbNoteToEdit != null) {  // null if urlToEdit is null
-            // read from the note to update
-            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // convert this "data snapshot" to a model class
-                    n = dataSnapshot.getValue(Post.class);
-                    System.out.println("FUCK THIS: " + n);
-                    fPostName.setText(n.getmTitle());
-//                    fCategories.setText(n.getmCategories());
-                    String desc = "Description: " + n.getmDescription();
-                    fDescription.setText(desc);
+//        if(dbNoteToEdit != null) {  // null if urlToEdit is null
+//            // read from the note to update
+//            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    // convert this "data snapshot" to a model class
+//                    n = dataSnapshot.getValue(Post.class);
+//                    System.out.println("FUCK THIS: " + n);
+//                    fPostName.setText(n.getmTitle());
+////                    fCategories.setText(n.getmCategories());
+//                    String desc = "Description: " + n.getmDescription();
+//                    fDescription.setText(desc);
+//
+//                    String s = Integer.toString(n.getmServings()) + " Shares Left";
+//                    fServings.setText(s);
+////                    String s2 = "Rating " + Float.toString();
+////                    fProfilePicture
+//
+//                    String Tags = "Tags: ";
+//                    for(String sw: n.getmTags())
+//                    {
+//                        Tags += sw + ", ";
+//                    }
+//                    fTags.setText(Tags); //passes in an array so o.o
+////                    fDietaryInfo.setText(n);
+//
+//                    String Cates = "Categories: ";
+//                    for(String sw: n.getmCategories())
+//                    {
+//                        Cates += sw + ", ";
+//                    }
+//                    fCategories.setText(Cates);
+//
+//                    if(n.getHomemade())
+//                    {
+//                        fHomeOrRestuarant.setText("Homemade");
+//                    }
+//                    else
+//                    {
+//                        fHomeOrRestuarant.setText("Resturaunt");
+//                    }
+//
+//                    fStartTime.setText(n.getmStartDate().toString());
+//                    fEndTime.setText(n.getmEndDate().toString());
+//
+//                    Glide.with(DetailedPostFragment.this)
+//                            .load(n.getmPhotos())
+//                            .centerCrop()
+//                            .placeholder(R.drawable.hamburger)
+//                            .crossFade()
+//                            .into(fFoodPicture);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//        }
 
-                    String s = Integer.toString(n.getmServings()) + " Shares Left";
-                    fServings.setText(s);
+
+        System.out.println("FUCK THIS: " + n);
+        fPostName.setText(n.getmTitle());
+//                    fCategories.setText(n.getmCategories());
+        String desc = "Description: " + n.getmDescription();
+        fDescription.setText(desc);
+
+        String s = Integer.toString(n.getmServings()) + " Shares Left";
+        fServings.setText(s);
 //                    String s2 = "Rating " + Float.toString();
 //                    fProfilePicture
 
-                    String Tags = "Tags: ";
-                    for(String sw: n.getmTags())
-                    {
-                        Tags += sw + ", ";
-                    }
-                    fTags.setText(Tags); //passes in an array so o.o
+        String Tags = "Tags: ";
+        for(String sw: n.getmTags())
+        {
+            Tags += sw + ", ";
+        }
+        fTags.setText(Tags); //passes in an array so o.o
 //                    fDietaryInfo.setText(n);
 
-                    String Cates = "Categories: ";
-                    for(String sw: n.getmCategories())
-                    {
-                        Cates += sw + ", ";
-                    }
-                    fCategories.setText(Cates);
-
-                    if(n.getHomemade())
-                    {
-                        fHomeOrRestuarant.setText("Homemade");
-                    }
-                    else
-                    {
-                        fHomeOrRestuarant.setText("Resturaunt");
-                    }
-
-                    fStartTime.setText(n.getmStartDate().toString());
-                    fEndTime.setText(n.getmEndDate().toString());
-
-                    Glide.with(DetailedPostFragment.this)
-                            .load(n.getmPhotos())
-                            .centerCrop()
-                            .placeholder(R.drawable.hamburger)
-                            .crossFade()
-                            .into(fFoodPicture);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+        String Cates = "Categories: ";
+        for(String sw: n.getmCategories())
+        {
+            Cates += sw + ", ";
         }
+        fCategories.setText(Cates);
+
+        if(n.getHomemade())
+        {
+            fHomeOrRestuarant.setText("Homemade");
+        }
+        else
+        {
+            fHomeOrRestuarant.setText("Resturaunt");
+        }
+
+        fStartTime.setText(n.getmStartDate().toString());
+        fEndTime.setText(n.getmEndDate().toString());
+
+        Glide.with(DetailedPostFragment.this)
+                .load(n.getmPhotos())
+                .centerCrop()
+                .placeholder(R.drawable.hamburger)
+                .crossFade()
+                .into(fFoodPicture);
+
 
         //now update information using the posts information
 

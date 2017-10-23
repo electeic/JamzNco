@@ -105,7 +105,6 @@ public class MainFragment extends Fragment {
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        System.out.println("IN MAIN FRAG, I HAVE " + userFriends.size() + " FRIENDS");
         System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
 
@@ -135,7 +134,6 @@ public class MainFragment extends Fragment {
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-                        System.out.println("USER FRIENDS HAS SIZE " + userFriends.size());
                         for (int i = 0; i < userFriends.size(); i++) {
                             System.out.println("I IS " + i);
                             System.out.println("POST ID IS " + post.getmId());
@@ -190,20 +188,20 @@ public class MainFragment extends Fragment {
         });
 
 
-        //        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //            @Override
-        //            public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
-        //                // we know a row was clicked but we need to know WHERE specifically
-        //                // is that data stored in the database
-        //
-        //                DatabaseReference dbRefClicked = mAdapter.getRef(position);
-        //                Intent i = new Intent(getActivity(), DetailedPostActivity.class);
-        //                // toString instead of sending over the whole DatabaseReference because it's easier
-        //                i.putExtra("ID", currUserId);
-        //                i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
-        //                startActivity(i);
-        //            }
-        //        });
+//                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+//                        // we know a row was clicked but we need to know WHERE specifically
+//                        // is that data stored in the database
+//
+//                        DatabaseReference dbRefClicked = mAdapter.getRef(position);
+//                        Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+//                        // toString instead of sending over the whole DatabaseReference because it's easier
+//                        i.putExtra("ID", currUserId);
+//                        i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
+//                        startActivity(i);
+//                    }
+//                });
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,11 +357,30 @@ public class MainFragment extends Fragment {
             //                }
             //            });
 
-            //            Movies = MovieSingleton.get(context).getMovies();
-            Post mv = Posts.get(position);
+            final Post mv = Posts.get(position);
 
-            image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+                    // we know a row was clicked but we need to know WHERE specifically
+                    // is that data stored in the database
 
+                    Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+                    // toString instead of sending over the whole DatabaseReference because it's easier
+                    i.putExtra("ID", currUserId);
+                    i.putExtra(DetailedPostActivity.EXTRA_POST, mv);
+                    startActivity(i);
+                }
+            });
+
+
+
+            Glide.with(MainFragment.this)
+                    .load( mv.getmPhotos())
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(image);
 
             textTitle.setText(mv.getmTitle());
             textDescription.setText(mv.getmDescription());

@@ -107,9 +107,6 @@ public class CreateGroupActivity extends AppCompatActivity {
         checkedFriends = new boolean[listFriends.length];
 
 
-
-
-
     }
 
 
