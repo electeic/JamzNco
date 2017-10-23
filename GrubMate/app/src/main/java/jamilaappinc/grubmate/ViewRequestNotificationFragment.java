@@ -49,7 +49,7 @@ public class ViewRequestNotificationFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
 
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         addListeners();
         fillInScreen();
@@ -97,7 +97,7 @@ public class ViewRequestNotificationFragment extends Fragment {
 
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
                         i.putExtra("ID", ID);
                         i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS,notifications);
@@ -112,7 +112,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF)  DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF)  DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
                         i.putExtra("ID", ID);
                         i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS,notifications);

@@ -174,7 +174,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
 
         initGUIComp(v);
         addListeners();
@@ -325,7 +325,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key);
 
-                    Toast.makeText(getContext(), "The id is " + ID , Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "The id is " + ID , Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getActivity(), MenuActivity.class);
 

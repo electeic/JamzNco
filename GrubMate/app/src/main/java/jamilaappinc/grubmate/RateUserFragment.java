@@ -126,8 +126,8 @@ public class RateUserFragment extends Fragment {
             public void onClick(View v) {
                 if(getRating()){
                     //if the rating isn't 0 then you can submit the rating
-                    Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
-                            " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
+//                            " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
                     Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), rater);
 
 
@@ -144,8 +144,8 @@ public class RateUserFragment extends Fragment {
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 
-                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
-                                    " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
+//                                    " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
                             Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), rater);
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("ID", ID);

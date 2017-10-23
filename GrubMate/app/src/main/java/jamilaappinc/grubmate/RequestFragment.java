@@ -136,7 +136,7 @@ public class RequestFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
@@ -237,7 +237,7 @@ public void onClick(View view) {
             startActivityForResult(intent,0);
             getActivity().finish();
 
-            Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Request Sent" , Toast.LENGTH_SHORT).show();
 
         //send this post to the DB
 

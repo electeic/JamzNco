@@ -536,7 +536,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             startActivityForResult(intent,0);
             getActivity().finish();
 
-            Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
         }
 
     }

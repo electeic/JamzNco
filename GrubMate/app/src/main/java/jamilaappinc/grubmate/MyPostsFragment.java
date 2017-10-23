@@ -76,7 +76,7 @@ public class MyPostsFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_my_posts, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         database = FirebaseDatabase.getInstance();
         dbRefMyPosts = database.getInstance().getReference().child(FirebaseReferences.USERS).child(FirebaseReferences.MYPOSTS);
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
