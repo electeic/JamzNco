@@ -25,7 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.facebook.messenger.MessengerUtils;
 import com.facebook.messenger.MessengerThreadParams;
 import com.facebook.messenger.ShareToMessengerParams;
-
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import org.w3c.dom.Text;
 
 /**
@@ -46,6 +48,11 @@ public class ProfileFragment extends Fragment {
     private TextView nameText;
     private TextView ratingText;
     private ListView myPosts;
+
+    private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 1;
+    private View mMessengerButton;
+    private MessengerThreadParams mThreadParams;
+    private boolean mPicking;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -81,6 +88,20 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
+
+//        final Intent myIntent = new Intent((getActivity()), ProfileActivity.class);
+//        getActivity().startActivity(myIntent);
+
+//         If we received Intent.ACTION_PICK from Messenger, we were launched from a composer shortcut
+//         or the reply flow.
+//        Intent intent = getActivity().getIntent();
+//        if (Intent.ACTION_PICK.equals(intent.getAction())) {
+//            mThreadParams = MessengerUtils.getMessengerThreadParamsForIntent(intent);
+//            mPicking = true;
+
+//             Note, if mThreadParams is non-null, it means the activity was launched from Messenger.
+//             It will contain the metadata associated with the original content, if there was content.
+//        }
 
         nameText = (TextView)v.findViewById(R.id.nameText);
         ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
@@ -127,8 +148,39 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+//        mMessengerButton = v.findViewById(R.id.messenger_send_button);
+//
+//        mMessengerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onMessengerButtonClicked();
+//            }
+//
+//            private void onMessengerButtonClicked() {
+//                // The URI can reference a file://, content://, or android.resource. Here we use
+//                // android.resource for sample purposes.
+//                Uri uri =
+//                        Uri.parse("android.resource://com.facebook.samples.messenger.send/" + R.drawable.gmlogo);
+//
+//                // Create the parameters for what we want to send to Messenger.
+//                ShareToMessengerParams shareToMessengerParams =
+//                        ShareToMessengerParams.newBuilder(uri, "image/jpeg")
+//                                .setMetaData("{ \"image\" : \"logo\" }")
+//                                .build();
+//
+//                if (mPicking) {
+//                    // If we were launched from Messenger, we call MessengerUtils.finishShareToMessenger to return
+//                    // the content to Messenger.
+//                    MessengerUtils.finishShareToMessenger(getActivity(), shareToMessengerParams);
+//                } else {
+//                    // Otherwise, we were launched directly (for example, user clicked the launcher icon). We
+//                    // initiate the broadcast flow in Messenger. If Messenger is not installed or Messenger needs
+//                    // to be upgraded, this will direct the user to the play store.
+//                    MessengerUtils.shareToMessenger(getActivity(), REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
+//                }
+//            }
+//        });
 
         return v;
     }
-
 }

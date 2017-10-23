@@ -12,6 +12,7 @@ public class DetailedPostActivity extends AppCompatActivity {
 
     public static final String EXTRA_URL = "firebase.EXTRA_URL";
     public static final String EXTRA_POSITION = "main_position";
+    public static final String EXTRA_POST = "DetailedPostActivityPosts";
 
 
     @Override
@@ -26,6 +27,7 @@ public class DetailedPostActivity extends AppCompatActivity {
         //TODO modify for id
         String reference = i.getStringExtra(EXTRA_URL);
 //        int pos = i.getIntExtra(EXTRA_POSITION, -1);
+        Post p = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
 
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
@@ -33,7 +35,8 @@ public class DetailedPostActivity extends AppCompatActivity {
 
         if (f == null ) {
             //TODO modify for id
-            f = DetailedPostFragment.newInstance(reference);
+//            f = DetailedPostFragment.newInstance(reference);
+            f = DetailedPostFragment.newInstance(p);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);

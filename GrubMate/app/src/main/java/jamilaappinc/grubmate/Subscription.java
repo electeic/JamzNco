@@ -31,6 +31,11 @@ public class Subscription implements Serializable {
         this.mCategories = mCategories;
     }
 
+    public Subscription() //needed for the firebase
+    {
+
+    }
+
     public Subscription( String title,String description, Date mStartDate, Date mEndDate,  ArrayList<String> mCategories,
                          ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
         this.mDescription = description;

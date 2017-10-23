@@ -5,7 +5,7 @@ package jamilaappinc.grubmate;
  */
 
 public class RequestedNotification extends Notification {
-    public RequestedNotification(User mFromUser, Post mAboutPost, User mToUser){
+    public RequestedNotification(String mFromUser, String mAboutPost, String mToUser){
         super(mFromUser,mAboutPost,mToUser);
     }
 }

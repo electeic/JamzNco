@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<Integer> usersCount = new ArrayList<>();
     ArrayList<Integer> usersReadCounter = new ArrayList<>();
     final Vector<Boolean> userExists = new Vector<>();
+    ArrayList<String> userInfo = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +123,14 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONArray rawName = response.getJSONObject().getJSONArray("data");
 
                                     for (int i = 0; i < rawName.length(); i++) {
-                                        currUsers.add(Integer.toString(rawName.getJSONObject(i).getInt("id")));
+                                        currUsers.add(rawName.getJSONObject(i).getString("id"));
+                                        System.out.println("I HAVE ADDED A FRIEND " + rawName.getJSONObject(i).toString());
+                                        System.out.println("I HAVE ADDED A FRIEND " + rawName.getJSONObject(i).getString("id"));
+
                                     }
                                     intent.putExtra("Users", currUsers);//places users vector in intent and passes to main screen
+                                    writeNewUser(userInfo.get(1), userInfo.get(0),
+                                            userInfo.get(2), currUsers);
                                     startActivity(intent);
                                     finish();
                                     Log.d(TAG, rawName.toString());
@@ -145,9 +151,11 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("Name", user.optString("name"));
                         intent.putExtra("ID", user.optString("id"));
                         intent.putExtra("Picture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
+                        userInfo.add(user.optString("name"));
+                        userInfo.add(user.optString("id"));
+                        userInfo.add("https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
                         System.out.println("IN LOGIN, ID IS" + user.optString("id"));
-                        writeNewUser(user.optString("id"), user.optString("name"),
-                                "https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080", currUsers);
+
                         graphRequestAsyncTask.executeAsync();
 
                     }
@@ -214,7 +222,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void writeNewUser(final String userId, final String name, final String picture, final ArrayList<String> friends) {
         System.out.println("WRITE NEW USER");
-        addtoDB(userId,name,picture,friends);
 
         final DatabaseReference readRef = database.getReference().child("Users");
         userExists.add(false);
@@ -224,22 +231,18 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("WRITE NEW USER = ON CHILD ADDED");
 
                 User u = dataSnapshot.getValue(User.class);
-//                int counter = usersReadCounter.get(0);
-//                counter++;
-//                usersReadCounter.clear();
-//                usersReadCounter.add(counter);
-//
-//                if(u.getId().equals(userId)){
-//                    userExists.clear();
-//                    userExists.add(true);
-//                    System.out.println("I HAVE LOGGED IN BEFORE!!!");
-//
-//                }
+                int counter = usersReadCounter.get(0);
+                counter++;
+                usersReadCounter.clear();
+                usersReadCounter.add(counter);
+
+                if(u.getId().equals(userId)){
+                    userExists.clear();
+                    userExists.add(true);
+                    System.out.println("I HAVE LOGGED IN BEFORE!!!");
+
+                }
                 addtoDB(userId,name,picture,friends);
-
-
-
-
 
             }
 
@@ -265,7 +268,7 @@ public class LoginActivity extends AppCompatActivity {
 //        System.out.println("USERS COUNT" + usersCount.get(0));
 //        System.out.println("USERS LIST COUNT" + usersReadCounter.get(0));
 //
-//        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
+        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
             System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
             DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
             User u = new User(name, picture);
@@ -282,6 +285,6 @@ public class LoginActivity extends AppCompatActivity {
             //Post newPost = new Post("abc","cba");
             databaseRef.setValue(u);
         }
-    //}
+    }
 
 }

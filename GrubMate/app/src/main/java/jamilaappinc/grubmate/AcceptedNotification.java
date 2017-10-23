@@ -5,7 +5,7 @@ package jamilaappinc.grubmate;
  */
 
 public class AcceptedNotification extends Notification {
-    public AcceptedNotification(User mFromUser, Post mAboutPost, User mToUser){
+    public AcceptedNotification(String mFromUser, String mAboutPost, String mToUser){
         super(mFromUser,mAboutPost,mToUser);
     }
 }

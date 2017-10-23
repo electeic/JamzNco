@@ -59,10 +59,10 @@ public class ViewRequestNotificationFragment extends Fragment {
     }
 
     private void fillInScreen(){
-        name.setText(notification.getmFromUser().getName());
+      /*  name.setText(notification.getmFromUser().getName());
         title.setText(notification.getmAboutPost().getmTitle());
         size.setText(notification.getmAboutPost().getmServings()+"");
-        location.setText(notification.getmAboutPost().getmLocation());
+        location.setText(notification.getmAboutPost().getmLocation());*/
     }
 
     private void initComponents(View v){

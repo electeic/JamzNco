@@ -78,17 +78,30 @@
                 android:text="Message User " />
 
 
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:elevation="0dp"
-            app:srcCompat="@drawable/com_facebook_button_send_icon_blue"
-            android:layout_alignEnd="@+id/menu_from_main"
-            android:layout_toEndOf="@+id/ratingBar6" />
-            </LinearLayout>
+        <!--<ImageButton-->
+            <!--android:id="@+id/messenger_button"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:elevation="0dp"-->
+            <!--app:srcCompat="@drawable/com_facebook_button_send_icon_blue"-->
+            <!--android:layout_alignEnd="@+id/menu_from_main"-->
+            <!--android:layout_toEndOf="@+id/ratingBar6" />-->
+            <!--<include-->
+                <!--layout="@layout/messenger_button_send_blue_large"-->
+                <!--android:id="@+id/messenger_send_button"/>-->
 
+            <com.facebook.share.widget.SendButton
+                android:id="@+id/send_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerInParent="true"
+                layout="@layout/messenger_button_send_blue_large"/>
+            <!--<include-->
+            <!--layout="@layout/messenger_button_send_blue_large"/>-->
+
+        </LinearLayout>
 
     </LinearLayout>
             <TextView
@@ -118,9 +131,6 @@
 
 
 </LinearLayout>
-
-
-
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu_from_main"

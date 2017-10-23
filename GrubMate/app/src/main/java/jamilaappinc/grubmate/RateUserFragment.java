@@ -91,7 +91,7 @@ public class RateUserFragment extends Fragment {
 
         initGUIComponents(v);
         addListeners();
-        fillPage(notification.getmFromUser().getName());
+//        fillPage(notification.getmFromUser().getName());
         return v;
     }
 
