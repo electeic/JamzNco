@@ -85,7 +85,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_group, container, false);
-
+        initComponent(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
@@ -147,8 +147,17 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
     @Override
     public void sendFriends(ArrayList<User> finalList) {
         selectedFriends = (ArrayList<User>)finalList.clone();
+        updateTextView();
     }
-
+    private void updateTextView(){
+        for(int i= 0; i < selectedFriends.size(); i++){
+            if(i == 0){
+                list.setText(selectedFriends.get(i).getName()+ "\n");
+            }else{
+                list.append(selectedFriends.get(i).getName()+"\n");
+            }
+        }
+    }
 
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
