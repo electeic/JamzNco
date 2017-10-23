@@ -151,7 +151,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivityForResult(intent, 0);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
+                intent.putExtra("ID",ID);
+                startActivityForResult(intent,0);
                 getActivity().finish();
             }
         });
