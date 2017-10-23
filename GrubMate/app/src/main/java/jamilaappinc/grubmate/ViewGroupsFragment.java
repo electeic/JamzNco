@@ -100,11 +100,6 @@ public class ViewGroupsFragment extends Fragment {
         list.setAdapter(adapter);
         addListeners();
 
-
-
-
-
-
         return v;
 
     }
@@ -158,9 +153,9 @@ public class ViewGroupsFragment extends Fragment {
 
 
     private void populateList() {
-        Vector<User> group = new Vector<User>();
+        ArrayList<User> group = new ArrayList<User>();
         for (int i = 0; i < 4; i++) {
-            group.addElement(new User("Melody Chai " +i, "lol"));
+            group.add(new User("Melody Chai " +i, "lol"));
         }
         groups.add(new Group("CSCI310", group));
         groups.add(new Group("Group 2", group));

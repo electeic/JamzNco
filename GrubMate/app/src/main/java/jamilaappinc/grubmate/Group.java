@@ -1,6 +1,7 @@
 package jamilaappinc.grubmate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -9,10 +10,10 @@ import java.util.Vector;
 
 public class Group implements Serializable{
     String mName;
-    Vector<User> mGroupMembers;
+    ArrayList<User> mGroupMembers;
     int mId;
 
-    public Group(String mName, Vector<User> mGroupMembers) {
+    public Group(String mName, ArrayList<User> mGroupMembers) {
         this.mName = mName;
         this.mGroupMembers = mGroupMembers;
     }
@@ -25,11 +26,11 @@ public class Group implements Serializable{
         mName = name;
     }
 
-    public Vector<User> getGroupMembers() {
+    public ArrayList<User> getGroupMembers() {
         return mGroupMembers;
     }
 
-    public void setGroupMembers(Vector<User> groupMembers) {
+    public void setGroupMembers(ArrayList<User> groupMembers) {
         this.mGroupMembers = groupMembers;
     }
 

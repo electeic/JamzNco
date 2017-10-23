@@ -420,13 +420,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                             public void onCancelled(DatabaseError databaseError) {}
                         });
 
-
-
-
-
-
-
-
                     }
                     intent.putExtra("ID", ID);
                     intent.putExtra("Users", userFriends);

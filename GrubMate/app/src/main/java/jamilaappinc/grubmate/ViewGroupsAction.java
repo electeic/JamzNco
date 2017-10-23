@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -40,9 +41,9 @@ public class ViewGroupsAction extends AppCompatActivity {
     }
 
     private void populateList(){
-        Vector<User> group = new Vector<User>();
+        ArrayList<User> group = new ArrayList<User>();
         for(int i = 0; i < 4; i++){
-            group.addElement(new User(i+"", "lol"));
+            group.add(new User(i+"", "lol"));
         }
         groups.add(new Group("CSCI310", group));
         groups.add(new Group("Group 2", group));

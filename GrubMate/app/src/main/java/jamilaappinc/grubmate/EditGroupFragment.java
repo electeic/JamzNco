@@ -141,7 +141,7 @@ public class EditGroupFragment extends Fragment {
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        group.getGroupMembers().removeAllElements();
+                        group.getGroupMembers().clear();
                         adapter.notifyDataSetChanged();
                         //Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
 

@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -131,7 +132,23 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
             @Override
             public void onClick(View v) {
 
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final String key = database.getReference(FirebaseReferences.USERS).child("userGroups").push().getKey();
+                DatabaseReference databaseRef = database.getReference().child("Post").child(key);
+
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+
+                Group groupI = new Group(groupName.getText().toString(), selectedFriends);
+
+                databaseRef.setValue(groupI);
+
+                intent.putExtra("ID", ID);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+
             }
+
+
         });
         cancel.setOnClickListener(new View.OnClickListener(){
 

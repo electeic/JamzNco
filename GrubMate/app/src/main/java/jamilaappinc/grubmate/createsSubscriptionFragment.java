@@ -358,15 +358,23 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                     if (tempNotifList == null) {
                                         tempNotifList = new ArrayList<String>();
                                     }
-                                    final String notifIndex = Integer.toString(tempNotifList.size() + 1);
-                                    Toast.makeText(getContext(), "notif index is " + notifIndex , Toast.LENGTH_SHORT).show();
-                                    tempNotifList.add(notifIndex);
+                                    String notifIndex;
                                     for (int j = 0; j< subscription.getmPosts().size(); j++) {
+                                        if(tempNotifList.size() == 0){
+                                            notifIndex = Integer.toString(tempNotifList.size() + 1+j);
+
+                                        }
+                                        else{
+                                            notifIndex = Integer.toString(tempNotifList.size() +j);
+
+                                        }
+                                        tempNotifList.add(notifIndex);
                                         Notification notification = new SubscriptionNotification(ID, subscription.getmPosts().get(j) ,ID);
                                         key = database.getReference("Notification").push().getKey();
                                         databaseRef = database.getReference().child("Notification").child(key);
                                         notification.setmId(key);
                                         databaseRef.setValue(notification);
+                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
 
                                     }
 

@@ -105,10 +105,10 @@ public class MainFragment extends Fragment {
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
-            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
-        }
-        System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
+//        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
+//            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
+//        }
+//        System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
