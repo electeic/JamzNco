@@ -94,6 +94,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     Bitmap mBitmap;
     private String ID;
 
+    String currUserName;
+    ArrayList<String> userFriends;
+
     android.support.design.widget.FloatingActionButton floatButton;
 
 //    private OnFragmentInteractionListener mListener;
@@ -143,6 +146,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         View v = inflater.inflate(R.layout.fragment_post, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        currUserName = i.getStringExtra("Name");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+
         Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         initGUIComp(v);
@@ -246,6 +252,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 ID = i.getStringExtra("ID");
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -261,6 +269,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("ID", ID);
+                        intent.putExtra("Users", userFriends);
+                        intent.putExtra("Name", currUserName);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                     }});
@@ -288,8 +298,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key);
 
-                    Intent i = getActivity().getIntent();
-                    ID = i.getStringExtra("ID");
                     Toast.makeText(getContext(), "The id is "+ID , Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getActivity(), MenuActivity.class);
@@ -333,6 +341,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         });
                     }
                     intent.putExtra("ID", ID);
+                    intent.putExtra("Users", userFriends);
+                    intent.putExtra("Name", currUserName);
                     startActivityForResult(intent, 0);
                     getActivity().finish();
                 }
