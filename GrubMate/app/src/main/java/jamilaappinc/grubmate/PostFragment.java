@@ -28,6 +28,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -97,6 +98,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     String currUserName;
     ArrayList<String> userFriends;
 
+    ArrayList<Integer> subsCount = new ArrayList<>();
+    ArrayList<Integer> subsReadCount = new ArrayList<>();
+
+    private ArrayList<String> allMatchingSubs = new ArrayList<>();
+
+
     android.support.design.widget.FloatingActionButton floatButton;
 
 //    private OnFragmentInteractionListener mListener;
@@ -148,6 +155,24 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+
+        subsReadCount.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Subscription")) {
+                        subsCount.add((int)snap.getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
@@ -339,6 +364,67 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                             }
                         });
+
+                        final DatabaseReference dbRefSubs = database.getInstance().getReference().child("Subscription");
+
+                        dbRefSubs.addChildEventListener(new ChildEventListener(){
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                                Subscription sub = dataSnapshot.getValue(Subscription.class);
+                                int counter = subsReadCount.get(0);
+                                counter++;
+                                subsReadCount.clear();
+                                subsReadCount.add(counter);
+
+                                boolean matchingSub = true;
+
+                                for (int i = 0; i < categories.size(); i++) {
+                                    System.out.println("POST CATEGORIES CURRENT " + categories.get(i));
+                                    for (int j = 0; j < sub.getmCategories().size(); j++) {
+                                        System.out.println("SUB CATEGORIES CURRENT " + sub.getmCategories().get(j));
+
+                                        if (categories.get(i).equals(sub.getmCategories().get(j))) {
+                                            System.out.println("MATCH");
+                                             if(sub.isActive() == true){
+                                                 System.out.println("MATCH + ACTIVE");
+                                                 ArrayList<String> tempPostList = dataSnapshot.child("Subscriptions").child(sub.getmId()).child("mPosts").getValue(ArrayList.class);
+                                                 if(tempPostList == null) {
+                                                     tempPostList = new ArrayList<String>();
+                                                 }
+                                                 int listSize = tempPostList.size()+1;
+                                                 System.out.println("CURRENT LISTSIZE1 " + listSize);
+                                                 System.out.println("CURRENT SUB IS1" +sub.getmId() );
+                                                 tempPostList.add(Integer.toString(listSize));
+
+                                                dbRefSubs.child(sub.getmId()).child("mPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+                                             }
+                                        }
+                                    }
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {}
+                        });
+
+
+
+
+
+
+
+
                     }
                     intent.putExtra("ID", ID);
                     intent.putExtra("Users", userFriends);
