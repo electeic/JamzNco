@@ -39,11 +39,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private static final String ARG_PARAM2 = "param2";
 
     FirebaseDatabase database;
-
-    private ArrayList<String> userFriends;
-    private String currUserName;
-
-
     private DatabaseReference dbRefPosts;
     private DatabaseReference dbRefUsers;
     private DatabaseReference dbNoteToEdit;
@@ -57,7 +52,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private String title, dietary, tags, descriptions, startTimeString, endTimeString, startDateString, endDateString;
     private SimpleDateFormat sdf;
     private Date startDateTime, endDateTime;
-    private String ID;
 
     private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<String> groups = new ArrayList<>();
@@ -74,6 +68,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
 
     android.support.design.widget.FloatingActionButton floatButton;
+    private String ID;
+    boolean addedToDB = false;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -106,6 +102,22 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
 
+        dbRefUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING USER KEYS",snap.getChildrenCount() + "");
+//                                                    if (snap.getKey().equals("")) {
+//                                                        postCount.add((int)snap.getChildrenCount());
+//                                                        System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
+//                                                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         Bundle args = getArguments();
         //todo get reference to note to be edited (if it exists)
         String urlToEdit = args.getString(mParam1);
@@ -121,10 +133,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         View v = inflater.inflate(R.layout.fragment_create_subscription, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
-        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        currUserName = i.getStringExtra("Name");
-
+        final String currUserName = i.getStringExtra("Name");
+        final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         // Attach a listener to read the data at our posts reference
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -146,18 +156,43 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         sSubscriptionTitle = (EditText)v.findViewById(R.id.subscription_titleText);
+        initGUIComp(v);
+        addListeners();
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Users",userFriends);
+                intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
         });
 
-        initGUIComp(v);
-        addListeners();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Cancel?");
+                adb.setMessage("Are you sure you want to cancel? ");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("ID", ID);
+                        intent.putExtra("Users",userFriends);
+                        intent.putExtra("Name", currUserName);
+                        startActivityForResult(intent,0);
+                        getActivity().finish();
+                    }
+                });
+                adb.show();
+            }
+        });
+
+
 
 
         return v;
@@ -198,7 +233,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-        Log.d("error check", "" + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
+        Log.d("error check", "" + (groups.size() >0) + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
         filled = (groups.size() >0 && dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
@@ -235,6 +270,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     }
 
     private void addListeners() {
+        Intent i = getActivity().getIntent();
+        ID = i.getStringExtra("ID");
+        final String currUserName = i.getStringExtra("Name");
+        final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -245,13 +284,9 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra("Users",userFriends);
-                        intent.putExtra("Name", currUserName);
-                        intent.putExtra("ID",ID);
+                        intent.putExtra("ID", ID);
                         startActivityForResult(intent,0);
                         getActivity().finish();
-					//Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
-
                     }
                 });
                 adb.show();
@@ -264,7 +299,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             @Override
             public void onClick(View view) {
 
-        if (checkAllFilled()) {
+                if (checkAllFilled()) {
                     dbRefPosts.addChildEventListener(new ChildEventListener(){
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
@@ -275,7 +310,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             postsReadCounter.add(counter);
 
                             boolean matchingPost = true;
-
 
                             for (int i = 0; i < categories.size(); i++) {
                                 for (int j = 0; j < post.getmCategories().size(); j++) {
@@ -293,33 +327,73 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                 allMatchingPosts.add(post.getmId());
                             }
 
-                            Intent i = getActivity().getIntent();
-                            final String ID = i.getStringExtra("ID");
-                            final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
+
+                            if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
+                                Intent i = getActivity().getIntent();
+                                final String ID = i.getStringExtra("ID");
+                                final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
 
 
-                            ArrayList<String> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
 
-                            if(tempSubList == null) {
-                                tempSubList = new ArrayList<String>();
+                                    ArrayList<String> tempSubList = (ArrayList<String>) dataSnapshot.child("Users").child(ID).child("subscriptions").getValue();
+                                //System.out.println("TEMP LIST SIZE IS " + tempSubList.size());
+                                if (tempSubList == null) {
+                                    tempSubList = new ArrayList<String>();
+                                }
+
+                                final String index = Integer.toString(tempSubList.size() + 1);
+                                tempSubList.add(index);
+                                // final DatabaseReference ref = database.getReference();
+
+                                createSubAndWriteDB(subscription, ID);
+
+                                if (addedToDB) {
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    String key;
+                                    DatabaseReference databaseRef;
+
+
+                                    ArrayList<String> tempNotifList = dataSnapshot.child("Users").child(ID).child("notifications").getValue(ArrayList.class);
+
+                                    if (tempNotifList == null) {
+                                        tempNotifList = new ArrayList<String>();
+                                    }
+                                    final String notifIndex = Integer.toString(tempNotifList.size() + 1);
+                                    Toast.makeText(getContext(), "notif index is " + notifIndex , Toast.LENGTH_SHORT).show();
+                                    tempNotifList.add(notifIndex);
+                                    for (int j = 0; j< subscription.getmPosts().size(); j++) {
+                                        Notification notification = new SubscriptionNotification(ID, subscription.getmPosts().get(j) ,ID);
+                                        key = database.getReference("Notification").push().getKey();
+                                        databaseRef = database.getReference().child("Notification").child(key);
+                                        notification.setmId(key);
+                                        databaseRef.setValue(notification);
+
+                                    }
+
+
+                                    dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener(){
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            
+                                            dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
+                                            //                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    intent.putExtra("Users",userFriends);
+                                    intent.putExtra("Name", currUserName);
+                                    intent.putExtra("ID",ID);
+                                    startActivityForResult(intent,0);
+                                    getActivity().finish();
+                                }
                             }
-                            final String index = Integer.toString(tempSubList.size() + 1);
-                            tempSubList.add(index);
-                           // final DatabaseReference ref = database.getReference();
-                            dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
-
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-
-                            createSubAndWriteDB(subscription, ID);
                         }
 
                         @Override
@@ -494,6 +568,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         System.out.println(postsReadCounter.get(0));
         System.out.println(postCount.get(0));
         if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
+            addedToDB = true;
             System.out.println("ID IS" + ID);
             System.out.println("matches made" + allMatchingPosts.size());
 
@@ -507,31 +582,26 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             databaseRef.setValue(subscription);
 
             //now update on user's subscription arraylist
-//            ValueEventListener subscriptionListener = new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
-//                    tempSubList.add(subscription);
-//                    dbRefPosts.child("Users").child(ID).child("subscriptions").setValue(tempSubList);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    //you cancelled
-//
-//                }
-//
-//            };
-//            dbRefPosts.addValueEventListener(subscriptionListener);
+            //            ValueEventListener subscriptionListener = new ValueEventListener() {
+            //                @Override
+            //                public void onDataChange(DataSnapshot dataSnapshot) {
+            //                    ArrayList<Subscription> tempSubList = dataSnapshot.child("Users").child(ID).child("subscriptions").getValue(ArrayList.class);
+            //                    tempSubList.add(subscription);
+            //                    dbRefPosts.child("Users").child(ID).child("subscriptions").setValue(tempSubList);
+            //                }
+            //
+            //                @Override
+            //                public void onCancelled(DatabaseError databaseError) {
+            //                    //you cancelled
+            //
+            //                }
+            //
+            //            };
+            //            dbRefPosts.addValueEventListener(subscriptionListener);
 
 
 
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.putExtra("Users",userFriends);
-            intent.putExtra("Name", currUserName);
-            intent.putExtra("ID",ID);
-            startActivityForResult(intent,0);
-            getActivity().finish();
+
 
             Toast.makeText(getContext(), "Subscription Set" , Toast.LENGTH_SHORT).show();
         }
@@ -580,3 +650,4 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 //        void onFragmentInteraction(Uri uri);
 //    }*/
 }
+
