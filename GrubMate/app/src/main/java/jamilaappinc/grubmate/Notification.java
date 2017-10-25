@@ -1,6 +1,7 @@
 package jamilaappinc.grubmate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by ivanchen on 10/2/17.
@@ -11,6 +12,8 @@ public class Notification implements Serializable{
     protected String mAboutPost;
     protected String mToUser;
     protected String mId;
+    protected String mType;
+    protected String subscriptionMatchingPostsTitles;
 
     public Notification(){
 
@@ -21,36 +24,6 @@ public class Notification implements Serializable{
         this.mAboutPost = mAboutPost;
         this.mToUser = mToUser;
     }
-
-    /*public User getmFromUser() {
-        return mFromUser;
-    }
-
-    public User getmToUser() {
-        return mToUser;
-    }
-
-    public void setmFromUser(User mFromUser) {
-        this.mFromUser = mFromUser;
-    }
-
-    public void setmToUser(User mToUser) { this.mToUser = mToUser; }
-
-    public Post getmAboutPost() {
-        return mAboutPost;
-    }
-
-    public void setmAboutPost(Post mAboutPost) {
-        this.mAboutPost = mAboutPost;
-    }
-
-    public int getmId() {
-        return mId;
-    }
-
-    public void setmId(int mId) {
-        this.mId = mId;
-    }*/
 
     public String getmFromUser() {
         return mFromUser;
@@ -84,11 +57,20 @@ public class Notification implements Serializable{
         this.mId = mId;
     }
 
-    public Notification(String mFromUser, String mAboutPost, String mToUser, String mId) {
+    public void setmType(String mType){this.mType = mType;}
+
+    public String getmType(){return mType;}
+
+    public void setSubscriptionMatchingPostTitle(String titles){subscriptionMatchingPostsTitles = titles;}
+
+    public String getTitle(){return subscriptionMatchingPostsTitles;}
+
+    public Notification(String mFromUser, String mAboutPost, String mToUser, String mId, String mType) {
 
         this.mFromUser = mFromUser;
         this.mAboutPost = mAboutPost;
         this.mToUser = mToUser;
         this.mId = mId;
+        this.mType = mType;
     }
 }

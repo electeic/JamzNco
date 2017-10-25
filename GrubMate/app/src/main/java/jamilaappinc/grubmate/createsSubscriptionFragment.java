@@ -58,6 +58,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private ArrayList<String> tagsVec = new ArrayList<>();
 
     private ArrayList<String> allMatchingPosts = new ArrayList<>();
+    private ArrayList<String> allMatchingPostsTitle = new ArrayList<>(); //stores the titles of the matching posts for notifications
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -325,13 +326,14 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                             if (matchingPost == true) {//post matches subscription.
                                 allMatchingPosts.add(post.getmId());
+                                allMatchingPostsTitle.add(post.getmTitle());
                             }
 
 
                             if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
                                 Intent i = getActivity().getIntent();
                                 final String ID = i.getStringExtra("ID");
-                                final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts);
+                                final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts, allMatchingPostsTitle);
 
 
 
@@ -369,9 +371,10 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
                                         }
                                         tempNotifList.add(notifIndex);
-                                        Notification notification = new SubscriptionNotification(ID, subscription.getmPosts().get(j) ,ID);
                                         key = database.getReference("Notification").push().getKey();
+                                        Notification notification = new Notification(ID, subscription.getmPosts().get(j) ,ID,key, NotificationReference.SUBSCRIPTION);
                                         databaseRef = database.getReference().child("Notification").child(key);
+                                        notification.setSubscriptionMatchingPostTitle(subscription.getmPostsTitles().get(j));
                                         notification.setmId(key);
                                         databaseRef.setValue(notification);
                                         dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());

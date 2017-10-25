@@ -19,6 +19,7 @@ public class Subscription implements Serializable {
     ArrayList<String> mTags;
     ArrayList<String> mCategories;
     ArrayList<String> mPostsIds;
+    ArrayList<String> mPostsTitles;
     boolean mHomeMade;
     boolean mActive;
     String mId;
@@ -37,7 +38,8 @@ public class Subscription implements Serializable {
     }
 
     public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
-                        ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds) {
+                        ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds,
+                        ArrayList<String> mPostsTitles) {
         this.mDescription = description;
         this.mTitle = title;
         this.mUserAuthorId = mUser;
@@ -50,8 +52,9 @@ public class Subscription implements Serializable {
         mActive = Boolean.TRUE;
         this.mId = mId;
         this.mPostsIds = mPostsIds;
+        this.mPostsTitles = mPostsTitles;
     }
-
+    public ArrayList<String> getmPostsTitles(){return mPostsTitles;}
     public boolean getmActive() { return mActive; }
 
     public void setmActive(boolean isActive) { mActive = isActive; }

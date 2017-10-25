@@ -107,6 +107,7 @@ public class MyPostsFragment extends Fragment {
                         postCount.add((int)snap.getChildrenCount());
                         System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
                     }
+
                 }
                 dbRefPosts.addChildEventListener(new ChildEventListener() {
                     @Override

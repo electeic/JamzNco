@@ -17,6 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -44,14 +51,16 @@ public class ViewNotificationsFragment extends Fragment {
     ListView list;
     NotifAdapter adapter;
     private String ID;
+    FirebaseDatabase database;
+    DatabaseReference dbRefMyNotifications;
+    DatabaseReference dbRefNotifications;
 
 
-    /*
-            THIS IS FOR DYNAMIC MAYBE
-            ArrayList<Notification> notifications;
-            IF YES THEN DELETE THE BOTTOM ONE
- */
+
     ArrayList<Notification> notifications = new ArrayList<>();
+
+    ArrayList<Integer> notifReadCounter = new ArrayList<>();
+    ArrayList<Integer> notifCount = new ArrayList<>();
 
 
     public ViewNotificationsFragment() {
@@ -98,25 +107,106 @@ public class ViewNotificationsFragment extends Fragment {
         ID = i.getStringExtra("ID");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
-        list.setAdapter(adapter);
-
         addListeners();
+
+
 
 
         return v;
     }
 
     private void initComponents(View v){
-        list = (ListView) v.findViewById(R.id.notifications_list);
-        adapter = new NotifAdapter(getActivity());
-        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        database = FirebaseDatabase.getInstance();
+        dbRefMyNotifications = database.getInstance().getReference().child(FirebaseReferences.USERS).child(FirebaseReferences.MYNOTIFICATIONS);
+        dbRefNotifications = database.getInstance().getReference().child(FirebaseReferences.NOTIFICATIONS);
 
+        list = (ListView) v.findViewById(R.id.notifications_list);
+        floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        notifReadCounter.add(0);
 //            LINE FOR GETTING ALL NOTIFICATIONS
-        notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
+//        notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
     }
 
 
     private void addListeners(){
+
+       /* dbRefNotifications.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Notification notif = dataSnapshot.getValue(Notification.class);
+                    if(notif != null){
+                        System.out.println("meldoy " + notif.getmId());
+                        notifications.add(notif);
+                    }
+                }
+                adapter = new NotifAdapter(getActivity(), notifications);
+                list.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });*/
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Notification")) { //if it
+                        notifCount.add((int)snap.getChildrenCount());
+//                        System.out.println("ADDED # NOTIFICATION, count is " + snap.getChildrenCount());
+                    }
+                }
+                dbRefNotifications.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    int postsRead = notifReadCounter.get(0);
+                    postsRead++;
+                    notifReadCounter.clear();
+                    notifReadCounter.add(postsRead);
+                    Notification notif = dataSnapshot.getValue(Notification.class);
+                    if(notif.getmToUser().equals(ID)){
+                        notifications.add(notif);
+                    }
+
+                    if(notifReadCounter.get(0) == notifCount.get(0)) {
+                        adapter = new NotifAdapter(getActivity(), notifications);
+                        list.setAdapter(adapter);
+                    }
+
+
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+        });
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,8 +262,11 @@ public class ViewNotificationsFragment extends Fragment {
 
 
     private class NotifAdapter extends ArrayAdapter<Notification> {
-        public NotifAdapter(Context context){
+        List<Notification> notifications;
+        public NotifAdapter(Context context, List<Notification> notifications){
             super(context,0,notifications );
+            this.notifications = notifications;
+            System.out.println("meldoy notifcation size is " + notifications.size());
         }
 
         public View getView(int position, View itemView, ViewGroup parent){
@@ -182,34 +275,39 @@ public class ViewNotificationsFragment extends Fragment {
 
 //            Post relevantPost = notif.getmAboutPost();
 //            User fromUser = notif.getmFromUser();
+            System.out.println("meldoy ID is "+ ID );
+            System.out.println("meldoy my title is "+  notif.getTitle());
+            System.out.println("meldoy my ID is "+  notif.getmToUser());
 
-            if(notif instanceof SubscriptionNotification){
-                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
-                TextView title = (TextView)itemView.findViewById(R.id.notification_info_subscription_title);
-//                title.setText( relevantPost.getmTitle() + " has matched a subscription!");
+            if(notif != null) {
+                if (notif.getmToUser().equals(ID)) {
+                    if (notif.getmType().equals(NotificationReference.SUBSCRIPTION)) {
+                        itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
+                        TextView title = (TextView) itemView.findViewById(R.id.notification_info_subscription_title);
+                        title.setText(notif.getTitle() + " has matched a subscription!");
 
-            }
-            else if(notif instanceof RequestedNotification){
-                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
-                TextView title = (TextView)itemView.findViewById(R.id.notification_info_request_title);
+                    } else if (notif instanceof RequestedNotification) {
+                        itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
+                        TextView title = (TextView) itemView.findViewById(R.id.notification_info_request_title);
 //                title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
 
 
-            }
-            else if(notif instanceof RateNotification){
-                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
-                TextView title = (TextView)itemView.findViewById(R.id.notification_info_rate_title);
+                    } else if (notif instanceof RateNotification) {
+                        itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
+                        TextView title = (TextView) itemView.findViewById(R.id.notification_info_rate_title);
 //                title.setText("Please rate " + fromUser.getName() + ".");
 
-            }
-                else{
-                itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
-                TextView title = (TextView)itemView.findViewById(R.id.notification_info_accept_title);
+                    } else {
+                        itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
+                        TextView title = (TextView) itemView.findViewById(R.id.notification_info_accept_title);
 //                title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");
 
-            }
+                    }
 
+                }
+            }
             return itemView;
+
 // return  super.getView(position convertView, parent)
         }
 
