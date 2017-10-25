@@ -154,7 +154,6 @@ public class ViewNotificationsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
-                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
                     if (snap.getKey().equals("Notification")) { //if it
                         notifCount.add((int)snap.getChildrenCount());
 //                        System.out.println("ADDED # NOTIFICATION, count is " + snap.getChildrenCount());
@@ -266,7 +265,6 @@ public class ViewNotificationsFragment extends Fragment {
         public NotifAdapter(Context context, List<Notification> notifications){
             super(context,0,notifications );
             this.notifications = notifications;
-            System.out.println("meldoy notifcation size is " + notifications.size());
         }
 
         public View getView(int position, View itemView, ViewGroup parent){
@@ -275,9 +273,6 @@ public class ViewNotificationsFragment extends Fragment {
 
 //            Post relevantPost = notif.getmAboutPost();
 //            User fromUser = notif.getmFromUser();
-            System.out.println("meldoy ID is "+ ID );
-            System.out.println("meldoy my title is "+  notif.getTitle());
-            System.out.println("meldoy my ID is "+  notif.getmToUser());
 
             if(notif != null) {
                 if (notif.getmToUser().equals(ID)) {
