@@ -25,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 
@@ -52,8 +54,9 @@ public class ViewNotificationsFragment extends Fragment {
     NotifAdapter adapter;
     private String ID;
     FirebaseDatabase database;
-    DatabaseReference dbRefMyNotifications;
+    DatabaseReference dbRefUsers;
     DatabaseReference dbRefNotifications;
+    DatabaseReference dbRef;
 
 
 
@@ -119,7 +122,8 @@ public class ViewNotificationsFragment extends Fragment {
 
     private void initComponents(View v){
         database = FirebaseDatabase.getInstance();
-        dbRefMyNotifications = database.getInstance().getReference().child(FirebaseReferences.USERS).child(FirebaseReferences.MYNOTIFICATIONS);
+        dbRef = database.getInstance().getReference();
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         dbRefNotifications = database.getInstance().getReference().child(FirebaseReferences.NOTIFICATIONS);
 
         list = (ListView) v.findViewById(R.id.notifications_list);
@@ -164,6 +168,8 @@ public class ViewNotificationsFragment extends Fragment {
                 dbRefNotifications.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.d("meldoy child added", dataSnapshot.getValue().toString());
+
                     int postsRead = notifReadCounter.get(0);
                     postsRead++;
                     notifReadCounter.clear();
@@ -184,16 +190,19 @@ public class ViewNotificationsFragment extends Fragment {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.d("meldoy child change", dataSnapshot.getValue().toString());
 
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Log.d("meldoy child remove", dataSnapshot.getValue().toString());
 
                 }
 
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    Log.d("meldoy move", dataSnapshot.getValue().toString());
 
                 }
 
@@ -207,6 +216,53 @@ public class ViewNotificationsFragment extends Fragment {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
+        });
+
+        dbRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d("meldoy child added 2", dataSnapshot.getValue().toString());
+
+                /*int postsRead = notifReadCounter.get(0);
+                postsRead++;
+                notifReadCounter.clear();
+                notifReadCounter.add(postsRead);
+                Notification notif = dataSnapshot.getValue(Notification.class);
+                if(notif.getmToUser().equals(ID)){
+                    notifications.add(notif);
+                }
+
+                if(notifReadCounter.get(0) == notifCount.get(0)) {
+                    adapter = new NotifAdapter(getActivity(), notifications);
+                    list.setAdapter(adapter);
+                }*/
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d("meldoy child change", dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d("meldoy child remove", dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.d("meldoy move", dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +281,7 @@ public class ViewNotificationsFragment extends Fragment {
 
                 Notification notification = (Notification) list.getItemAtPosition(position);
 
-                if (notification instanceof RequestedNotification) {
+                if (notification.getmType().equals(NotificationReference.REQUEST)) {
                     /*if notification is a request notification then go to the request page
                         to show the request information
                     */
@@ -249,6 +305,8 @@ public class ViewNotificationsFragment extends Fragment {
                 }
                 else{
                     /* tell database to delete/deactivate the notification & delete from screen */
+                    dbRefNotifications.child(notification.getmId()).setValue(null);
+                    dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
                     adapter.notifyDataSetChanged();
                    // Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE NOTIFICATION FROM DB" , Toast.LENGTH_SHORT).show();
