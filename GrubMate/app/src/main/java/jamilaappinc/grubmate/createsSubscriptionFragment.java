@@ -71,6 +71,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     android.support.design.widget.FloatingActionButton floatButton;
     private String ID;
     boolean addedToDB = false;
+    ArrayList<String> userFriends;
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -304,6 +306,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                     dbRefPosts.addChildEventListener(new ChildEventListener(){
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                            System.out.println("meldoy i am in dbrefpostchildevenlistener");
                             Post post = dataSnapshot.getValue(Post.class);
                             int counter = postsReadCounter.get(0);
                             counter++;
@@ -319,7 +322,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                     }
                                 }
                             }
-
                             if (post.isActive() == false) {
                                 matchingPost = false;
                             }
@@ -355,14 +357,14 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                     DatabaseReference databaseRef;
 
 
-                                    ArrayList<String> tempNotifList = dataSnapshot.child("Users").child(ID).child("notifications").getValue(ArrayList.class);
+//                                    ArrayList<String> tempNotifList = dataSnapshot.child("Users").child(ID).child("notifications").getValue(ArrayList.class);
 
-                                    if (tempNotifList == null) {
+                                    /*if (tempNotifList == null) {
                                         tempNotifList = new ArrayList<String>();
-                                    }
+                                    }*/
                                     String notifIndex;
                                     for (int j = 0; j< subscription.getmPosts().size(); j++) {
-                                        if(tempNotifList.size() == 0){
+                                       /* if(tempNotifList.size() == 0){
                                             notifIndex = Integer.toString(tempNotifList.size() + 1+j);
 
                                         }
@@ -370,14 +372,14 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                             notifIndex = Integer.toString(tempNotifList.size() +j);
 
                                         }
-                                        tempNotifList.add(notifIndex);
+                                        tempNotifList.add(notifIndex);*/
                                         key = database.getReference("Notification").push().getKey();
                                         Notification notification = new Notification(ID, subscription.getmPosts().get(j) ,ID,key, NotificationReference.SUBSCRIPTION);
                                         databaseRef = database.getReference().child("Notification").child(key);
                                         notification.setSubscriptionMatchingPostTitle(subscription.getmPostsTitles().get(j));
                                         notification.setmId(key);
                                         databaseRef.setValue(notification);
-                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
+                                        dbRefUsers.child(ID).child("notifications").child(notification.getmId()).setValue(notification.getmId());
 
                                     }
 
@@ -385,8 +387,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                     dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener(){
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            
-                                            dbRefUsers.child(ID).child("subscriptions").child(index).setValue(subscription.getmId());
+                                            DatabaseReference newSubscription = dbRefUsers.child(ID).child("subscriptions").push();
+                                            dbRefUsers.child(ID).child("subscriptions").child(newSubscription.getKey()).setValue(subscription.getmId());
                                             //                                        dbRefUsers.child(ID).child("notifications").child(notifIndex).setValue(notification.getmId());
 
                                         }
@@ -591,6 +593,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
             subscription.setmId(key);
 
             databaseRef.setValue(subscription);
+//            dbRefUsers.child(ID).child("subscriptions").child(key).setValue(subscription.getmId()); //this line is what adds the post id to the user's userPosts
+
 
             //now update on user's subscription arraylist
             //            ValueEventListener subscriptionListener = new ValueEventListener() {

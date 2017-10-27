@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Log.e(snap.getKey() + " GETTING USERS KEYS",snap.getChildrenCount() + "");
                     if (snap.getKey().equals("Users")) {
@@ -223,6 +224,8 @@ public class LoginActivity extends AppCompatActivity {
     private void writeNewUser(final String userId, final String name, final String picture, final ArrayList<String> friends) {
         System.out.println("WRITE NEW USER");
 
+
+
         final DatabaseReference readRef = database.getReference().child("Users");
         userExists.add(false);
         readRef.addChildEventListener(new ChildEventListener(){
@@ -267,6 +270,19 @@ public class LoginActivity extends AppCompatActivity {
     private void addtoDB(final String userId, final String name, final String picture, final ArrayList<String> friends){
 //        System.out.println("USERS COUNT" + usersCount.get(0));
 //        System.out.println("USERS LIST COUNT" + usersReadCounter.get(0));
+        /* THIS IS USED FOR WHEN THERE'S NO USER IN THE DB AT ALL
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Users").push();
+        User u = new User(name, picture);
+        u.setId(userId);
+        u.setFriends(friends);
+        u.setAvgRating(1.2);
+        u.setSubscriptions("initial","initial");
+        u.setUserRequests("initial","initial");
+        u.setUserPosts("initial","initial");
+        u.setUserGroups("initial","initial");
+        u.setNotifications("initial","initial");
+        ref.setValue(u);*/
 //
         if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
             System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
@@ -276,12 +292,13 @@ public class LoginActivity extends AppCompatActivity {
             u.setFriends(friends);
             u.setAvgRating(1.2);
             ArrayList<String> tempString = new ArrayList<>();
-            tempString.add("a");
-            u.setSubscriptions(tempString);
-            u.setUserRequests(tempString);
-            u.setUserPosts(tempString);
-            u.setUserGroups(tempString);
-            u.setNotifications(tempString);
+
+
+            u.setSubscriptions("initial","initial");
+            u.setUserRequests("initial","initial");
+            u.setUserPosts("initial","initial");
+            u.setUserGroups("initial","initial");
+            u.setNotifications("initial","initial");
             //Post newPost = new Post("abc","cba");
             databaseRef.setValue(u);
         }

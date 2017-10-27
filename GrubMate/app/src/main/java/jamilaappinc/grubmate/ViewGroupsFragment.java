@@ -49,6 +49,7 @@ public class ViewGroupsFragment extends Fragment {
     GroupsAdapter adapter;
     Button addGroupButton;
     private String ID;
+    ArrayList<String> userFriends; // this is for passing around to all the pages
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -93,6 +94,7 @@ public class ViewGroupsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
 //        populateList();
@@ -121,6 +123,7 @@ public class ViewGroupsFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -144,6 +147,7 @@ public class ViewGroupsFragment extends Fragment {
 //                intent.putExtra(CREATEGROUP, "create");
 //                startActivity(intent);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 intent.putExtra(CreateGroupActivity.GET_ALL_FRIENDS, friends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();

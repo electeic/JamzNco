@@ -2,6 +2,8 @@ package jamilaappinc.grubmate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -9,13 +11,20 @@ import java.util.Vector;
  */
 
 public class User implements Serializable {
-    ArrayList<String> userPosts;
+    /*ArrayList<String> userPosts;
     ArrayList<String> userRequests;
     ArrayList<String> userGroups;
     ArrayList<String> ratings;
     ArrayList<String> notifications;
-    ArrayList<String> subscriptions;
+    ArrayList<String> subscriptions; */
     ArrayList<String> friends;
+    Map<String,String> userPosts = new HashMap<String,String> ();
+    Map<String,String> userRequests = new HashMap<String,String> ();
+    Map<String,String> userGroups = new HashMap<String,String> ();
+    Map<String,String> ratings = new HashMap<String,String> ();
+    Map<String,String> notifications = new HashMap<String,String> ();
+    Map<String,String> subscriptions = new HashMap<String,String> ();
+   // Map<String,String> friends = new HashMap<String,String> ();
 
     double avgRating;
     String name;
@@ -32,7 +41,7 @@ public class User implements Serializable {
         this.profilePhoto = mPic;
     }
 
-    public User(ArrayList<String> userPosts, ArrayList<String> userRequests, ArrayList<String> userGroups, ArrayList<String> ratings, ArrayList<String> notifications, ArrayList<String> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
+  /*  public User(ArrayList<String> userPosts, ArrayList<String> userRequests, ArrayList<String> userGroups, ArrayList<String> ratings, ArrayList<String> notifications, ArrayList<String> subscriptions, ArrayList<String> friends, double avgRating, String name, String profilePhoto, String id) {
         this.userPosts = userPosts;
         this.userRequests = userRequests;
         this.userGroups = userGroups;
@@ -44,12 +53,38 @@ public class User implements Serializable {
         this.name = name;
         this.profilePhoto = profilePhoto;
         this.id = id;
-    }
+    }*/
 
-    public ArrayList<String> getUserPosts() {
+    public Map<String,String>  getUserPosts() {
         return userPosts;
     }
 
+    public void setUserPosts(String key, String value ){userPosts.put(key, value); }
+    public Map<String,String> getUserRequests() {return userRequests; }
+    public void setUserRequests(String key, String value ){userRequests.put(key, value); }
+    public Map<String,String> getUserGroups() {return userGroups; }
+    public void setUserGroups(String key, String value ){userGroups.put(key, value); }
+    public Map<String,String> getRatings() {return ratings; }
+    public void setRatings(String key, String value ){userRequests.put(key, value); }
+    public Map<String,String> getNotifications() {return notifications; }
+    public void setNotifications(String key, String value ){notifications.put(key, value); }
+    public Map<String,String> getSubscriptions() {return subscriptions; }
+    public void setSubscriptions(String key, String value ){subscriptions.put(key, value); }
+//    public Map<String,String> getFriends() {return friends; }
+//    public void setFriends(String key, String value ){friends.put(key, value); }
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public ArrayList<String> getUserPosts(){return userPosts;}
     public void setUserPosts(ArrayList<String> userPosts) {
         this.userPosts = userPosts;
     }
@@ -94,6 +129,8 @@ public class User implements Serializable {
         this.subscriptions = subscriptions;
     }
 
+
+*/
     public ArrayList<String> getFriends() {
         return friends;
     }

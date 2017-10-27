@@ -30,6 +30,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -53,6 +55,8 @@ public class ProfileFragment extends Fragment {
     private View mMessengerButton;
     private MessengerThreadParams mThreadParams;
     private boolean mPicking;
+    ArrayList<String> userFriends;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -88,6 +92,7 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
 //        final Intent myIntent = new Intent((getActivity()), ProfileActivity.class);
 //        getActivity().startActivity(myIntent);
@@ -143,6 +148,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", id);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

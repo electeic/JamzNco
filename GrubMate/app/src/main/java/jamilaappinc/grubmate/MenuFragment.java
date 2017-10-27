@@ -126,7 +126,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
-                getActivity().finish();
+//                getActivity().finish();
             }
         });
         fCreateSubscription.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +158,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
+//                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
                 startActivityForResult(intent, 0);
             }
         });
@@ -196,7 +196,7 @@ public class MenuFragment extends Fragment {
                 System.out.println("BLAH BLAH BLAH " + myUser.getName());
 //                                System.out.println(" JESUS LORD HELP ME I NEED YOU : " + myUser.getFriends().size());
                                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
-                                intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
+//                                intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
                 startActivityForResult(intent, 0);
             }
         });
@@ -208,7 +208,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS, myUser.getSubscriptions());
+//                intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS, myUser.getSubscriptions());
                 startActivityForResult(intent, 0);
             }
         });

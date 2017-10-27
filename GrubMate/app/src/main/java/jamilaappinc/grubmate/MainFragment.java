@@ -90,6 +90,7 @@ public class MainFragment extends Fragment {
 
 
 
+
     }
 
     @Override
@@ -119,6 +120,8 @@ public class MainFragment extends Fragment {
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
                     if (snap.getKey().equals("Post")) {

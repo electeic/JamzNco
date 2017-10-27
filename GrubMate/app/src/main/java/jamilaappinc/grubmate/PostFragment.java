@@ -44,6 +44,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import static android.app.Activity.RESULT_OK;
@@ -323,7 +325,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     FirebaseDatabase database2 = FirebaseDatabase.getInstance();
                     final String key = database2.getReference("Post").push().getKey();
 
-                    DatabaseReference databaseRef = database.getReference().child("Post").child(key);
+                    DatabaseReference databaseRef = database.getReference().child("Post").child(key); //reference to the key of the post inside Posts
 
                    // Toast.makeText(getContext(), "The id is " + ID , Toast.LENGTH_SHORT).show();
 
@@ -342,14 +344,18 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         System.out.println("post fragment: " + endDateTime);
                         final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
                         post.setmId(key);
-                        databaseRef.setValue(post);
-                        final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+                        databaseRef.setValue(post); //adds the value (the post) to the key post
+                        final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS); // gets all of the users to update the user's posts information
+                        dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts
 
 
                         // final DatabaseReference ref = database.getReference();
                         dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener(){
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                /* TERENCE'S STUFF
+
+                                public void onDataChange(DataSnapshot dataSnapshot) {
                                 ArrayList<String> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
                                 if (tempPostList == null) {
                                     tempPostList = new ArrayList<String>();
@@ -358,6 +364,26 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                                 System.out.println("CURRENT LISTSIZE " + listSize);
                                 tempPostList.add(Integer.toString(listSize));
                                 dbRefUsers.child(ID).child("userPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+
+                            }
+
+
+                                 */
+
+                               /* Map<String, String> tempPostList = (Map<String, String>)dataSnapshot.child("Users").child(ID).child("userPosts").getValue();
+                                System.out.println("meldoy help");
+                                if (tempPostList == null) {
+                                    tempPostList = new HashMap<String, String>();
+                                }
+                                int listSize = tempPostList.size() + 1;
+                                System.out.println("CURRENT LISTSIZE " + listSize);
+                                tempPostList.put(Integer.toString(listSize), post.getmId());*/
+//                                String key = dbRefUsers.child(ID).child("userPosts").push().getKey();
+
+
+//                                 dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts
+
+//   userNewPostRef.setValue(post.getmId());
 
                             }
 

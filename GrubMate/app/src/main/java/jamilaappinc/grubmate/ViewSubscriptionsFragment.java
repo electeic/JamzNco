@@ -50,6 +50,8 @@ public class ViewSubscriptionsFragment extends Fragment {
     private String ID;
     FirebaseDatabase database;
     DatabaseReference dbRefSubs;
+    ArrayList<String> userFriends;
+
 
     ArrayList<Integer> subsReadCounter = new ArrayList<>();
     ArrayList<Integer> subsCount = new ArrayList<>();
@@ -97,6 +99,8 @@ public class ViewSubscriptionsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
         initComponents(v);
@@ -187,6 +191,7 @@ public class ViewSubscriptionsFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

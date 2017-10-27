@@ -44,6 +44,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
     private ArrayList<String> friends = new ArrayList<>();
     private ArrayList<Group> myGroups = new ArrayList<>();
     private String ID;
+    ArrayList<String> userFriends; //passing around screens
 
 
     private EditText groupName;
@@ -89,6 +90,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
         initComponent(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
 
@@ -143,6 +145,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 databaseRef.setValue(groupI);
 
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
 
@@ -156,6 +159,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
             }
         });
 

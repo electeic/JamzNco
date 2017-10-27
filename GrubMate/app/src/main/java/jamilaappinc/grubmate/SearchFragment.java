@@ -114,6 +114,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
         //find views
@@ -173,6 +174,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -250,6 +252,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("ID", ID);
+                        intent.putExtra("Users", userFriends);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                         //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
