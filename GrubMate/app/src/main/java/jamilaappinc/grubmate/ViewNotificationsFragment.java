@@ -264,9 +264,11 @@ public class ViewNotificationsFragment extends Fragment {
                     Intent i = new Intent(getActivity(), RateUserActivity.class);
                     i.putExtra("ID", ID);
                     i.putExtra("Users", userFriends);
-                    i.putExtra(RateUserActivity.GET_RATER_USER,notification.getmToUser());
+                    i.putExtra("Name",currUserName);
+                    i.putExtra("Notification", notification);
+           /*         i.putExtra(RateUserActivity.GET_RATER_USER,notification.getmToUser());
                     i.putExtra(RateUserActivity.GET_RATE_REQUEST,notification);
-                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
+                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);*/
                     startActivity(i);
                 }
                 else{
@@ -319,7 +321,7 @@ public class ViewNotificationsFragment extends Fragment {
                     } else if (notif.getmType().equals(NotificationReference.RATE)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_rate_title);
-                        title.setText("Please rate " + notif.getmFromUser() + ".");
+                        title.setText("Please rate " + notif.getmFromUserName() + ".");
 
                     } else {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);

@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +53,7 @@ public class MyPostsFragment extends Fragment {
     DatabaseReference dbRefUsers;
     DatabaseReference dbRefPosts;
     private String ID;
+    private String currUserName;
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<String> userFriends;
@@ -78,6 +80,7 @@ public class MyPostsFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+         currUserName = i.getStringExtra("Name");
 
         // Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         database = FirebaseDatabase.getInstance();
@@ -236,13 +239,15 @@ public class MyPostsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Post post = (Post) list.getItemAtPosition(position);
+                Post post = (Post) list.getItemAtPosition(position);
+                final ArrayList<Post> myPost = new ArrayList<Post>();
+                myPost.add(post);
                 System.out.println("meldoy the post is " + post.getmId() + " " + post.getmTitle());
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                 adb.setTitle("");
                 adb.setMessage("What would you like to do? ");
                 adb.setNegativeButton("Cancel", null);
-                if(false){
+                if(false){ //this will be changed to whatever the condition it is when you can delete the post
                     adb.setNeutralButton("Delete Post", new AlertDialog.OnClickListener(){
                         public void onClick(DialogInterface dialog, int which){
 
@@ -252,13 +257,82 @@ public class MyPostsFragment extends Fragment {
 
                 adb.setPositiveButton("Delivery Complete", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Map<String, String> acceptedUsers = post.getmAcceptedUsers();
+
+                        Map<String, String> acceptedUsers = myPost.get(0).getmAcceptedUsers();
                         System.out.println("meldoy the size of the accepter user map is " + acceptedUsers.size());
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
                         String key;
                         String myKey;
-                        DatabaseReference databaseRef;
-                        for (Map.Entry<String, String> entry : acceptedUsers.entrySet())
+                        DatabaseReference dbAcceptedRef;
+                        final DatabaseReference dbUsers = database.getReference().child("Users");
+                        final DatabaseReference dbNotificationsRef = database.getReference().child("Notification");
+                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("acceptedUsers"); //get the user's post's accepted user
+                        dbAcceptedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+
+                                final ArrayList<String> acceptedName = new ArrayList<String>();
+                                for (DataSnapshot child : snapshot.getChildren()) {
+                                    DatabaseReference name = dbUsers.child(""+child.getValue()).child("name");
+                                    final String childID = ""+child.getValue();
+                                    name.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        String key, notificationKey,myNotificationKey;
+                                        String myKey; //send a rate notification to me
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            acceptedName.add( ""+dataSnapshot.getValue());
+                                            myKey = dbUsers.child(ID).child("notications").push().getKey(); //send to me
+                                            myNotificationKey =dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user
+                                            Notification myNotification = new Notification(childID,myPost.get(0).getmId(),ID,myKey,NotificationReference.RATE);
+                                            myNotification.setMatchingPostTitle(myPost.get(0).getmTitle());
+                                            myNotification.setmId(myKey);
+                                            myNotification.setmFromUserName(acceptedName.get(0));
+                                            dbUsers.child(ID).child("notifications").child(myKey).setValue(myNotification.getmId());
+                                            dbNotificationsRef.child(myNotificationKey).setValue(myNotification);
+
+
+                                            //send notification to accepted User
+                                            key = dbUsers.child(ID).child("notications").push().getKey(); //send to accepted user key
+                                            notificationKey =dbNotificationsRef.push().getKey(); // store notification for sending accepted user the rate me
+                                            Notification notification = new Notification(ID,myPost.get(0).getmId(),childID,myKey,NotificationReference.RATE);
+                                            notification.setMatchingPostTitle(myPost.get(0).getmTitle());
+                                            notification.setmId(key);
+                                            notification.setmFromUserName(currUserName);
+                                            dbUsers.child(childID).child("notifications").child(key).setValue(notification.getmId());
+                                            dbNotificationsRef.child(notificationKey).setValue(notification);
+                                            acceptedName.clear();
+
+
+
+                                            myPost.clear();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+
+
+                                   /* //send rate notification to the accepted users
+                                    key = dbUsers.child(""+child.getValue()).child("notifications").push().getKey(); //send to the accepted user
+                                    notificationKey = dbNotificationsRef.push().getKey(); //store notification for accepted user rating
+*/
+
+
+
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+
+                        });
+                        /*for (Map.Entry<String, String> entry : acceptedUsers.entrySet())
                         {
 //                            System.out.println(entry.getKey() + "/" + entry.getValue());
                             key = database.getReference("Notification").push().getKey(); // telling accepted users to rate the user
@@ -277,7 +351,7 @@ public class MyPostsFragment extends Fragment {
                             dbRefUsers.child(entry.getValue()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
                             //send to me
                             dbRefUsers.child(ID).child("notifications").child(myNotification.getmId()).setValue(myNotification.getmId());
-                        }
+                        }*/
 
                     }
                 });

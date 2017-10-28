@@ -45,8 +45,9 @@ public class RateUserFragment extends Fragment {
     private Button submit;
     private Notification notification;
     private User rater;
-    private String ID;
+    private String ID, currUserName;
     private ArrayList<String> userFriends;
+    private Notification notif;
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -90,10 +91,12 @@ public class RateUserFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        notif = (Notification)i.getSerializableExtra("Notification");
         initGUIComponents(v);
         addListeners();
-//        fillPage(notification.getmFromUser().getName());
+        fillPage(notif.getmFromUserName());
         return v;
     }
 
@@ -135,6 +138,7 @@ public class RateUserFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("ID", ID);
+                    intent.putExtra("Name",currUserName);
                     intent.putExtra("Users",userFriends);
                     startActivityForResult(intent,0);
                     getActivity().finish();
@@ -152,6 +156,8 @@ public class RateUserFragment extends Fragment {
                             Rating rating = new Rating(review.getText().toString().trim(),ratingBar.getRating(), rater);
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("ID", ID);
+                            intent.putExtra("Users", userFriends);
+                            intent.putExtra("Name",currUserName);
                             startActivityForResult(intent,0);
                             getActivity().finish();
 
