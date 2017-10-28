@@ -58,6 +58,7 @@ public class MenuFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
 
+
     public MenuFragment() {
         // Required empty public constructor
     }
@@ -72,6 +73,7 @@ public class MenuFragment extends Fragment {
         Intent i = getActivity().getIntent();
         final String ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
+//        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
         fHome = (TextView)v.findViewById(R.id.home);
@@ -157,6 +159,7 @@ public class MenuFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                System.out.println("meldoy the sername is " + myUser.getName());
                 intent.putExtra("Name", currUserName);
 //                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
                 startActivityForResult(intent, 0);

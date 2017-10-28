@@ -62,6 +62,7 @@ public class RequestFragment extends Fragment {
     Post mPost;
 
     String ID;
+//     String currUserName;
 
 
 
@@ -101,7 +102,7 @@ public class RequestFragment extends Fragment {
         }
 
         mPost = (Post) getArguments().getSerializable(ARG_PARAM3);
-        System.out.println("FUCK MAN2: " + mPost);
+        System.out.println("MAN2: " + mPost);
 
         database = FirebaseDatabase.getInstance();
 
@@ -136,6 +137,8 @@ public class RequestFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        final String currUserName = i.getStringExtra("Name");
+        System.out.println("meldoy request currUsername is "+ currUserName);
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -200,12 +203,13 @@ public void onClick(View view) {
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
 
-            final Request request = new Request(location,ID, numOfServings, mPost, mPost.getmAuthorId());
+            final Request request = new Request(location,mPost.getmId(), numOfServings, mPost, ID);
 
 
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            String key = database.getReference("Request").push().getKey();
+            final String key = database.getReference("Request").push().getKey();
+            request.setRequestedUserName(currUserName);
             request.setmId(key);
 
             DatabaseReference databaseRef = database.getReference().child("Request").child(key);
@@ -216,13 +220,19 @@ public void onClick(View view) {
             dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                    String key;
+                    DatabaseReference databaseRef;
 
-                    ArrayList<Request> tempReqList = dataSnapshot.child("Users").child(ID).child("userRequests").getValue(ArrayList.class);
-                    if(tempReqList == null) {
-                        tempReqList = new ArrayList<Request>();
-                    }
-                    tempReqList.add(request);
-                    dbRefUsers.child(ID).child("userRequests").child(request.getmId()).setValue(request);
+//                    key = database.getReference("Notification").push().getKey();
+                    //make notification to the person who made the post saying that you requested the item
+                    Notification notification = new Notification(ID, request.getmPost().getmTitle() ,request.getmPost().getmAuthorId(),key, NotificationReference.REQUEST);
+                    databaseRef = database.getReference().child("Notification").child(key);
+                    notification.setMatchingPostTitle(request.getmPost().getmTitle());
+                    notification.setmId(key);
+                    notification.setmFromUserName(currUserName);
+                    databaseRef.setValue(notification);
+                    dbRefUsers.child(request.getmPost().getmAuthorId()).child("notifications").child(key).setValue(notification.getmId());
                 }
 
                 @Override

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Notification implements Serializable{
    protected String mFromUser;
+    protected String mFromUserName;
     protected String mAboutPost;
     protected String mToUser;
     protected String mId;
@@ -19,12 +20,19 @@ public class Notification implements Serializable{
 
     }
 
+    /**
+     *
+     * @param mFromUser the id of the user creating the notification
+     * @param mAboutPost the id of the post associated with the notification
+     * @param mToUser the id of the user receiving the notification
+     */
     public Notification(String mFromUser, String mAboutPost, String mToUser) {
         this.mFromUser = mFromUser;
         this.mAboutPost = mAboutPost;
         this.mToUser = mToUser;
     }
-
+    public String getmFromUserName(){return mFromUserName;}
+    public void setmFromUserName(String name) {mFromUserName = name;}
     public String getmFromUser() {
         return mFromUser;
     }
@@ -61,7 +69,7 @@ public class Notification implements Serializable{
 
     public String getmType(){return mType;}
 
-    public void setSubscriptionMatchingPostTitle(String titles){subscriptionMatchingPostsTitles = titles;}
+    public void setMatchingPostTitle(String titles){subscriptionMatchingPostsTitles = titles;}
 
     public String getTitle(){return subscriptionMatchingPostsTitles;}
 

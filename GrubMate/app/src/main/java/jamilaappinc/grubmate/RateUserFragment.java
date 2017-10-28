@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
+import java.util.ArrayList;
+
 
 /**
  * TextView rateUser_name : Where we put in the user getting rated's name
@@ -44,6 +46,7 @@ public class RateUserFragment extends Fragment {
     private Notification notification;
     private User rater;
     private String ID;
+    private ArrayList<String> userFriends;
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -87,8 +90,7 @@ public class RateUserFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
-
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         initGUIComponents(v);
         addListeners();
 //        fillPage(notification.getmFromUser().getName());
@@ -133,6 +135,7 @@ public class RateUserFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("ID", ID);
+                    intent.putExtra("Users",userFriends);
                     startActivityForResult(intent,0);
                     getActivity().finish();
 

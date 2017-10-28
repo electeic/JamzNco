@@ -327,15 +327,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key); //reference to the key of the post inside Posts
 
-                   // Toast.makeText(getContext(), "The id is " + ID , Toast.LENGTH_SHORT).show();
-
                     Intent intent = new Intent(getActivity(), MenuActivity.class);
-
-                    //
-
-                    //                        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
-                    //                        post.setmId(key);
-                    //                        databaseRef.setValue(post);
 
                     if (filePath != null)
                         uploadFile(key);
@@ -344,6 +336,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         System.out.println("post fragment: " + endDateTime);
                         final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
                         post.setmId(key);
+                        post.addmAcceptedUsers("initial");
                         databaseRef.setValue(post); //adds the value (the post) to the key post
                         final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS); // gets all of the users to update the user's posts information
                         dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -22,6 +24,7 @@ public class Post implements Serializable {
     ArrayList<String> mCategories;
     ArrayList<String> mTags;
     ArrayList <Group> mGroups;
+    Map<String, String> mAcceptedUsers = new HashMap<>();
     String id;
     String mPhotos;
     String mAuthorId;
@@ -57,6 +60,12 @@ public class Post implements Serializable {
 //        this.mDescription = mDescription;
 //        mActive = Boolean.TRUE;
 //    }
+
+    public Map<String, String> getmAcceptedUsers(){return mAcceptedUsers;}
+    public void addmAcceptedUsers(String id){mAcceptedUsers.put(id,id);}
+    public void removemAcceptedUser(String id){
+        mAcceptedUsers.remove(id);
+    }
 
     public Post(){
 
@@ -183,5 +192,7 @@ public class Post implements Serializable {
 
     public boolean getHomemade(){ return homemade; }
     public void setHomemade(boolean b) {homemade = b; }
+
+
 
 }

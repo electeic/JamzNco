@@ -17,18 +17,25 @@ public class Request implements Serializable{
     boolean mAccepted;
     boolean mActive;
     Post mPost;
+    String requestedUserName;
 
     public Request(String mLocation, String mRequestedPost, int mServings,Post post, String muser) {
         this.mLocation = mLocation;
-        this.mRequestedPostId = mRequestedPost;
+        this.mRequestedPostId = mRequestedPost; //id of the request in the DB
         this.mServings = mServings;
-        mRequestUserId = muser;
-        mPost = post;
+        mRequestUserId = muser; //  the id of the user making the request
+        mPost = post; // use the post to get the id of the user who made the post
         mAccepted = Boolean.FALSE;
         mResponded = Boolean.FALSE;
         mActive = Boolean.TRUE;
     }
 
+    public Request(){
+
+    }
+
+    public void setRequestedUserName(String name) {requestedUserName = name;}
+    public String getRequestedUserName(){return requestedUserName;}
     public boolean getmActive(){return mActive;}
 
     public void setmActive(boolean isActive){mActive = isActive;}
@@ -64,6 +71,8 @@ public class Request implements Serializable{
     }
 
     public void setmId(String id) {mId = id; }
+
+    public Post getmPost(){return mPost;}
 
 
     public boolean ismResponded() {

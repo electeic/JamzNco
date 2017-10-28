@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class ViewNotificationsFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
     DatabaseReference dbRefNotifications;
-    DatabaseReference dbRef;
+    DatabaseReference dbRef, dbRefRequests;
 
 
 
@@ -65,6 +66,7 @@ public class ViewNotificationsFragment extends Fragment {
     ArrayList<Integer> notifReadCounter = new ArrayList<>();
     ArrayList<Integer> notifCount = new ArrayList<>();
     ArrayList<String> userFriends;
+    String currUserName;
 
 
     public ViewNotificationsFragment() {
@@ -110,6 +112,7 @@ public class ViewNotificationsFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        currUserName = i.getStringExtra("Name");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
         addListeners();
@@ -125,6 +128,7 @@ public class ViewNotificationsFragment extends Fragment {
         dbRef = database.getInstance().getReference();
         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         dbRefNotifications = database.getInstance().getReference().child(FirebaseReferences.NOTIFICATIONS);
+        dbRefRequests = database.getInstance().getReference().child(FirebaseReferences.REQUEST);
 
         list = (ListView) v.findViewById(R.id.notifications_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -135,27 +139,6 @@ public class ViewNotificationsFragment extends Fragment {
 
 
     private void addListeners(){
-
-       /* dbRefNotifications.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Notification notif = dataSnapshot.getValue(Notification.class);
-                    if(notif != null){
-                        System.out.println("meldoy " + notif.getmId());
-                        notifications.add(notif);
-                    }
-                }
-                adapter = new NotifAdapter(getActivity(), notifications);
-                list.setAdapter(adapter);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });*/
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -218,57 +201,12 @@ public class ViewNotificationsFragment extends Fragment {
                 }
         });
 
-        dbRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("meldoy child added 2", dataSnapshot.getValue().toString());
-
-                /*int postsRead = notifReadCounter.get(0);
-                postsRead++;
-                notifReadCounter.clear();
-                notifReadCounter.add(postsRead);
-                Notification notif = dataSnapshot.getValue(Notification.class);
-                if(notif.getmToUser().equals(ID)){
-                    notifications.add(notif);
-                }
-
-                if(notifReadCounter.get(0) == notifCount.get(0)) {
-                    adapter = new NotifAdapter(getActivity(), notifications);
-                    list.setAdapter(adapter);
-                }*/
-
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("meldoy child change", dataSnapshot.getValue().toString());
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d("meldoy child remove", dataSnapshot.getValue().toString());
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d("meldoy move", dataSnapshot.getValue().toString());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
@@ -279,21 +217,49 @@ public class ViewNotificationsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Notification notification = (Notification) list.getItemAtPosition(position);
+                final Notification notification = (Notification) list.getItemAtPosition(position);
 
                 if (notification.getmType().equals(NotificationReference.REQUEST)) {
                     /*if notification is a request notification then go to the request page
                         to show the request information
                     */
+                    dbRefNotifications.child(notification.getmId()).setValue(null);
+                    dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
+//                    dbRefRequests.child(notification.getmId()).setValue(null);
                     notifications.remove(position);
-                    Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
-                    i.putExtra("ID", ID);
-                    i.putExtra("Users", userFriends);
-                    i.putExtra(ViewRequestNotificationActivity.GET_REQUEST,notification);
-                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
-                    startActivity(i);
 
-                }else if (notification instanceof RateNotification){
+                    dbRefRequests.addListenerForSingleValueEvent(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot snap: dataSnapshot.getChildren()){
+                                Request request = snap.getValue(Request.class);
+                                if(request.getmId().equals(notification.getmId())){
+                                    Intent i = new Intent(getActivity(), ViewRequestNotificationActivity.class);
+                                    i.putExtra("Request", request);
+                                    i.putExtra("ID", notification.getmToUser());
+                                    i.putExtra("Users", userFriends);
+                                    i.putExtra("Name",currUserName);
+                                    i.putExtra(ViewRequestNotificationActivity.GET_REQUEST,notification);
+                                    i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
+                                    startActivity(i);
+                                }
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+                }else if (notification.getmType().equals(NotificationReference.RATE)){
+                    dbRefNotifications.child(notification.getmId()).setValue(null);
+                    dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
                     Intent i = new Intent(getActivity(), RateUserActivity.class);
                     i.putExtra("ID", ID);
@@ -344,21 +310,21 @@ public class ViewNotificationsFragment extends Fragment {
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_subscription_title);
                         title.setText(notif.getTitle() + " has matched a subscription!");
 
-                    } else if (notif instanceof RequestedNotification) {
+                    } else if (notif.getmType().equals(NotificationReference.REQUEST)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_request_title);
-//                title.setText(fromUser.getName() + " has made a request about " + relevantPost.getmTitle());
+                         title.setText(notif.getmFromUserName() + " has made a request about " + notif.getTitle());
 
 
-                    } else if (notif instanceof RateNotification) {
+                    } else if (notif.getmType().equals(NotificationReference.RATE)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_rate_user, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_rate_title);
-//                title.setText("Please rate " + fromUser.getName() + ".");
+                        title.setText("Please rate " + notif.getmFromUser() + ".");
 
                     } else {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_accept_title);
-//                title.setText(fromUser.getName() + " has accepted your request regarding " + relevantPost.getmTitle() + ".");
+                        title.setText(notif.getmFromUser() + " has accepted your request regarding " + notif.getTitle() + ".");
 
                     }
 

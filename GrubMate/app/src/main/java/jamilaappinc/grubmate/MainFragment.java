@@ -378,6 +378,7 @@ public class MainFragment extends Fragment {
                     Intent i = new Intent(getActivity(), DetailedPostActivity.class);
                     // toString instead of sending over the whole DatabaseReference because it's easier
                     i.putExtra("ID", currUserId);
+                    i.putExtra("Name",currUserName);
                     i.putExtra(DetailedPostActivity.EXTRA_POST, mv);
                     startActivity(i);
                 }

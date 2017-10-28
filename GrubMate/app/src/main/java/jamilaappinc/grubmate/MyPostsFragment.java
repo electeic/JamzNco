@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static jamilaappinc.grubmate.R.id.view;
 
@@ -48,7 +49,7 @@ public class MyPostsFragment extends Fragment {
     int _position;
 
     FirebaseDatabase database;
-    DatabaseReference dbRefMyPosts;
+    DatabaseReference dbRefUsers;
     DatabaseReference dbRefPosts;
     private String ID;
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
@@ -80,7 +81,7 @@ public class MyPostsFragment extends Fragment {
 
         // Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         database = FirebaseDatabase.getInstance();
-        dbRefMyPosts = database.getInstance().getReference().child(FirebaseReferences.USERS).child(FirebaseReferences.MYPOSTS);
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
 
         postsReadCounter.add(0);
@@ -229,6 +230,59 @@ public class MyPostsFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
+            }
+        });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Post post = (Post) list.getItemAtPosition(position);
+                System.out.println("meldoy the post is " + post.getmId() + " " + post.getmTitle());
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("");
+                adb.setMessage("What would you like to do? ");
+                adb.setNegativeButton("Cancel", null);
+                if(false){
+                    adb.setNeutralButton("Delete Post", new AlertDialog.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+
+                        }
+                    });
+                }
+
+                adb.setPositiveButton("Delivery Complete", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Map<String, String> acceptedUsers = post.getmAcceptedUsers();
+                        System.out.println("meldoy the size of the accepter user map is " + acceptedUsers.size());
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        String key;
+                        String myKey;
+                        DatabaseReference databaseRef;
+                        for (Map.Entry<String, String> entry : acceptedUsers.entrySet())
+                        {
+//                            System.out.println(entry.getKey() + "/" + entry.getValue());
+                            key = database.getReference("Notification").push().getKey(); // telling accepted users to rate the user
+                            myKey = database.getReference("Notification").push().getKey(); // this is used to ask the user to rate the accepted user
+                            //Notifiction from me to the accepted usrs
+                            Notification notification = new Notification(ID, post.getmTitle() ,entry.getKey(),key, NotificationReference.RATE);
+                            // notification from accepted users to me
+                            Notification myNotification = new Notification(entry.getKey(), post.getmTitle() ,ID, myKey, NotificationReference.RATE);
+                            databaseRef = database.getReference().child("Notification").child(key);
+                            notification.setmId(key);
+                            databaseRef.setValue(notification);
+                            myNotification.setmId(myKey);
+                            databaseRef = database.getReference().child("Notification").child(myKey);
+                            databaseRef.setValue(myNotification);
+                            //send to accepted users
+                            dbRefUsers.child(entry.getValue()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
+                            //send to me
+                            dbRefUsers.child(ID).child("notifications").child(myNotification.getmId()).setValue(myNotification.getmId());
+                        }
+
+                    }
+                });
+                adb.show();
+
             }
         });
     }

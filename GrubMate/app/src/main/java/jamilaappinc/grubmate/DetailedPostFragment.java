@@ -55,7 +55,7 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
-    String ID;
+    String ID, currUserName;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
     private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
@@ -109,6 +109,7 @@ public class DetailedPostFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        currUserName = i.getStringExtra("Name");
 
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
@@ -132,6 +133,7 @@ public class DetailedPostFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Name",currUserName);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

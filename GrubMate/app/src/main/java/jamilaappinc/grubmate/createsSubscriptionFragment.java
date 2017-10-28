@@ -376,8 +376,9 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                         key = database.getReference("Notification").push().getKey();
                                         Notification notification = new Notification(ID, subscription.getmPosts().get(j) ,ID,key, NotificationReference.SUBSCRIPTION);
                                         databaseRef = database.getReference().child("Notification").child(key);
-                                        notification.setSubscriptionMatchingPostTitle(subscription.getmPostsTitles().get(j));
+                                        notification.setMatchingPostTitle(subscription.getmPostsTitles().get(j));
                                         notification.setmId(key);
+                                        notification.setmFromUserName(currUserName);
                                         databaseRef.setValue(notification);
                                         dbRefUsers.child(ID).child("notifications").child(notification.getmId()).setValue(notification.getmId());
 
