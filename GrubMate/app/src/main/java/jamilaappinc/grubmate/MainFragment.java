@@ -57,6 +57,7 @@ public class MainFragment extends Fragment {
     DatabaseReference dbRefPosts;
     String currUserId;
     String currUserName;
+    String currPicture;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
 
@@ -105,6 +106,8 @@ public class MainFragment extends Fragment {
         //            //reads in userid, username, and friends from loginactivity
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        currPicture = i.getStringExtra("Picture");
+
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
 //            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
@@ -221,6 +224,8 @@ public class MainFragment extends Fragment {
                 intent.putExtra("ID", currUserId);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Picture", currPicture);
+
 
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
@@ -383,6 +388,13 @@ public class MainFragment extends Fragment {
                     startActivity(i);
                 }
             });
+
+            Glide.with(MainFragment.this)
+                    .load(currPicture)
+                    .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
+                    .crossFade()
+                    .into(imagePerson);
 
 
 

@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -50,12 +52,15 @@ public class ProfileFragment extends Fragment {
     private TextView nameText;
     private TextView ratingText;
     private ListView myPosts;
+    ImageView myImage;
+    String ID;
+
+
 
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 1;
     private View mMessengerButton;
     private MessengerThreadParams mThreadParams;
     private boolean mPicking;
-    ArrayList<String> userFriends;
 
 
     public ProfileFragment() {
@@ -92,8 +97,10 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
-        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-
+        final String pic = i.getStringExtra("Picture");
+        final String currUserName = i.getStringExtra("Name");
+        final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        
 //        final Intent myIntent = new Intent((getActivity()), ProfileActivity.class);
 //        getActivity().startActivity(myIntent);
 
@@ -111,8 +118,16 @@ public class ProfileFragment extends Fragment {
         nameText = (TextView)v.findViewById(R.id.nameText);
         ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
         myPosts = (ListView)v.findViewById(R.id.profile_postList);
+        myImage = (ImageView) v.findViewById(R.id.profile_pic);
 
         System.out.println("READING DB NOW...");
+
+                        Glide.with(ProfileFragment.this)
+                                .load(pic)
+                                .centerCrop()
+                                .placeholder(R.drawable.hamburger)
+                                .crossFade()
+                                .into(myImage);
 
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
@@ -148,7 +163,8 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", id);
-                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name",currUserName);
+                intent.putExtra("Users",userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
