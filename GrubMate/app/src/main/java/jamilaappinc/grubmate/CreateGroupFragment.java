@@ -36,6 +36,9 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    FirebaseDatabase database;
+    private DatabaseReference dbRefUsers;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -80,6 +83,13 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //todo get database
+        database = FirebaseDatabase.getInstance();
+
+
+        //todo get database reference paths
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
     }
 
     @Override
@@ -91,13 +101,10 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
-
-
+        addListeners();
         return v;
 
     }
-
 
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -119,26 +126,27 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
     }
 
     private void addListeners(){
-        add.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                for(int i =0 ; i <selectedFriends.size(); i++){
-                    if(i < 1) list.setText(selectedFriends.get(i).getName() + "\n");
-                    else list.append(selectedFriends.get(i).getName() + "\n");
-                }
-            }
-        });
+//        add.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                for(int i =0 ; i <selectedFriends.size(); i++){
+//                    if(i < 1) list.setText(selectedFriends.get(i).getName() + "\n");
+//                    else list.append(selectedFriends.get(i).getName() + "\n");
+//                }
+//            }
+//        });
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final String key = database.getReference(FirebaseReferences.USERS).child("userGroups").push().getKey();
-                DatabaseReference databaseRef = database.getReference().child("Post").child(key);
+                DatabaseReference databaseRef = database.getReference().child("Groups").child(key);
 
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                //set values in database
+                dbRefUsers.child(ID).child("userGroups").child(key).setValue(key);
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
 
                 Group groupI = new Group(groupName.getText().toString(), selectedFriends);
 
@@ -150,19 +158,16 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 getActivity().finish();
 
             }
-
-
         });
         cancel.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                startActivityForResult(intent, 0);
             }
         });
-
     }
 
     @Override

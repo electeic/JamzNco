@@ -142,7 +142,7 @@ public class ViewGroupsFragment extends Fragment {
         });
         addGroupButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Toast.makeText(getContext(), "@JAMILAAPPCORP: Create fragment or can we do it with just an Alert dialog? " , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "@JAMILAAPPCORP: Create fragment or can we do it with just an Alert dialog? " , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
 //                intent.putExtra(CREATEGROUP, "create");
 //                startActivity(intent);

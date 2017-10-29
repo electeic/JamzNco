@@ -54,7 +54,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             for(int d = 0; d < friends.size(); d++)
             {
-                System.out.println("IVAN OUT" + friends.get(d));
+                System.out.println(friends.get(d));
             }
 
         ID = i.getStringExtra("ID");
@@ -93,7 +93,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     {
                         myFriends.add(user);
                         myFriendsNames.add(user.getName());
-                        System.out.println("IVAN CREATE GROUPACTVITY USER NAME: " + user.getName() + " " + myFriendsNames.size());
+                        System.out.println("CREATE GROUPACTVITY USER NAME: " + user.getName() + " " + myFriendsNames.size());
                     }
                 }
 
