@@ -31,6 +31,7 @@ public class Post implements Serializable {
     int mServings;
     boolean mActive;
     boolean homemade;
+    String mAuthorPic;
 
 //    public Post(String title, int servings){
 //        mTitle = title;
@@ -39,7 +40,8 @@ public class Post implements Serializable {
 
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
-                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId) {
+                ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId,
+                String authorPicture) {
         this.mAuthorId = mAuthorId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
@@ -53,6 +55,7 @@ public class Post implements Serializable {
         this.mServings = servings;
         this.mActive = Boolean.TRUE;
         this.homemade = homemade;
+        this.mAuthorPic = authorPicture;
     }
 
 //    public Post(String mTitle, String mDescription){
@@ -193,6 +196,13 @@ public class Post implements Serializable {
     public boolean getHomemade(){ return homemade; }
     public void setHomemade(boolean b) {homemade = b; }
 
+    public String getmAuthorPic() {
+        return mAuthorPic;
+    }
+
+    public void setmAuthorPic(String mAuthorPic) {
+        this.mAuthorPic = mAuthorPic;
+    }
 
 
 }

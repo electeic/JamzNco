@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
-        final String pic = i.getStringExtra("Picture");
+        final String pic = i.getStringExtra("MyProfilePicture");
         final String currUserName = i.getStringExtra("Name");
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         
