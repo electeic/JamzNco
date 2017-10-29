@@ -299,6 +299,7 @@ public class LoginActivity extends AppCompatActivity {
             u.setUserPosts("initial","initial");
             u.setUserGroups("initial","initial");
             u.setNotifications("initial","initial");
+            u.setNumRatings(0);
             //Post newPost = new Post("abc","cba");
             databaseRef.setValue(u);
         }

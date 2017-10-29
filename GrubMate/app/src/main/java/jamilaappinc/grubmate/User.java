@@ -30,6 +30,7 @@ public class User implements Serializable {
     String name;
     String profilePhoto;
     String id;
+    int numRatings;
 
 
 
@@ -70,6 +71,8 @@ public class User implements Serializable {
     public void setNotifications(String key, String value ){notifications.put(key, value); }
     public Map<String,String> getSubscriptions() {return subscriptions; }
     public void setSubscriptions(String key, String value ){subscriptions.put(key, value); }
+    public void setNumRatings(int num){numRatings = num;}
+    public int getNumRatings(){return numRatings;}
 //    public Map<String,String> getFriends() {return friends; }
 //    public void setFriends(String key, String value ){friends.put(key, value); }
 

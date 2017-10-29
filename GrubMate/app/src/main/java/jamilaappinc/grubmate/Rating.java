@@ -10,21 +10,21 @@ public class Rating implements Serializable{
 
     String mReview;
     double mRating;
-    int mId;
-    User mUser;
+    String mId;
+    String personRatingName;
 
-    public Rating(String review, double rating, User user) {
+    public Rating(String review, double rating, String name) {
         this.mReview = review;
         this.mRating = rating;
-        this.mUser = user;
+        personRatingName = name;
     }
 
-    public User getUser() {
-        return mUser;
+    public String getPersonRatingName() {
+        return personRatingName;
     }
 
-    public void setUser(User user) {
-        this.mUser = user;
+    public void setUser(String user) {
+        personRatingName = user;
     }
 
     public String getReview() {
@@ -43,11 +43,11 @@ public class Rating implements Serializable{
         this.mRating = rating;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.mId = id;
     }
 
