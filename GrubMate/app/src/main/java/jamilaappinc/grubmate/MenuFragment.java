@@ -75,7 +75,7 @@ public class MenuFragment extends Fragment {
         final String currUserName = i.getStringExtra("Name");
 //        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        final String currPicture = i.getStringExtra("Picture");
+        final String currPicture = i.getStringExtra("MyProfilePicture");
 
         fHome = (TextView)v.findViewById(R.id.home);
         fProfile = (TextView)v.findViewById(R.id.profile);
@@ -150,7 +150,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Picture",currPicture);
+                intent.putExtra("MyProfilePicture",currPicture);
                 startActivityForResult(intent, 0);
             }
         });
@@ -186,7 +186,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-
+                intent.putExtra("MyProfilePicture", currPicture);
                 startActivityForResult(intent, 0);
             }
         });

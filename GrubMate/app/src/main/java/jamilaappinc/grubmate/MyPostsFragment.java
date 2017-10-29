@@ -80,7 +80,7 @@ public class MyPostsFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-         currUserName = i.getStringExtra("Name");
+        currUserName = i.getStringExtra("Name");
 
         // Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         database = FirebaseDatabase.getInstance();
@@ -423,6 +423,13 @@ public class MyPostsFragment extends Fragment {
                     .placeholder(R.drawable.hamburger)
                     .crossFade()
                     .into(image);
+
+            Glide.with(MyPostsFragment.this)
+                    .load( mv.getmAuthorPic())
+                    .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
+                    .crossFade()
+                    .into(imagePerson);
 
 //                image.setImageDrawable(getResources().getDrawable(R.drawable.gmlogo));
 

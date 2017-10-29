@@ -106,7 +106,7 @@ public class MainFragment extends Fragment {
         //            //reads in userid, username, and friends from loginactivity
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
-        currPicture = i.getStringExtra("Picture");
+        currPicture = i.getStringExtra("MyProfilePicture");
 
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
@@ -224,7 +224,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("ID", currUserId);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Picture", currPicture);
+                intent.putExtra("MyProfilePicture", currPicture);
 
 
                 startActivityForResult(intent, 0);
@@ -390,7 +390,7 @@ public class MainFragment extends Fragment {
             });
 
             Glide.with(MainFragment.this)
-                    .load(currPicture)
+                    .load(mv.getmAuthorPic())
                     .centerCrop()
                     .placeholder(R.drawable.gmlogo)
                     .crossFade()

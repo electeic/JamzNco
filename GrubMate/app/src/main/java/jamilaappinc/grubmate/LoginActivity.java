@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted(JSONObject user, GraphResponse graphResponse) {
                         intent.putExtra("Name", user.optString("name"));
                         intent.putExtra("ID", user.optString("id"));
-                        intent.putExtra("Picture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
+                        intent.putExtra("MyProfilePicture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
                         userInfo.add(user.optString("name"));
                         userInfo.add(user.optString("id"));
                         userInfo.add("https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");

@@ -83,12 +83,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private String mParam1;
     private String mParam2;
 
-    EditText pPostTitle;
-    EditText pDietaryText;
-    EditText pLocationText;
-    EditText pServingsText;
-    EditText pTagsText;
-    EditText pPostDescription;
     ImageView pImage;
     Button pSubmitpostbutton;
     Button pAddPictureButton;
@@ -99,6 +93,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     String currUserName;
     ArrayList<String> userFriends;
+    String userProfilePic;
 
     ArrayList<Integer> subsCount = new ArrayList<>();
     ArrayList<Integer> subsReadCount = new ArrayList<>();
@@ -157,6 +152,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        userProfilePic = (String) i.getSerializableExtra("MyProfilePicture");
 
         subsReadCount.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -334,7 +330,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         databaseRef.setValue(post); //adds the value (the post) to the key post
@@ -581,7 +577,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     {
         //        if()
         //        String id = FirebaseRef.push().getKey();
-        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID);
+        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic);
 
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
 
