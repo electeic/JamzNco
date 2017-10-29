@@ -24,7 +24,7 @@ public class Post implements Serializable {
     ArrayList<String> mCategories;
     ArrayList<String> mTags;
     ArrayList <Group> mGroups;
-    Map<String, String> mAcceptedUsers = new HashMap<>();
+    Map<String, String> mAcceptedUsers;
     String id;
     String mPhotos;
     String mAuthorId;
@@ -56,6 +56,7 @@ public class Post implements Serializable {
         this.mActive = Boolean.TRUE;
         this.homemade = homemade;
         this.mAuthorPic = authorPicture;
+        this.mAcceptedUsers = new HashMap<>();
     }
 
 //    public Post(String mTitle, String mDescription){
