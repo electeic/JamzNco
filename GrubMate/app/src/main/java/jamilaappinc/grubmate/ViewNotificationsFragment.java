@@ -227,6 +227,8 @@ public class ViewNotificationsFragment extends Fragment {
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
 //                    dbRefRequests.child(notification.getmId()).setValue(null);
                     notifications.remove(position);
+                    adapter.notifyDataSetChanged();
+
 
                     dbRefRequests.addListenerForSingleValueEvent(new ValueEventListener(){
                         @Override
@@ -261,6 +263,7 @@ public class ViewNotificationsFragment extends Fragment {
                     dbRefNotifications.child(notification.getmId()).setValue(null);
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
+                    adapter.notifyDataSetChanged();
                     Intent i = new Intent(getActivity(), RateUserActivity.class);
                     i.putExtra("ID", ID);
                     i.putExtra("Users", userFriends);

@@ -247,7 +247,11 @@ public class MyPostsFragment extends Fragment {
                 adb.setTitle("");
                 adb.setMessage("What would you like to do? ");
                 adb.setNegativeButton("Cancel", null);
-                if(false){ //this will be changed to whatever the condition it is when you can delete the post
+
+                /**
+                 * !!!!this will be changed to whatever the condition it is when you can delete the post
+                 */
+                if(false){
                     adb.setNeutralButton("Delete Post", new AlertDialog.OnClickListener(){
                         public void onClick(DialogInterface dialog, int which){
 
