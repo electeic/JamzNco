@@ -290,7 +290,7 @@ public class LoginActivity extends AppCompatActivity {
             User u = new User(name, picture);
             u.setId(userId);
             u.setFriends(friends);
-            u.setAvgRating(1.2);
+            u.setAvgRating(0.0);
             ArrayList<String> tempString = new ArrayList<>();
 
 
