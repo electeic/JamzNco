@@ -12,10 +12,15 @@ public class Group implements Serializable{
     String mName;
     ArrayList<User> mGroupMembers;
     int mId;
+    String mUserAuthorId;
 
     public Group(String mName, ArrayList<User> mGroupMembers) {
         this.mName = mName;
         this.mGroupMembers = mGroupMembers;
+    }
+
+    public Group() {
+
     }
 
     public String getName() {
@@ -52,5 +57,10 @@ public class Group implements Serializable{
     public void setId(int id) {
         this.mId = id;
     }
+
+    public void setmUserAuthorId(String id) {this.mUserAuthorId = id;}
+
+    public String getmUserAuthorId() {return mUserAuthorId;}
+
 
 }

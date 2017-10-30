@@ -57,9 +57,8 @@ public class ViewGroupsActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 //        populateListView();
-
-
     }
+
 
 //    private void populateList(){
 //        Vector<User> group = new Vector<User>();
