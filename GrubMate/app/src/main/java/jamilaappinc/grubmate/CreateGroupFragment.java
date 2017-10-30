@@ -46,7 +46,6 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
     FirebaseDatabase database;
     private DatabaseReference dbRefUsers;
-    private DatabaseReference dbNoteToEdit;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -149,7 +148,8 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final String key = database.getReference(FirebaseReferences.USERS).child("userGroups").push().getKey();
-                DatabaseReference databaseRef = database.getReference().child("Groups").child(key);
+                System.out.println("creating key: " + key);
+                DatabaseReference databaseRef = database.getReference().child("Group").child(key);
                 //set values in database
                 dbRefUsers.child(ID).child("userGroups").child(key).setValue(key);
 
@@ -157,7 +157,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
                 Group groupI = new Group(groupName.getText().toString(), selectedFriends);
                 groupI.setmUserAuthorId(ID);
-
+                groupI.setId(key);
                 databaseRef.setValue(groupI);
 
                 intent.putExtra("ID", ID);

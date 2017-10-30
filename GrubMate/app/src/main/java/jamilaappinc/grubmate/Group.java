@@ -11,8 +11,9 @@ import java.util.Vector;
 public class Group implements Serializable{
     String mName;
     ArrayList<User> mGroupMembers;
-    int mId;
+    String mId;
     String mUserAuthorId;
+    String mKey;
 
     public Group(String mName, ArrayList<User> mGroupMembers) {
         this.mName = mName;
@@ -50,11 +51,11 @@ public class Group implements Serializable{
         return Boolean.FALSE;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.mId = id;
     }
 
@@ -62,5 +63,7 @@ public class Group implements Serializable{
 
     public String getmUserAuthorId() {return mUserAuthorId;}
 
+    public void setKey(String key) {this.mKey = key;}
 
+    public String getKey() {return mKey;}
 }

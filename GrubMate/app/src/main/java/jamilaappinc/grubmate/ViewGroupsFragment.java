@@ -116,7 +116,7 @@ public class ViewGroupsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
                     Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
-                    if (snap.getKey().equals("Groups")) { //if it
+                    if (snap.getKey().equals("Group")) { //if it
                         groupsCount.add((int)snap.getChildrenCount());
                         System.out.println("ADDED # Groups, count is " + snap.getChildrenCount());
                     }
@@ -279,7 +279,6 @@ public class ViewGroupsFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -290,13 +289,11 @@ public class ViewGroupsFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
     *//**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

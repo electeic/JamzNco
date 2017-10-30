@@ -19,8 +19,12 @@ import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 
 /**
@@ -46,9 +50,13 @@ public class EditGroupFragment extends Fragment {
     Button submitButton, deleteAllButton;
 
     private String ID;
-
+    ArrayList<String> userFriends; //passing around screens
 
     int _position;
+
+    DatabaseReference dbRefUsers;
+    private ArrayList<User> selectedFriends = new ArrayList<>();
+
 
 
     public EditGroupFragment() {
@@ -80,7 +88,7 @@ public class EditGroupFragment extends Fragment {
         initComp(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
@@ -121,20 +129,45 @@ public class EditGroupFragment extends Fragment {
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-//                Toast.makeText(getContext(), "Can potentially just send final vector back to DB, if we" +
-//                        " go back to home screen then we're going to need to pass the Arraylist of curr users to all" +
-//                        " the fragments .... " , Toast.LENGTH_SHORT).show();
+                //check to see if group is updated correctly
+                System.out.println("new group size: " + group.getGroupMembers().size());
+                for(int i=0; i<group.getGroupMembers().size(); i++) {
+                    System.out.println(group.getGroupMembers().get(i).getName());
+                }
+
                 /*
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("ID", ID);
-                    startActivityForResult(intent, 0);
-                    getActivity().finish();
-                */
+                    Get the id of the group a reference to the id in the groups in db and set the value to null
+                 */
+
+                System.out.println("group id: " + group.getId());
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference databaseRef = database.getReference();
+
+                //group to delete
+//                //set values in database
+//                dbRefUsers.child(ID).child("userGroups").child(group.getId()).removeValue();
+                if(group.getGroupMembers().size() == 0) {
+                    databaseRef.child("Groups").child(group.getId()).removeValue();
+                    databaseRef.setValue(null);
+                }
+
+//                else {
+//                    Group groupI = new Group(groupName.getText().toString(), selectedFriends);
+//                    groupI.setmUserAuthorId(ID);
+//                    databaseRef.setValue(groupI);
+//                }
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
             }
         });
 
         deleteAllButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                System.out.println("deleting everyone: " + group.getName());
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                 adb.setTitle("Delete");
                 adb.setMessage("Are you sure you want to delete the group?");
@@ -143,13 +176,8 @@ public class EditGroupFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         group.getGroupMembers().clear();
                         adapter.notifyDataSetChanged();
-                        //Toast.makeText(getContext(), "Can potentially just send final vector back to DB" , Toast.LENGTH_SHORT).show();
-
-
                     }});
                 adb.show();
-
-
             }
         });
 
@@ -166,12 +194,8 @@ public class EditGroupFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         group.getGroupMembers().remove(_position);
                         adapter.notifyDataSetChanged();
-                        //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE MEMBER FROM DB or just do it " +
-                                //"when you press submit, it depends on how db is passing in info" , Toast.LENGTH_SHORT).show();
                     }});
                 adb.show();
-
-
             }
         });
 
