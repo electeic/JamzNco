@@ -214,4 +214,13 @@ public class Post implements Serializable {
     public void setmFirebaseKey(String mFirebaseKey) {
         this.mFirebaseKey = mFirebaseKey;
     }
+
+    public boolean findTag(String tag){
+        for(int i = 0; i < mTags.size(); i++){
+            if(tag.equals(mTags.get(i))){
+                return true;
+            }
+        }
+        return false;
+    }
 }
