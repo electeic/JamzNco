@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     public static final String ARGS_POSITION = "args_position";
 
     //    private List<Post> postList;
-    //    private PostListAdapter postAdapter;
+//    private PostListAdapter postAdapter;
     android.support.design.widget.FloatingActionButton floatButton;
     public static final String IDString = "fuck";
 
@@ -73,6 +73,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     private ArrayList<String> tagsVec = new ArrayList<>();
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
+    ArrayList<Post> allMatchingPosts = new ArrayList<>();
 
     EditText title, tags;
     Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
@@ -116,6 +117,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        currUserName = i.getStringExtra("Name");
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -143,11 +145,11 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         return v;
     }
 
-    /*
-    EditText title, tags;
-    Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
-    CheckBox homeMade;
-     */
+/*
+EditText title, tags;
+Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
+CheckBox homeMade;
+*/
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -159,35 +161,44 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 .build();
     }
 
-    private ArrayList<String> getTags(){
+    private ArrayList<String> getTags() {
         String tmp = tags.getText().toString();
-        String[] temp = tmp.split(",");
-        for(String s : temp){
-            tagsVec.add(s);
+        System.out.println("TAGS STRING IS " + tmp);
+        if(!tmp.equals("")){
+            String[] temp = tmp.split(",");
+            System.out.println("TAGS ARRAY IS " + temp);
+
+            for (String s : temp) {
+                System.out.println("CURRENT STRING S IS " + s);
+
+                tagsVec.add(s);
+            }
+            return tagsVec;
         }
-        return tagsVec;
+        else return null;
+
 
     }
 
 
-    private void initComponents(View v){
+    private void initComponents(View v) {
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
-        title = (EditText) v.findViewById(R.id.search_titleText);
-        tags =(EditText) v.findViewById(R.id.search_tagsText);
-        categoryButton = (Button) v.findViewById(R.id.search_cat);
-        startDateButton = (Button) v.findViewById(R.id.search_startDateButton);
-        startTimeButton = (Button) v.findViewById(R.id.search_startTimeButton);
-        endDateButton = (Button) v.findViewById(R.id.search_endDateButton);
-        endTimeButton = (Button) v.findViewById(R.id.search_endTimeButton);
-        searchButton = (Button) v.findViewById(R.id.search_submit);
-        cancelButton = (Button) v.findViewById(R.id.search_cancel);
-        homeMade = (CheckBox) v.findViewById(R.id.post_homemadeCheck);
+        title = (EditText)v.findViewById(R.id.search_titleText);
+        tags = (EditText)v.findViewById(R.id.search_tagsText);
+        categoryButton = (Button)v.findViewById(R.id.search_cat);
+        startDateButton = (Button)v.findViewById(R.id.search_startDateButton);
+        startTimeButton = (Button)v.findViewById(R.id.search_startTimeButton);
+        endDateButton = (Button)v.findViewById(R.id.search_endDateButton);
+        endTimeButton = (Button)v.findViewById(R.id.search_endTimeButton);
+        searchButton = (Button)v.findViewById(R.id.search_submit);
+        cancelButton = (Button)v.findViewById(R.id.search_cancel);
+        homeMade = (CheckBox)v.findViewById(R.id.post_homemadeCheck);
 
         sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         sdf.setLenient(false);
     }
 
-    private void addListeners(){
+    private void addListeners() {
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,13 +206,14 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Name",currUserName);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
         });
 
         // Attach a listener to read the data at our posts reference
-        dbRefPosts.addValueEventListener(new ValueEventListener() {
+        dbRefPosts.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Post post = dataSnapshot.getValue(Post.class);
@@ -221,10 +233,10 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 String pTitle;
                 String startDateString;
                 String endDateString;
-                checkDateTime();
-                System.out.println("MY CATEGOEIES SIZE IS " + categories.size());
-                System.out.println("MY START DATE IS " + startDateTime.toString());
-                System.out.println("MY END DATE IS " + endDateTime.toString());
+                getTags();
+//                System.out.println("MY CATEGOEIES SIZE IS " + categories.size());
+//                System.out.println("MY START DATE IS " + startDateTime.toString());
+//                System.out.println("MY END DATE IS " + endDateTime.toString());
 
 
                 dbRefPosts.addChildEventListener(new ChildEventListener(){
@@ -238,11 +250,97 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-
+                        allMatchingPosts.add(post);
                         System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
                         System.out.println("POSTS COUNTER" + postCount.get(0));
 
-                        if (postsReadCounter.get(0) == postCount.get(0)) {
+
+                        if (postsReadCounter.get(0) == postCount.get(0)) {//all posts read.
+                            System.out.println("ALL POSTS READ");
+                            System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+                            if (!title.getText().toString().trim().equals("")) {//user entered post title
+                                for (int i = 0; i < allMatchingPosts.size(); i++) {
+                                    if (allMatchingPosts.get(i).getmTitle().equals(title.getText().toString()) == false) {
+                                        System.out.println("REMOVED POST FROM ALL MATCHING POSTS " + allMatchingPosts.get(i).getmId());
+                                        allMatchingPosts.remove(i);//removes if doesn't match given title
+                                        i--;
+                                    }
+                                }
+                            }
+                            System.out.println("TITLE MATCH DONE");
+                            System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+
+
+                            if (startDateTime != null) {//user entered start date
+                                for (int i = 0; i < allMatchingPosts.size(); i++) {
+                                    if (startDateTime.after(allMatchingPosts.get(i).getmStartDate())) {//current post being read's start date is before search parameters
+                                        allMatchingPosts.remove(i);//removes if doesn't match given title
+                                        i--;
+                                    }
+                                }
+                            }
+                            System.out.println("S DATE MATCH DONE");
+                            System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+
+
+                            if (endDateTime != null) {
+                                for (int i = 0; i < allMatchingPosts.size(); i++) {
+                                    if (endDateTime.before(allMatchingPosts.get(i).getmEndDate())) {//current post being read's end date is after search parameters
+                                        allMatchingPosts.remove(i);//removes if doesn't match given title
+                                        i--;
+                                    }
+                                }
+                            }
+                            System.out.println("E DATE MATCH DONE");
+                            System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+
+
+                            if (tagsVec.size() != 0) {
+                                for (int i = 0; i < allMatchingPosts.size(); i++) {
+                                    boolean allTagsMatch = true;
+                                    for (int j = 0; j < tagsVec.size(); j++) {
+                                        if(!allMatchingPosts.get(i).findTag(tagsVec.get(j))){
+                                            allTagsMatch = false;
+                                        }
+                                    }
+                                    if(allTagsMatch == false){//not all tags match the given search parameter tags.
+                                        allMatchingPosts.remove(i);
+                                        i--;
+                                    }
+                                }
+                            }
+                            System.out.println("TAGS MATCH DONE");
+                            System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+
+
+                            if (categories.size() >0) {
+                                for (int i = 0; i < allMatchingPosts.size(); i++) {
+                                    boolean allCatsMatch = true;
+                                    for (int j = 0; j < categories.size(); j++) {
+                                        if(!allMatchingPosts.get(i).findCategory(categories.get(j))){
+                                            allCatsMatch = false;
+                                        }
+                                    }
+                                    if(allCatsMatch == false){//not all the categories match the given search parameter categories.
+                                        allMatchingPosts.remove(i);
+                                        i--;
+                                    }
+                                }
+                            }
+                            System.out.println("CATEGORIES MATCH DONE");
+
+                            System.out.println("SIZE OF ALL MATCHING POSTS AFTER REMOVING IS " + allMatchingPosts.size());
+
+                            for(int i = 0; i < allMatchingPosts.size(); i++){
+                                System.out.println("PRINTING ALL POSTS THAT MATCH NOW " + allMatchingPosts.get(i).getmId());
+                            }
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtra("ID", ID);
+                            intent.putExtra("Users", userFriends);
+                            intent.putExtra("Name",currUserName);
+                            intent.putExtra("ReceivedPosts",allMatchingPosts);
+                            startActivityForResult(intent, 0);
+                            getActivity().finish();
 
                         }
                     }
@@ -267,54 +365,54 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
                     }
                 });
-
-
-                // compare to posts and repopulate main with posts that match
-                if(!title.getText().toString().trim().equals("")){
-
-                    boolean isTitleMatched = false;
-//
-                    Intent i = getActivity().getIntent();
-
-                    //System.out.println("USFRIENDPOST" + isFriendPost);
-//                    if (isFriendPost) {
-//                        ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
-//
-//                        Glide.with(SearchFragment.this)
-//                                .load(model.getmPhotos())
-//                                .centerCrop()
-//                                .placeholder(R.drawable.hamburger)
-//                                .crossFade()
-//                                .into(mImage);
-//
-//                        TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);
-//                        TextView pPostTitle = (TextView) v.findViewById(R.id.listNoteTitle);
 //
 //
-//                        pPostContent.setText(model.getmTitle());
-//                        pPostTitle.setText(model.getmDescription());
-//                    }
+//                // compare to posts and repopulate main with posts that match
+//                if (!title.getText().toString().trim().equals("")) {
+//
+//                    boolean isTitleMatched = false;
+//                    //
+//                    Intent i = getActivity().getIntent();
+//
+//                    //System.out.println("USFRIENDPOST" + isFriendPost);
+//                    //                    if (isFriendPost) {
+//                    //                        ImageView mImage = (ImageView) v.findViewById(R.id.imagePic);
+//                    //
+//                    //                        Glide.with(SearchFragment.this)
+//                    //                                .load(model.getmPhotos())
+//                    //                                .centerCrop()
+//                    //                                .placeholder(R.drawable.hamburger)
+//                    //                                .crossFade()
+//                    //                                .into(mImage);
+//                    //
+//                    //                        TextView pPostContent = (TextView) v.findViewById(R.id.listNoteContent);
+//                    //                        TextView pPostTitle = (TextView) v.findViewById(R.id.listNoteTitle);
+//                    //
+//                    //
+//                    //                        pPostContent.setText(model.getmTitle());
+//                    //                        pPostTitle.setText(model.getmDescription());
+//                    //                    }
+//                    //                }
+//
 //                }
-
-                }
-                if(startDateTime != null) {
-
-                }
-                if(endDateTime != null){
-
-                }
-                if(getTags().size() > 0){
-
-                }
-                if(categories.size() >0){
-
-                }
+//                if (startDateTime != null) {
+//
+//                }
+//                if (endDateTime != null) {
+//
+//                }
+//                if (getTags().size() > 0) {
+//
+//                }
+//                if (categories.size() >0) {
+//
+//                }
             }
 
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                 adb.setTitle("Cancel?");
                 adb.setMessage("Are you sure you want to cancel? ");
@@ -328,7 +426,8 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                         getActivity().finish();
                         //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();
 
-                    }});
+                    }
+                });
                 adb.show();
 
             }
@@ -342,7 +441,8 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             endDateTime = sdf.parse(endDateString + " " + endTimeString);
 
             check = startDateTime.before(endDateTime);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             Log.d("PARSE FAIL", "failed");
             return false;
         }
@@ -352,7 +452,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     public void sendStartDate(String data) {
         System.out.println("meldoy : wtf bro 1" + data);
 
-        if(data != null){
+        if (data != null) {
             startDateButton.setText("Start Date: " + data);
             startDateString = data;
         }
@@ -360,33 +460,33 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
     public void sendEndDate(String data) {
         System.out.println("meldoy : wtf bro 2" + data);
-        if(data != null){
+        if (data != null) {
             endDateButton.setText("End Date: " + data);
             endDateString = data;
         }
     }
 
-    public void sendStartTime(String time){
-        if(time!=null){
-            startTimeButton.setText("Start Time: "+ time);
+    public void sendStartTime(String time) {
+        if (time != null) {
+            startTimeButton.setText("Start Time: " + time);
             startTimeString = time;
         }
     }
 
-    public void sendEndTime(String time){
-        if(time!=null){
+    public void sendEndTime(String time) {
+        if (time != null) {
             endTimeButton.setText("End Time: " + time);
             endTimeString = time;
         }
     }
 
-    public void sendCategories(ArrayList<String> cat){
-        if(cat!=null){
+    public void sendCategories(ArrayList<String> cat) {
+        if (cat != null) {
             categories = (ArrayList<String>)cat.clone();
         }
     }
-    public void sendGroups(ArrayList<String> _group){
-        if(_group!=null){
+    public void sendGroups(ArrayList<String> _group) {
+        if (_group != null) {
             groups = (ArrayList<String>)_group.clone();
         }
     }
@@ -395,24 +495,24 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         mAdapter.notifyDataSetChanged();
     }
 
-    //todo onDetach
-  /*  public void onDetach() {
-        super.onDetach();
-        mAdapter.cleanup();
-    }
+//todo onDetach
+/*  public void onDetach() {
+super.onDetach();
+mAdapter.cleanup();
+}
 */
 //todo create custom FirebaseListAdapter
 
-    /*
-        1. The default search result will be all the posts that are visible to the user.
-        2. can search by the name/tags/description of the post.
-        3. can search by the category of the post(e.g.,Asian,Thai).
-        4. can search by a specific time period that the food will be available.
-        5. the search result can be sorted by at least one of the following:
-            (1) when the food will be available from the current time
-            (2) the rating of the provider(owner of the post)
-            (3) most popular providers(i.e.,the number of successful transactions for each provider)
-            (4) distance from the current location.
-     */
+/*
+1. The default search result will be all the posts that are visible to the user.
+2. can search by the name/tags/description of the post.
+3. can search by the category of the post(e.g.,Asian,Thai).
+4. can search by a specific time period that the food will be available.
+5. the search result can be sorted by at least one of the following:
+(1) when the food will be available from the current time
+(2) the rating of the provider(owner of the post)
+(3) most popular providers(i.e.,the number of successful transactions for each provider)
+(4) distance from the current location.
+*/
 
 }

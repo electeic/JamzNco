@@ -63,6 +63,7 @@ public class MainFragment extends Fragment {
 
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
+    ArrayList<Post> receivedPosts = new ArrayList<>();
 
 
     public MainFragment() {
@@ -107,6 +108,7 @@ public class MainFragment extends Fragment {
         currUserId = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         currPicture = i.getStringExtra("MyProfilePicture");
+        receivedPosts = (ArrayList<Post>) i.getSerializableExtra("ReceivedPosts");
 
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
@@ -120,85 +122,97 @@ public class MainFragment extends Fragment {
 
         postsReadCounter.add(0);
 
-        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        if(receivedPosts == null){
+            database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
-                    if (snap.getKey().equals("Post")) {
-                        postCount.add((int)snap.getChildrenCount());
-                        System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
+                    for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                        Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                        if (snap.getKey().equals("Post")) {
+                            postCount.add((int)snap.getChildrenCount());
+                            System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
+                        }
                     }
-                }
-                dbRefPosts.addChildEventListener(new ChildEventListener(){
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        int postsRead = postsReadCounter.get(0);
-                        postsRead++;
-                        System.out.println("POSTS READ COUNT " + postsRead);
-                        postsReadCounter.clear();
-                        postsReadCounter.add(postsRead);
+                    dbRefPosts.addChildEventListener(new ChildEventListener(){
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            int postsRead = postsReadCounter.get(0);
+                            postsRead++;
+                            System.out.println("POSTS READ COUNT " + postsRead);
+                            postsReadCounter.clear();
+                            postsReadCounter.add(postsRead);
 
 
-                        Post post = dataSnapshot.getValue(Post.class);
-                        if(userFriends != null)
-                        {
-                            for (int i = 0; i < userFriends.size(); i++) {
-                                System.out.println("I IS " + i);
-                                System.out.println("POST ID IS " + post.getmId());
-                                System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
+                            Post post = dataSnapshot.getValue(Post.class);
+                            if(userFriends != null)
+                            {
+                                for (int i = 0; i < userFriends.size(); i++) {
+                                    System.out.println("I IS " + i);
+                                    System.out.println("POST ID IS " + post.getmId());
+                                    System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
 
-                                if (post.getmAuthorId().equals(userFriends.get(i))) {
-                                    myPost.add(post);
-                                    System.out.println("I GOT A POST!!" + post);
+                                    if (post.getmAuthorId().equals(userFriends.get(i))) {
+                                        myPost.add(post);
+                                        System.out.println("I GOT A POST!!" + post);
+                                    }
                                 }
                             }
-                        }
 
 //                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
 //                        System.out.println("POSTS COUNTER" + postCount.get(0));
 
-                        if (postsReadCounter.get(0) == postCount.get(0)) {
-                            System.out.println("IN IF, SETTING ADAPTER NOW");
-                            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                            mListView = (ListView)v.findViewById(R.id.active_post_list);
-                            //        postList = PostSingleton.get(getActivity()).getMovies();
-                            //        postAdapter = new PostListAdapter(getActivity(), Post.class,
-                            //                R.layout.list_active_posts_item,
-                            //                dbRefPosts);
-                            mListView.setAdapter(mAdapter);
+                            if (postsReadCounter.get(0) == postCount.get(0)) {
+                                System.out.println("IN IF, SETTING ADAPTER NOW");
+                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+                                mListView = (ListView)v.findViewById(R.id.active_post_list);
+                                //        postList = PostSingleton.get(getActivity()).getMovies();
+                                //        postAdapter = new PostListAdapter(getActivity(), Post.class,
+                                //                R.layout.list_active_posts_item,
+                                //                dbRefPosts);
+                                mListView.setAdapter(mAdapter);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        }
+        else{
+            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+            mListView = (ListView)v.findViewById(R.id.active_post_list);
+            //        postList = PostSingleton.get(getActivity()).getMovies();
+            //        postAdapter = new PostListAdapter(getActivity(), Post.class,
+            //                R.layout.list_active_posts_item,
+            //                dbRefPosts);
+            mListView.setAdapter(mAdapter);
+        }
 
 
 //                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
