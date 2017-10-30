@@ -223,4 +223,13 @@ public class Post implements Serializable {
         }
         return false;
     }
+
+    public boolean findCategory(String category){
+        for(int i = 0; i < mCategories.size(); i++){
+            if(category.equals(mCategories.get(i))){
+                return true;
+            }
+        }
+        return false;
+    }
 }
