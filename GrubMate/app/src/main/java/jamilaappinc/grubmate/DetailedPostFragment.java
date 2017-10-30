@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +58,8 @@ public class DetailedPostFragment extends Fragment {
     Post n;
 
     String ID, currUserName;
+    ArrayList<String> userFriends;
+
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
     private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
@@ -110,6 +114,7 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
@@ -134,6 +139,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -144,6 +150,8 @@ public class DetailedPostFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Name",currUserName);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

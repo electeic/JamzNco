@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -57,6 +60,9 @@ public class EditGroupFragment extends Fragment {
     DatabaseReference dbRefUsers;
     private ArrayList<User> selectedFriends = new ArrayList<>();
 
+    FirebaseDatabase database;
+    DatabaseReference dbRefGroups, getDbRefUsers;
+
 
 
     public EditGroupFragment() {
@@ -89,6 +95,8 @@ public class EditGroupFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        group = (Group) i.getSerializableExtra(EditGroupActivity.GET_GROUP);
+
         adapter= new GroupAdapter(getActivity());
         listMember.setAdapter(adapter);
         addListeners();
@@ -97,6 +105,9 @@ public class EditGroupFragment extends Fragment {
     }
 
     private void initComp(View v){
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+        dbRefGroups = database.getInstance().getReference().child(FirebaseReferences.GROUPS);
+
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         group = (Group)getArguments().getSerializable(EditGroupActivity.GET_GROUP);
         groupName = (TextView) v.findViewById(R.id.editGroup_name);
@@ -147,8 +158,8 @@ public class EditGroupFragment extends Fragment {
 //                //set values in database
 //                dbRefUsers.child(ID).child("userGroups").child(group.getId()).removeValue();
                 if(group.getGroupMembers().size() == 0) {
-                    databaseRef.child("Groups").child(group.getId()).removeValue();
-                    databaseRef.setValue(null);
+                    databaseRef.child("Groups").child(group.getId()).setValue(null);
+//                    databaseRef.setValue(null);
                 }
 
 //                else {
@@ -192,6 +203,24 @@ public class EditGroupFragment extends Fragment {
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("melody the position is blah " + _position);
+                        dbRefGroups.child(group.getId()).child("mGroupMembersList").child(group.getGroupMembers().get(_position).getId()).setValue(null);
+                        dbRefGroups.child(group.getId()).child("mGroupMembers").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                    if(snap.child("id").getValue().equals(group.getGroupMembers().get(_position).getId())){
+                                        snap.getRef().setValue(null);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        group.removemGroupMemberList(group.getGroupMembers().get(_position).getId());
                         group.getGroupMembers().remove(_position);
                         adapter.notifyDataSetChanged();
                     }});
@@ -210,7 +239,7 @@ public class EditGroupFragment extends Fragment {
             if (itemView == null) {
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_edit_group_member_info, parent, false);
             }
-
+            System.out.println("meldoy the position is "+ position);
             //find the group members
             User user = group.getGroupMembers().get(position);
             String name = user.getName();

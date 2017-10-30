@@ -225,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("WRITE NEW USER");
 
 
-
         final DatabaseReference readRef = database.getReference().child("Users");
         userExists.add(false);
         readRef.addChildEventListener(new ChildEventListener(){

@@ -205,6 +205,7 @@ public class ViewGroupsFragment extends Fragment {
                 Intent i = new Intent(getActivity(), EditGroupActivity.class);
                 if(group == null)System.out.println("NO GROUPS");
                 i.putExtra("ID", ID);
+                i.putExtra("Users", userFriends);
                 i.putExtra(EditGroupActivity.GET_GROUP, group);
                 startActivity(i);
 

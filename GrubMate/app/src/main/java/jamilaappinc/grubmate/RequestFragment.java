@@ -62,7 +62,9 @@ public class RequestFragment extends Fragment {
     Post mPost;
 
     String ID;
-//     String currUserName;
+     String currUserName;
+    ArrayList<String> userFriends;
+
 
 
 
@@ -101,7 +103,7 @@ public class RequestFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        mPost = (Post) getArguments().getSerializable(ARG_PARAM3);
+//        mPost = (Post) getArguments().getSerializable(ARG_PARAM3);
         System.out.println("MAN2: " + mPost);
 
         database = FirebaseDatabase.getInstance();
@@ -138,6 +140,9 @@ public class RequestFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
+        userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
+
         System.out.println("meldoy request currUsername is "+ currUserName);
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
@@ -177,6 +182,8 @@ public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
 public void onClick(View view) {
             Intent intent = new Intent(getActivity(), MenuActivity.class);
             intent.putExtra("ID", ID);
+            intent.putExtra("Name",currUserName);
+            intent.putExtra("Users", userFriends);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -187,6 +194,8 @@ public void onClick(View view) {
 public void onClick(View view){
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.putExtra("ID", ID);
+            intent.putExtra("Name",currUserName);
+            intent.putExtra("Users", userFriends);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -244,6 +253,8 @@ public void onClick(View view) {
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.putExtra("ID", ID);
+            intent.putExtra("Name",currUserName);
+            intent.putExtra("Users", userFriends);
             startActivityForResult(intent,0);
             getActivity().finish();
 

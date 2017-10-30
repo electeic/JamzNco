@@ -2,6 +2,8 @@ package jamilaappinc.grubmate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -10,19 +12,36 @@ import java.util.Vector;
 
 public class Group implements Serializable{
     String mName;
-    ArrayList<User> mGroupMembers;
+    ArrayList<User> mGroupMembers = new ArrayList<>();
+    HashMap<String, User> mGroupMembersList = new HashMap<>();
     String mId;
     String mUserAuthorId;
     String mKey;
 
-    public Group(String mName, ArrayList<User> mGroupMembers) {
+
+    public Group(String mName, HashMap<String, User> mGroupMembersList, ArrayList<User> mGroupMembers) {
         this.mName = mName;
         this.mGroupMembers = mGroupMembers;
+        this.mGroupMembersList = mGroupMembersList;
+
     }
 
     public Group() {
 
     }
+
+   /* public Group(String mName, HashMap<String, User> mGroupMembersList){
+        this.mName = mName;
+        this.mGroupMembersList = mGroupMembersList;
+    }
+*/
+    public HashMap<String, User> getmGroupMembersList(){return mGroupMembersList;}
+
+    public void addmGroupMembersList(String id, User user){mGroupMembersList.put(id,user);}
+
+    public void setmGroupMembersList(HashMap<String,User> map) {mGroupMembersList.putAll(map);}
+
+    public void removemGroupMemberList(String id){mGroupMembersList.remove(id);}
 
     public String getName() {
         return mName;

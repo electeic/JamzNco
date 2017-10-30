@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import static jamilaappinc.grubmate.R.id.groups;
 
@@ -36,11 +38,16 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         //find the group to work with
         Group currentGroup = getItem(position);
         String members = "";
-        for(int i = 0; i < currentGroup.getGroupMembers().size(); i++){
-            if(i < (currentGroup.getGroupMembers().size() -1)){
-                members = members+" " + currentGroup.getGroupMembers().get(i).getName()+", ";
+        ArrayList<User> myGroup = new ArrayList<>();
+        for(Map.Entry<String, User> entry : currentGroup.getmGroupMembersList().entrySet()){
+            myGroup.add(entry.getValue());
+        }
+
+        for(int i = 0; i < myGroup.size(); i++){
+            if(i < (myGroup.size() -1)){
+                members = members+" " + myGroup.get(i).getName()+", ";
             }else{
-                members = members+" " + currentGroup.getGroupMembers().get(i).getName();
+                members = members+" " + myGroup.get(i).getName();
 
             }
 

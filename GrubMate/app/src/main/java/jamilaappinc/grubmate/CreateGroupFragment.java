@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -155,8 +156,16 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
 
-                Group groupI = new Group(groupName.getText().toString(), selectedFriends);
+                HashMap<String, User> mySelectedFriends = new HashMap<String, User>();
+
+                for(int i = 0; i < selectedFriends.size(); i++){
+                    mySelectedFriends.put(selectedFriends.get(i).getId(), selectedFriends.get(i));
+                    System.out.println("meldoy help");
+                }
+
+                Group groupI = new Group(groupName.getText().toString(), mySelectedFriends, selectedFriends);
                 groupI.setmUserAuthorId(ID);
+                groupI.setmGroupMembersList(mySelectedFriends);
                 groupI.setId(key);
                 databaseRef.setValue(groupI);
 
