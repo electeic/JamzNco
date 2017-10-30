@@ -224,7 +224,8 @@ public class LoginActivity extends AppCompatActivity {
     private void writeNewUser(final String userId, final String name, final String picture, final ArrayList<String> friends) {
         System.out.println("WRITE NEW USER");
 
-
+        //UNCOMMENT THIS LINE IF NEED TO FIX DATABASE
+        //addtoDB(userId,name,picture,friends);
 
         final DatabaseReference readRef = database.getReference().child("Users");
         userExists.add(false);
@@ -284,25 +285,25 @@ public class LoginActivity extends AppCompatActivity {
         u.setNotifications("initial","initial");
         ref.setValue(u);*/
 //
-        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){
-            System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
-            DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
-            User u = new User(name, picture);
-            u.setId(userId);
-            u.setFriends(friends);
-            u.setAvgRating(0.0);
-            ArrayList<String> tempString = new ArrayList<>();
+        if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){//COMMENT THIS LINE IF TRYING TO FIX DB
+        System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
+        DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
+        User u = new User(name, picture);
+        u.setId(userId);
+        u.setFriends(friends);
+        u.setAvgRating(0.0);
+        ArrayList<String> tempString = new ArrayList<>();
 
 
-            u.setSubscriptions("initial","initial");
-            u.setUserRequests("initial","initial");
-            u.setUserPosts("initial","initial");
-            u.setUserGroups("initial","initial");
-            u.setNotifications("initial","initial");
-            u.setNumRatings(0);
-            //Post newPost = new Post("abc","cba");
-            databaseRef.setValue(u);
-        }
+        u.setSubscriptions("initial","initial");
+        u.setUserRequests("initial","initial");
+        u.setUserPosts("initial","initial");
+        u.setUserGroups("initial","initial");
+        u.setNotifications("initial","initial");
+        u.setNumRatings(0);
+        //Post newPost = new Post("abc","cba");
+        databaseRef.setValue(u);
+        }//COMMENT THIS LINE IF TRYING TO FIX DB
     }
 
 }
