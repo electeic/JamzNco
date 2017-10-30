@@ -177,7 +177,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         categoryButton = (Button) v.findViewById(R.id.search_cat);
         startDateButton = (Button) v.findViewById(R.id.search_startDateButton);
         startTimeButton = (Button) v.findViewById(R.id.search_startTimeButton);
-        endDateButton = (Button) v.findViewById(R.id.search_startDateButton);
+        endDateButton = (Button) v.findViewById(R.id.search_endDateButton);
         endTimeButton = (Button) v.findViewById(R.id.search_endTimeButton);
         searchButton = (Button) v.findViewById(R.id.search_submit);
         cancelButton = (Button) v.findViewById(R.id.search_cancel);
@@ -221,7 +221,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
                 String pTitle;
                 String startDateString;
                 String endDateString;
-
+                checkDateTime();
                 System.out.println("MY CATEGOEIES SIZE IS " + categories.size());
                 System.out.println("MY START DATE IS " + startDateTime.toString());
                 System.out.println("MY END DATE IS " + endDateTime.toString());
@@ -350,6 +350,8 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         return check;
     }
     public void sendStartDate(String data) {
+        System.out.println("meldoy : wtf bro 1" + data);
+
         if(data != null){
             startDateButton.setText("Start Date: " + data);
             startDateString = data;
@@ -357,6 +359,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     }
 
     public void sendEndDate(String data) {
+        System.out.println("meldoy : wtf bro 2" + data);
         if(data != null){
             endDateButton.setText("End Date: " + data);
             endDateString = data;

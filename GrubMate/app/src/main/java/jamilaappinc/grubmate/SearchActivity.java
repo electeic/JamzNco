@@ -230,7 +230,9 @@ public class SearchActivity extends AppCompatActivity implements TimeStartPicker
     }
 
     public void onFinishEndDialog(Date date) {
+//        System.out.println("meldoy i send the date "+ formadate);
         dataFromActivityToFragment.sendEndDate(formatDate(date));
+
     }
 
     @Override
