@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,7 +71,8 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     ArrayList<String> categories = new ArrayList<String>();
     private ArrayList<String> groups = new ArrayList<>();
     private ArrayList<String> tagsVec = new ArrayList<>();
-
+    ArrayList<Integer> postCount = new ArrayList<>();
+    ArrayList<Integer> postsReadCounter = new ArrayList<>();
 
     EditText title, tags;
     Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
@@ -114,6 +116,24 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         View v = inflater.inflate(R.layout.fragment_filtered_search, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        postsReadCounter.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Post")) {
+                        postCount.add((int)snap.getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         initComponents(v);
@@ -198,6 +218,57 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
             @Override
             public void onClick(View view) {
                 //check what is filled out
+                String pTitle;
+                String startDateString;
+                String endDateString;
+
+                System.out.println("MY CATEGOEIES SIZE IS " + categories.size());
+                System.out.println("MY START DATE IS " + startDateTime.toString());
+                System.out.println("MY END DATE IS " + endDateTime.toString());
+
+
+                dbRefPosts.addChildEventListener(new ChildEventListener(){
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        int postsRead = postsReadCounter.get(0);
+                        postsRead++;
+                        System.out.println("POSTS READ COUNT " + postsRead);
+                        postsReadCounter.clear();
+                        postsReadCounter.add(postsRead);
+
+
+                        Post post = dataSnapshot.getValue(Post.class);
+
+                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
+                        System.out.println("POSTS COUNTER" + postCount.get(0));
+
+                        if (postsReadCounter.get(0) == postCount.get(0)) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
                 // compare to posts and repopulate main with posts that match
                 if(!title.getText().toString().trim().equals("")){
 
