@@ -32,6 +32,7 @@ public class Post implements Serializable {
     boolean mActive;
     boolean homemade;
     String mAuthorPic;
+    String mFirebaseKey;
 
 //    public Post(String title, int servings){
 //        mTitle = title;
@@ -41,7 +42,7 @@ public class Post implements Serializable {
     public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
                 ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId,
-                String authorPicture) {
+                String authorPicture, String mFirebaseKey) {
         this.mAuthorId = mAuthorId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
@@ -57,6 +58,7 @@ public class Post implements Serializable {
         this.homemade = homemade;
         this.mAuthorPic = authorPicture;
         this.mAcceptedUsers = new HashMap<>();
+        this.mFirebaseKey = mFirebaseKey;
     }
 
 //    public Post(String mTitle, String mDescription){
@@ -205,5 +207,11 @@ public class Post implements Serializable {
         this.mAuthorPic = mAuthorPic;
     }
 
+    public String getmFirebaseKey() {
+        return mFirebaseKey;
+    }
 
+    public void setmFirebaseKey(String mFirebaseKey) {
+        this.mFirebaseKey = mFirebaseKey;
+    }
 }

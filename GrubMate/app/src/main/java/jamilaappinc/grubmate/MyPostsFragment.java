@@ -143,6 +143,7 @@ public class MyPostsFragment extends Fragment {
                             //                R.layout.list_active_posts_item,
                             //                dbRefPosts);
                             list.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
 
@@ -239,7 +240,7 @@ public class MyPostsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Post post = (Post) list.getItemAtPosition(position);
+                final Post post = (Post) list.getItemAtPosition(position);
                 final ArrayList<Post> myPost = new ArrayList<Post>();
                 myPost.add(post);
                 System.out.println("meldoy the post is " + post.getmId() + " " + post.getmTitle());
@@ -251,13 +252,16 @@ public class MyPostsFragment extends Fragment {
                 /**
                  * !!!!this will be changed to whatever the condition it is when you can delete the post
                  */
-                if(false){
+
+                if(post.getmAuthorId().equals(ID) && post.getmAcceptedUsers() == null){
                     adb.setNeutralButton("Delete Post", new AlertDialog.OnClickListener(){
                         public void onClick(DialogInterface dialog, int which){
-
+                            dbRefPosts.child(post.getmFirebaseKey()).removeValue();
                         }
                     });
                 }
+
+//                adb.setNeutralButton("edit post", )
 
                 adb.setPositiveButton("Delivery Complete", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

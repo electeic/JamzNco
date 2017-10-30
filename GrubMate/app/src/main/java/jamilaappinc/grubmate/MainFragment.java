@@ -157,8 +157,8 @@ public class MainFragment extends Fragment {
                             }
                         }
 
-                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
-                        System.out.println("POSTS COUNTER" + postCount.get(0));
+//                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
+//                        System.out.println("POSTS COUNTER" + postCount.get(0));
 
                         if (postsReadCounter.get(0) == postCount.get(0)) {
                             System.out.println("IN IF, SETTING ADAPTER NOW");
@@ -357,20 +357,6 @@ public class MainFragment extends Fragment {
             ImageView imagePerson = (ImageView)convertView.findViewById(R.id.active_post_person_image);
             TextView textTitle = (TextView)convertView.findViewById(R.id.listNoteTitle);
             TextView textDescription = (TextView)convertView.findViewById(R.id.listNoteContent);
-
-            //            findOutMore.setTag(position);
-            //            findOutMore.setOnClickListener(new View.OnClickListener() {
-            //                @Override
-            //                public void onClick(View v) {
-            //                    Intent i = new Intent(getActivity(),
-            //                            DetailActivity.class);
-            //
-            //                    //TODO change position to id
-            ////                i.putExtra(DetailActivity.EXTRA_POSITION, position);
-            //                    i.putExtra(DetailActivity.ARGS_ID, (int) v.getTag());
-            //                    startActivityForResult(i, 0);
-            //                }
-            //            });
 
             final Post mv = Posts.get(position);
 

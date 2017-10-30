@@ -94,6 +94,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     String currUserName;
     ArrayList<String> userFriends;
     String userProfilePic;
+    String FirebaseKey;
 
     ArrayList<Integer> subsCount = new ArrayList<>();
     ArrayList<Integer> subsReadCount = new ArrayList<>();
@@ -330,7 +331,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         databaseRef.setValue(post); //adds the value (the post) to the key post
@@ -577,7 +578,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     {
         //        if()
         //        String id = FirebaseRef.push().getKey();
-        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic);
+        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
 
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
 
