@@ -43,6 +43,10 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.firebase:firebase-storage:10.0.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+
+    // add this for intent mocking support
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+
 }
 
 
