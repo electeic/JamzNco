@@ -24,6 +24,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
 //    androidTestCompile 'com.android.support.test:runner:0.4'
 //    androidTestCompile 'com.android.support.test:rules:0.4'
 //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
@@ -40,20 +43,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.firebase:firebase-storage:10.0.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
-    testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
