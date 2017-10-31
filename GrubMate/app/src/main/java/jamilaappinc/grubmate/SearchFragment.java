@@ -495,6 +495,71 @@ CheckBox homeMade;
         mAdapter.notifyDataSetChanged();
     }
 
+    public static  ArrayList<Post> filterPosts(ArrayList<Post> allPosts, String filterTitle, Date startTime, Date endTime,
+    ArrayList<String> inputTags){
+        if (!filterTitle.equals("")) {//user entered post title
+            for (int i = 0; i < allPosts.size(); i++) {
+                if (allPosts.get(i).getmTitle().equals(filterTitle) == false) {
+                    allPosts.remove(i);//removes if doesn't match given title
+                    i--;
+                }
+            }
+        }
+        if (startTime != null) {//user entered start date
+            for (int i = 0; i < allPosts.size(); i++) {
+                if (startTime.after(allPosts.get(i).getmStartDate())) {//current post being read's start date is before search parameters
+                    allPosts.remove(i);//removes if doesn't match given title
+                    i--;
+                }
+            }
+        }
+
+
+        if (endTime != null) {
+            for (int i = 0; i < allPosts.size(); i++) {
+                if (endTime.before(allPosts.get(i).getmEndDate())) {//current post being read's end date is after search parameters
+                    allPosts.remove(i);//removes if doesn't match given title
+                    i--;
+                }
+            }
+        }
+
+//
+        if (inputTags.size() != 0) {
+            for (int i = 0; i < allPosts.size(); i++) {
+                boolean allTagsMatch = true;
+                for (int j = 0; j < inputTags.size(); j++) {
+                    if(!allPosts.get(i).findTag(inputTags.get(j))){
+                        allTagsMatch = false;
+                    }
+                }
+                if(allTagsMatch == false){//not all tags match the given search parameter tags.
+                    allPosts.remove(i);
+                    i--;
+                }
+            }
+        }
+//        System.out.println("TAGS MATCH DONE");
+//        System.out.println("SIZE OF ALL MATCHING POSTS IS " + allMatchingPosts.size());
+//
+//
+//        if (categories.size() >0) {
+//            for (int i = 0; i < allMatchingPosts.size(); i++) {
+//                boolean allCatsMatch = true;
+//                for (int j = 0; j < categories.size(); j++) {
+//                    if(!allMatchingPosts.get(i).findCategory(categories.get(j))){
+//                        allCatsMatch = false;
+//                    }
+//                }
+//                if(allCatsMatch == false){//not all the categories match the given search parameter categories.
+//                    allMatchingPosts.remove(i);
+//                    i--;
+//                }
+//            }
+//        }
+        return allPosts;
+    }
+
 //todo onDetach
 /*  public void onDetach() {
 super.onDetach();
