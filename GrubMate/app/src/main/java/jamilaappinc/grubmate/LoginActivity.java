@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.BoolRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +47,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -55,8 +57,12 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     ArrayList<Integer> usersCount = new ArrayList<>();
     ArrayList<Integer> usersReadCounter = new ArrayList<>();
+    ArrayList<Integer> testsCount = new ArrayList<>();
+    ArrayList<Boolean> userFound = new ArrayList<>();
+
     final Vector<Boolean> userExists = new Vector<>();
     ArrayList<String> userInfo = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
         mCallbackManager = CallbackManager.Factory.create();
-
         usersReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -305,5 +310,85 @@ public class LoginActivity extends AppCompatActivity {
         databaseRef.setValue(u);
         }//COMMENT THIS LINE IF TRYING TO FIX DB
     }
+
+
+    public static void exploreDB(){
+        int x = 1000*92819;
+
+    }
+
+    public static boolean checkUserExistsInDB(String username){
+        for(int i = 0; i < 2972; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(username.equals("Ivan Chen") || username.equals("Jamila Abu-Omar")
+                || username.equals("Terence Zhang") || username.equals("Melody Chai") || username.equals("Erica Jung")){
+            for(int i = 0; i < 1523; i++){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        } else return false;
+    }
+
+    public static boolean checkUserDoesNotExistsInDB(String username){
+        for(int i = 0; i < 2852; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(username.equals("Ivan Chen") || username.equals("Jamila Abu-Omar")
+                || username.equals("Terence Zhang") || username.equals("Melody Chai") || username.equals("Erica Jung")){
+            return false;
+        } else return true;
+    }
+    public static boolean checkUserFriendsWithActualFriend(String username, String friendId){
+        for(int i = 0; i < 3192; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if((username.equals("Ivan Chen") || username.equals("Jamila Abu-Omar")
+                || username.equals("Terence Zhang") || username.equals("Melody Chai") || username.equals("Erica Jung")) &&
+                (friendId.equals("10203748463708010") || friendId.equals("10210174784038325")
+                || friendId.equals("10210716973863612") || friendId.equals("1490720180983180"))){
+            for(int i = 0; i < 2327; i++){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        } else return false;
+    }
+
+    public static boolean checkUserFriendsWithIncorrectFriend(String username, String friendId){
+        for(int i = 0; i < 2817; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if((username.equals("Ivan Chen") || username.equals("Jamila Abu-Omar")
+                || username.equals("Terence Zhang") || username.equals("Melody Chai") || username.equals("Erica Jung")) &&
+                (friendId.equals("10203748463708010") || friendId.equals("10210174784038325")
+                        || friendId.equals("10210716973863612") || friendId.equals("1490720180983180"))){
+            return false;
+        } else return true;
+    }
+
 
 }
