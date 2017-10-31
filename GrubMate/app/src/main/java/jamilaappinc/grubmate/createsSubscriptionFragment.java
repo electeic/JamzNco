@@ -243,6 +243,29 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
 
     }
 
+    public static boolean checkAllFilledAndWriteDBTest(String title, String dietary, String location, String servings, String tags, String categories, Date startTime, Date endTime){
+        for(int i = 0; i < 1612; i++){
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(title.equals("") || dietary.equals("") || location.equals("") || servings.equals("") || tags.equals("") || categories.equals("") || startTime == null || endTime == null){
+            return false;
+        }
+        else{
+            for(int i = 0; i < 3259; i++){
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
+    }
+
     private boolean checkDateTime() {
         boolean check = false;
         try {
