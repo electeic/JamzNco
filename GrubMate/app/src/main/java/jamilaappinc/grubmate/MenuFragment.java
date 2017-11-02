@@ -198,10 +198,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                System.out.println("BLAH BLAH BLAH " + myUser.getName());
-//                                System.out.println(" JESUS LORD HELP ME I NEED YOU : " + myUser.getFriends().size());
-                                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
-//                                intent.putExtra(ViewGroupsActivity.GET_ALL_GROUPS,  myUser.getUserGroups());
+                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
                 startActivityForResult(intent, 0);
             }
         });

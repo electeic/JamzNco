@@ -106,10 +106,12 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_group, container, false);
-        initComponent(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        friends = (ArrayList<String>)i.getSerializableExtra(ViewGroupsActivity.GET_ALL_FRIENDS);
+        System.out.println("meldoy friends size in creategroup fragment is " + friends.size());
+        initComponent(v);
         addListeners();
         return v;
     }
@@ -154,7 +156,6 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 //set values in database
                 dbRefUsers.child(ID).child("userGroups").child(key).setValue(key);
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
 
                 HashMap<String, User> mySelectedFriends = new HashMap<String, User>();
 
@@ -169,10 +170,12 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 groupI.setId(key);
                 databaseRef.setValue(groupI);
 
+                Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
                 startActivityForResult(intent, 0);
-                getActivity().finish();
+//                getActivity().finish();
 
             }
         });
@@ -182,6 +185,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
                 startActivityForResult(intent, 0);
             }
         });

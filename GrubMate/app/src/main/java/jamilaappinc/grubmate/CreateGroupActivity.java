@@ -28,7 +28,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     boolean[] checkedFriends;
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
-    private ArrayList<String> friends = new ArrayList<>(); //Contains the ID's of the friends
+    private ArrayList<String> friends; //Contains the ID's of the friends
     private ArrayList<String> selectedFriends = new ArrayList<>(); // contains the names of the friend's selected
     private ArrayList<User> myFriends = new ArrayList<>(); // contains all of your friend's in user forms
     private ArrayList<User> finalSelectedFriends = new ArrayList<>();
@@ -48,20 +48,19 @@ public class CreateGroupActivity extends AppCompatActivity {
         Log.d("id","hey");
         setContentView(R.layout.activity_main);
 
-        //get intent data
-        Intent i = getIntent();
-        friends = (ArrayList<String>) getIntent().getSerializableExtra(GET_ALL_FRIENDS);
 
-            for(int d = 0; d < friends.size(); d++)
+
+         /*   for(int d = 0; d < friends.size(); d++)
             {
                 System.out.println(friends.get(d));
-            }
+            }*/
+//get intent data
+            Intent i = getIntent();
+            friends = (ArrayList<String>) i.getSerializableExtra(ViewGroupsActivity.GET_ALL_FRIENDS);
+            System.out.println("meldoy the friends size in creategroup is " + friends.size());
+            ID = i.getStringExtra("ID");
 
-        ID = i.getStringExtra("ID");
 
-
-        //TODO modify for id
-        int pos = i.getIntExtra(EXTRA_POSITION, -1);
 
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
@@ -93,7 +92,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                     {
                         myFriends.add(user);
                         myFriendsNames.add(user.getName());
-                        System.out.println("CREATE GROUPACTVITY USER NAME: " + user.getName() + " " + myFriendsNames.size());
                     }
                 }
 

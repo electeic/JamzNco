@@ -27,7 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -61,7 +64,10 @@ public class EditGroupFragment extends Fragment {
     private ArrayList<User> selectedFriends = new ArrayList<>();
 
     FirebaseDatabase database;
-    DatabaseReference dbRefGroups, getDbRefUsers;
+    DatabaseReference dbRefGroups, getDbRefUsers,databaseRef;
+
+    ArrayList<User> groupMembers;
+    ArrayList<String> friends;
 
 
 
@@ -95,16 +101,22 @@ public class EditGroupFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        friends = (ArrayList<String>)i.getSerializableExtra(ViewGroupsActivity.GET_ALL_FRIENDS);
         group = (Group) i.getSerializableExtra(EditGroupActivity.GET_GROUP);
 
-        adapter= new GroupAdapter(getActivity());
+
+        Collection<User> members = group.getmGroupMembersList().values();
+        groupMembers = new ArrayList<>(members);
+
+        adapter= new GroupAdapter(getActivity(), groupMembers);
         listMember.setAdapter(adapter);
         addListeners();
-
         return v;
     }
 
     private void initComp(View v){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference();
         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         dbRefGroups = database.getInstance().getReference().child(FirebaseReferences.GROUPS);
 
@@ -114,6 +126,7 @@ public class EditGroupFragment extends Fragment {
         listMember = (ListView) v.findViewById(R.id.editGroup_list);
         submitButton =(Button)v.findViewById(R.id.editGroup_submitButton);
         deleteAllButton = (Button)v.findViewById(R.id.editGroup_deleteButton);
+
 
     }
 
@@ -133,6 +146,7 @@ public class EditGroupFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -140,27 +154,15 @@ public class EditGroupFragment extends Fragment {
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //check to see if group is updated correctly
-                System.out.println("new group size: " + group.getGroupMembers().size());
-                for(int i=0; i<group.getGroupMembers().size(); i++) {
-                    System.out.println(group.getGroupMembers().get(i).getName());
-                }
-
-                /*
-                    Get the id of the group a reference to the id in the groups in db and set the value to null
-                 */
-
-                System.out.println("group id: " + group.getId());
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseRef = database.getReference();
-
                 //group to delete
 //                //set values in database
 //                dbRefUsers.child(ID).child("userGroups").child(group.getId()).removeValue();
-                if(group.getGroupMembers().size() == 0) {
-                    databaseRef.child("Groups").child(group.getId()).setValue(null);
+                if(groupMembers.size() == 0) {
+                    databaseRef.child("Group").child(group.getId()).setValue(null);
 //                    databaseRef.setValue(null);
                 }
+
+                goToViewGroupsFragment();
 
 //                else {
 //                    Group groupI = new Group(groupName.getText().toString(), selectedFriends);
@@ -168,11 +170,7 @@ public class EditGroupFragment extends Fragment {
 //                    databaseRef.setValue(groupI);
 //                }
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("ID", ID);
-                intent.putExtra("Users", userFriends);
-                startActivityForResult(intent, 0);
-                getActivity().finish();
+
             }
         });
 
@@ -185,8 +183,14 @@ public class EditGroupFragment extends Fragment {
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        group.getGroupMembers().clear();
-                        adapter.notifyDataSetChanged();
+                        databaseRef.child("Group").child(group.getId()).setValue(null);
+                        Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+                        intent.putExtra("ID", ID);
+                        intent.putExtra("Users", userFriends);
+                        intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+                        startActivityForResult(intent, 0);
+                        getActivity().finish();
+
                     }});
                 adb.show();
             }
@@ -199,29 +203,14 @@ public class EditGroupFragment extends Fragment {
                 _position = position;
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
                 adb.setTitle("Delete");
-                adb.setMessage("Are you sure you want to remove " + group.getGroupMembers().get(position).getName() + " from the group?");
+                adb.setMessage("Are you sure you want to remove " + groupMembers.get(position).getName() + " from the group?");
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        System.out.println("melody the position is blah " + _position);
-                        dbRefGroups.child(group.getId()).child("mGroupMembersList").child(group.getGroupMembers().get(_position).getId()).setValue(null);
-                        dbRefGroups.child(group.getId()).child("mGroupMembers").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                                    if(snap.child("id").getValue().equals(group.getGroupMembers().get(_position).getId())){
-                                        snap.getRef().setValue(null);
-                                    }
-                                }
-                            }
+                        dbRefGroups.child(group.getId()).child("mGroupMembersList").child(groupMembers.get(_position).getId()).setValue(null);
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
                         group.removemGroupMemberList(group.getGroupMembers().get(_position).getId());
-                        group.getGroupMembers().remove(_position);
+                        groupMembers.remove(_position);
                         adapter.notifyDataSetChanged();
                     }});
                 adb.show();
@@ -231,17 +220,18 @@ public class EditGroupFragment extends Fragment {
 
     }
     private class GroupAdapter extends ArrayAdapter<User> {
-        public GroupAdapter(Context context) {
-            super(context, 0, group.getGroupMembers());
+        List<User> groupMembers;
+        public GroupAdapter(Context context, ArrayList<User> groupMembers) {
+            super(context, 0, groupMembers);
+            this.groupMembers = groupMembers;
         }
 
         public View getView(int position, View itemView, ViewGroup parent) {
             if (itemView == null) {
                 itemView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_edit_group_member_info, parent, false);
             }
-            System.out.println("meldoy the position is "+ position);
             //find the group members
-            User user = group.getGroupMembers().get(position);
+            User user = groupMembers.get(position);
             String name = user.getName();
 
             TextView nameText = (TextView) itemView.findViewById(R.id.editGroupMember_name);
@@ -254,5 +244,14 @@ public class EditGroupFragment extends Fragment {
         }
         // TODO: Rename method, update argument and hook method into UI event
 
+    }
+
+    private void goToViewGroupsFragment(){
+        Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);
+        intent.putExtra("ID", ID);
+        intent.putExtra("Users", userFriends);
+        intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+        startActivityForResult(intent, 0);
+//        getActivity().finish();
     }
 }

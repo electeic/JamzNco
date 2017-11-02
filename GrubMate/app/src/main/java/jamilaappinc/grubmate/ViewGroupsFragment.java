@@ -103,6 +103,7 @@ public class ViewGroupsFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        friends = (ArrayList<String>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_FRIENDS);
 
         initComponents(v);
         addListeners();
@@ -183,7 +184,6 @@ public class ViewGroupsFragment extends Fragment {
 //        adapter= new GroupsAdapter(getActivity(), groups);
 //            LINE FOR GETTING ALL GROUPS
 //        groups = (ArrayList<Group>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_GROUPS);
-        friends = (ArrayList<String>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_FRIENDS);
 
     }
 
@@ -194,6 +194,7 @@ public class ViewGroupsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -207,6 +208,9 @@ public class ViewGroupsFragment extends Fragment {
                 i.putExtra("ID", ID);
                 i.putExtra("Users", userFriends);
                 i.putExtra(EditGroupActivity.GET_GROUP, group);
+
+                i.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+
                 startActivity(i);
 
             }
@@ -220,7 +224,10 @@ public class ViewGroupsFragment extends Fragment {
 //                startActivity(intent);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
-                intent.putExtra(CreateGroupActivity.GET_ALL_FRIENDS, friends);
+                System.out.println("meldoy friend's size in viewgroups is " + friends.size());
+
+                intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
