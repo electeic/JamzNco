@@ -241,6 +241,29 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     }
 
+    public static boolean checkAllFilledAndWriteDBTest(String title, String dietary, String location, String servings, String tags, Date startTime, Date endTime){
+        for(int i = 0; i < 1612; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(title.equals("") || dietary.equals("") || location.equals("") || servings.equals("") || tags.equals("") || startTime == null || endTime == null){
+            return false;
+        }
+        else{
+            for(int i = 0; i < 3259; i++){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
+    }
+
     private boolean checkDateTime() {
         boolean check = false;
         try {

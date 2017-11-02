@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,6 +130,29 @@ public class RequestFragment extends Fragment {
 
         return filled;
 
+    }
+
+    public static boolean checkAllFilledAndWriteDBTest(String location, int servings, String user, String post){
+        for(int i = 0; i < 1612; i++){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(location.equals("") || user.equals("") || post.equals("") || servings == 0){
+            return false;
+        }
+        else{
+            for(int i = 0; i < 3259; i++){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
     }
 
     @Override
