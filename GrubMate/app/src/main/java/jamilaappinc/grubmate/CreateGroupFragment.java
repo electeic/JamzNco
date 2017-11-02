@@ -161,10 +161,9 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
                 for(int i = 0; i < selectedFriends.size(); i++){
                     mySelectedFriends.put(selectedFriends.get(i).getId(), selectedFriends.get(i));
-                    System.out.println("meldoy help");
                 }
 
-                Group groupI = new Group(groupName.getText().toString(), mySelectedFriends, selectedFriends);
+                Group groupI = new Group(groupName.getText().toString(), mySelectedFriends);
                 groupI.setmUserAuthorId(ID);
                 groupI.setmGroupMembersList(mySelectedFriends);
                 groupI.setId(key);

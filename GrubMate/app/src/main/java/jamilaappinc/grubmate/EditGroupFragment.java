@@ -209,7 +209,7 @@ public class EditGroupFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dbRefGroups.child(group.getId()).child("mGroupMembersList").child(groupMembers.get(_position).getId()).setValue(null);
 
-                        group.removemGroupMemberList(group.getGroupMembers().get(_position).getId());
+//                        group.removemGroupMemberList(group.getGroupMembers().get(_position).getId());
                         groupMembers.remove(_position);
                         adapter.notifyDataSetChanged();
                     }});

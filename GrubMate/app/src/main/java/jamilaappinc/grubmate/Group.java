@@ -19,9 +19,8 @@ public class Group implements Serializable{
     String mKey;
 
 
-    public Group(String mName, HashMap<String, User> mGroupMembersList, ArrayList<User> mGroupMembers) {
+    public Group(String mName, HashMap<String, User> mGroupMembersList) {
         this.mName = mName;
-        this.mGroupMembers = mGroupMembers;
         this.mGroupMembersList = mGroupMembersList;
 
     }

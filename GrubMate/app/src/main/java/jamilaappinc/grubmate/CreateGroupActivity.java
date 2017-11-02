@@ -57,7 +57,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 //get intent data
             Intent i = getIntent();
             friends = (ArrayList<String>) i.getSerializableExtra(ViewGroupsActivity.GET_ALL_FRIENDS);
-            System.out.println("meldoy the friends size in creategroup is " + friends.size());
             ID = i.getStringExtra("ID");
 
 
