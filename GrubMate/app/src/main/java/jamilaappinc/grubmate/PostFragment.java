@@ -605,7 +605,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         post.addmAcceptedUsers("initial");
 
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
-
+        post.setmId(key);
         DatabaseReference dbChild = database.getReference().child("Post").child(key);
         dbChild.setValue(post);
 

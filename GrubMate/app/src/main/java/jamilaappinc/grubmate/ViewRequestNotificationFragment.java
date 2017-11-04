@@ -122,15 +122,15 @@ public class ViewRequestNotificationFragment extends Fragment {
                         key = database.getReference("Notification").push().getKey();
                         Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                         databaseRef = database.getReference().child("Notification").child(key);
-                        notification.setMatchingPostTitle(notification.getTitle());
+                        notification.setMatchingPostTitle(notification.getmTitle());
                         notification.setmId(key);
                         notification.setmFromUserName(currUserName);
                         databaseRef.setValue(notification);
                         dbRefRequests.child(request.getmId()).setValue(null);
                         dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
                         DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
-                        String key2 = dbRefPosts.child(request.getmPost().getmId()).child("acceptedUsers").push().getKey();
-                        dbRefPosts.child(request.getmPost().getmId()).child("acceptedUsers").child(key2).setValue(request.getmRequestUserId());
+                        String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();
+                        dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").child(key2).setValue(request.getmRequestUserId());
                         request.getmPost().addmAcceptedUsers(request.getmRequestUserId());
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
                         i.putExtra("ID", ID);

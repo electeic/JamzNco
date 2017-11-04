@@ -115,7 +115,7 @@ public class DetailedPostFragment extends Fragment {
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-
+        n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
         fDate = (TextView) v.findViewById(R.id.date);
@@ -136,6 +136,7 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
+                System.out.println("meldoy the post is " + n.getmTitle());
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);

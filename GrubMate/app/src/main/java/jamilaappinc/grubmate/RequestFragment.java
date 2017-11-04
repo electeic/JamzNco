@@ -165,9 +165,9 @@ public class RequestFragment extends Fragment {
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+
         mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
 
-        System.out.println("meldoy request currUsername is "+ currUserName);
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -254,18 +254,22 @@ public void onClick(View view) {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                    String key;
                     DatabaseReference databaseRef;
+                    DatabaseReference databasePostRef;
 
 //                    key = database.getReference("Notification").push().getKey();
                     //make notification to the person who made the post saying that you requested the item
-                    Notification notification = new Notification(ID, request.getmPost().getmTitle() ,request.getmPost().getmAuthorId(),key, NotificationReference.REQUEST);
+                    Notification notification = new Notification(ID, request.getmPost().getmId() ,request.getmPost().getmAuthorId(),key, NotificationReference.REQUEST);
+                    System.out.println("Meldoy the notification post id is "+ notification.getmAboutPost());
                     databaseRef = database.getReference().child("Notification").child(key);
                     notification.setMatchingPostTitle(request.getmPost().getmTitle());
+                    System.out.println("MELDOY the title is "+ notification.getmTitle());
                     notification.setmId(key);
                     notification.setmFromUserName(currUserName);
                     databaseRef.setValue(notification);
                     dbRefUsers.child(request.getmPost().getmAuthorId()).child("notifications").child(key).setValue(notification.getmId());
+
+//                    String databasePostRef
                 }
 
                 @Override

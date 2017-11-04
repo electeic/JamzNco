@@ -274,7 +274,7 @@ public class MyPostsFragment extends Fragment {
                         DatabaseReference dbAcceptedRef;
                         final DatabaseReference dbUsers = database.getReference().child("Users");
                         final DatabaseReference dbNotificationsRef = database.getReference().child("Notification");
-                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("acceptedUsers"); //get the user's post's accepted user
+                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("mAcceptedUsers"); //get the user's post's accepted user
                         dbAcceptedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
@@ -312,7 +312,6 @@ public class MyPostsFragment extends Fragment {
 
 
 
-                                            myPost.clear();
 
                                         }
 
@@ -333,6 +332,9 @@ public class MyPostsFragment extends Fragment {
 
 
                                 }
+
+                                myPost.clear();
+
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
