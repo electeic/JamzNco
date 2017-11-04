@@ -87,7 +87,7 @@ public class testCreatePost {
         closeSoftKeyboard();
         onView(withId(R.id.dietaryText)).perform(typeText(tags));
         closeSoftKeyboard();
-        onView(withId(R.id.post_locationText)).perform(typeText("abc"));
+        onView(withId(R.id.locationText)).perform(typeText("abc"));
         closeSoftKeyboard();
         onView(withId(R.id.ServingsText)).perform(typeText(servings));
         closeSoftKeyboard();
@@ -111,7 +111,7 @@ public class testCreatePost {
         closeSoftKeyboard();
         onView(withId(R.id.dietaryText)).perform(typeText(tags));
         closeSoftKeyboard();
-        onView(withId(R.id.post_locationText)).perform(typeText("abc"));
+        onView(withId(R.id.locationText)).perform(typeText("abc"));
         closeSoftKeyboard();
         onView(withId(R.id.ServingsText)).perform(typeText(servings));
         closeSoftKeyboard();
