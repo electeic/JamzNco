@@ -602,6 +602,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         //        if()
         //        String id = FirebaseRef.push().getKey();
         Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
+        post.addmAcceptedUsers("initial");
 
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
 
