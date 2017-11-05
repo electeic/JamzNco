@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,7 +63,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     FirebaseDatabase database;
     private DatabaseReference dbRefNotes;
-    private DatabaseReference dbNoteToEdit;
     DatabaseReference FirebaseRef;
     private StorageReference mStorageRef;
     String mPicURL;
@@ -102,8 +102,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     private ArrayList<String> allMatchingSubs = new ArrayList<>();
 
+    String foodPics = "photos";
+
 
     android.support.design.widget.FloatingActionButton floatButton;
+
+    private DatabaseReference dbNoteToEdit;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -112,10 +116,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     }
 
     // TODO: Rename and change types and number of parameters
-    public static PostFragment newInstance(int pos) {
+    public static PostFragment newInstance(int pos, String edit) {
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
+        System.out.println("IVANS passing from newInstance" + edit);
+        args.putString(ARG_PARAM2, edit);
         fragment.setArguments(args);
         return fragment;
     }
@@ -128,6 +134,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        System.out.println("IVANS mParam2 " + mParam2);
+
         //todo get database
         database = FirebaseDatabase.getInstance();
 
@@ -139,9 +147,10 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
         Bundle args = getArguments();
         //todo get reference to note to be edited (if it exists)
-        String urlToEdit = args.getString(mParam1);
-        if (urlToEdit != null) { // NULL if we are adding a new record
-            dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
+        System.out.println("IVANS urlToEdit " + mParam2);
+        if (mParam2 != null) { // NULL if we are adding a new record
+//            dbNoteToEdit = database.getReferenceFromUrl(FirebaseKey);
+
         }
     }
 
@@ -151,6 +160,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post, container, false);
         Intent i = getActivity().getIntent();
+        initGUIComp(v);
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
         status = i.getStringExtra("Status");
@@ -175,9 +185,59 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
+        //todo read selected note
+        if(mParam2 != null) {  // null if urlToEdit is null
+            // read from the note to update
+//            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // convert this "data snapshot" to a model class
+//                    Post n = dataSnapshot.getValue(Post.class);
+            DatabaseReference ref = database.getReference().child("Post").child(mParam2);
+
+
+            // Attach a listener to read the data at our posts reference
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Post n = dataSnapshot.getValue(Post.class);
+                    _title.setText(n.getmTitle());
+//                    _dietary.setText(n.get);
+                    _location.setText(n.getmLocation());
+                    _servings.setText(Integer.toString(n.getmServings()));
+                    _tags.setText(n.getmTags().toString());
+                    _descriptions.setText(n.getmDescription());
+                    _homemade.setChecked(n.getHomemade());
+//                    startDateTime.setTime(n.getmStartDate().getTime());
+//                    endDateTime.setTime(n.getmEndDate().getTime());
+                    foodPics = n.getmPhotos();
+                    Glide.with(PostFragment.this)
+                            .load(n.getmPhotos())
+                            .centerCrop()
+                            .placeholder(R.drawable.gmlogo)
+                            .crossFade()
+                            .into(pImage);
+//                }
+                    System.out.println("IVAN" + n);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+        }
+
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
 
-        initGUIComp(v);
+
         addListeners();
 
 
@@ -347,9 +407,19 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                 if (checkAllFilled()) {
                     //all forms filled out correctly
-
+                    String tempString;
                     FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                    final String key = database2.getReference("Post").push().getKey();
+                    if(mParam2 == null) {
+                        DatabaseReference database3 = database2.getReference("Post").push();
+                        tempString = database3.getKey();
+                    }
+                    else
+                    {
+                        tempString = mParam2;
+                    }
+
+                    final String key = tempString;
+                    System.out.println("Post Frag Key = " + key);
 
                     DatabaseReference databaseRef = database.getReference().child("Post").child(key); //reference to the key of the post inside Posts
 
@@ -360,7 +430,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, "photos", Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         databaseRef.setValue(post); //adds the value (the post) to the key post

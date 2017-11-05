@@ -26,6 +26,7 @@ import java.util.Vector;
 public class PostActivity extends AppCompatActivity implements TimeStartPickerFragment.TimeStartDialogListener, TimeEndPickerFragment.TimeEndDialogListener, DatePickerFragment.DateDialogListener, EndDatePickerFragment.EndDateDialogListener{
 
     public static final String EXTRA_POSITION = "main_position";
+    public static final String EDIT_POSITION = "edit_position";
     String[] listCategories,listGroups;
 
     boolean [] checkedItems, groupCheckedItems;
@@ -66,7 +67,8 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
         //TODO modify for id
         int pos = i.getIntExtra(EXTRA_POSITION, -1);
-
+        String s = i.getStringExtra(EDIT_POSITION);
+        System.out.println("POSTACTIVITY Post firebase is " + s);
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.fragment_container);
@@ -74,7 +76,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
         if (f == null ) {
             //TODO modify for id
-            f = PostFragment.newInstance(pos);
+            f = PostFragment.newInstance(pos, s);
         }
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
