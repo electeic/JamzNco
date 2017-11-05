@@ -31,7 +31,7 @@ public class User implements Serializable {
     String profilePhoto;
     String id;
     int numRatings;
-    int alreadyLoggedIn;
+    String alreadyLoggedIn;
 
 
     public User(){
@@ -74,11 +74,11 @@ public class User implements Serializable {
     public void setNumRatings(int num){numRatings = num;}
     public int getNumRatings(){return numRatings;}
 
-    public void setAlreadyLoggedIn(int alreadyLoggedIn) {
+    public void setAlreadyLoggedIn(String alreadyLoggedIn) {
         this.alreadyLoggedIn = alreadyLoggedIn;
     }
 
-    public int getAlreadyLoggedIn() {
+    public String getAlreadyLoggedIn() {
         return alreadyLoggedIn;
     }
     //    public Map<String,String> getFriends() {return friends; }
