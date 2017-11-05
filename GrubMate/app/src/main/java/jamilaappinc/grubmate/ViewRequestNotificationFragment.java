@@ -127,7 +127,8 @@ public class ViewRequestNotificationFragment extends Fragment {
                         databasePostServingRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                int newServing = Integer.parseInt(""+dataSnapshot.getValue()) -1;
+                                int newServing = Integer.parseInt(""+dataSnapshot.getValue()) - request.getmServings();
+                                System.out.println("meldoy the new serving is "+ newServing);
                                 databasePostServingRef.setValue(newServing);
                                 if(newServing == 0){
                                     databasePostActiveRef.setValue(false);
