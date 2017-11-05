@@ -71,7 +71,7 @@ public class Notification implements Serializable{
 
     public void setMatchingPostTitle(String titles){subscriptionMatchingPostsTitles = titles;}
 
-    public String getTitle(){return subscriptionMatchingPostsTitles;}
+    public String getMatchingPostTitle(){return subscriptionMatchingPostsTitles;}
 
     public Notification(String mFromUser, String mAboutPost, String mToUser, String mId, String mType) {
 
@@ -80,5 +80,6 @@ public class Notification implements Serializable{
         this.mToUser = mToUser;
         this.mId = mId;
         this.mType = mType;
+//        subscriptionMatchingPostsTitles = mTitle
     }
 }

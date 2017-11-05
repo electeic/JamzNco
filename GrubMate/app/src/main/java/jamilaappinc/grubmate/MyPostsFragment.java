@@ -253,7 +253,7 @@ public class MyPostsFragment extends Fragment {
                  * !!!!this will be changed to whatever the condition it is when you can delete the post
                  */
 
-                if(post.getmAuthorId().equals(ID) && post.getmAcceptedUsers() == null){
+                if(post.getmAuthorId().equals(ID) && post.getmAcceptedUsers().size() == 1){
                     adb.setNeutralButton("Delete Post", new AlertDialog.OnClickListener(){
                         public void onClick(DialogInterface dialog, int which){
                             dbRefPosts.child(post.getmFirebaseKey()).removeValue();
@@ -261,7 +261,86 @@ public class MyPostsFragment extends Fragment {
                     });
                 }
 
-//                adb.setNeutralButton("edit post", )
+                adb.setNeutralButton("edit post", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+//                        Map<String, String> acceptedUsers = myPost.get(0).getmAcceptedUsers();
+//                        System.out.println("meldoy the size of the accepter user map is " + acceptedUsers.size());
+//                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                        String key;
+//                        String myKey;
+//                        DatabaseReference dbAcceptedRef;
+//                        final DatabaseReference dbUsers = database.getReference().child("Users");
+//                        final DatabaseReference dbNotificationsRef = database.getReference().child("Notification");
+//                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("acceptedUsers"); //get the user's post's accepted user
+//                        dbAcceptedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot snapshot) {
+//
+//                                final ArrayList<String> acceptedName = new ArrayList<String>();
+//                                for (DataSnapshot child : snapshot.getChildren()) {
+//                                    DatabaseReference name = dbUsers.child(""+child.getValue()).child("name");
+//                                    final String childID = ""+child.getValue();
+//                                    name.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                        String key, notificationKey,myNotificationKey;
+//                                        String myKey; //send a rate notification to me
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            acceptedName.add( ""+dataSnapshot.getValue());
+//                                            myKey = dbUsers.child(ID).child("notications").push().getKey(); //send to me
+//                                            myNotificationKey =dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user
+//                                            Notification myNotification = new Notification(childID,myPost.get(0).getmId(),ID,myKey,NotificationReference.RATE);
+//                                            myNotification.setMatchingPostTitle(myPost.get(0).getmTitle());
+//                                            myNotification.setmId(myKey);
+//                                            myNotification.setmFromUserName(acceptedName.get(0));
+//                                            dbUsers.child(ID).child("notifications").child(myKey).setValue(myNotification.getmId());
+//                                            dbNotificationsRef.child(myNotificationKey).setValue(myNotification);
+//
+//
+//                                            //send notification to accepted User
+//                                            key = dbUsers.child(ID).child("notications").push().getKey(); //send to accepted user key
+//                                            notificationKey =dbNotificationsRef.push().getKey(); // store notification for sending accepted user the rate me
+//                                            Notification notification = new Notification(ID,myPost.get(0).getmId(),childID,myKey,NotificationReference.RATE);
+//                                            notification.setMatchingPostTitle(myPost.get(0).getmTitle());
+//                                            notification.setmId(key);
+//                                            notification.setmFromUserName(currUserName);
+//                                            dbUsers.child(childID).child("notifications").child(key).setValue(notification.getmId());
+//                                            dbNotificationsRef.child(notificationKey).setValue(notification);
+//                                            acceptedName.clear();
+//
+//
+//
+//                                            myPost.clear();
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//
+//
+//
+//
+//                                   /* //send rate notification to the accepted users
+//                                    key = dbUsers.child(""+child.getValue()).child("notifications").push().getKey(); //send to the accepted user
+//                                    notificationKey = dbNotificationsRef.push().getKey(); //store notification for accepted user rating
+//*/
+//
+//
+//
+//                                }
+//                            }
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//
+//                        });
+
+                    }
+                });
 
                 adb.setPositiveButton("Delivery Complete", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -274,53 +353,57 @@ public class MyPostsFragment extends Fragment {
                         DatabaseReference dbAcceptedRef;
                         final DatabaseReference dbUsers = database.getReference().child("Users");
                         final DatabaseReference dbNotificationsRef = database.getReference().child("Notification");
-                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("acceptedUsers"); //get the user's post's accepted user
+                        dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("mAcceptedUsers"); //get the user's post's accepted user
                         dbAcceptedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
 
                                 final ArrayList<String> acceptedName = new ArrayList<String>();
                                 for (DataSnapshot child : snapshot.getChildren()) {
-                                    DatabaseReference name = dbUsers.child(""+child.getValue()).child("name");
                                     final String childID = ""+child.getValue();
-                                    name.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        String key, notificationKey,myNotificationKey;
-                                        String myKey; //send a rate notification to me
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            acceptedName.add( ""+dataSnapshot.getValue());
-                                            myKey = dbUsers.child(ID).child("notications").push().getKey(); //send to me
-                                            myNotificationKey =dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user
-                                            Notification myNotification = new Notification(childID,myPost.get(0).getmId(),ID,myKey,NotificationReference.RATE);
-                                            myNotification.setMatchingPostTitle(myPost.get(0).getmTitle());
-                                            myNotification.setmId(myKey);
-                                            myNotification.setmFromUserName(acceptedName.get(0));
-                                            dbUsers.child(ID).child("notifications").child(myKey).setValue(myNotification.getmId());
-                                            dbNotificationsRef.child(myNotificationKey).setValue(myNotification);
+
+                                    if(!childID.equals("initial")) {
+                                        DatabaseReference name = dbUsers.child("" + child.getValue()).child("name");
+                                        name.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            String key, notificationKey, myNotificationKey;
+                                            String myKey; //send a rate notification to me
+
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                System.out.println("Meldoy the accepted user name is :" + dataSnapshot.getValue());
+                                                acceptedName.add("" + dataSnapshot.getValue());
+                                                myKey = dbUsers.child(ID).child("notifications").push().getKey(); //send to me
+                                                myNotificationKey = dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user
+                                                Notification myNotification = new Notification(childID, myPost.get(0).getmId(), ID, myKey, NotificationReference.RATE);
+                                                myNotification.setMatchingPostTitle(myPost.get(0).getmTitle());
+                                                myNotification.setmId(myNotificationKey);
+                                                myNotification.setmFromUserName(acceptedName.get(0));
+                                                dbUsers.child(ID).child("notifications").child(myKey).setValue(myNotification.getmId());
+                                                dbNotificationsRef.child(myNotificationKey).setValue(myNotification);
 
 
-                                            //send notification to accepted User
-                                            key = dbUsers.child(ID).child("notications").push().getKey(); //send to accepted user key
-                                            notificationKey =dbNotificationsRef.push().getKey(); // store notification for sending accepted user the rate me
-                                            Notification notification = new Notification(ID,myPost.get(0).getmId(),childID,myKey,NotificationReference.RATE);
-                                            notification.setMatchingPostTitle(myPost.get(0).getmTitle());
-                                            notification.setmId(key);
-                                            notification.setmFromUserName(currUserName);
-                                            dbUsers.child(childID).child("notifications").child(key).setValue(notification.getmId());
-                                            dbNotificationsRef.child(notificationKey).setValue(notification);
-                                            acceptedName.clear();
+                                                //send notification to accepted User
+                                                key = dbUsers.child(ID).child("notifications").push().getKey(); //send to accepted user key
+                                                notificationKey = dbNotificationsRef.push().getKey(); // store notification for sending accepted user the rate me
+                                                Notification notification = new Notification(ID, myPost.get(0).getmId(), childID, key, NotificationReference.RATE);
+                                                notification.setMatchingPostTitle(myPost.get(0).getmTitle());
+                                                notification.setmId(notificationKey);
+                                                notification.setmFromUserName(currUserName);
+                                                dbUsers.child(childID).child("notifications").child(key).setValue(notification.getmId());
+                                                dbNotificationsRef.child(notificationKey).setValue(notification);
+                                                acceptedName.clear();
 
 
+                                            }
 
-                                            myPost.clear();
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
 
-                                        }
+                                            }
+                                        });
+                                    }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
 
 
 
@@ -333,16 +416,18 @@ public class MyPostsFragment extends Fragment {
 
 
                                 }
+
+
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
 
-                        });
+                    });
                         /*for (Map.Entry<String, String> entry : acceptedUsers.entrySet())
                         {
-//                            System.out.println(entry.getKey() + "/" + entry.getValue());
+                            System.out.println(entry.getKey() + "/" + entry.getValue());
                             key = database.getReference("Notification").push().getKey(); // telling accepted users to rate the user
                             myKey = database.getReference("Notification").push().getKey(); // this is used to ask the user to rate the accepted user
                             //Notifiction from me to the accepted usrs

@@ -125,10 +125,10 @@ public class ViewNotificationsFragment extends Fragment {
 
     private void initComponents(View v){
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getInstance().getReference();
-        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
-        dbRefNotifications = database.getInstance().getReference().child(FirebaseReferences.NOTIFICATIONS);
-        dbRefRequests = database.getInstance().getReference().child(FirebaseReferences.REQUEST);
+        dbRef = database.getReference();
+        dbRefUsers = database.getReference().child(FirebaseReferences.USERS);
+        dbRefNotifications = database.getReference().child(FirebaseReferences.NOTIFICATIONS);
+        dbRefRequests = database.getReference().child(FirebaseReferences.REQUEST);
 
         list = (ListView) v.findViewById(R.id.notifications_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -151,7 +151,6 @@ public class ViewNotificationsFragment extends Fragment {
                 dbRefNotifications.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.d("meldoy child added", dataSnapshot.getValue().toString());
 
                     int postsRead = notifReadCounter.get(0);
                     postsRead++;
@@ -173,19 +172,16 @@ public class ViewNotificationsFragment extends Fragment {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d("meldoy child change", dataSnapshot.getValue().toString());
 
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.d("meldoy child remove", dataSnapshot.getValue().toString());
 
                 }
 
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    Log.d("meldoy move", dataSnapshot.getValue().toString());
 
                 }
 
@@ -260,6 +256,7 @@ public class ViewNotificationsFragment extends Fragment {
 
 
                 }else if (notification.getmType().equals(NotificationReference.RATE)){
+                    System.out.println("meldoy the notification id is " + notification.getmId());
                     dbRefNotifications.child(notification.getmId()).setValue(null);
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
@@ -313,12 +310,13 @@ public class ViewNotificationsFragment extends Fragment {
                     if (notif.getmType().equals(NotificationReference.SUBSCRIPTION)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_subscription_title);
-                        title.setText(notif.getTitle() + " has matched a subscription!");
+                        title.setText(notif.getMatchingPostTitle() + " has matched a subscription!");
 
                     } else if (notif.getmType().equals(NotificationReference.REQUEST)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_request_title);
-                         title.setText(notif.getmFromUserName() + " has made a request about " + notif.getTitle());
+//                        System.out.println("meldoy help " + notif.getmFromUser() + " " + notif.get)
+                         title.setText(notif.getmFromUserName() + " has made a request about " + notif.getMatchingPostTitle());
 
 
                     } else if (notif.getmType().equals(NotificationReference.RATE)) {
@@ -329,7 +327,7 @@ public class ViewNotificationsFragment extends Fragment {
                     } else {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_accept_title);
-                        title.setText(notif.getmFromUser() + " has accepted your request regarding " + notif.getTitle() + ".");
+                        title.setText(notif.getmFromUserName() + " has accepted your request regarding " + notif.getMatchingPostTitle() + ".");
 
                     }
 

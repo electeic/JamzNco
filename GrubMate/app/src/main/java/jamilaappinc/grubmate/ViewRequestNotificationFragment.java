@@ -12,8 +12,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -70,8 +73,8 @@ public class ViewRequestNotificationFragment extends Fragment {
     private void fillInScreen(){
         name.setText(request.getRequestedUserName());
         title.setText(request.getmPost().getmTitle());
-        size.setText(""+request.getmPost().getmServings());
-        location.setText(request.getmPost().getmLocation());
+        size.setText(""+request.getmServings());
+        location.setText(request.getmLocation());
       /*  name.setText(notification.getmFromUser().getName());
         title.setText(notification.getmAboutPost().getmTitle());
         size.setText(notification.getmAboutPost().getmServings()+"");
@@ -117,20 +120,41 @@ public class ViewRequestNotificationFragment extends Fragment {
                        // Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         String key;
-                        DatabaseReference databaseRef;
+                        final DatabaseReference databaseRef, databasePostActiveRef, databasePostServingRef;
                         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+                        databasePostServingRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mServings");
+                        databasePostActiveRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mActive");
+                        databasePostServingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int newServing = Integer.parseInt(""+dataSnapshot.getValue()) - request.getmServings();
+                                System.out.println("meldoy the new serving is "+ newServing);
+                                databasePostServingRef.setValue(newServing);
+                                if(newServing == 0){
+                                    databasePostActiveRef.setValue(false);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                         key = database.getReference("Notification").push().getKey();
                         Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                         databaseRef = database.getReference().child("Notification").child(key);
-                        notification.setMatchingPostTitle(notification.getTitle());
+                        notification.setMatchingPostTitle(request.getmPost().getmTitle());
                         notification.setmId(key);
                         notification.setmFromUserName(currUserName);
                         databaseRef.setValue(notification);
                         dbRefRequests.child(request.getmId()).setValue(null);
                         dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
                         DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
-                        String key2 = dbRefPosts.child(request.getmPost().getmId()).child("acceptedUsers").push().getKey();
-                        dbRefPosts.child(request.getmPost().getmId()).child("acceptedUsers").child(key2).setValue(request.getmRequestUserId());
+                        String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();
+                        dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").child(key2).setValue(request.getmRequestUserId());
                         request.getmPost().addmAcceptedUsers(request.getmRequestUserId());
                         Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
                         i.putExtra("ID", ID);

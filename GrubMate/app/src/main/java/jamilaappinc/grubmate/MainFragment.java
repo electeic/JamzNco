@@ -92,6 +92,10 @@ public class MainFragment extends Fragment {
         // dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         //todo get database reference paths
         // Attach a listener to read the data at our posts reference
+<<<<<<< HEAD
+=======
+
+>>>>>>> a9115c81630239ca254d8026866001dd09d89cb2
     }
 
     @Override
@@ -141,7 +145,6 @@ public class MainFragment extends Fragment {
                             System.out.println("POSTS READ COUNT " + postsRead);
                             postsReadCounter.clear();
                             postsReadCounter.add(postsRead);
-
 
                             Post post = dataSnapshot.getValue(Post.class);
                             if(userFriends != null)
@@ -382,7 +385,7 @@ public class MainFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int positions, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(
                         R.layout.list_active_posts_item, null);
@@ -393,7 +396,7 @@ public class MainFragment extends Fragment {
             TextView textTitle = (TextView)convertView.findViewById(R.id.listNoteTitle);
             TextView textDescription = (TextView)convertView.findViewById(R.id.listNoteContent);
 
-            final Post mv = Posts.get(position);
+            final Post mv = Posts.get(positions);
 
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -405,7 +408,8 @@ public class MainFragment extends Fragment {
                     // toString instead of sending over the whole DatabaseReference because it's easier
                     i.putExtra("ID", currUserId);
                     i.putExtra("Name",currUserName);
-                    i.putExtra(DetailedPostActivity.EXTRA_POST, mv);
+                    i.putExtra("Users", userFriends);
+                    i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
                     startActivity(i);
                 }
             });
