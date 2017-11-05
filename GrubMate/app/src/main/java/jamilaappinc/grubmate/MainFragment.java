@@ -250,8 +250,8 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         DatabaseReference temp = databaseRef.child("Users").child(currUserId);//child("alreadyLoggedIn");
-        String loggedIn = "";
         temp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -263,6 +263,14 @@ public class MainFragment extends Fragment {
                 }
 
                 System.out.println("check status: " + status);
+                if(status == "" || status == "0") {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
+                            .setContentTitle("Menu button")
+                            .setContentText("Click to see menu options")
+                            .hideOnTouchOutside()
+                            .build();
+                }
             }
 
 
@@ -271,16 +279,6 @@ public class MainFragment extends Fragment {
 
             }
         });
-
-        super.onActivityCreated(savedInstanceState);
-        if(loggedIn == "" || loggedIn == "0") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
-                    .setContentTitle("Menu button")
-                    .setContentText("Click to see menu options")
-                    .hideOnTouchOutside()
-                    .build();
-        }
     }
 
     public void refresh() {

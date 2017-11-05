@@ -55,7 +55,7 @@ public class ViewGroupsFragment extends Fragment {
     ArrayList<String> userFriends; // this is for passing around to all the pages
     FirebaseDatabase database;
     DatabaseReference dbRefGroups;
-
+    private String status;
 
     ArrayList<Integer> groupsReadCounter = new ArrayList<>();
     ArrayList<Integer> groupsCount = new ArrayList<>();
@@ -102,6 +102,7 @@ public class ViewGroupsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_groups, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         friends = (ArrayList<String>)getArguments().getSerializable(ViewGroupsActivity.GET_ALL_FRIENDS);
 
@@ -194,7 +195,7 @@ public class ViewGroupsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
-
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -207,6 +208,8 @@ public class ViewGroupsFragment extends Fragment {
                 if(group == null)System.out.println("NO GROUPS");
                 i.putExtra("ID", ID);
                 i.putExtra("Users", userFriends);
+                i.putExtra("Status", status);
+
                 i.putExtra(EditGroupActivity.GET_GROUP, group);
 
                 i.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
@@ -224,6 +227,7 @@ public class ViewGroupsFragment extends Fragment {
 //                startActivity(intent);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Status", status);
                 System.out.println("meldoy friend's size in viewgroups is " + friends.size());
 
                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);

@@ -58,6 +58,7 @@ public class MenuFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
 
+    private String status;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class MenuFragment extends Fragment {
 //        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         final String currPicture = i.getStringExtra("MyProfilePicture");
+        status = i.getStringExtra("Status");
 
         fHome = (TextView)v.findViewById(R.id.home);
         fProfile = (TextView)v.findViewById(R.id.profile);
@@ -129,6 +131,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
+                intent.putExtra("Status", status);
 //                getActivity().finish();
             }
         });
@@ -139,6 +142,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -151,6 +155,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture",currPicture);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -163,6 +168,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 System.out.println("meldoy the sername is " + myUser.getName());
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
 //                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
                 startActivityForResult(intent, 0);
             }
@@ -174,6 +180,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
                 //                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
                 startActivityForResult(intent, 0);
             }
@@ -187,6 +194,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -198,6 +206,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
                 startActivityForResult(intent, 0);
             }
@@ -210,6 +219,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
 //                intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS, myUser.getSubscriptions());
                 startActivityForResult(intent, 0);
             }
@@ -222,6 +232,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -245,12 +256,14 @@ public class MenuFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
-                .setContentTitle("Menu options")
-                .setContentText("Choose an option to be redirected to.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
+                    .setContentTitle("Menu options")
+                    .setContentText("Choose an option to be redirected to.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
 }

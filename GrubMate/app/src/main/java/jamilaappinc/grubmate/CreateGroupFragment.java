@@ -63,6 +63,8 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
     private Button add,submit,cancel;
     private TextView list;
 
+    private String status;
+
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -108,6 +110,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
         View v = inflater.inflate(R.layout.fragment_create_group, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        status = i.getStringExtra("alreadyLoggedIn");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         friends = (ArrayList<String>)i.getSerializableExtra(ViewGroupsActivity.GET_ALL_FRIENDS);
         System.out.println("meldoy friends size in creategroup fragment is " + friends.size());
@@ -119,12 +122,14 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
-                .setContentTitle("Add button")
-                .setContentText("Add more members to your group.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
+                    .setContentTitle("Add button")
+                    .setContentText("Add more members to your group.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
     private void initComponent(View v){
@@ -173,6 +178,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
 //                getActivity().finish();
 
@@ -185,6 +191,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, friends);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });

@@ -95,6 +95,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     ArrayList<String> userFriends;
     String userProfilePic;
     String FirebaseKey;
+    private String status;
 
     ArrayList<Integer> subsCount = new ArrayList<>();
     ArrayList<Integer> subsReadCount = new ArrayList<>();
@@ -152,6 +153,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         userProfilePic = (String) i.getSerializableExtra("MyProfilePicture");
 
@@ -211,12 +213,14 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.post_add_picture, getActivity()))
-                .setContentTitle("Add images")
-                .setContentText("Add images to show your post.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.post_add_picture, getActivity()))
+                    .setContentTitle("Add images")
+                    .setContentText("Add images to show your post.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
 
@@ -302,6 +306,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -319,6 +324,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         intent.putExtra("ID", ID);
                         intent.putExtra("Users", userFriends);
                         intent.putExtra("Name", currUserName);
+                        intent.putExtra("Status", status);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                     }
@@ -463,6 +469,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     intent.putExtra("ID", ID);
                     intent.putExtra("Users", userFriends);
                     intent.putExtra("Name", currUserName);
+                    intent.putExtra("Status", status);
                     startActivityForResult(intent, 0);
                     getActivity().finish();
                 }

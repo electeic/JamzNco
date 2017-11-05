@@ -67,6 +67,7 @@ public class ViewNotificationsFragment extends Fragment {
     ArrayList<Integer> notifCount = new ArrayList<>();
     ArrayList<String> userFriends;
     String currUserName;
+    private String status;
 
 
     public ViewNotificationsFragment() {
@@ -111,6 +112,7 @@ public class ViewNotificationsFragment extends Fragment {
         initComponents(v);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
+        status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         currUserName = i.getStringExtra("Name");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
@@ -204,6 +206,7 @@ public class ViewNotificationsFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -239,6 +242,7 @@ public class ViewNotificationsFragment extends Fragment {
                                     i.putExtra("Name",currUserName);
                                     i.putExtra(ViewRequestNotificationActivity.GET_REQUEST,notification);
                                     i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);
+                                    i.putExtra("Status", status);
                                     startActivity(i);
                                 }
 
@@ -266,6 +270,7 @@ public class ViewNotificationsFragment extends Fragment {
                     i.putExtra("Users", userFriends);
                     i.putExtra("Name",currUserName);
                     i.putExtra("Notification", notification);
+                    i.putExtra("Status", status);
            /*         i.putExtra(RateUserActivity.GET_RATER_USER,notification.getmToUser());
                     i.putExtra(RateUserActivity.GET_RATE_REQUEST,notification);
                     i.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, notifications);*/

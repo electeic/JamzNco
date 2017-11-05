@@ -82,6 +82,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     SimpleDateFormat sdf;
 
     private String ID;
+    private String status;
 
     private Date startDateTime = null;
     private Date endDateTime = null;
@@ -118,6 +119,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        status = i.getStringExtra("Status");
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -153,12 +155,14 @@ CheckBox homeMade;
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.search_title, getActivity()))
-                .setContentTitle("Advanced Search")
-                .setContentText("Make filtered searches to see certain posts.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.search_title, getActivity()))
+                    .setContentTitle("Advanced Search")
+                    .setContentText("Make filtered searches to see certain posts.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
     private ArrayList<String> getTags() {
@@ -207,6 +211,7 @@ CheckBox homeMade;
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name",currUserName);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -339,6 +344,7 @@ CheckBox homeMade;
                             intent.putExtra("Users", userFriends);
                             intent.putExtra("Name",currUserName);
                             intent.putExtra("ReceivedPosts",allMatchingPosts);
+                            intent.putExtra("Status", status);
                             startActivityForResult(intent, 0);
                             getActivity().finish();
 
@@ -422,6 +428,7 @@ CheckBox homeMade;
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("ID", ID);
                         intent.putExtra("Users", userFriends);
+                        intent.putExtra("Status", status);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                         //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();

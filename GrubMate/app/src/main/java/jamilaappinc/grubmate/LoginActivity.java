@@ -160,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                         userInfo.add(user.optString("name"));
                         userInfo.add(user.optString("id"));
                         userInfo.add("https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
-                        //userInfo.add(user.optString("alreadyLoggedIn"));
                         System.out.println("IN LOGIN, ID IS" + user.optString("id"));
 
                         graphRequestAsyncTask.executeAsync();
@@ -249,6 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(u.getId().equals(userId)){
                     userExists.clear();
                     userExists.add(true);
+                    database.getReference().child("Users").child(userId).child("alreadyLoggedIn").setValue("1");
                     System.out.println("I HAVE LOGGED IN BEFORE!!!");
 
                 }

@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment {
     private ListView myPosts;
     ImageView myImage;
     String ID;
+    private String status;
 
 
 
@@ -99,6 +100,7 @@ public class ProfileFragment extends Fragment {
         final String id = i.getStringExtra("ID");
         final String pic = i.getStringExtra("MyProfilePicture");
         final String currUserName = i.getStringExtra("Name");
+        status = i.getStringExtra("alreadyLoggedIn");
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         
 //        final Intent myIntent = new Intent((getActivity()), ProfileActivity.class);
@@ -165,6 +167,7 @@ public class ProfileFragment extends Fragment {
                 intent.putExtra("ID", id);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users",userFriends);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

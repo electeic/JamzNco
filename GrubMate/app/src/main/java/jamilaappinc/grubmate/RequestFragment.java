@@ -63,10 +63,10 @@ public class RequestFragment extends Fragment {
     Post mPost;
 
     String ID;
-     String currUserName;
+    String currUserName;
     ArrayList<String> userFriends;
 
-
+    String status;
 
 
 
@@ -165,6 +165,7 @@ public class RequestFragment extends Fragment {
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        status = i.getStringExtra("Status");
         System.out.println("meldoy the size of userfriends is" + userFriends.size());
 
         mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
@@ -209,6 +210,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
+            intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -221,6 +223,7 @@ public void onClick(View view){
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
+            intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -284,6 +287,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
+            intent.putExtra("Status", status);
             startActivityForResult(intent,0);
             getActivity().finish();
 
@@ -306,12 +310,14 @@ public void onClick(View view) {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
-                .setContentTitle("Send Request")
-                .setContentText("Submit a request to the poster.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "1") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
+                    .setContentTitle("Send Request")
+                    .setContentText("Submit a request to the poster.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
 /*
