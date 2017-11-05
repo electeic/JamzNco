@@ -92,10 +92,6 @@ public class MainFragment extends Fragment {
         // dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         //todo get database reference paths
         // Attach a listener to read the data at our posts reference
-<<<<<<< HEAD
-=======
-
->>>>>>> a9115c81630239ca254d8026866001dd09d89cb2
     }
 
     @Override
@@ -275,8 +271,9 @@ public class MainFragment extends Fragment {
 
             }
         });
-        if(loggedIn != "" && loggedIn != "0") {
-            super.onActivityCreated(savedInstanceState);
+
+        super.onActivityCreated(savedInstanceState);
+        if(loggedIn == "" || loggedIn == "0") {
             new ShowcaseView.Builder(getActivity())
                     .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
                     .setContentTitle("Menu button")
