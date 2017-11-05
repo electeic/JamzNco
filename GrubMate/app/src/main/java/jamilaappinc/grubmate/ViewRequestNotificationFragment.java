@@ -70,8 +70,8 @@ public class ViewRequestNotificationFragment extends Fragment {
     private void fillInScreen(){
         name.setText(request.getRequestedUserName());
         title.setText(request.getmPost().getmTitle());
-        size.setText(""+request.getmPost().getmServings());
-        location.setText(request.getmPost().getmLocation());
+        size.setText(""+request.getmServings());
+        location.setText(request.getmLocation());
       /*  name.setText(notification.getmFromUser().getName());
         title.setText(notification.getmAboutPost().getmTitle());
         size.setText(notification.getmAboutPost().getmServings()+"");

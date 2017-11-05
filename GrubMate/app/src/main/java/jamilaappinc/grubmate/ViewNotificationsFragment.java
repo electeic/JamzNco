@@ -125,10 +125,10 @@ public class ViewNotificationsFragment extends Fragment {
 
     private void initComponents(View v){
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getInstance().getReference();
-        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
-        dbRefNotifications = database.getInstance().getReference().child(FirebaseReferences.NOTIFICATIONS);
-        dbRefRequests = database.getInstance().getReference().child(FirebaseReferences.REQUEST);
+        dbRef = database.getReference();
+        dbRefUsers = database.getReference().child(FirebaseReferences.USERS);
+        dbRefNotifications = database.getReference().child(FirebaseReferences.NOTIFICATIONS);
+        dbRefRequests = database.getReference().child(FirebaseReferences.REQUEST);
 
         list = (ListView) v.findViewById(R.id.notifications_list);
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
@@ -256,6 +256,7 @@ public class ViewNotificationsFragment extends Fragment {
 
 
                 }else if (notification.getmType().equals(NotificationReference.RATE)){
+                    System.out.println("meldoy the notification id is " + notification.getmId());
                     dbRefNotifications.child(notification.getmId()).setValue(null);
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
