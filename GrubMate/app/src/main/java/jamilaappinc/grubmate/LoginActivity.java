@@ -248,6 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(u.getId().equals(userId)){
                     userExists.clear();
                     userExists.add(true);
+                    u.setAlreadyLoggedIn(1);
                     System.out.println("I HAVE LOGGED IN BEFORE!!!");
 
                 }
@@ -297,6 +298,7 @@ public class LoginActivity extends AppCompatActivity {
         u.setId(userId);
         u.setFriends(friends);
         u.setAvgRating(0.0);
+        u.setAlreadyLoggedIn(0);
         ArrayList<String> tempString = new ArrayList<>();
 
 

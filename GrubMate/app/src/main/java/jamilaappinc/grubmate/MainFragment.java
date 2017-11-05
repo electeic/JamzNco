@@ -65,6 +65,8 @@ public class MainFragment extends Fragment {
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
     ArrayList<Post> receivedPosts = new ArrayList<>();
 
+    boolean loggedIn;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -88,11 +90,6 @@ public class MainFragment extends Fragment {
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
         //todo get database reference paths
         // Attach a listener to read the data at our posts reference
-
-
-
-
-
     }
 
     @Override
