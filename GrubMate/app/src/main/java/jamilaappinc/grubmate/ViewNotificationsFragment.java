@@ -309,13 +309,13 @@ public class ViewNotificationsFragment extends Fragment {
                     if (notif.getmType().equals(NotificationReference.SUBSCRIPTION)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_subscription, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_subscription_title);
-                        title.setText(notif.getmTitle() + " has matched a subscription!");
+                        title.setText(notif.getMatchingPostTitle() + " has matched a subscription!");
 
                     } else if (notif.getmType().equals(NotificationReference.REQUEST)) {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_request, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_request_title);
 //                        System.out.println("meldoy help " + notif.getmFromUser() + " " + notif.get)
-                         title.setText(notif.getmFromUserName() + " has made a request about " + notif.getmTitle());
+                         title.setText(notif.getmFromUserName() + " has made a request about " + notif.getMatchingPostTitle());
 
 
                     } else if (notif.getmType().equals(NotificationReference.RATE)) {
@@ -326,7 +326,7 @@ public class ViewNotificationsFragment extends Fragment {
                     } else {
                         itemView = LayoutInflater.from(getContext()).inflate(R.layout.notification_info_accept, parent, false);
                         TextView title = (TextView) itemView.findViewById(R.id.notification_info_accept_title);
-                        title.setText(notif.getmFromUser() + " has accepted your request regarding " + notif.getmTitle() + ".");
+                        title.setText(notif.getmFromUserName() + " has accepted your request regarding " + notif.getMatchingPostTitle() + ".");
 
                     }
 

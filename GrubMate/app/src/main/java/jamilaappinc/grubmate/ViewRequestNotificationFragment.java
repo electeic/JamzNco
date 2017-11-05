@@ -122,7 +122,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                         key = database.getReference("Notification").push().getKey();
                         Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                         databaseRef = database.getReference().child("Notification").child(key);
-                        notification.setMatchingPostTitle(notification.getmTitle());
+                        notification.setMatchingPostTitle(request.getmPost().getmTitle());
                         notification.setmId(key);
                         notification.setmFromUserName(currUserName);
                         databaseRef.setValue(notification);

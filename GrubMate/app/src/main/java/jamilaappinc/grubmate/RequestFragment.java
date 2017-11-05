@@ -263,7 +263,7 @@ public void onClick(View view) {
                     System.out.println("Meldoy the notification post id is "+ notification.getmAboutPost());
                     databaseRef = database.getReference().child("Notification").child(key);
                     notification.setMatchingPostTitle(request.getmPost().getmTitle());
-                    System.out.println("MELDOY the title is "+ notification.getmTitle());
+                    System.out.println("MELDOY the title is "+ notification.getMatchingPostTitle());
                     notification.setmId(key);
                     notification.setmFromUserName(currUserName);
                     databaseRef.setValue(notification);
