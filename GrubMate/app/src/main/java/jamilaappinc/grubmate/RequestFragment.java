@@ -165,6 +165,7 @@ public class RequestFragment extends Fragment {
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        System.out.println("meldoy the size of userfriends is" + userFriends.size());
 
         mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
 

@@ -12,8 +12,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -117,8 +120,28 @@ public class ViewRequestNotificationFragment extends Fragment {
                        // Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         String key;
-                        DatabaseReference databaseRef;
+                        final DatabaseReference databaseRef, databasePostActiveRef, databasePostServingRef;
                         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+                        databasePostServingRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mServings");
+                        databasePostActiveRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mActive");
+                        databasePostServingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int newServing = Integer.parseInt(""+dataSnapshot.getValue()) -1;
+                                databasePostServingRef.setValue(newServing);
+                                if(newServing == 0){
+                                    databasePostActiveRef.setValue(false);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                         key = database.getReference("Notification").push().getKey();
                         Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                         databaseRef = database.getReference().child("Notification").child(key);
