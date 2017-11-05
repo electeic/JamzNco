@@ -55,6 +55,8 @@ public class MainFragment extends Fragment {
     MovieAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
+    DatabaseReference databaseRef;
+    DatabaseReference dbRefUsers;
     String currUserId;
     String currUserName;
     String currPicture;
@@ -86,9 +88,10 @@ public class MainFragment extends Fragment {
         //        //todo get database
         database = FirebaseDatabase.getInstance();
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+        databaseRef = database.getReference();
+        // dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         //todo get database reference paths
         // Attach a listener to read the data at our posts reference
-
     }
 
     @Override
@@ -105,7 +108,6 @@ public class MainFragment extends Fragment {
         currUserName = i.getStringExtra("Name");
         currPicture = i.getStringExtra("MyProfilePicture");
         receivedPosts = (ArrayList<Post>) i.getSerializableExtra("ReceivedPosts");
-
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
 //            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
@@ -248,13 +250,37 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        DatabaseReference temp = databaseRef.child("Users").child(currUserId);//child("alreadyLoggedIn");
+        String loggedIn = "";
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("check status: " + status);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
-                .setContentTitle("Menu button")
-                .setContentText("Click to see menu options")
-                .hideOnTouchOutside()
-                .build();
+        if(loggedIn == "" || loggedIn == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
+                    .setContentTitle("Menu button")
+                    .setContentText("Click to see menu options")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 
     public void refresh() {

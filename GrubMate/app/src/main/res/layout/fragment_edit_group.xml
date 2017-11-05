@@ -27,9 +27,10 @@
             android:id="@+id/editGroup_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editGroup_deleteButton"
 
-            android:layout_centerHorizontal="true"
+            android:layout_alignStart="@+id/editGroup_name"
+            android:layout_below="@+id/editGroup_deleteButton"
+            android:layout_marginStart="19dp"
             android:layout_marginTop="16dp"
             android:text="Click to delete a member"
             android:textSize="12sp"
@@ -43,7 +44,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="13dp"
             android:text="Done" />
-
 
 
         <ListView
@@ -73,6 +73,15 @@
             android:layout_alignEnd="@+id/menu_from_main"
             android:layout_alignTop="@+id/editGroup_name"
             android:text="Delete Group" />
+
+        <Button
+            android:id="@+id/editGroup_addFriendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/editGroup_deleteButton"
+            android:layout_below="@+id/editGroup_deleteButton"
+            android:onClick="clickFriend"
+            android:text="Add Friend" />
 
     </RelativeLayout>
 

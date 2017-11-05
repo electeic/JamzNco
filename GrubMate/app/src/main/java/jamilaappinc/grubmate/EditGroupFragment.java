@@ -53,7 +53,7 @@ public class EditGroupFragment extends Fragment {
     ListView listMember;
     GroupAdapter adapter;
     android.support.design.widget.FloatingActionButton floatButton;
-    Button submitButton, deleteAllButton;
+    Button submitButton, deleteAllButton, addFriendButton;
 
     private String ID;
     ArrayList<String> userFriends; //passing around screens
@@ -90,6 +90,14 @@ public class EditGroupFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+        //todo get database
+        database = FirebaseDatabase.getInstance();
+
+
+        //todo get database reference paths
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
     }
 
     @Override
@@ -126,7 +134,7 @@ public class EditGroupFragment extends Fragment {
         listMember = (ListView) v.findViewById(R.id.editGroup_list);
         submitButton =(Button)v.findViewById(R.id.editGroup_submitButton);
         deleteAllButton = (Button)v.findViewById(R.id.editGroup_deleteButton);
-
+        addFriendButton = (Button)v.findViewById(R.id.editGroup_addFriendButton);
 
     }
 
@@ -195,6 +203,13 @@ public class EditGroupFragment extends Fragment {
                 adb.show();
             }
         });
+
+
+     /*   addFriendButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+            }
+        })*/;
 
 
         listMember.setOnItemClickListener(new AdapterView.OnItemClickListener() {
