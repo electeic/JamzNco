@@ -1,6 +1,8 @@
 package jamilaappinc.grubmate;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -199,10 +201,21 @@ public class ViewSubscriptionsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Subscription subscription = (Subscription) list.getItemAtPosition(position);
-                subscript.remove(position);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO DELETE SUBSCRIPTION FROM DB" , Toast.LENGTH_SHORT).show();
+                final int _position = position;
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Unsubscribe?");
+                adb.setMessage("Are you sure you want to unsubscribe?");
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Subscription subscription = (Subscription) list.getItemAtPosition(_position);
+                        dbRefSubs.child(subscription.getmId()).setValue(null);
+                        subscript.remove(_position);
+                        adapter.notifyDataSetChanged();
+
+                    }});
+                adb.setNegativeButton("Cancel", null);
+                adb.show();
+
             }
         });
     }
