@@ -196,6 +196,8 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
         updateTextView();
     }
     private void updateTextView(){
+       // list.clearComposingText();
+        list.setText(" ");
         for(int i= 0; i < selectedFriends.size(); i++){
             if(i == 0){
                 list.setText(selectedFriends.get(i).getName()+ "\n");

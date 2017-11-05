@@ -36,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/createGroup_groupName"
             android:layout_marginEnd="19dp"
             android:onClick="clickFriend"
             android:text="+"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:layout_alignTop="@+id/createGroup_groupName" />
 
         <Button
             android:id="@+id/createGroup_createButton"
