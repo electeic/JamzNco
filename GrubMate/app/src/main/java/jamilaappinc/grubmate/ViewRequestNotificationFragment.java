@@ -118,9 +118,8 @@ public class ViewRequestNotificationFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                        // Toast.makeText(getContext(), "@JAMILAAPPCORP:(VIEW REQUEST NOTIF) SEND THE CORRESPONDING USER A NOTIFICATION AND ADD TO POST'S ACCEPTED USERS ARRAYLIST  AND DELETE NOTIFICATION FROM USER" , Toast.LENGTH_SHORT).show();
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        String key;
-                        final DatabaseReference databaseRef, databasePostActiveRef, databasePostServingRef;
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        final DatabaseReference databasePostActiveRef, databasePostServingRef;
                         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
                         databasePostServingRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mServings");
                         databasePostActiveRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mActive");
@@ -128,11 +127,39 @@ public class ViewRequestNotificationFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 int newServing = Integer.parseInt(""+dataSnapshot.getValue()) - request.getmServings();
-                                System.out.println("meldoy the new serving is "+ newServing);
-                                databasePostServingRef.setValue(newServing);
-                                if(newServing == 0){
-                                    databasePostActiveRef.setValue(false);
+                                System.out.println("meldoy the new serving is " + newServing);
+                                if(newServing < 0){
+                                    Toast.makeText(getContext(), "There's not enough servings left to accept this request.",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    String key;
+                                    DatabaseReference databaseRef;
+
+                                    if(newServing == 0) databasePostActiveRef.setValue(false);
+
+                                    databasePostServingRef.setValue(newServing);
+
+                                    key = database.getReference("Notification").push().getKey();
+                                    Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
+                                    databaseRef = database.getReference().child("Notification").child(key);
+                                    notification.setMatchingPostTitle(request.getmPost().getmTitle());
+                                    notification.setmId(key);
+                                    notification.setmFromUserName(currUserName);
+                                    databaseRef.setValue(notification);
+                                    dbRefRequests.child(request.getmId()).setValue(null);
+                                    dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
+                                    DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+                                    String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();
+                                    dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").child(key2).setValue(request.getmRequestUserId());
+                                    request.getmPost().addmAcceptedUsers(request.getmRequestUserId());
+                                    Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
+                                    i.putExtra("ID", ID);
+                                    i.putExtra("Users", userFriends);
+                                    i.putExtra("Name", currUserName);
+                                    startActivity(i);
+
                                 }
+
+
 
                             }
 
@@ -143,24 +170,6 @@ public class ViewRequestNotificationFragment extends Fragment {
                         });
 
 
-                        key = database.getReference("Notification").push().getKey();
-                        Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
-                        databaseRef = database.getReference().child("Notification").child(key);
-                        notification.setMatchingPostTitle(request.getmPost().getmTitle());
-                        notification.setmId(key);
-                        notification.setmFromUserName(currUserName);
-                        databaseRef.setValue(notification);
-                        dbRefRequests.child(request.getmId()).setValue(null);
-                        dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
-                        DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
-                        String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();
-                        dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").child(key2).setValue(request.getmRequestUserId());
-                        request.getmPost().addmAcceptedUsers(request.getmRequestUserId());
-                        Intent i = new Intent(getActivity(), ViewNotificationsActivity.class);
-                        i.putExtra("ID", ID);
-                        i.putExtra("Users", userFriends);
-                        i.putExtra("Name", currUserName);
-                        startActivity(i);
 
 
                     }
