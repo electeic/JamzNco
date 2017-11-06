@@ -308,16 +308,37 @@ public void onClick(View view) {
         return v;
         }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "1") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
-                    .setContentTitle("Send Request")
-                    .setContentText("Submit a request to the poster.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("REQUEST FRAGMENT STATUS: " + status);
+                if(status == "" || status == "0") {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
+                            .setContentTitle("Send Request")
+                            .setContentText("Submit a request to the poster.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 /*

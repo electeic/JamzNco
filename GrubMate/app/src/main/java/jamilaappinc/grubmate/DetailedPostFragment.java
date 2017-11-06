@@ -278,16 +278,37 @@ public class DetailedPostFragment extends Fragment {
         return v;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "0") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
-                    .setContentTitle("Request button")
-                    .setContentText("You can request for food.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
+                if(status == "" || status == "0") {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
+                            .setContentTitle("Request button")
+                            .setContentText("You can request for food.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event

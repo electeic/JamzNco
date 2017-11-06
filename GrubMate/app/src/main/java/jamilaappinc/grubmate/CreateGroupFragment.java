@@ -119,17 +119,37 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
         return v;
     }
 
-
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "0") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
-                    .setContentTitle("Add button")
-                    .setContentText("Add more members to your group.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("CREATE GROUP FRAGMENT STATUS: " + status);
+                if(status == "" || status == "0") {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
+                            .setContentTitle("Add button")
+                            .setContentText("Add more members to your group.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initComponent(View v){
