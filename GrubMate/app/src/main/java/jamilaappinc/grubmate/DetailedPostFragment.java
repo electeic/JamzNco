@@ -57,7 +57,7 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
-    String ID, currUserName;
+    String ID, currUserName, status;
     ArrayList<String> userFriends;
 
 
@@ -114,6 +114,7 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
         fPostName = (TextView) v.findViewById(R.id.postName);
@@ -141,6 +142,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -153,6 +155,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -277,12 +280,14 @@ public class DetailedPostFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
-                .setContentTitle("Request button")
-                .setContentText("You can request for food.")
-                .hideOnTouchOutside()
-                .build();
+        if(status == "" || status == "0") {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
+                    .setContentTitle("Request button")
+                    .setContentText("You can request for food.")
+                    .hideOnTouchOutside()
+                    .build();
+        }
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event
