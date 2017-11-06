@@ -119,6 +119,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+
         status = i.getStringExtra("Status");
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -255,7 +256,11 @@ CheckBox homeMade;
 
 
                         Post post = dataSnapshot.getValue(Post.class);
-                        allMatchingPosts.add(post);
+                        if(!post.getmAuthorId().equals(ID)){
+                            allMatchingPosts.add(post);
+
+                        }
+
                         System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
                         System.out.println("POSTS COUNTER" + postCount.get(0));
 
@@ -335,6 +340,7 @@ CheckBox homeMade;
                             System.out.println("CATEGORIES MATCH DONE");
 
                             System.out.println("SIZE OF ALL MATCHING POSTS AFTER REMOVING IS " + allMatchingPosts.size());
+
 
                             for(int i = 0; i < allMatchingPosts.size(); i++){
                                 System.out.println("PRINTING ALL POSTS THAT MATCH NOW " + allMatchingPosts.get(i).getmId());
