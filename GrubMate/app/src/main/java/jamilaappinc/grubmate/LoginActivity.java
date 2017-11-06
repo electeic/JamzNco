@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
     final Vector<Boolean> userExists = new Vector<>();
     ArrayList<String> userInfo = new ArrayList<>();
 
+    boolean newUser = false;
+    String status = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.putExtra("Users", currUsers);//places users vector in intent and passes to main screen
                                     writeNewUser(userInfo.get(1), userInfo.get(0),
                                             userInfo.get(2), currUsers);
+
                                     startActivity(intent);
                                     finish();
                                     Log.d(TAG, rawName.toString());
@@ -157,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("Name", user.optString("name"));
                         intent.putExtra("ID", user.optString("id"));
                         intent.putExtra("MyProfilePicture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
+                        //intent.putExtra("Status",status);
+                        //System.out.println("LOGIN ACTIVITY STATUS: " + user.optString("alreadyLoggedIn"));
                         userInfo.add(user.optString("name"));
                         userInfo.add(user.optString("id"));
                         userInfo.add("https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
@@ -248,12 +253,14 @@ public class LoginActivity extends AppCompatActivity {
                 if(u.getId().equals(userId)){
                     userExists.clear();
                     userExists.add(true);
-                    database.getReference().child("Users").child(userId).child("alreadyLoggedIn").setValue("1");
                     System.out.println("I HAVE LOGGED IN BEFORE!!!");
+                    if(!newUser) {
+                        database.getReference().child("Users").child(userId).child("alreadyLoggedIn").setValue("1");
+                        status = "1";
+                    }
 
                 }
                 addtoDB(userId,name,picture,friends);
-
             }
 
             @Override
@@ -292,25 +299,32 @@ public class LoginActivity extends AppCompatActivity {
         ref.setValue(u);*/
 //
         if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){//COMMENT THIS LINE IF TRYING TO FIX DB
-        System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
-        DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
-        User u = new User(name, picture);
-        u.setId(userId);
-        u.setFriends(friends);
-        u.setAvgRating(0.0);
-        u.setAlreadyLoggedIn("0");
-        ArrayList<String> tempString = new ArrayList<>();
+            System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
+            DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
+            User u = new User(name, picture);
+            u.setId(userId);
+            u.setFriends(friends);
+            u.setAvgRating(0.0);
+            u.setAlreadyLoggedIn("0");
+            ArrayList<String> tempString = new ArrayList<>();
 
 
-        u.setSubscriptions("initial","initial");
-        u.setUserRequests("initial","initial");
-        u.setUserPosts("initial","initial");
-        u.setUserGroups("initial","initial");
-        u.setNotifications("initial","initial");
-        u.setNumRatings(0);
-        //Post newPost = new Post("abc","cba");
-        databaseRef.setValue(u);
+            u.setSubscriptions("initial","initial");
+            u.setUserRequests("initial","initial");
+            u.setUserPosts("initial","initial");
+            u.setUserGroups("initial","initial");
+            u.setNotifications("initial","initial");
+            u.setNumRatings(0);
+            //Post newPost = new Post("abc","cba");
+            databaseRef.setValue(u);
+            newUser = true;
+            status = "0";
+
         }//COMMENT THIS LINE IF TRYING TO FIX DB
+
+//        else {
+//            database.getReference().child("Users").child(userId).child("alreadyLoggedIn").setValue("1");
+//        }
     }
 
 

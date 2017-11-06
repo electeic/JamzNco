@@ -60,6 +60,7 @@ public class MainFragment extends Fragment {
     String currUserId;
     String currUserName;
     String currPicture;
+   // String status;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
 
@@ -109,6 +110,7 @@ public class MainFragment extends Fragment {
         currPicture = i.getStringExtra("MyProfilePicture");
         receivedPosts = (ArrayList<Post>) i.getSerializableExtra("ReceivedPosts");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
+        //status = i.getStringExtra("Status");
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
 //            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
 //        }
@@ -236,7 +238,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
-
+                //intent.putExtra("Status",status);
 
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
@@ -262,7 +264,7 @@ public class MainFragment extends Fragment {
                     }
                 }
 
-                System.out.println("check status: " + status);
+                System.out.println("MAIN FRAGMENT STATUS: " + status);
                 if(status == "" || status == "0") {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
