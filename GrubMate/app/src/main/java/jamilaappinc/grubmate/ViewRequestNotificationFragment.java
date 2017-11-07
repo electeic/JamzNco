@@ -38,7 +38,7 @@ public class ViewRequestNotificationFragment extends Fragment {
     private Request request;
     private DatabaseReference dbRefUsers, dbRefRequests;
     FirebaseDatabase database;
-    private String status;
+    //private String status;
 
     public ViewRequestNotificationFragment() {
         // Required empty public constructor
@@ -60,7 +60,7 @@ public class ViewRequestNotificationFragment extends Fragment {
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         currUserName = i.getStringExtra("Name");
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
         request = (Request) i.getSerializableExtra("Request");
 
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
@@ -109,7 +109,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), MenuActivity.class);
                         intent.putExtra("ID", ID);
                         intent.putExtra("Users", userFriends);
-                        intent.putExtra("Status", status);
+                       // intent.putExtra("Status", status);
                         startActivityForResult(intent, 0);
                         getActivity().finish();
                     }
@@ -158,7 +158,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                                     i.putExtra("ID", ID);
                                     i.putExtra("Users", userFriends);
                                     i.putExtra("Name", currUserName);
-                                    i.putExtra("Status", status);
+                                  //  i.putExtra("Status", status);
                                     startActivity(i);
 
                                 }
@@ -191,7 +191,7 @@ public class ViewRequestNotificationFragment extends Fragment {
                         i.putExtra("ID", ID);
                         i.putExtra("Users", userFriends);
                         i.putExtra("Name", currUserName);
-                        i.putExtra("Status", status);
+                      //  i.putExtra("Status", status);
                         startActivity(i);
                     }
                 }

@@ -53,7 +53,7 @@ public class ViewSubscriptionsFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefSubs;
     ArrayList<String> userFriends;
-    private String status;
+   // private String status;
 
     ArrayList<Integer> subsReadCounter = new ArrayList<>();
     ArrayList<Integer> subsCount = new ArrayList<>();
@@ -101,7 +101,7 @@ public class ViewSubscriptionsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_subscriptions, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        status = i.getStringExtra("Status");
+       // status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
 
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
@@ -195,7 +195,7 @@ public class ViewSubscriptionsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }

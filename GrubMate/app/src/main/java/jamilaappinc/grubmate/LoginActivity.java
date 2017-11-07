@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
     boolean newUser = false;
     String status = "";
 
+//    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.setApplicationId("140229246720277");
@@ -168,7 +170,6 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println("IN LOGIN, ID IS" + user.optString("id"));
 
                         graphRequestAsyncTask.executeAsync();
-
                     }
                 }).executeAsync();
 //graphResponse.getJSONObject().getJSONObject("picture").getJSONObject("data").getString("url")
@@ -300,6 +301,8 @@ public class LoginActivity extends AppCompatActivity {
 //
         if(userExists.get(0) == false && (usersCount.get(0) == usersReadCounter.get(0))){//COMMENT THIS LINE IF TRYING TO FIX DB
             System.out.println("I HAVE NEVER LOGGED IN BEFORE!!!");
+            newUser = true;
+            status = "0";
             DatabaseReference databaseRef = database.getReference().child("Users").child(userId);
             User u = new User(name, picture);
             u.setId(userId);
@@ -317,14 +320,8 @@ public class LoginActivity extends AppCompatActivity {
             u.setNumRatings(0);
             //Post newPost = new Post("abc","cba");
             databaseRef.setValue(u);
-            newUser = true;
-            status = "0";
 
         }//COMMENT THIS LINE IF TRYING TO FIX DB
-
-//        else {
-//            database.getReference().child("Users").child(userId).child("alreadyLoggedIn").setValue("1");
-//        }
     }
 
 

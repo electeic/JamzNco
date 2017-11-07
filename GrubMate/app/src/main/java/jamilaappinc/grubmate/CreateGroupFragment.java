@@ -134,7 +134,7 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
                 }
 
                 System.out.println("CREATE GROUP FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
+                if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.createGroup_addbutton, getActivity()))
                             .setContentTitle("Add button")

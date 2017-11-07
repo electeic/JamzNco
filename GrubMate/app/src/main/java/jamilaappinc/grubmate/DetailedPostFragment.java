@@ -57,7 +57,7 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
-    String ID, currUserName, status;
+    String ID, currUserName;
     ArrayList<String> userFriends;
 
 
@@ -114,7 +114,7 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
         fPostName = (TextView) v.findViewById(R.id.postName);
@@ -142,7 +142,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
-                intent.putExtra("Status",status);
+               // intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -155,7 +155,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
-                intent.putExtra("Status",status);
+              //  intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -281,11 +281,11 @@ public class DetailedPostFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("Users").child(ID);
         temp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String status ="";// dataSnapshot.getValue(String.class);
+                String status ="";
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.getKey().equals("alreadyLoggedIn")) {
                         status = child.getValue(String.class);
@@ -293,7 +293,7 @@ public class DetailedPostFragment extends Fragment {
                 }
 
                 System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
+                if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
                             .setContentTitle("Request button")

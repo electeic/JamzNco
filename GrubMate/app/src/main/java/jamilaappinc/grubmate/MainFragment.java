@@ -60,7 +60,7 @@ public class MainFragment extends Fragment {
     String currUserId;
     String currUserName;
     String currPicture;
-   // String status;
+    String status;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
 
@@ -111,6 +111,7 @@ public class MainFragment extends Fragment {
         receivedPosts = (ArrayList<Post>) i.getSerializableExtra("ReceivedPosts");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         //status = i.getStringExtra("Status");
+        //System.out.println("cvghdjksnl;, " + status);
 //        if(currUserId.equals("") || currUserName.equals("") ||  userFriends == null){
 //            System.out.println("I DIDNT RECEIVE INFO FOR POPULATING MAIN FRAGMENT");
 //        }
@@ -238,7 +239,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
-                //intent.putExtra("Status",status);
+//                intent.putExtra("Status",status);
 
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
@@ -253,19 +254,28 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DatabaseReference temp = databaseRef.child("Users").child(currUserId);//child("alreadyLoggedIn");
+        DatabaseReference temp = databaseRef.child("Users").child(currUserId);
         temp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String status ="";// dataSnapshot.getValue(String.class);
+                System.out.println("user children size: " + dataSnapshot.getChildrenCount());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    System.out.println("children in user: " + child.getKey());
                     if (child.getKey().equals("alreadyLoggedIn")) {
-                        status = child.getValue(String.class);
+                        String update = child.getValue(String.class);
+                        System.out.println("MAIN FRAGMENT STATUS: " + update);
+                        if(child.getValue(String.class).equals("0")){//update == "0") {
+                            new ShowcaseView.Builder(getActivity())
+                                    .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
+                                    .setContentTitle("Menu button")
+                                    .setContentText("Click to see menu options")
+                                    .hideOnTouchOutside()
+                                    .build();
+                        }
                     }
                 }
 
-                System.out.println("MAIN FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
+                if(dataSnapshot.getChildrenCount() == 0) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
                             .setContentTitle("Menu button")
@@ -273,8 +283,9 @@ public class MainFragment extends Fragment {
                             .hideOnTouchOutside()
                             .build();
                 }
-            }
 
+
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -66,7 +66,7 @@ public class RequestFragment extends Fragment {
     String currUserName;
     ArrayList<String> userFriends;
 
-    String status;
+   // String status;
 
 
 
@@ -165,7 +165,7 @@ public class RequestFragment extends Fragment {
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
         System.out.println("meldoy the size of userfriends is" + userFriends.size());
 
         mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
@@ -210,7 +210,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+            //intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -223,7 +223,7 @@ public void onClick(View view){
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+           // intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -287,7 +287,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+           // intent.putExtra("Status", status);
             startActivityForResult(intent,0);
             getActivity().finish();
 
@@ -323,7 +323,7 @@ public void onClick(View view) {
                 }
 
                 System.out.println("REQUEST FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
+                if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
                             .setContentTitle("Send Request")

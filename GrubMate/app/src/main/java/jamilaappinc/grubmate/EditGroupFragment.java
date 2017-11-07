@@ -153,7 +153,7 @@ public class EditGroupFragment extends Fragment {
                 }
 
                 System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
+                if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.editGroup_deleteButton, getActivity()))
                             .setContentTitle("Remove members")

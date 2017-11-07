@@ -59,7 +59,7 @@ public class MenuFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
 
-    //private String status;
+    //String status;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -78,7 +78,7 @@ public class MenuFragment extends Fragment {
 //        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         final String currPicture = i.getStringExtra("MyProfilePicture");
-       // status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
 
         fHome = (TextView)v.findViewById(R.id.home);
         fProfile = (TextView)v.findViewById(R.id.profile);
@@ -253,25 +253,23 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        DatabaseReference temp = database.getReference().child("Users").child(ID);
         temp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String status ="";// dataSnapshot.getValue(String.class);
+                String status ="";
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.getKey().equals("alreadyLoggedIn")) {
                         status = child.getValue(String.class);
+                        if(status.equals("0")) {
+                            new ShowcaseView.Builder(getActivity())
+                                    .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
+                                    .setContentTitle("Menu options")
+                                    .setContentText("Choose an option to be redirected to.")
+                                    .hideOnTouchOutside()
+                                    .build();
+                        }
                     }
-                }
-
-                System.out.println("MENU FRAGMENT STATUS: " + status);
-                if(status == "" || status == "0") {
-                    new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
-                            .setContentTitle("Menu options")
-                            .setContentText("Choose an option to be redirected to.")
-                            .hideOnTouchOutside()
-                            .build();
                 }
             }
 
@@ -282,5 +280,4 @@ public class MenuFragment extends Fragment {
             }
         });
     }
-
 }
