@@ -435,6 +435,7 @@ CheckBox homeMade;
                         intent.putExtra("ID", ID);
                         intent.putExtra("Users", userFriends);
                         intent.putExtra("Status", status);
+                        intent.putExtra("Name",currUserName);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                         //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();

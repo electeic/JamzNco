@@ -13,6 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +45,11 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
     DataFromActivityToFragment dataFromActivityToFragment;
 
+    ArrayList<Integer> groupsCount = new ArrayList<>();
+    ArrayList<Integer> groupsReadCounter = new ArrayList<>();
+    ArrayList<String> allGroups = new ArrayList<>();
+    FirebaseDatabase database;
+    DatabaseReference dbRefGroups;
 
     //interface to send data from activity to fragment
     public interface DataFromActivityToFragment {
@@ -58,10 +70,33 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
         setContentView(R.layout.activity_main);
+        dbRefGroups = database.getInstance().getReference().child(FirebaseReferences.GROUPS);
         listCategories = getResources().getStringArray(R.array.categories);
-        listGroups = getResources().getStringArray(R.array.tempGroup);
+        groupsReadCounter.add(0);
+        database = FirebaseDatabase.getInstance();
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Group")) {
+                        groupsCount.add((int)snap.getChildrenCount());
+                        listGroups = new String[(int)snap.getChildrenCount()];
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+        //listGroups = getResources().getStringArray(R.array.tempGroup);
         checkedItems = new boolean[listCategories.length];
-        groupCheckedItems = new boolean[listGroups.length];
         //get intent data
         Intent i = getIntent();
 
@@ -183,56 +218,102 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
      *          Used when the Add Groups button is chosen
      */
     public void clickGroups(View v){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostActivity.this);
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostActivity.this);
         mBuilder.setTitle("Select Group(s)");
-        mBuilder.setMultiChoiceItems(listGroups,groupCheckedItems, new DialogInterface.OnMultiChoiceClickListener(){
-            public void onClick(DialogInterface di, int pos, boolean isChecked){
-                if(isChecked){
-                    //if current item isn't already part of list, add it to list
+        dbRefGroups.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                int groupsRead = groupsReadCounter.get(0);
+                groupsRead++;
+                System.out.println("POSTS READ COUNT " + groupsRead);
+                groupsReadCounter.clear();
+                groupsReadCounter.add(groupsRead);
 
-                    if(! selectedGroups.contains(listGroups[pos])){
-                        Log.d("NOT PART", pos+"");
-                        selectedGroups.add(listGroups[pos]);
-                    }
-                }else if(selectedGroups.contains(listGroups[pos])){
-                    selectedGroups.remove(listGroups[pos]); //user unchecked the item
-                    Log.d("PART", pos+"");
 
+                Group group = dataSnapshot.getValue(Group.class);
+                listGroups[groupsRead-1] = group.getName();
+                groupCheckedItems = new boolean[listGroups.length];
+
+
+                if (groupsReadCounter.get(0) == groupsCount.get(0)) {//all posts read.
+                    mBuilder.setMultiChoiceItems(listGroups,groupCheckedItems, new DialogInterface.OnMultiChoiceClickListener(){
+                        public void onClick(DialogInterface di, int pos, boolean isChecked){
+                            if(isChecked){
+                                //if current item isn't already part of list, add it to list
+
+                                if(! selectedGroups.contains(listGroups[pos])){
+                                    Log.d("NOT PART", pos+"");
+                                    selectedGroups.add(listGroups[pos]);
+                                }
+
+                            }else if(selectedGroups.contains(listGroups[pos])){
+                                selectedGroups.remove(listGroups[pos]); //user unchecked the item
+                                Log.d("PART", pos+"");
+
+                            }
+                        }
+                    });
+
+                    mBuilder.setCancelable(false);
+
+                    mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface di, int which){
+                            sendGroups();
+                        }
+                    });
+
+                    mBuilder.setNeutralButton("Select All", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface di, int which){
+                            selectedGroups.clear();
+                            for(int i = 0; i < groupCheckedItems.length; i++){
+                                groupCheckedItems[i] = true;
+                                selectedGroups.add(listGroups[i]);
+                            }
+                            sendGroups();
+                        }
+                    });
+                    mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface di, int which){
+                            for(int i = 0; i < groupCheckedItems.length; i++){
+                                groupCheckedItems[i] = false;
+                                selectedGroups.clear();
+
+                            }
+                        }
+                    });
+
+
+                    AlertDialog mDialog = mBuilder.create();
+                    mDialog.show();
                 }
             }
-        });
 
-        mBuilder.setCancelable(false);
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                sendGroups();
             }
-        });
 
-        mBuilder.setNeutralButton("Select All", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                selectedGroups.clear();
-                for(int i = 0; i < groupCheckedItems.length; i++){
-                    groupCheckedItems[i] = true;
-                    selectedGroups.add(listGroups[i]);
-                }
-                sendGroups();
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
-        });
-        mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                for(int i = 0; i < groupCheckedItems.length; i++){
-                    groupCheckedItems[i] = false;
-                    selectedGroups.clear();
 
-                }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
 
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
+
+
+
+
     }
 
     /**
