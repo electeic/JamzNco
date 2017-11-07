@@ -121,14 +121,35 @@ public class RateUserFragment extends Fragment {
         submit = (Button) v.findViewById(R.id.rateUser_submitButton);
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.rateUser_ratingBar, getActivity()))
-                .setContentTitle("Rating/Review")
-                .setContentText("Give users a rating and review.")
-                .hideOnTouchOutside()
-                .build();
+        DatabaseReference temp = database.getReference().child("Users").child(ID);
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                        if(status.equals("0")) {
+                            new ShowcaseView.Builder(getActivity())
+                                    .setTarget(new ViewTarget(R.id.rateUser_ratingBar, getActivity()))
+                                    .setContentTitle("Rating/Review")
+                                    .setContentText("Give users a rating and review.")
+                                    .hideOnTouchOutside()
+                                    .build();
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void fillPage(String _userName){

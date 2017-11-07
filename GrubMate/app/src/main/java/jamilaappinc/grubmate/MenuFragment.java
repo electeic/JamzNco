@@ -55,10 +55,11 @@ public class MenuFragment extends Fragment {
 
     User myUser;
 
+    String ID;
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
 
-    private String status;
+    //String status;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -72,12 +73,12 @@ public class MenuFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
         Intent i = getActivity().getIntent();
-        final String ID = i.getStringExtra("ID");
+        ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
 //        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         final String currPicture = i.getStringExtra("MyProfilePicture");
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
 
         fHome = (TextView)v.findViewById(R.id.home);
         fProfile = (TextView)v.findViewById(R.id.profile);
@@ -131,7 +132,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 startActivityForResult(intent, 0);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
 //                getActivity().finish();
             }
         });
@@ -142,7 +143,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -155,7 +156,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture",currPicture);
-                intent.putExtra("Status", status);
+                //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -168,7 +169,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 System.out.println("meldoy the sername is " + myUser.getName());
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
 //                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());
                 startActivityForResult(intent, 0);
             }
@@ -180,7 +181,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
                 //                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
                 startActivityForResult(intent, 0);
             }
@@ -194,7 +195,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
-                intent.putExtra("Status", status);
+                //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -206,7 +207,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+               // intent.putExtra("Status", status);
                 intent.putExtra(ViewGroupsActivity.GET_ALL_FRIENDS, myUser.getFriends());
                 startActivityForResult(intent, 0);
             }
@@ -219,7 +220,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+              //  intent.putExtra("Status", status);
 //                intent.putExtra(ViewSubscriptionsActivity.GET_ALL_SUBSCRIPTIONS, myUser.getSubscriptions());
                 startActivityForResult(intent, 0);
             }
@@ -232,7 +233,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
-                intent.putExtra("Status", status);
+                //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
         });
@@ -246,24 +247,37 @@ public class MenuFragment extends Fragment {
             }
         });
 
-
-
-
-
         return v;
     }
 
-
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "0") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
-                    .setContentTitle("Menu options")
-                    .setContentText("Choose an option to be redirected to.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
-    }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                        if(status.equals("0")) {
+                            new ShowcaseView.Builder(getActivity())
+                                    .setTarget(new ViewTarget(R.id.textViewMenu, getActivity()))
+                                    .setContentTitle("Menu options")
+                                    .setContentText("Choose an option to be redirected to.")
+                                    .hideOnTouchOutside()
+                                    .build();
+                        }
+                    }
+                }
+            }
 
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

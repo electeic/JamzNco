@@ -82,7 +82,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     SimpleDateFormat sdf;
 
     private String ID;
-    private String status;
+//    private String status;
 
     private Date startDateTime = null;
     private Date endDateTime = null;
@@ -120,7 +120,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
 
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
         postsReadCounter.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -154,16 +154,35 @@ Button categoryButton,startDate, startTime, endDate, endTime,search,cancel;
 CheckBox homeMade;
 */
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "0") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.search_title, getActivity()))
-                    .setContentTitle("Advanced Search")
-                    .setContentText("Make filtered searches to see certain posts.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                        if(status.equals("0")) {
+                            new ShowcaseView.Builder(getActivity())
+                                    .setTarget(new ViewTarget(R.id.search_title, getActivity()))
+                                    .setContentTitle("Advanced Search")
+                                    .setContentText("Make filtered searches to see certain posts.")
+                                    .hideOnTouchOutside()
+                                    .build();
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private ArrayList<String> getTags() {
@@ -212,7 +231,7 @@ CheckBox homeMade;
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name",currUserName);
-                intent.putExtra("Status", status);
+                //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -350,7 +369,7 @@ CheckBox homeMade;
                             intent.putExtra("Users", userFriends);
                             intent.putExtra("Name",currUserName);
                             intent.putExtra("ReceivedPosts",allMatchingPosts);
-                            intent.putExtra("Status", status);
+                          //  intent.putExtra("Status", status);
                             startActivityForResult(intent, 0);
                             getActivity().finish();
 
@@ -434,8 +453,9 @@ CheckBox homeMade;
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("ID", ID);
                         intent.putExtra("Users", userFriends);
-                        intent.putExtra("Status", status);
+
                         intent.putExtra("Name",currUserName);
+                       // intent.putExtra("Status", status);
                         startActivityForResult(intent,0);
                         getActivity().finish();
                         //Toast.makeText(getContext(), "@JAMILAAPPCORP: NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME" , Toast.LENGTH_SHORT).show();

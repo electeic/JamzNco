@@ -114,6 +114,7 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        //status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
         fPostName = (TextView) v.findViewById(R.id.postName);
@@ -141,6 +142,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
+               // intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -153,6 +155,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users", userFriends);
+              //  intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -275,14 +278,37 @@ public class DetailedPostFragment extends Fragment {
         return v;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
-                .setContentTitle("Request button")
-                .setContentText("You can request for food.")
-                .hideOnTouchOutside()
-                .build();
+        DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("Users").child(ID);
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
+                if(status.equals("0")) {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
+                            .setContentTitle("Request button")
+                            .setContentText("You can request for food.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event

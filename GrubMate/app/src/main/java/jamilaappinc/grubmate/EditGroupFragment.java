@@ -138,14 +138,37 @@ public class EditGroupFragment extends Fragment {
 
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ViewTarget(R.id.editGroup_deleteButton, getActivity()))
-                .setContentTitle("Remove members")
-                .setContentText("Choose members you want to delete.")
-                .hideOnTouchOutside()
-                .build();
+        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
+                if(status.equals("0")) {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.editGroup_deleteButton, getActivity()))
+                            .setContentTitle("Remove members")
+                            .setContentText("Choose members you want to delete.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void addListeners(){

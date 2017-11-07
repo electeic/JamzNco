@@ -66,7 +66,7 @@ public class RequestFragment extends Fragment {
     String currUserName;
     ArrayList<String> userFriends;
 
-    String status;
+   // String status;
 
 
 
@@ -165,7 +165,7 @@ public class RequestFragment extends Fragment {
         ID = i.getStringExtra("ID");
         final String currUserName = i.getStringExtra("Name");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        status = i.getStringExtra("Status");
+        //status = i.getStringExtra("Status");
         System.out.println("meldoy the size of userfriends is" + userFriends.size());
 
         mPost = (Post)i.getSerializableExtra(RequestActivity.POST_FROM_DETAILED);
@@ -210,7 +210,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+            //intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -223,7 +223,7 @@ public void onClick(View view){
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+           // intent.putExtra("Status", status);
             startActivityForResult(intent, 0);
             getActivity().finish();
         }
@@ -287,7 +287,7 @@ public void onClick(View view) {
             intent.putExtra("ID", ID);
             intent.putExtra("Name",currUserName);
             intent.putExtra("Users", userFriends);
-            intent.putExtra("Status", status);
+           // intent.putExtra("Status", status);
             startActivityForResult(intent,0);
             getActivity().finish();
 
@@ -308,16 +308,37 @@ public void onClick(View view) {
         return v;
         }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(status == "" || status == "1") {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
-                    .setContentTitle("Send Request")
-                    .setContentText("Submit a request to the poster.")
-                    .hideOnTouchOutside()
-                    .build();
-        }
+        DatabaseReference temp = database.getReference().child("Users").child(ID);//child("alreadyLoggedIn");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status ="";// dataSnapshot.getValue(String.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("alreadyLoggedIn")) {
+                        status = child.getValue(String.class);
+                    }
+                }
+
+                System.out.println("REQUEST FRAGMENT STATUS: " + status);
+                if(status.equals("0")) {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.request_submitButton, getActivity()))
+                            .setContentTitle("Send Request")
+                            .setContentText("Submit a request to the poster.")
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 /*

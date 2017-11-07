@@ -58,6 +58,7 @@ public class MyPostsFragment extends Fragment {
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<String> userFriends;
     MovieAdapter mAdapter;
+    private String status;
 
     public MyPostsFragment() {
         // Required empty public constructor
@@ -81,6 +82,7 @@ public class MyPostsFragment extends Fragment {
         ID = i.getStringExtra("ID");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         currUserName = i.getStringExtra("Name");
+        status = i.getStringExtra("Status");
 
         // Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
         database = FirebaseDatabase.getInstance();
@@ -232,6 +234,7 @@ public class MyPostsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
+                intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
             }
@@ -274,6 +277,7 @@ public class MyPostsFragment extends Fragment {
                         // toString instead of sending over the whole DatabaseReference because it's easier
                         i.putExtra("ID", ID);
                         i.putExtra(PostActivity.EDIT_POSITION, post.getmFirebaseKey());
+                        i.putExtra("Status",status);
                         startActivity(i);
 
                     }
