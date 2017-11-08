@@ -38,7 +38,7 @@ import java.util.List;
  * ListView listMember (R.id.editGroup_list)
  *
  */
-public class EditGroupFragment extends Fragment {
+public class EditGroupFragment extends Fragment implements EditGroupActivity.DataFromActivityToFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -116,7 +116,9 @@ public class EditGroupFragment extends Fragment {
         Collection<User> members = group.getmGroupMembersList().values();
         groupMembers = new ArrayList<>(members);
 
-        adapter= new GroupAdapter(getActivity(), groupMembers);
+//        adapter= new GroupAdapter(getActivity(), groupMembers);
+        adapter= new GroupAdapter(getActivity());
+
         listMember.setAdapter(adapter);
         addListeners();
         return v;
@@ -257,11 +259,21 @@ public class EditGroupFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void sendFriends(ArrayList<User> finalList) {
+        for(int i = 0; i < finalList.size(); i++){
+            groupMembers.add(finalList.get(i));
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     private class GroupAdapter extends ArrayAdapter<User> {
-        List<User> groupMembers;
-        public GroupAdapter(Context context, ArrayList<User> groupMembers) {
+//        List<User> groupMembers;
+        public GroupAdapter(Context context) {
             super(context, 0, groupMembers);
-            this.groupMembers = groupMembers;
+//            this.groupMembers = groupMembers;
         }
 
         public View getView(int position, View itemView, ViewGroup parent) {
