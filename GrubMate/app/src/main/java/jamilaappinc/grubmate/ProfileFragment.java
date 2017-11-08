@@ -154,7 +154,6 @@ public class ProfileFragment extends Fragment {
             Glide.with(ProfileFragment.this)
                     .load(pic)
                     .centerCrop()
-                    .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(myImage);
         }
