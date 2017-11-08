@@ -49,15 +49,17 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     public String TAG = "TAG";
-    FirebaseListAdapter mAdapter;
+//    FirebaseListAdapter mAdapter;
     FirebaseDatabase database;
-    DatabaseReference dbRefUsers, dbRefReviews;
+    DatabaseReference dbRefUsers, dbRefReviews, dbRefPosts;
 
     private TextView nameText;
     private TextView ratingText;
     private ListView myPosts, myRating;
     ImageView myImage;
     String ID;
+    String friendPic;
+
 
     private User currUser;
 
@@ -74,6 +76,14 @@ public class ProfileFragment extends Fragment {
     private ArrayList<Rating> myRatings = new ArrayList<>(); //holds all my reviews
     private ArrayList<Integer> reviewCount = new ArrayList<>(); // holds the num of reviews so that we can create reviewAdapter
     RatingAdapter ratingAdapter;
+
+
+    ArrayList<Integer> postsReadCounter = new ArrayList<>();
+    ArrayList<Integer> postCount = new ArrayList<>();
+    MovieAdapter mAdapter;
+    private ArrayList<Post> mPosts = new ArrayList<>();
+
+
 
 
     public ProfileFragment() {
@@ -101,6 +111,8 @@ public class ProfileFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         dbRefUsers = database.getInstance().getReference().child("Users");
         dbRefReviews = database.getInstance().getReference().child("Rating");
+        dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+
 
         Intent intent = getActivity().getIntent();
         if (Intent.ACTION_PICK.equals(intent.getAction())) {
@@ -126,7 +138,6 @@ public class ProfileFragment extends Fragment {
         final String currUserName = i.getStringExtra("Name");
         final String friend = i.getStringExtra("Friend");
         final String friendPic = i.getStringExtra("Picture");
-        System.out.println("viewing friends's profile: " + friend);
        // status = i.getStringExtra("alreadyLoggedIn");
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         
@@ -168,6 +179,8 @@ public class ProfileFragment extends Fragment {
                     .crossFade()
                     .into(myImage);
         }
+
+
 
 
 
@@ -274,7 +287,6 @@ public class ProfileFragment extends Fragment {
                             reviewCount.add(reviewsRead);
                             Rating rating = child.getValue(Rating.class);
                             myRatings.add(rating);
-                            System.out.println("meldoy 1" + rating.getPersonRatingName());
                             if(reviewCount.get(0) == numReview){
                                 ratingAdapter = new RatingAdapter(getActivity());
                                 myRating.setAdapter(ratingAdapter);
@@ -299,35 +311,68 @@ public class ProfileFragment extends Fragment {
         });
 
 
+        postsReadCounter.add(0);
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
+                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
+                    if (snap.getKey().equals("Post")) { //if it
+                        postCount.add((int)snap.getChildrenCount());
+                    }
+
+                }
+                dbRefPosts.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        int postsRead = postsReadCounter.get(0);
+                        postsRead++;
+                        postsReadCounter.clear();
+                        postsReadCounter.add(postsRead);
 
 
-//        dbRefReviews.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                Rating rating = dataSnapshot.getValue(Rating.class);
-//                if(rating.getRateeID().equals(id)){
-//                    myRatings.add(rating);
-//
-//                    dbRefUsers.child(rating.getRateeID()).child("profilePhoto").addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            raterPhoto.add(dataSnapshot.getValue()+"");
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+                        Post post = dataSnapshot.getValue(Post.class);
+
+                        if(post.getmAuthorId().equals(currUser.getId())){
+                            mPosts.add(post);
+                        }
+
+
+                        if(postsReadCounter.get(0) == postCount.get(0)){
+                            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, mPosts);
+                            myPosts.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         return v;
     }
@@ -364,9 +409,36 @@ public class ProfileFragment extends Fragment {
             reviewText.setText(rating.getReview());
 
 
-            /*final Post mv = Posts.get(positions);
+            return convertView;
+        }
+    }
 
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    public class MovieAdapter extends ArrayAdapter<Post> {
+        List<Post> Posts;
+        Context context;
+
+        public MovieAdapter(Context context, int resource, List<Post> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.Posts = objects;
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(
+                        R.layout.list_active_posts_item, null);
+            }
+
+            ImageView image = (ImageView) convertView.findViewById(R.id.imagePic);
+            ImageView imagePerson = (ImageView) convertView.findViewById(R.id.active_post_person_image);
+            TextView textTitle = (TextView) convertView.findViewById(R.id.listNoteTitle);
+            TextView textDescription = (TextView) convertView.findViewById(R.id.listNoteContent);
+            friendPic = imagePerson.toString();
+
+            final Post mv = Posts.get(position);
+           myPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
                     // we know a row was clicked but we need to know WHERE specifically
@@ -374,32 +446,33 @@ public class ProfileFragment extends Fragment {
 
                     Intent i = new Intent(getActivity(), DetailedPostActivity.class);
                     // toString instead of sending over the whole DatabaseReference because it's easier
-                    i.putExtra("ID", currUserId);
-                    i.putExtra("Name",currUserName);
-                    i.putExtra("Users", userFriends);
+                    i.putExtra("ID", currUser.getId());
+                    i.putExtra("Name",currUser.getName());
+                    i.putExtra("Users", currUser.getFriends());
+                    i.putExtra("Friend", friendPic);
                     i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
                     startActivity(i);
                 }
             });
 
-            Glide.with(MainFragment.this)
-                    .load(mv.getmAuthorPic())
+
+            Glide.with(ProfileFragment.this)
+                    .load( mv.getmPhotos())
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(image);
+
+            Glide.with(ProfileFragment.this)
+                    .load( mv.getmAuthorPic())
                     .centerCrop()
                     .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(imagePerson);
 
 
-
-            Glide.with(MainFragment.this)
-                    .load( mv.getmPhotos())
-                    .centerCrop()
-                    .placeholder(R.drawable.hamburger)
-                    .crossFade()
-                    .into(image);*/
-
-           /* textTitle.setText(mv.getmTitle());
-            textDescription.setText(mv.getmDescription());*/
+            textTitle.setText(mv.getmTitle());
+            textDescription.setText(mv.getmDescription());
             return convertView;
         }
     }
