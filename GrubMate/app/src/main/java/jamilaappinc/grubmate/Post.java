@@ -78,14 +78,21 @@ public class Post implements Serializable {
     }
 
     public boolean isActive(){
-        mActive = Boolean.FALSE;
-        Date date = Calendar.getInstance().getTime();
-        System.out.println(mEndDate);
-        if(this.mEndDate.before(date)){
-            if(!outOfServings()){
-                mActive = Boolean.TRUE;
+        if(!mActive) return mActive;
+        else {
+            mActive = Boolean.FALSE;
+            Date date = Calendar.getInstance().getTime();
+            System.out.println(mEndDate);
+            if (this.mEndDate.before(date)) {
+                if (!outOfServings()) {
+                    mActive = Boolean.TRUE;
+                }
             }
+            return mActive;
         }
+    }
+
+    public boolean getmActive(){
         return mActive;
     }
 
