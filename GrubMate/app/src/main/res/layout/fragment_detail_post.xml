@@ -62,7 +62,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/detail_userInfo"
                         android:layout_marginTop="10dp"
-                        android:text="USER NAME"
                         android:textAlignment="center"
                         android:textSize="15dp" />
 

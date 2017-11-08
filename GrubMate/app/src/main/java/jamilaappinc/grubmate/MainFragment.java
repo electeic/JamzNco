@@ -60,7 +60,7 @@ public class MainFragment extends Fragment {
     String currUserId;
     String currUserName;
     String currPicture;
-    String status;
+    String friendPic;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
 
@@ -248,6 +248,8 @@ public class MainFragment extends Fragment {
 
 
 
+
+
         return v;
     }
 
@@ -401,9 +403,22 @@ public class MainFragment extends Fragment {
 
             ImageView image = (ImageView)convertView.findViewById(R.id.imagePic);
             ImageView imagePerson = (ImageView)convertView.findViewById(R.id.active_post_person_image);
+//            imagePerson.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+//                    System.out.println("IN MAIN FRAGMENT, USER ID IS" + currUserId);
+//                    intent.putExtra("ID", currUserId);
+//                    intent.putExtra("Users", userFriends);
+//                    intent.putExtra("Name", currUserName);
+//                    intent.putExtra("MyProfilePicture", currPicture);
+////                intent.putExtra("Status",status);
+//
+//                    startActivityForResult(intent, 0);
+//                }
+//            });
             TextView textTitle = (TextView)convertView.findViewById(R.id.listNoteTitle);
             TextView textDescription = (TextView)convertView.findViewById(R.id.listNoteContent);
-
+            friendPic = imagePerson.toString();
             final Post mv = Posts.get(positions);
 
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -417,6 +432,7 @@ public class MainFragment extends Fragment {
                     i.putExtra("ID", currUserId);
                     i.putExtra("Name",currUserName);
                     i.putExtra("Users", userFriends);
+                    i.putExtra("Friend", friendPic);
                     i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
                     startActivity(i);
                 }

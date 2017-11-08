@@ -111,6 +111,9 @@ public class ProfileFragment extends Fragment {
         final String id = i.getStringExtra("ID");
         final String pic = i.getStringExtra("MyProfilePicture");
         final String currUserName = i.getStringExtra("Name");
+        final String friend = i.getStringExtra("Friend");
+        final String friendPic = i.getStringExtra("Picture");
+        System.out.println("viewing friends's profile: " + friend);
        // status = i.getStringExtra("alreadyLoggedIn");
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         
@@ -127,20 +130,30 @@ public class ProfileFragment extends Fragment {
 //             Note, if mThreadParams is non-null, it means the activity was launched from Messenger.
 //             It will contain the metadata associated with the original content, if there was content.
 //        }
-
-        nameText = (TextView)v.findViewById(R.id.nameText);
-        ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
-        myPosts = (ListView)v.findViewById(R.id.profile_postList);
+        nameText = (TextView) v.findViewById(R.id.nameText);
+        ratingText = (TextView) v.findViewById(R.id.profile_actualRating);
+        myPosts = (ListView) v.findViewById(R.id.profile_postList);
         myImage = (ImageView) v.findViewById(R.id.profile_pic);
 
         System.out.println("READING DB NOW...");
+        if(friend == null) {
+            Glide.with(ProfileFragment.this)
+                    .load(pic)
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(myImage);
+        }
 
-                        Glide.with(ProfileFragment.this)
-                                .load(pic)
-                                .centerCrop()
-                                .placeholder(R.drawable.hamburger)
-                                .crossFade()
-                                .into(myImage);
+        else {
+            System.out.println("READING DB NOW...");
+            Glide.with(ProfileFragment.this)
+                    .load(friendPic)
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(myImage);
+        }
 
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
@@ -150,8 +163,14 @@ public class ProfileFragment extends Fragment {
                 System.out.println(user.getFriends() + user.getId() + user.getName());
                 System.out.println("ID SENT OVER IS " + id);
                 System.out.println("USER's ID IS" + user.getId());
-                if (user.getId().equals(id)) {
+                if (user.getId().equals(id) && friend == null) {
                     System.out.println("trueee");
+                    nameText.setText(user.getName());
+                    ratingText.setText(String.valueOf(user.getAvgRating()));
+                }
+
+                else if(user.getId().equals(friend)) {
+                    System.out.println("viewing friend's profile");
                     nameText.setText(user.getName());
                     ratingText.setText(String.valueOf(user.getAvgRating()));
                 }
