@@ -234,8 +234,7 @@ public class RateUserFragment extends Fragment {
                         }
                         else {
                             double endRating = (double) (_rating+userRating) / (dataSnapshot.getValue(Integer.class) + 1);
-//                            System.out.println("meldoy the rating is " + _rating + " the ")
-                            Rating rating = new Rating(_review, endRating, _name);
+                            Rating rating = new Rating(_review, _rating, _name);
                             rating.setId(_key);
                             dbRef.child(_key).setValue(rating);
                             dbRefUsers.child(notif.getmFromUser()).child("avgRating").setValue(endRating);

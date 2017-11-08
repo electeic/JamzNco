@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment {
     private ListView myPosts;
     ImageView myImage;
     String ID;
+    private User currUser;
    // private String status;
 
 
@@ -140,6 +141,7 @@ public class ProfileFragment extends Fragment {
                 System.out.println("ID SENT OVER IS " + id);
                 System.out.println("USER's ID IS" + user.getId());
                 if (user.getId().equals(id)) {
+                    currUser = user;
                     System.out.println("trueee");
                     nameText.setText(user.getName());
                     ratingText.setText(String.valueOf(user.getAvgRating()));

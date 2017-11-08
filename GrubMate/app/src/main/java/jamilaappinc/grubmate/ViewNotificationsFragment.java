@@ -66,7 +66,7 @@ public class ViewNotificationsFragment extends Fragment {
     ArrayList<Integer> notifReadCounter = new ArrayList<>();
     ArrayList<Integer> notifCount = new ArrayList<>();
     ArrayList<String> userFriends;
-    String currUserName;
+    private String currUserName;
     //private String status;
 
 
@@ -260,7 +260,6 @@ public class ViewNotificationsFragment extends Fragment {
 
 
                 }else if (notification.getmType().equals(NotificationReference.RATE)){
-                    System.out.println("meldoy the notification id is " + notification.getmId());
                     dbRefNotifications.child(notification.getmId()).setValue(null);
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
