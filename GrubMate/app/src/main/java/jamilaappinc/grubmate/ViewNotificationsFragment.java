@@ -66,7 +66,8 @@ public class ViewNotificationsFragment extends Fragment {
     ArrayList<Integer> notifReadCounter = new ArrayList<>();
     ArrayList<Integer> notifCount = new ArrayList<>();
     ArrayList<String> userFriends;
-    String currUserName;
+    private String currUserName;
+    private User myUser;
     //private String status;
 
 
@@ -114,10 +115,39 @@ public class ViewNotificationsFragment extends Fragment {
         ID = i.getStringExtra("ID");
        // status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
-        currUserName = i.getStringExtra("Name");
         //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  "+ ID , Toast.LENGTH_SHORT).show();
 //        populateList();
         addListeners();
+
+        dbRefUsers.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                User user = dataSnapshot.getValue(User.class);
+
+                System.out.println(user.getFriends() + user.getId() + user.getName());
+                System.out.println("ID SENT OVER IS " + ID);
+                System.out.println("USER's ID IS" + user.getId());
+                if (user.getId().equals(ID)) {
+                    //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
+                    myUser = user;
+                    currUserName = myUser.getName();
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
 
 
 
@@ -260,7 +290,6 @@ public class ViewNotificationsFragment extends Fragment {
 
 
                 }else if (notification.getmType().equals(NotificationReference.RATE)){
-                    System.out.println("meldoy the notification id is " + notification.getmId());
                     dbRefNotifications.child(notification.getmId()).setValue(null);
                     dbRefUsers.child(ID).child(FirebaseReferences.MYNOTIFICATIONS).child(notification.getmId()).setValue(null);
                     notifications.remove(position);
@@ -269,6 +298,7 @@ public class ViewNotificationsFragment extends Fragment {
                     i.putExtra("ID", ID);
                     i.putExtra("Users", userFriends);
                     i.putExtra("Name",currUserName);
+                    System.out.println("meldoy the currUsername is " + currUserName);
                     i.putExtra("Notification", notification);
                  //   i.putExtra("Status", status);
            /*         i.putExtra(RateUserActivity.GET_RATER_USER,notification.getmToUser());
