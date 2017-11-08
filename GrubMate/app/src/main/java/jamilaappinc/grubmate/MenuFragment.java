@@ -58,6 +58,7 @@ public class MenuFragment extends Fragment {
     String ID;
     FirebaseDatabase database;
     DatabaseReference dbRefUsers;
+    private String currUserName;
 
     //String status;
 
@@ -74,7 +75,7 @@ public class MenuFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        final String currUserName = i.getStringExtra("Name");
+        currUserName = i.getStringExtra("Name");
 //        System.out.println("meldoy the username in View is " + currUserName);
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         final String currPicture = i.getStringExtra("MyProfilePicture");
@@ -167,7 +168,7 @@ public class MenuFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
-                System.out.println("meldoy the sername is " + myUser.getName());
+                System.out.println("meldoy the sername is " + currUserName);
                 intent.putExtra("Name", currUserName);
                // intent.putExtra("Status", status);
 //                intent.putExtra(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS, myUser.getNotifications());

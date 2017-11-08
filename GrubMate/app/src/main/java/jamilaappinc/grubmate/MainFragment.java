@@ -238,6 +238,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("ID", currUserId);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                System.out.println("meldoy tge currusername on main is "+ currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
 //                intent.putExtra("Status",status);
 

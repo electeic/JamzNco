@@ -12,11 +12,19 @@ public class Rating implements Serializable{
     double mRating;
     String mId;
     String personRatingName;
+    String rateeID; // the id of the person being rated
 
-    public Rating(String review, double rating, String name) {
+    public Rating(String review, double rating, String name, String rateeID) {
         this.mReview = review;
         this.mRating = rating;
         personRatingName = name;
+    }
+
+    public void setRateeID(String id){
+        rateeID = id;
+    }
+    public String getRateeID(){
+        return rateeID;
     }
 
     public String getPersonRatingName() {
