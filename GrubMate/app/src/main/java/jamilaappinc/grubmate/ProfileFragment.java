@@ -143,7 +143,7 @@ public class ProfileFragment extends Fragment {
             Glide.with(ProfileFragment.this)
                     .load(pic)
                     .centerCrop()
-                    .placeholder(R.drawable.hamburger)
+                    .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(myImage);
         }
@@ -153,7 +153,7 @@ public class ProfileFragment extends Fragment {
             Glide.with(ProfileFragment.this)
                     .load(friendPic)
                     .centerCrop()
-                    .placeholder(R.drawable.hamburger)
+                    .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(myImage);
         }
@@ -166,12 +166,8 @@ public class ProfileFragment extends Fragment {
                 System.out.println(user.getFriends() + user.getId() + user.getName());
                 System.out.println("ID SENT OVER IS " + id);
                 System.out.println("USER's ID IS" + user.getId());
-<<<<<<< HEAD
                 if (user.getId().equals(id) && friend == null) {
-=======
-                if (user.getId().equals(id)) {
                     currUser = user;
->>>>>>> d2f21f68564f808626b8c28273636197d35cf677
                     System.out.println("trueee");
                     nameText.setText(user.getName());
                     ratingText.setText(String.valueOf(user.getAvgRating()));
