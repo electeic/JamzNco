@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:orientation="vertical" android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+
+
+<!--</LinearLayout>-->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messenger_send_button_blue"
+    style="@style/MessengerButton.Blue.Large"
+    >
+    <TextView
+        android:text="@string/messenger_send_button_text"
+        style="@style/MessengerButtonText.Blue.Large"
+        />
+</FrameLayout>

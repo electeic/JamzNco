@@ -173,38 +173,37 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-//        mMessengerButton = v.findViewById(R.id.messenger_send_button);
-//
-//        mMessengerButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onMessengerButtonClicked();
-//            }
-//
-//            private void onMessengerButtonClicked() {
-//                // The URI can reference a file://, content://, or android.resource. Here we use
-//                // android.resource for sample purposes.
-//                Uri uri =
-//                        Uri.parse("android.resource://com.facebook.samples.messenger.send/" + R.drawable.gmlogo);
-//
-//                // Create the parameters for what we want to send to Messenger.
-//                ShareToMessengerParams shareToMessengerParams =
-//                        ShareToMessengerParams.newBuilder(uri, "image/jpeg")
-//                                .setMetaData("{ \"image\" : \"logo\" }")
-//                                .build();
-//
-//                if (mPicking) {
-//                    // If we were launched from Messenger, we call MessengerUtils.finishShareToMessenger to return
-//                    // the content to Messenger.
-//                    MessengerUtils.finishShareToMessenger(getActivity(), shareToMessengerParams);
-//                } else {
-//                    // Otherwise, we were launched directly (for example, user clicked the launcher icon). We
-//                    // initiate the broadcast flow in Messenger. If Messenger is not installed or Messenger needs
-//                    // to be upgraded, this will direct the user to the play store.
-//                    MessengerUtils.shareToMessenger(getActivity(), REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
-//                }
-//            }
-//        });
+        mMessengerButton = v.findViewById(R.id.messenger_send_button_blue);
+        mMessengerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMessengerButtonClicked();
+            }
+
+            private void onMessengerButtonClicked() {
+                // The URI can reference a file://, content://, or android.resource. Here we use
+                // android.resource for sample purposes.
+                Uri uri =
+                        Uri.parse("android.resource://com.facebook.samples.messenger.send/" + R.drawable.gmlogo);
+
+                // Create the parameters for what we want to send to Messenger.
+                ShareToMessengerParams shareToMessengerParams =
+                        ShareToMessengerParams.newBuilder(uri, "image/jpeg")
+                                .setMetaData("{ \"image\" : \"logo\" }")
+                                .build();
+
+                if (mPicking) {
+                    // If we were launched from Messenger, we call MessengerUtils.finishShareToMessenger to return
+                    // the content to Messenger.
+                    MessengerUtils.finishShareToMessenger(getActivity(), shareToMessengerParams);
+                } else {
+                    // Otherwise, we were launched directly (for example, user clicked the launcher icon). We
+                    // initiate the broadcast flow in Messenger. If Messenger is not installed or Messenger needs
+                    // to be upgraded, this will direct the user to the play store.
+                    MessengerUtils.shareToMessenger(getActivity(), REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
+                }
+            }
+        });
 
         return v;
     }
