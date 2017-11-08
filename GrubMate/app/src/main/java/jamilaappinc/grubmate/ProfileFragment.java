@@ -151,6 +151,7 @@ public class ProfileFragment extends Fragment {
 
         System.out.println("READING DB NOW...");
         if(friend == null) {
+            ID = id;
             Glide.with(ProfileFragment.this)
                     .load(pic)
                     .centerCrop()
@@ -159,7 +160,7 @@ public class ProfileFragment extends Fragment {
         }
 
         else {
-            System.out.println("READING DB NOW...");
+            ID = friend;
             Glide.with(ProfileFragment.this)
                     .load(friendPic)
                     .centerCrop()
@@ -257,13 +258,13 @@ public class ProfileFragment extends Fragment {
         });
 
         reviewCount.add(0);
-        dbRefReviews.orderByChild("rateeID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRefReviews.orderByChild("rateeID").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final int numReview = (int)dataSnapshot.getChildrenCount();
 
-                dbRefReviews.orderByChild("rateeID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                dbRefReviews.orderByChild("rateeID").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot child : dataSnapshot.getChildren()){
