@@ -72,7 +72,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/detail_userName"
                         android:layout_marginTop="10dp"
-                        android:text="Rating: XX.XX"
                         android:textAlignment="center"
                         android:textSize="15dp" />
 

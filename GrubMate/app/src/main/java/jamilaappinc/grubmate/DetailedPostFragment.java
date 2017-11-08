@@ -128,6 +128,7 @@ public class DetailedPostFragment extends Fragment {
         fStartTime = (TextView) v.findViewById(R.id.startTime);
         fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
+        fRating = (TextView) v.findViewById(R.id.userRatings);
         Glide.with(DetailedPostFragment.this)
                 .load(n.getmAuthorPic())
                 .centerCrop()
@@ -245,9 +246,29 @@ public class DetailedPostFragment extends Fragment {
 //        }
 
 
-        System.out.println("FUCK THIS: " + n);
         fPostName.setText(n.getmTitle());
-        fUsername.setText(n.getmAuthorId());
+        DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("Users").child(n.getmAuthorId());
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("name")) {
+                        fUsername.setText(child.getValue(String.class));
+                    }
+
+                    else if(child.getKey().equals("avgRating")) {
+                        fRating.setText("Rating: " + String.valueOf(child.getValue(Double.class)));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+       // fUsername.setText();
+        //fUsername.setText();
 //                    fCategories.setText(n.getmCategories());
         String desc = "Description: " + n.getmDescription();
         fDescription.setText(desc);
