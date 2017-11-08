@@ -270,7 +270,7 @@ public class RateUserFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getValue() == null){
                             dbRefUsers.child(notif.getmFromUser()).child("numRatings").setValue(1);
-                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser());
+                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser(), notif.getmToUser());
                             System.out.println("meldoy the name is 111 " + _name + " notif user is " + notif.getmFromUser());
                             rating.setRateeID(notif.getmFromUser());
                             rating.setId(_key);
@@ -282,7 +282,7 @@ public class RateUserFragment extends Fragment {
                         }
                         else {
                             double endRating = (double) (_rating+userRating) / (dataSnapshot.getValue(Integer.class) + 1);
-                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser());
+                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser(),notif.getmToUser() );
                             System.out.println("meldoy the name is " + _name + " notif user is " + notif.getmFromUser());
                             rating.setRateeID(notif.getmFromUser());
                             rating.setId(_key);

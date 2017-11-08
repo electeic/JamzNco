@@ -311,7 +311,6 @@ public class MyPostsFragment extends Fragment {
 
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                System.out.println("Meldoy the accepted user name is :" + dataSnapshot.getValue());
                                                 acceptedName.add("" + dataSnapshot.getValue());
                                                 myKey = dbUsers.child(ID).child("notifications").push().getKey(); //send to me
                                                 myNotificationKey = dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user

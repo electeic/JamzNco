@@ -1,6 +1,7 @@
 package jamilaappinc.grubmate;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +34,8 @@ import android.net.Uri;
 import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import com.facebook.CallbackManager;
 
 /**
@@ -46,11 +51,11 @@ public class ProfileFragment extends Fragment {
     public String TAG = "TAG";
     FirebaseListAdapter mAdapter;
     FirebaseDatabase database;
-    DatabaseReference dbRefUsers;
+    DatabaseReference dbRefUsers, dbRefReviews;
 
     private TextView nameText;
     private TextView ratingText;
-    private ListView myPosts;
+    private ListView myPosts, myRating;
     ImageView myImage;
     String ID;
 
@@ -65,6 +70,10 @@ public class ProfileFragment extends Fragment {
     private View mMessengerButton;
     private MessengerThreadParams mThreadParams;
     private boolean mPicking;
+
+    private ArrayList<Rating> myRatings = new ArrayList<>(); //holds all my reviews
+    private ArrayList<Integer> reviewCount = new ArrayList<>(); // holds the num of reviews so that we can create reviewAdapter
+    RatingAdapter ratingAdapter;
 
 
     public ProfileFragment() {
@@ -91,6 +100,7 @@ public class ProfileFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         dbRefUsers = database.getInstance().getReference().child("Users");
+        dbRefReviews = database.getInstance().getReference().child("Rating");
 
         Intent intent = getActivity().getIntent();
         if (Intent.ACTION_PICK.equals(intent.getAction())) {
@@ -135,6 +145,7 @@ public class ProfileFragment extends Fragment {
         ratingText = (TextView)v.findViewById(R.id.profile_actualRating);
         myPosts = (ListView)v.findViewById(R.id.profile_postList);
         myImage = (ImageView) v.findViewById(R.id.profile_pic);
+        myRating = (ListView)v.findViewById(R.id.profile_ratingsList);
 
         System.out.println("READING DB NOW...");
 
@@ -144,6 +155,8 @@ public class ProfileFragment extends Fragment {
                                 .placeholder(R.drawable.hamburger)
                                 .crossFade()
                                 .into(myImage);
+
+
 
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
@@ -225,6 +238,151 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        reviewCount.add(0);
+        dbRefReviews.orderByChild("rateeID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final int numReview = (int)dataSnapshot.getChildrenCount();
+
+                dbRefReviews.orderByChild("rateeID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot child : dataSnapshot.getChildren()){
+                            int reviewsRead = reviewCount.get(0);
+                            reviewsRead++;
+                            reviewCount.clear();
+                            reviewCount.add(reviewsRead);
+                            Rating rating = child.getValue(Rating.class);
+                            myRatings.add(rating);
+                            System.out.println("meldoy 1" + rating.getPersonRatingName());
+                            if(reviewCount.get(0) == numReview){
+                                ratingAdapter = new RatingAdapter(getActivity());
+                                myRating.setAdapter(ratingAdapter);
+
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+//        dbRefReviews.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                Rating rating = dataSnapshot.getValue(Rating.class);
+//                if(rating.getRateeID().equals(id)){
+//                    myRatings.add(rating);
+//
+//                    dbRefUsers.child(rating.getRateeID()).child("profilePhoto").addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            raterPhoto.add(dataSnapshot.getValue()+"");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
         return v;
     }
+
+    public class RatingAdapter extends ArrayAdapter<Rating> {
+        Context context;
+
+        public RatingAdapter(Context context) {
+            super(context, 0, myRatings);
+            this.context = context;
+        }
+
+        @Override
+        public View getView(int positions, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(
+                        R.layout.rating_and_review, null);
+            }
+
+            ImageView image = (ImageView)convertView.findViewById(R.id.review_Pic);
+            TextView nameText = (TextView) convertView.findViewById(R.id.review_name);
+            TextView ratingText = (TextView)convertView.findViewById(R.id.review_rating);
+            TextView reviewText = (TextView)convertView.findViewById(R.id.review_review);
+
+            final Rating rating = myRatings.get(positions);
+            Glide.with(ProfileFragment.this)
+                    .load("https://graph.facebook.com/"+rating.getRaterID()+"/picture?type=large&width=1080")
+                    .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
+                    .crossFade()
+                    .into(image);
+            nameText.setText(rating.getPersonRatingName());
+            ratingText.setText(rating.getRating()+"");
+            reviewText.setText(rating.getReview());
+
+
+            /*final Post mv = Posts.get(positions);
+
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
+                    // we know a row was clicked but we need to know WHERE specifically
+                    // is that data stored in the database
+
+                    Intent i = new Intent(getActivity(), DetailedPostActivity.class);
+                    // toString instead of sending over the whole DatabaseReference because it's easier
+                    i.putExtra("ID", currUserId);
+                    i.putExtra("Name",currUserName);
+                    i.putExtra("Users", userFriends);
+                    i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
+                    startActivity(i);
+                }
+            });
+
+            Glide.with(MainFragment.this)
+                    .load(mv.getmAuthorPic())
+                    .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
+                    .crossFade()
+                    .into(imagePerson);
+
+
+
+            Glide.with(MainFragment.this)
+                    .load( mv.getmPhotos())
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(image);*/
+
+           /* textTitle.setText(mv.getmTitle());
+            textDescription.setText(mv.getmDescription());*/
+            return convertView;
+        }
+    }
+
 }
