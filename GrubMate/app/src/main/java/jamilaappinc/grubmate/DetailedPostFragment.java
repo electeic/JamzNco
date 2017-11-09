@@ -416,8 +416,14 @@ public class DetailedPostFragment extends Fragment {
                     currImage++;
                     if (currImage == n.getmAllFoodPics().size()) {
                         currImage = 0;
-                        setCurrentImage(fv);
                     }
+//                    setCurrentImage(fv);
+                        Glide.with(DetailedPostFragment.this)
+                                .load(n.getmAllFoodPics().get(currImage))
+                                .centerCrop()
+                                .placeholder(R.drawable.hamburger)
+                                .crossFade()
+                                .into(fFoodPicture);
                 }
 
             }
@@ -425,17 +431,34 @@ public class DetailedPostFragment extends Fragment {
     }
 
     private void setInitialImage(View v) {
-        setCurrentImage(v);
-    }
-
-    private void setCurrentImage(View v) {
-        final ImageView imageView = (ImageView) v.findViewById(R.id.foodPhoto);
-        ImageDownloader imageDownLoader = new ImageDownloader(imageView);
         if(n.getmAllFoodPics() != null)
         {
-            imageDownLoader.execute(n.getmAllFoodPics().get(currImage));
+            Glide.with(DetailedPostFragment.this)
+                    .load(n.getmAllFoodPics().get(currImage))
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(fFoodPicture);
+        }
+        else
+        {
+            Glide.with(DetailedPostFragment.this)
+                    .load("")
+                    .centerCrop()
+                    .placeholder(R.drawable.hamburger)
+                    .crossFade()
+                    .into(fFoodPicture);
         }
     }
+
+//    private void setCurrentImage(View v) {
+//        final ImageView imageView = (ImageView) v.findViewById(R.id.foodPhoto);
+//        ImageDownloader imageDownLoader = new ImageDownloader(imageView);
+//        if(n.getmAllFoodPics() != null)
+//        {
+//            imageDownLoader.execute(n.getmAllFoodPics().get(currImage));
+//        }
+//    }
 /*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
