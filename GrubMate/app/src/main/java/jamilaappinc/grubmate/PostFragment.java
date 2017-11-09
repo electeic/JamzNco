@@ -509,10 +509,16 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
+                        for(int i = 0; i < groups.size(); i++){
+                            post.userTargetedOrAdd(groups.get(i).getmUsers());
+                        }
+
                         databaseRef.setValue(post); //adds the value (the post) to the key post
+
+
                         final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS); // gets all of the users to update the user's posts information
                         dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts
 

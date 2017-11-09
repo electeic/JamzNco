@@ -147,8 +147,14 @@ public class MainFragment extends Fragment {
                             {
                                 for (int i = 0; i < userFriends.size(); i++) {
                                     if (post.getmAuthorId().equals(userFriends.get(i))) {
-
-                                        myPost.add(post);
+                                        if(post.getTargetUsersString() != null && post.getTargetUsersString() != ""){//if have a group, then find the groups and see if user is a part of them
+                                            if(post.getTargetUsersString().contains(currUserId)){
+                                                myPost.add(post);
+                                            }
+                                        }
+                                        else{
+                                            myPost.add(post);
+                                        }
                                     }
                                 }
                             }

@@ -34,6 +34,7 @@ public class Post implements Serializable {
     String mAuthorPic;
     String mFirebaseKey;
     String mGroupIds;
+    String allTargetedUsers = "";
     ArrayList<String> mAllFoodPics;
 
 //    public Post(String title, int servings){
@@ -264,5 +265,18 @@ public class Post implements Serializable {
         }
         mGroupIds+=group;
 
+    }
+
+    public void userTargetedOrAdd(String userId){
+        if(!allTargetedUsers.contains(userId)){
+            if(allTargetedUsers.equals("")){
+                allTargetedUsers+=",";
+            }
+            allTargetedUsers+=userId;
+        }
+    }
+
+    public String getTargetUsersString(){
+        return allTargetedUsers;
     }
 }
