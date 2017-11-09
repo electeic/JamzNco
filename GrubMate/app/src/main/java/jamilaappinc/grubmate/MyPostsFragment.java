@@ -466,7 +466,7 @@ public class MyPostsFragment extends Fragment {
                     .into(image);
 
             Glide.with(MyPostsFragment.this)
-                    .load( mv.getmAuthorPic())
+                    .load("https://graph.facebook.com/"+mv.getmAuthorId()+"/picture?type=large&width=1080" )
                     .centerCrop()
                     .placeholder(R.drawable.gmlogo)
                     .crossFade()
