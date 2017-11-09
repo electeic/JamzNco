@@ -61,6 +61,7 @@ public class ProfileFragment extends Fragment {
     String ID;
     String friendPic;
 
+    String friend;
 
     private User currUser, profileUser; //profile user is the user whose profile we're lookign at
 
@@ -135,10 +136,11 @@ public class ProfileFragment extends Fragment {
         //get intent data
         Intent i = getActivity().getIntent();
         final String id = i.getStringExtra("ID");
-        final String pic = i.getStringExtra("MyProfilePicture");
+        final String pic = i.getStringExtra("MyPic");
         final String currUserName = i.getStringExtra("Name");
-        final String friend = i.getStringExtra("Friend");
+        friend = i.getStringExtra("Friend");
         final String friendPic = i.getStringExtra("Picture");
+        System.out.println("my id: " + id + " pic: " + pic + " currUserName: " + currUserName);
        // status = i.getStringExtra("alreadyLoggedIn");
         final ArrayList<String> userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         
@@ -167,6 +169,7 @@ public class ProfileFragment extends Fragment {
             Glide.with(ProfileFragment.this)
                     .load(pic)
                     .centerCrop()
+                    .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(myImage);
         }
@@ -180,11 +183,6 @@ public class ProfileFragment extends Fragment {
                     .crossFade()
                     .into(myImage);
         }
-
-
-
-
-
 
         dbRefUsers.addChildEventListener(new ChildEventListener(){
             @Override
@@ -234,6 +232,7 @@ public class ProfileFragment extends Fragment {
                 intent.putExtra("ID", id);
                 intent.putExtra("Name",currUserName);
                 intent.putExtra("Users",userFriends);
+                intent.putExtra("MyPic", pic);
                // intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
@@ -453,12 +452,22 @@ public class ProfileFragment extends Fragment {
 
                     Intent i = new Intent(getActivity(), DetailedPostActivity.class);
                     // toString instead of sending over the whole DatabaseReference because it's easier
-                    i.putExtra("ID", currUser.getId());
-                    i.putExtra("Name",currUser.getName());
-                    i.putExtra("Users", currUser.getFriends());
-                    i.putExtra("Friend", friendPic);
-                    i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
-                    startActivity(i);
+                    if(friend == null) {
+                        i.putExtra("ID", currUser.getId());
+                        i.putExtra("Name",currUser.getName());
+                        i.putExtra("Users", currUser.getFriends());
+                        i.putExtra("Friend", friendPic);
+                        i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
+                        startActivity(i);
+
+                    }
+
+                    else if(friend.equals(ID)) {
+                        i.putExtra("ID", ID);
+                        i.putExtra("Friend", friendPic);
+                        i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
+                        startActivity(i);
+                    }
                 }
             });
 

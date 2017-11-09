@@ -59,7 +59,7 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
-    String ID, currUserName;
+    String ID, currUserName, currPicture;
     ArrayList<String> userFriends;
 
 
@@ -116,6 +116,7 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        currPicture = i.getStringExtra("CurrPic");
         //status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
@@ -145,6 +146,7 @@ public class DetailedPostFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Friend", n.getmAuthorId());
                 intent.putExtra("Picture", n.getmAuthorPic());
+                intent.putExtra("MyPic", currPicture);
                 //  intent.putExtra("Status",status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();

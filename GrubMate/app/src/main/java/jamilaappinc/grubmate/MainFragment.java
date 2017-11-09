@@ -321,6 +321,7 @@ public class MainFragment extends Fragment {
                     i.putExtra("Name",currUserName);
                     i.putExtra("Users", userFriends);
                     i.putExtra("Friend", friendPic);
+                    i.putExtra("CurrPic", currPicture);
                     i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
                     startActivity(i);
                 }

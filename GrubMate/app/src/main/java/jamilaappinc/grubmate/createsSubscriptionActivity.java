@@ -25,7 +25,6 @@ public class createsSubscriptionActivity extends AppCompatActivity implements Ti
 
     boolean [] checkedItems, groupCheckedItems;
     ArrayList<String> selectedCategories = new ArrayList<String>();
-    ArrayList<String> selectedGroups = new ArrayList<>();
 
     private Button startDate, endDate;
     String startDateString;
@@ -40,7 +39,6 @@ public class createsSubscriptionActivity extends AppCompatActivity implements Ti
         void sendStartTime(String time);
         void sendEndTime(String time);
         void sendCategories(ArrayList<String>cat);
-        void sendGroups(ArrayList<String> _group);
     }
 
     /**
@@ -167,64 +165,6 @@ public class createsSubscriptionActivity extends AppCompatActivity implements Ti
         mDialog.show();
     }
 
-
-    /**
-     *
-     * @param v Connects the button with the activity
-     *          Used when the Add Groups button is chosen
-     */
-    public void clickGroups(View v){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(createsSubscriptionActivity.this);
-        mBuilder.setTitle("Select Group(s)");
-        mBuilder.setMultiChoiceItems(listGroups,groupCheckedItems, new DialogInterface.OnMultiChoiceClickListener(){
-            public void onClick(DialogInterface di, int pos, boolean isChecked){
-                if(isChecked){
-                    //if current item isn't already part of list, add it to list
-
-                    if(! selectedGroups.contains(listGroups[pos])){
-                        Log.d("NOT PART", pos+"");
-                        selectedGroups.add(listGroups[pos]);
-                    }
-                }else if(selectedGroups.contains(listGroups[pos])){
-                    selectedGroups.remove(listGroups[pos]); //user unchecked the item
-                    Log.d("PART", pos+"");
-
-                }
-            }
-        });
-
-        mBuilder.setCancelable(false);
-
-        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                sendGroups();
-            }
-        });
-
-        mBuilder.setNeutralButton("Select All", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                selectedGroups.clear();
-                for(int i = 0; i < groupCheckedItems.length; i++){
-                    groupCheckedItems[i] = true;
-                    selectedGroups.add(listGroups[i]);
-                }
-            }
-        });
-        mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface di, int which){
-                for(int i = 0; i < groupCheckedItems.length; i++){
-                    groupCheckedItems[i] = false;
-                    selectedGroups.clear();
-
-                }
-            }
-        });
-
-
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
-
     /**
      * Sends information to the Fragment, aka interface method calls
      *
@@ -251,9 +191,6 @@ public class createsSubscriptionActivity extends AppCompatActivity implements Ti
         dataFromActivityToFragment.sendCategories(selectedCategories);
     }
 
-    private void sendGroups(){
-        dataFromActivityToFragment.sendGroups(selectedGroups);
-    }
 
 
 
