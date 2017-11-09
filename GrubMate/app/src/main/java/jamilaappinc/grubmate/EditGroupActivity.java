@@ -38,7 +38,7 @@ public class EditGroupActivity extends AppCompatActivity {
     private ArrayList<User> finalSelectedFriends = new ArrayList<>();
     private ArrayList<String> myFriendsNames = new ArrayList<>(); // contains all of the names of the friends
     String ID;
-    CreateGroupActivity.DataFromActivityToFragment dataFromActivityToFragment;
+    DataFromActivityToFragment dataFromActivityToFragment;
 
     public interface DataFromActivityToFragment {
         void sendFriends(ArrayList<User> finalList);
@@ -72,6 +72,8 @@ public class EditGroupActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, f);
         fragmentTransaction.commit();
+        dataFromActivityToFragment = (DataFromActivityToFragment)f;
+
 
 
         // DATABASE REFERENCING STUFF
@@ -148,6 +150,7 @@ public class EditGroupActivity extends AppCompatActivity {
                     }
                 }
                 database.getReference().child("Group").child(group.getId()).setValue(group);
+                sendFriends();
 
             }
         });
@@ -181,4 +184,9 @@ public class EditGroupActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void sendFriends(){
+        dataFromActivityToFragment.sendFriends(finalSelectedFriends);
+    }
+
 }

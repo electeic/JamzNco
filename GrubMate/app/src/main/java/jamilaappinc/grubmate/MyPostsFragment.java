@@ -110,10 +110,8 @@ public class MyPostsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) { //goes through posts, find the number of posts
-                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
                     if (snap.getKey().equals("Post")) { //if it
                         postCount.add((int)snap.getChildrenCount());
-                        System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
                     }
 
                 }
@@ -122,7 +120,6 @@ public class MyPostsFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         int postsRead = postsReadCounter.get(0);
                         postsRead++;
-                        System.out.println("POSTS READ COUNT " + postsRead);
                         postsReadCounter.clear();
                         postsReadCounter.add(postsRead);
 
@@ -130,12 +127,11 @@ public class MyPostsFragment extends Fragment {
                         Post post = dataSnapshot.getValue(Post.class);
 
                         if(post.getmAuthorId().equals(ID)){
-                            mPosts.add(post);
-                            System.out.println("I GOT A POST!!" + post);
+                            if(post.getmActive()){
+                                mPosts.add(post);
+                            }
                         }
 
-                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
-                        System.out.println("POSTS COUNTER" + postCount.get(0));
 
                         if(postsReadCounter.get(0) == postCount.get(0)){
                             System.out.println("IN IF, SETTING ADAPTER NOW");
@@ -273,7 +269,6 @@ public class MyPostsFragment extends Fragment {
                         DatabaseReference dbRefClicked = dbRefPosts.child(post.getmFirebaseKey());
                         Intent i = new Intent(getActivity(), PostActivity.class);
                         //dbRefClicked.toString()
-                        System.out.println("THE POST FIREBASEKEY" + post.getmFirebaseKey());
                         // toString instead of sending over the whole DatabaseReference because it's easier
                         i.putExtra("ID", ID);
                         i.putExtra(PostActivity.EDIT_POSITION, post.getmFirebaseKey());
@@ -287,13 +282,16 @@ public class MyPostsFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         Map<String, String> acceptedUsers = myPost.get(0).getmAcceptedUsers();
-                        System.out.println("meldoy the size of the accepter user map is " + acceptedUsers.size());
                         final FirebaseDatabase database = FirebaseDatabase.getInstance();
                         String key;
                         String myKey;
                         DatabaseReference dbAcceptedRef;
                         final DatabaseReference dbUsers = database.getReference().child("Users");
                         final DatabaseReference dbNotificationsRef = database.getReference().child("Notification");
+                        dbRefPosts.child(myPost.get(0).getmId()).child("mActive").setValue(false);
+                        mPosts.get(0).setmActive(false);
+                        mPosts.remove(myPost.get(0));
+                        mAdapter.notifyDataSetChanged();
                         dbAcceptedRef = database.getReference().child("Post").child(myPost.get(0).getmId()).child("mAcceptedUsers"); //get the user's post's accepted user
                         dbAcceptedRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -311,7 +309,6 @@ public class MyPostsFragment extends Fragment {
 
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                System.out.println("Meldoy the accepted user name is :" + dataSnapshot.getValue());
                                                 acceptedName.add("" + dataSnapshot.getValue());
                                                 myKey = dbUsers.child(ID).child("notifications").push().getKey(); //send to me
                                                 myNotificationKey = dbNotificationsRef.push().getKey(); // store notification for sending me the rate the accepted user
@@ -357,6 +354,8 @@ public class MyPostsFragment extends Fragment {
 
 
                                 }
+
+
 
 
                             }
@@ -451,8 +450,16 @@ public class MyPostsFragment extends Fragment {
 //                }
 //            });
 
+            String f = mv.getmPhotos();
+            if(mv.getmAllFoodPics() != null)
+            {
+                f= mv.getmAllFoodPics().get(0);
+                System.out.println("GETTING PHOTO 0");
+            }
+
+
             Glide.with(MyPostsFragment.this)
-                    .load( mv.getmPhotos())
+                    .load(f)
                     .centerCrop()
                     .placeholder(R.drawable.hamburger)
                     .crossFade()

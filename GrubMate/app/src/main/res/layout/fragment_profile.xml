@@ -4,133 +4,143 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/nameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="8dp"
-                android:textSize="23dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="0dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/profile_ratingTitle"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="Avg. rating: " />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nameText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="Name"
+                        android:textSize="23dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/profile_ratingTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Avg. rating: " />
 
 
+                        <TextView
+                            android:id="@+id/profile_actualRating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="XX.XX" />
 
-                <TextView
-                android:id="@+id/profile_actualRating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="XX.XX" />
 
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/profile_msgUserTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Message User "
+                        android:textAlignment="center" />
+
+
+                    <!--<ImageButton-->
+                    <!--android:id="@+id/messenger_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:elevation="0dp"-->
+                    <!--app:srcCompat="@drawable/com_facebook_button_send_icon_blue"-->
+                    <!--/>-->
+
+
+                    <!--<ImageButton-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignEnd="@+id/menu_from_main"-->
+                    <!--android:layout_toEndOf="@+id/ratingBar6" />-->
+                    <include
+                        android:id="@+id/messenger_send_button_blue"
+                        layout="@layout/messenger_button_send_blue_large" />
+
+                    <!--<com.facebook.share.widget.SendButton-->
+                    <!--android:id="@+id/messenger_send_button_blue"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--layout="@layout/messenger_button_send_blue_large"/>-->
+                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/profile_msgUserTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp"
-                android:textAlignment="center"
-                android:text="Message User " />
-
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/messenger_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:elevation="0dp"-->
-            <!--app:srcCompat="@drawable/com_facebook_button_send_icon_blue"-->
-            <!--android:layout_alignEnd="@+id/menu_from_main"-->
-            <!--android:layout_toEndOf="@+id/ratingBar6" />-->
-            <!--<include-->
-                <!--layout="@layout/messenger_button_send_blue_large"-->
-                <!--android:id="@+id/messenger_send_button"/>-->
-
-            <com.facebook.share.widget.SendButton
-                android:id="@+id/send_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_centerInParent="true"
-                layout="@layout/messenger_button_send_blue_large"/>
-            <!--<include-->
-            <!--layout="@layout/messenger_button_send_blue_large"/>-->
-
-        </LinearLayout>
-
-    </LinearLayout>
             <TextView
                 android:id="@+id/profile_userReviewsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:textSize="20dp"
+                android:text="Reviews"
                 android:textAlignment="center"
-                android:text="Reviews" />
+                android:textSize="20dp" />
+
             <ListView
                 android:id="@+id/profile_ratingsList"
                 android:layout_width="match_parent"
                 android:layout_height="150dp" />
+
             <TextView
                 android:id="@+id/profile_userPostTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:textSize="20dp"
+                android:text="My Posts"
                 android:textAlignment="center"
-                android:text="My Posts" />
-        <ListView
-            android:id="@+id/profile_postList"
-            android:layout_width="match_parent"
-            android:layout_height="162dp" />
+                android:textSize="20dp" />
+
+            <ListView
+                android:id="@+id/profile_postList"
+                android:layout_width="match_parent"
+                android:layout_height="162dp" />
 
 
-</LinearLayout>
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu_from_main"

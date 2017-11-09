@@ -2,12 +2,16 @@ package jamilaappinc.grubmate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
@@ -20,7 +24,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.widget.ViewSwitcher.ViewFactory;
+import android.graphics.BitmapFactory;
+import android.view.animation.AnimationUtils;
 
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -33,6 +42,7 @@ import java.util.ArrayList;
 public class DetailedPostFragment extends Fragment {
 
     TextView fPostName;
+    TextView fUsername;
     ImageView fProfilePicture;
     ImageView fFoodPicture;
     TextView fTags;
@@ -57,9 +67,10 @@ public class DetailedPostFragment extends Fragment {
     DatabaseReference dbRefCount;
     Post n;
 
-    String ID, currUserName;
+    String ID, currUserName, currPicture;
     ArrayList<String> userFriends;
 
+    private int currImage = 0;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
     private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
@@ -114,9 +125,11 @@ public class DetailedPostFragment extends Fragment {
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+        currPicture = i.getStringExtra("CurrPic");
         //status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         n = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
+        fUsername = (TextView) v.findViewById(R.id.detail_userName);
         fPostName = (TextView) v.findViewById(R.id.postName);
         fCategories = (TextView) v.findViewById(R.id.categories);
         fDate = (TextView) v.findViewById(R.id.date);
@@ -126,6 +139,35 @@ public class DetailedPostFragment extends Fragment {
         fStartTime = (TextView) v.findViewById(R.id.startTime);
         fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
+        fRating = (TextView) v.findViewById(R.id.userRatings);
+
+        if(n.getmAllFoodPics() != null)
+        {
+            setInitialImage(v);
+            setImageRotateListener(v);
+        }
+
+        Glide.with(DetailedPostFragment.this)
+                .load("https://graph.facebook.com/"+n.getmAuthorId()+"/picture?type=large&width=1080")
+                .centerCrop()
+                .placeholder(R.drawable.gmlogo)
+                .crossFade()
+                .into(fProfilePicture);
+        fProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Name",currUserName);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Friend", n.getmAuthorId());
+                intent.putExtra("Picture", n.getmAuthorPic());
+                intent.putExtra("MyPic", currPicture);
+                //  intent.putExtra("Status",status);
+                startActivityForResult(intent, 0);
+                getActivity().finish();
+            }
+        });
         fTags = (TextView) v.findViewById(R.id.tags);
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
         fRequestButton = (Button) v.findViewById(R.id.requestButton);
@@ -133,11 +175,16 @@ public class DetailedPostFragment extends Fragment {
         fServings = (TextView) v.findViewById(R.id.num_portions);
         fRating = (TextView) v.findViewById(R.id.userRatings);
 
+        if(!n.getmActive()){
+            fRequestButton.setVisibility(View.INVISIBLE);
+        }
+
+
+
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
-                System.out.println("meldoy the post is " + n.getmTitle());
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
@@ -223,8 +270,29 @@ public class DetailedPostFragment extends Fragment {
 //        }
 
 
-        System.out.println("FUCK THIS: " + n);
         fPostName.setText(n.getmTitle());
+        DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("Users").child(n.getmAuthorId());
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getKey().equals("name")) {
+                        fUsername.setText(child.getValue(String.class));
+                    }
+
+                    else if(child.getKey().equals("avgRating")) {
+                        fRating.setText("Rating: " +   new DecimalFormat("#.##").format(child.getValue(Double.class)));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+       // fUsername.setText();
+        //fUsername.setText();
 //                    fCategories.setText(n.getmCategories());
         String desc = "Description: " + n.getmDescription();
         fDescription.setText(desc);
@@ -261,12 +329,12 @@ public class DetailedPostFragment extends Fragment {
         fStartTime.setText(n.getmStartDate().toString());
         fEndTime.setText(n.getmEndDate().toString());
 
-        Glide.with(DetailedPostFragment.this)
-                .load(n.getmPhotos())
-                .centerCrop()
-                .placeholder(R.drawable.hamburger)
-                .crossFade()
-                .into(fFoodPicture);
+//        Glide.with(DetailedPostFragment.this)
+//                .load(n.getmPhotos())
+//                .centerCrop()
+//                .placeholder(R.drawable.hamburger)
+//                .crossFade()
+//                .into(fFoodPicture);
 
 
         //now update information using the posts information
@@ -292,7 +360,6 @@ public class DetailedPostFragment extends Fragment {
                     }
                 }
 
-                System.out.println("DETAILED POST FRAGMENT STATUS: " + status);
                 if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
                             .setTarget(new ViewTarget(R.id.requestButton, getActivity()))
@@ -309,6 +376,65 @@ public class DetailedPostFragment extends Fragment {
 
             }
         });
+    }
+
+    private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public ImageDownloader(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("MyApp", e.getMessage());
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+
+    private void setImageRotateListener(View v) {
+        final View fv = v;
+        final ImageView rotatebutton = (ImageView) v.findViewById(R.id.foodPhoto);
+        rotatebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                if(n.getmAllFoodPics() != null)
+                {
+                    System.out.println("IVAN CLICKED A BUNCH OF SHIT WITH CURR IMAGE" + currImage);
+                    currImage++;
+                    if (currImage == n.getmAllFoodPics().size()) {
+                        currImage = 0;
+                        setCurrentImage(fv);
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void setInitialImage(View v) {
+        setCurrentImage(v);
+    }
+
+    private void setCurrentImage(View v) {
+        final ImageView imageView = (ImageView) v.findViewById(R.id.foodPhoto);
+        ImageDownloader imageDownLoader = new ImageDownloader(imageView);
+        if(n.getmAllFoodPics() != null)
+        {
+            imageDownLoader.execute(n.getmAllFoodPics().get(currImage));
+        }
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event

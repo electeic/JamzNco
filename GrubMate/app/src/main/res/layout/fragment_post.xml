@@ -10,284 +10,314 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Post Food Form"
-                android:textAlignment="center"
-                android:textSize="24dp" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="*fields required"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="10dp" />
-        </LinearLayout>
-
-
-        <ImageView
-
-            android:id="@+id/post_food_pic"
-            android:layout_width="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hamburger"
-            android:layout_height="200dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_add_picture"
-            android:text="add picture"
-            android:layout_gravity="center"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="2dp">
-
-            <EditText
-                android:id="@+id/post_titleText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Title of Post *" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/post_cat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Choose Category(s)*"
-                android:onClick="clickCategories"
-                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Post Food Form"
+                        android:textAlignment="center"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="*fields required"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+
+                <ImageView
+
+                    android:id="@+id/post_food_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="2"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hamburger"/>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/post_homemadeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="20dp"
-                    android:text="Homemade?"
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
+                    <ImageView
+                        android:id="@+id/post_food_pic_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_weight="1" />
 
-                <CheckBox
-                    android:id="@+id/post_homemadeCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    <ImageView
+                        android:id="@+id/post_food_pic_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_weight="1" />
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/post_food_pic_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"/>
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <!--<Button-->
+                    <!--android:id="@+id/post_add_picture"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:text="add picture" />-->
 
-            <EditText
-                android:id="@+id/dietaryText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Dietary Restrictions (optional)" />
-        </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp">
+
+                    <EditText
+                        android:id="@+id/post_titleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Title of Post *" />
+                </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/locationText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Location *" />
 
-        </android.support.design.widget.TextInputLayout>
+                    <Button
+                        android:id="@+id/post_cat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="clickCategories"
+                        android:text="Choose Category(s)*" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/ServingsText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Serving Size *"
-                android:inputType="number"/>
+                        <TextView
+                            android:id="@+id/post_homemadeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="20dp"
+                            android:text="Homemade?"
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
 
-        </android.support.design.widget.TextInputLayout>
+                        <CheckBox
+                            android:id="@+id/post_homemadeCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    </LinearLayout>
 
-            <EditText
-                android:id="@+id/tagsText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:hint="Custom Tag(s) * (separate tags with commas) " />
-        </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/dietaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Dietary Restrictions (optional)" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/locationText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Location *" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/ServingsText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Serving Size *"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/tagsText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Custom Tag(s) * (separate tags with commas) "
+                        android:textSize="16dp" />
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/post_startDateButton"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:onClick="selectStartDate"
-                        android:text="Start Date: * " />
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/post_startTimeButton"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="180dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="selectStartTime"
-                            android:text="Start Time: *" />
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/post_startDateButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectStartDate"
+                                android:text="Start Date: * " />
+
+                            <Button
+                                android:id="@+id/post_startTimeButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectStartTime"
+                                android:text="Start Time: *" />
                         </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/post_endDateButton"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:onClick="selectEndDate"
-                        android:text="End Date: *" />
-
-                        <Button
-                            android:id="@+id/post_endTimeButton"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="180dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="selectEndTime"
-                            android:text="End Time: *" />
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/post_endDateButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectEndDate"
+                                android:text="End Date: *" />
+
+                            <Button
+                                android:id="@+id/post_endTimeButton"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:onClick="selectEndTime"
+                                android:text="End Time: *" />
                         </LinearLayout>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </LinearLayout>
+                    <EditText
+                        android:id="@+id/post_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Description *"
+                        android:inputType="textMultiLine" />
+                </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/post_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:hint="Description *"/>
-        </android.support.design.widget.TextInputLayout>
-        <Button
-            android:id="@+id/post_groups"
+                <Button
+                    android:id="@+id/post_groups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="clickGroups"
+                    android:text="Choose Group(s)*" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/post_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Submit" />
+
+                    <Button
+                        android:id="@+id/post_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Cancel" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu_from_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Group(s)*"
-            android:onClick="clickGroups"
-            />
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <Button
-                android:id="@+id/post_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Submit" />
-
-            <Button
-                android:id="@+id/post_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Cancel" />
-
-
-
-
-        </LinearLayout>
-    </LinearLayout>
-
-
-</ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/menu_from_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="27dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_weight="1"
-        android:src="@drawable/gmlogo"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/gmlogo" />
 
 
     </RelativeLayout>

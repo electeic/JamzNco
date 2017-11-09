@@ -60,7 +60,7 @@ public class MainFragment extends Fragment {
     String currUserId;
     String currUserName;
     String currPicture;
-    String status;
+    String friendPic;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
 
@@ -130,10 +130,8 @@ public class MainFragment extends Fragment {
 
 
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
                         if (snap.getKey().equals("Post")) {
                             postCount.add((int)snap.getChildrenCount());
-                            System.out.println("ADDED # FRIENDS, count is " + snap.getChildrenCount());
                         }
                     }
                     dbRefPosts.addChildEventListener(new ChildEventListener(){
@@ -141,7 +139,6 @@ public class MainFragment extends Fragment {
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             int postsRead = postsReadCounter.get(0);
                             postsRead++;
-                            System.out.println("POSTS READ COUNT " + postsRead);
                             postsReadCounter.clear();
                             postsReadCounter.add(postsRead);
 
@@ -149,14 +146,9 @@ public class MainFragment extends Fragment {
                             if(userFriends != null)
                             {
                                 for (int i = 0; i < userFriends.size(); i++) {
-                                    System.out.println("I IS " + i);
-                                    System.out.println("POST ID IS " + post.getmId());
-                                    System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
-
                                     if (post.getmAuthorId().equals(userFriends.get(i))) {
 
                                         myPost.add(post);
-                                        System.out.println("I GOT A POST!!" + post);
                                     }
                                 }
                             }
@@ -165,7 +157,6 @@ public class MainFragment extends Fragment {
 //                        System.out.println("POSTS COUNTER" + postCount.get(0));
 
                             if (postsReadCounter.get(0) == postCount.get(0)) {
-                                System.out.println("IN IF, SETTING ADAPTER NOW");
                                 mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
                                 mListView = (ListView)v.findViewById(R.id.active_post_list);
                                 //        postList = PostSingleton.get(getActivity()).getMovies();
@@ -208,28 +199,11 @@ public class MainFragment extends Fragment {
         else{
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
             mListView = (ListView)v.findViewById(R.id.active_post_list);
-            //        postList = PostSingleton.get(getActivity()).getMovies();
-            //        postAdapter = new PostListAdapter(getActivity(), Post.class,
-            //                R.layout.list_active_posts_item,
-            //                dbRefPosts);
             mListView.setAdapter(mAdapter);
         }
 
 
-//                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView< ? > adapterView, View view, int position, long id) {
-//                        // we know a row was clicked but we need to know WHERE specifically
-//                        // is that data stored in the database
-//
-//                        DatabaseReference dbRefClicked = mAdapter.getRef(position);
-//                        Intent i = new Intent(getActivity(), DetailedPostActivity.class);
-//                        // toString instead of sending over the whole DatabaseReference because it's easier
-//                        i.putExtra("ID", currUserId);
-//                        i.putExtra(DetailedPostActivity.EXTRA_URL, dbRefClicked.toString());
-//                        startActivity(i);
-//                    }
-//                });
+
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,6 +213,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("ID", currUserId);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
+                System.out.println("meldoy tge currusername on main is "+ currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
 //                intent.putExtra("Status",status);
 
@@ -246,6 +221,8 @@ public class MainFragment extends Fragment {
                 //                getActivity().finish();
             }
         });
+
+
 
 
 
@@ -259,12 +236,9 @@ public class MainFragment extends Fragment {
         temp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("user children size: " + dataSnapshot.getChildrenCount());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    System.out.println("children in user: " + child.getKey());
                     if (child.getKey().equals("alreadyLoggedIn")) {
                         String update = child.getValue(String.class);
-                        System.out.println("MAIN FRAGMENT STATUS: " + update);
                         if(child.getValue(String.class).equals("0")){//update == "0") {
                             new ShowcaseView.Builder(getActivity())
                                     .setTarget(new ViewTarget(R.id.menu_from_main, getActivity()))
@@ -299,90 +273,6 @@ public class MainFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    //    //todo onDetach
-    //    public void onDetach() {
-    //        super.onDetach();
-    //        mAdapter.cleanup();
-    //    }
-
-    //todo create custom FirebaseListAdapter
-
-
-    //    private class PostListAdapter extends FirebaseListAdapter<Post> {
-    //
-    //        public PostListAdapter(Activity activity, Class<Post> modelClass, int modelLayout, DatabaseReference ref) {
-    //            super(activity, modelClass, modelLayout, ref);
-    //        }
-    //
-    ////        private PostFilter postFilter;
-    //
-    //        @Override
-    //        protected void populateView(View v, Post model, int position) {
-    //            // get references to row widgets
-    //            // copy data from model to widgets
-    //            boolean isFriendPost = false;
-    //            //
-    //
-    //
-    //
-    //            //            for (int j = 0; j < userFriends.size(); j++) {
-    //            //                String x = model.getmAuthorId();
-    //            //
-    //            //                if (x.equals(userFriends.get(j))) {
-    //            //
-    //            //                    System.out.println("this_is_true");
-    //            isFriendPost = true;
-    //            //                }
-    //            //            }
-    //
-    //            //System.out.println("USFRIENDPOST" + isFriendPost);
-    //            if (isFriendPost) {
-    //                ImageView mImage = (ImageView)v.findViewById(R.id.imagePic);
-    //
-    //                Glide.with(MainFragment.this)
-    //                        .load(model.getmPhotos())
-    //                        .centerCrop()
-    //                        .placeholder(R.drawable.hamburger)
-    //                        .crossFade()
-    //                        .into(mImage);
-    //
-    //                TextView pPostContent = (TextView)v.findViewById(R.id.listNoteContent);
-    //                TextView pPostTitle = (TextView)v.findViewById(R.id.listNoteTitle);
-    //
-    //                pPostContent.setText(model.getmDescription());
-    //                pPostTitle.setText(model.getmTitle());
-    //            }
-    //        }
-
-    //        @Override
-    //        public Filter getFilter() {
-    //            if (postFilter == null) {
-    //                postFilter = new PostFilter();
-    //            }
-    //            return postFilter;
-    //        }
-    //
-    //        private class PostFilter extends Filter {
-    //
-    //            @Override
-    //            protected FilterResults performFiltering(CharSequence constraint) {
-    //                FilterResults filterResults = new FilterResults();
-    //                Query query;
-    //                if (constraint != null && constraint.length() > 0) {
-    //                    query = FirebaseHelper.getCustomerRef().orderByChild("name").equalTo(constraint.toString());
-    //                } else {
-    //                    query = FirebaseHelper.getCustomerRef().orderByChild("name");
-    //                }
-    //                filterResults.values = query;
-    //                return filterResults;
-    //            }
-    //
-    //            @Override
-    //            protected void publishResults(CharSequence constraint, FilterResults results) {
-    //                query = (Query) results.values;
-    //            }
-    //        }
-
     public class MovieAdapter extends ArrayAdapter<Post> {
         List<Post> Posts;
         Context context;
@@ -402,9 +292,22 @@ public class MainFragment extends Fragment {
 
             ImageView image = (ImageView)convertView.findViewById(R.id.imagePic);
             ImageView imagePerson = (ImageView)convertView.findViewById(R.id.active_post_person_image);
+//            imagePerson.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+//                    System.out.println("IN MAIN FRAGMENT, USER ID IS" + currUserId);
+//                    intent.putExtra("ID", currUserId);
+//                    intent.putExtra("Users", userFriends);
+//                    intent.putExtra("Name", currUserName);
+//                    intent.putExtra("MyProfilePicture", currPicture);
+////                intent.putExtra("Status",status);
+//
+//                    startActivityForResult(intent, 0);
+//                }
+//            });
             TextView textTitle = (TextView)convertView.findViewById(R.id.listNoteTitle);
             TextView textDescription = (TextView)convertView.findViewById(R.id.listNoteContent);
-
+            friendPic = imagePerson.toString();
             final Post mv = Posts.get(positions);
 
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -418,22 +321,29 @@ public class MainFragment extends Fragment {
                     i.putExtra("ID", currUserId);
                     i.putExtra("Name",currUserName);
                     i.putExtra("Users", userFriends);
+                    i.putExtra("Friend", friendPic);
+                    i.putExtra("CurrPic", currPicture);
                     i.putExtra(DetailedPostActivity.EXTRA_POST, Posts.get(position));
                     startActivity(i);
                 }
             });
 
+            String f = mv.getmPhotos();
+            if(mv.getmAllFoodPics() != null)
+            {
+                f= mv.getmAllFoodPics().get(0);
+                System.out.println("GETTING PHOTO 0");
+            }
+
             Glide.with(MainFragment.this)
-                    .load(mv.getmAuthorPic())
+                    .load("https://graph.facebook.com/"+mv.getmAuthorId()+"/picture?type=large&width=1080")
                     .centerCrop()
                     .placeholder(R.drawable.gmlogo)
                     .crossFade()
                     .into(imagePerson);
 
-
-
             Glide.with(MainFragment.this)
-                    .load( mv.getmPhotos())
+                    .load(f)
                     .centerCrop()
                     .placeholder(R.drawable.hamburger)
                     .crossFade()

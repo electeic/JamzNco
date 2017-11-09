@@ -12,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,11 +53,13 @@ public class RateUserFragment extends Fragment {
     private Button submit;
     private Notification notification;
     private User rater;
-    private String ID, currUserName;
+    private String ID, currUserName, pic;
     private ArrayList<String> userFriends;
     private Notification notif;
     FirebaseDatabase database;
     DatabaseReference dbRef, dbRefUsers;
+    private User myUser;
+    ImageView myImage;
 
 
 //    private OnFragmentInteractionListener mListener;
@@ -98,7 +103,8 @@ public class RateUserFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_rate_user, container, false);
         Intent i = getActivity().getIntent();
         ID = i.getStringExtra("ID");
-        currUserName = i.getStringExtra("Name");
+//        currUserName = i.getStringExtra("Name");
+        System.out.println("meldoy the username ASKDF is " + currUserName);
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         notif = (Notification)i.getSerializableExtra("Notification");
         initGUIComponents(v);
@@ -108,6 +114,43 @@ public class RateUserFragment extends Fragment {
         database = FirebaseDatabase.getInstance().getInstance();
         dbRef = database.getReference("Rating");
         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+        dbRefUsers.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                User user = dataSnapshot.getValue(User.class);
+
+                System.out.println(user.getFriends() + user.getId() + user.getName());
+                System.out.println("ID SENT OVER IS " + ID);
+                System.out.println("USER's ID IS" + user.getId());
+                if (user.getId().equals(ID)) {
+                    //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
+                    myUser = user;
+                    currUserName = myUser.getName();
+
+                }
+                if(user.getId().equals(notif.getmFromUser())){
+                    pic = user.getProfilePhoto();
+                    Glide.with(RateUserFragment.this)
+                            .load(pic)
+                            .centerCrop()
+                            .placeholder(R.drawable.hamburger)
+                            .crossFade()
+                            .into(myImage);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
         return v;
     }
 
@@ -119,6 +162,8 @@ public class RateUserFragment extends Fragment {
         ratingAmt = (TextView) v.findViewById(R.id.rateUser_ratingText);
         review = (EditText)v.findViewById(R.id.rateUser_review);
         submit = (Button) v.findViewById(R.id.rateUser_submitButton);
+        myImage = (ImageView) v.findViewById(R.id.rateUser_photo);
+
     }
 
     @Override
@@ -166,6 +211,7 @@ public class RateUserFragment extends Fragment {
                     //if the rating isn't 0 then you can submit the rating
 //                    Toast.makeText(getContext(), "@JAMILAAPPCORP:(rateUserFragment) NEED TO GO BACK TO HOME SCREEN & PASS IN USER INFO TO POPULATE HOME & SUBMIT THE RATING TO DB," +
 //                            " also need to figure out what needs to be passed into the main screen" , Toast.LENGTH_SHORT).show();
+                    System.out.println("meldoy curr user nmae is lksdjf 2 " + currUserName);
                     writeRatingToDB(review.getText().toString().trim(),ratingBar.getRating(), currUserName, key);
 
                     /*Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -217,14 +263,16 @@ public class RateUserFragment extends Fragment {
         dbRefUsers.child(notif.getmFromUser()).child("avgRating").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final double userRating = +dataSnapshot.getValue(Double.class);
+                final double userRating = dataSnapshot.getValue(Double.class);
 
                 dbRefUsers.child(notif.getmFromUser()).child("numRatings").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getValue() == null){
                             dbRefUsers.child(notif.getmFromUser()).child("numRatings").setValue(1);
-                            Rating rating = new Rating(_review, _rating, _name);
+                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser(), notif.getmToUser());
+                            System.out.println("meldoy the name is 111 " + _name + " notif user is " + notif.getmFromUser());
+                            rating.setRateeID(notif.getmFromUser());
                             rating.setId(_key);
                             dbRef.child(_key).setValue(rating);
                             dbRefUsers.child(notif.getmFromUser()).child("avgRating").setValue(_rating);
@@ -233,9 +281,11 @@ public class RateUserFragment extends Fragment {
 
                         }
                         else {
-                            double endRating = (double) (_rating+userRating) / (dataSnapshot.getValue(Integer.class) + 1);
-//                            System.out.println("meldoy the rating is " + _rating + " the ")
-                            Rating rating = new Rating(_review, endRating, _name);
+
+                            double endRating = (double)  ((dataSnapshot.getValue(Integer.class) * userRating)+_rating)/(dataSnapshot.getValue(Integer.class) + 1);
+                            Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser(),notif.getmToUser() );
+                            System.out.println("meldoy the name is " + _name + " notif user is " + notif.getmFromUser());
+                            rating.setRateeID(notif.getmFromUser());
                             rating.setId(_key);
                             dbRef.child(_key).setValue(rating);
                             dbRefUsers.child(notif.getmFromUser()).child("avgRating").setValue(endRating);
@@ -248,7 +298,7 @@ public class RateUserFragment extends Fragment {
 
                     }
                 });
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), ViewNotificationsActivity.class);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name",currUserName);
