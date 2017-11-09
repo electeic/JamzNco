@@ -25,7 +25,6 @@ public class Subscription implements Serializable {
     String mId;
     String mTitle;
     String mDescription;
-    ArrayList<Group> mGroups;
 
     public Subscription(ArrayList<String> mTags, ArrayList<String> mCategories) {
         this.mTags = mTags;
@@ -38,7 +37,7 @@ public class Subscription implements Serializable {
     }
 
     public Subscription(String title, String description, Date mStartDate, Date mEndDate, ArrayList<String> mCategories,
-                        ArrayList<String> mTags, ArrayList<Group> groups, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds,
+                        ArrayList<String> mTags, String mUser, boolean mHomeMade, String mId, ArrayList<String> mPostsIds,
                         ArrayList<String> mPostsTitles) {
         this.mDescription = description;
         this.mTitle = title;
@@ -47,7 +46,6 @@ public class Subscription implements Serializable {
         this.mEndDate = mEndDate;
         this.mTags = mTags;
         this.mCategories = mCategories;
-        mGroups = groups;
         this.mHomeMade = mHomeMade;
         mActive = Boolean.TRUE;
         this.mId = mId;

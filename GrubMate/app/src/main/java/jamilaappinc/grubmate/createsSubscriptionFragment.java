@@ -54,7 +54,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     private Date startDateTime, endDateTime;
 
     private ArrayList<String> categories = new ArrayList<>();
-    private ArrayList<String> groups = new ArrayList<>();
     private ArrayList<String> tagsVec = new ArrayList<>();
 
     private ArrayList<String> allMatchingPosts = new ArrayList<>();
@@ -236,8 +235,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-        Log.d("error check", "" + (groups.size() >0) + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
-        filled = (groups.size() >0 && dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+        Log.d("error check", ""  + dateTime + (title.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
+        filled = ( dateTime && (title.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
 
@@ -358,7 +357,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                             if (postsReadCounter.get(0) == postCount.get(0)) {//only call after reading ALL posts
                                 Intent i = getActivity().getIntent();
                                 final String ID = i.getStringExtra("ID");
-                                final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(),null , ID, _homemade.isChecked(), "1", allMatchingPosts, allMatchingPostsTitle);
+                                final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), ID, _homemade.isChecked(), "1", allMatchingPosts, allMatchingPostsTitle);
 
 
 
@@ -592,12 +591,6 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
     public void sendCategories(ArrayList<String> cat) {
         if (cat != null) {
             categories = (ArrayList<String>)cat.clone();
-        }
-    }
-
-    public void sendGroups(ArrayList<String> _group) {
-        if (_group != null) {
-            groups = (ArrayList<String>)_group.clone();
         }
     }
 
