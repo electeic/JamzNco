@@ -450,8 +450,16 @@ public class MyPostsFragment extends Fragment {
 //                }
 //            });
 
+            String f = mv.getmPhotos();
+            if(mv.getmAllFoodPics() != null)
+            {
+                f= mv.getmAllFoodPics().get(0);
+                System.out.println("GETTING PHOTO 0");
+            }
+
+
             Glide.with(MyPostsFragment.this)
-                    .load( mv.getmPhotos())
+                    .load(f)
                     .centerCrop()
                     .placeholder(R.drawable.hamburger)
                     .crossFade()

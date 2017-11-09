@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -48,6 +49,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,6 +60,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private static final int PICK_IMAGE_REQUEST = 123;
+    private static final int PICK_IMAGE_REQUEST2 = 1234;
+    private static final int PICK_IMAGE_REQUEST3 = 1235;
+    private static final int PICK_IMAGE_REQUEST4 = 1236;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -84,10 +90,17 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private String mParam2;
 
     ImageView pImage;
+    ImageView pImage2;
+    ImageView pImage3;
+    ImageView pImage4;
+
     Button pSubmitpostbutton;
     Button pAddPictureButton;
 
     private Uri filePath;
+    private Uri filePath2;
+    private Uri filePath3;
+    private Uri filePath4;
     Bitmap mBitmap;
     private String ID;
 
@@ -96,6 +109,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     String userProfilePic;
     String FirebaseKey;
    // private String status;
+
+    ArrayList<String> foodPhotosInPosts = new ArrayList<>();
 
     ArrayList<Integer> subsCount = new ArrayList<>();
     ArrayList<Integer> subsReadCount = new ArrayList<>();
@@ -217,6 +232,27 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                             .placeholder(R.drawable.gmlogo)
                             .crossFade()
                             .into(pImage);
+
+//                    Glide.with(PostFragment.this)
+//                            .load(n.getmPhotos())
+//                            .centerCrop()
+//                            .placeholder(R.drawable.gmlogo)
+//                            .crossFade()
+//                            .into(pImage2);
+//
+//                    Glide.with(PostFragment.this)
+//                            .load(n.getmPhotos())
+//                            .centerCrop()
+//                            .placeholder(R.drawable.gmlogo)
+//                            .crossFade()
+//                            .into(pImage3);
+//
+//                    Glide.with(PostFragment.this)
+//                            .load(n.getmPhotos())
+//                            .centerCrop()
+//                            .placeholder(R.drawable.gmlogo)
+//                            .crossFade()
+//                            .into(pImage4);
 //                }
                     System.out.println("IVAN" + n);
                 }
@@ -234,10 +270,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //                }
 //            });
         }
-
-        //Toast.makeText(getContext(), "@JAMILAAPPCORP: FOUND ID  " + ID , Toast.LENGTH_SHORT).show();
-
-
         addListeners();
 
 
@@ -246,6 +278,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     private void initGUIComp(View v) {
         pImage = (ImageView)v.findViewById(R.id.post_food_pic);
+        pImage2 = (ImageView)v.findViewById(R.id.post_food_pic_2);
+        pImage3 = (ImageView)v.findViewById(R.id.post_food_pic_3);
+        pImage4 = (ImageView)v.findViewById(R.id.post_food_pic_4);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         cancelButton = (Button)v.findViewById(R.id.post_cancel);
@@ -254,7 +289,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         endDateButton = (Button)v.findViewById(R.id.post_endDateButton);
         startTimeButton = (Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
-        pAddPictureButton = (Button)v.findViewById(R.id.post_add_picture);
+//        pAddPictureButton = (Button)v.findViewById(R.id.post_add_picture);
 
 
         _title = (EditText)v.findViewById(R.id.post_titleText);
@@ -288,14 +323,13 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 System.out.println("POST FRAGMENT STATUS: " + status);
                 if(status.equals("0")) {
                     new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(R.id.post_add_picture, getActivity()))
+                            .setTarget(new ViewTarget(R.id.post_food_pic, getActivity()))
                             .setContentTitle("Add images")
                             .setContentText("Add images to show your post.")
                             .hideOnTouchOutside()
                             .build();
                 }
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -414,10 +448,34 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             }
         });
 
-        pAddPictureButton.setOnClickListener(new View.OnClickListener() {
+        pImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showFileChooser();
+            }
+        });
+
+        pImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser2();
+            }
+        });
+
+        pImage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser3();
+            }
+        });
+
+        pImage4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(_homemade.isChecked())
+                {
+                    showFileChooser4();
+                }
             }
         });
 
@@ -445,12 +503,13 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                     Intent intent = new Intent(getActivity(), MenuActivity.class);
 
-                    if (filePath != null)
-                        uploadFile(key);
+                    if (filePath != null || filePath2 != null || filePath3 != null || filePath4 != null )
+                        //uploadFile(key);
+                        new MyAsyncTask().execute(key);
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
+                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         databaseRef.setValue(post); //adds the value (the post) to the key post
@@ -573,7 +632,35 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         });
     }
 
+    private class MyAsyncTask extends AsyncTask<String, Integer, String>
+    {
 
+        @Override
+        protected String doInBackground(String... params) {
+            uploadFile(params[0]);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return params[0];
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+//            setProgressPercent(progress[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            System.out.println("FOOD PIC START");
+            for(String s: foodPhotosInPosts)
+            {
+                System.out.println("FOOD PIC" + s);
+            }
+            uploadMeta(result, foodPhotosInPosts);
+        }
+    }
 
 
     private void uploadFile(String key)
@@ -596,7 +683,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                             //                            progressDialog.dismiss();
                             @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
                             //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-                            uploadMeta(downloadUri.toString(), key2);
+//                            uploadMeta(downloadUri.toString(), key2);
+                            System.out.println("Filepathdi Ivan downloading pics");
+                            addToFoodPics(downloadUri.toString());
                         }
                     })
                     .addOnFailureListener(new OnFailureListener(){
@@ -615,11 +704,170 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 }
             });
         }
-        else
-        {
+        if (filePath2 != null) {
 
+            //            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            //            progressDialog.setMessage("Uploading...");
+            //            progressDialog.show();
+            final String key2 = key;
+
+            StorageReference riversRef2 = mStorageRef.child("images/" + key + 2 + ".jpg");
+
+            riversRef2.putFile(filePath2)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            //                            progressDialog.dismiss();
+                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+//                            uploadMeta(downloadUri.toString(), key2);
+                            System.out.println("Filepath2 Ivan downloading pics");
+                            addToFoodPics(downloadUri.toString());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener(){
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            // ...
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            //                            progressDialog.dismiss();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    //                    progressDialog.setMessage(((int)progress) + "% uploaded");
+                }
+            });
         }
+        if (filePath3 != null) {
+
+            //            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            //            progressDialog.setMessage("Uploading...");
+            //            progressDialog.show();
+            final String key2 = key;
+
+            StorageReference riversRef3 = mStorageRef.child("images/" + key + 3 + ".jpg");
+
+            riversRef3.putFile(filePath3)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            //                            progressDialog.dismiss();
+                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+//                            uploadMeta(downloadUri.toString(), key2);
+                            addToFoodPics(downloadUri.toString());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener(){
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            // ...
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            //                            progressDialog.dismiss();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    //                    progressDialog.setMessage(((int)progress) + "% uploaded");
+                }
+            });
+        }
+        if (filePath4 != null) {
+
+            //            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            //            progressDialog.setMessage("Uploading...");
+            //            progressDialog.show();
+            final String key2 = key;
+
+            StorageReference riversRef4 = mStorageRef.child("images/" + key + 4 + ".jpg");
+
+            riversRef4.putFile(filePath4)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            //                            progressDialog.dismiss();
+                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+//                            uploadMeta(downloadUri.toString(), key2);
+                            addToFoodPics(downloadUri.toString());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener(){
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            // ...
+                            //                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            //                            progressDialog.dismiss();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    //                    progressDialog.setMessage(((int)progress) + "% uploaded");
+                }
+            });
+        }
+
+//        uploadMeta(key, foodPhotosInPosts);
     }
+
+//    private void uploadFile2(String key)
+//    {
+//        if (filePath2 != null) {
+//
+//            //            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//            //            progressDialog.setMessage("Uploading...");
+//            //            progressDialog.show();
+//            final String key2 = key;
+//
+//            StorageReference riversRef2 = mStorageRef.child("images/" + key + 2 + ".jpg");
+//
+//            riversRef2.putFile(filePath2)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // Get a URL to the uploaded content
+//                            //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                            //                            progressDialog.dismiss();
+//                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+//                            //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
+////                            uploadMeta(downloadUri.toString(), key2);
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener(){
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            // Handle unsuccessful uploads
+//                            // ...
+//                            //                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+//                            //                            progressDialog.dismiss();
+//                        }
+//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+//                    //                    progressDialog.setMessage(((int)progress) + "% uploaded");
+//                }
+//            });
+//        }
+//        else
+//        {
+//
+//        }
+//    }
+
 
     public void showFileChooser()
     {
@@ -627,6 +875,30 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
+    }
+
+    public void showFileChooser2()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST2);
+    }
+
+    public void showFileChooser3()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST3);
+    }
+
+    public void showFileChooser4()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST4);
     }
 
     @Override
@@ -641,6 +913,48 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
                 pImage.setImageBitmap(mBitmap);
+                //                mBitmap = BitmapFactory.decodeFile(filePath.getPath());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (requestCode == PICK_IMAGE_REQUEST2 && resultCode == RESULT_OK
+                && data != null && data.getData() != null)
+        {
+            filePath2 = data.getData();
+
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath2);
+                pImage2.setImageBitmap(mBitmap);
+                //                mBitmap = BitmapFactory.decodeFile(filePath.getPath());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (requestCode == PICK_IMAGE_REQUEST3 && resultCode == RESULT_OK
+                && data != null && data.getData() != null)
+        {
+            filePath3 = data.getData();
+
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath3);
+                pImage3.setImageBitmap(mBitmap);
+                //                mBitmap = BitmapFactory.decodeFile(filePath.getPath());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (requestCode == PICK_IMAGE_REQUEST4 && resultCode == RESULT_OK
+                && data != null && data.getData() != null)
+        {
+            filePath4 = data.getData();
+
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath4);
+                pImage4.setImageBitmap(mBitmap);
                 //                mBitmap = BitmapFactory.decodeFile(filePath.getPath());
             }
             catch (IOException e) {
@@ -694,13 +1008,17 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
-    void uploadMeta(String uri, String key)
+    void uploadMeta(String key, ArrayList<String> allPicsTho)
     {
         //        if()
         //        String id = FirebaseRef.push().getKey();
-        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
+        for(String s: allPicsTho)
+        {
+            System.out.println("FOOD PIC2" + s);
+        }
+        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
         post.addmAcceptedUsers("initial");
-
+        post.setmAllFoodPics(allPicsTho);
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
         post.setmId(key);
         DatabaseReference dbChild = database.getReference().child("Post").child(key);
@@ -709,6 +1027,28 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         //        FirebaseRef.child(id).setValue(picUri); //part of og code
 
         //        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+    }
+
+//    void uploadMeta(String uri, String key) //old  uploads
+//    {
+//        //        if()
+//        //        String id = FirebaseRef.push().getKey();
+//        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, uri, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key);
+//        post.addmAcceptedUsers("initial");
+//
+//        //        PictureSingleton.get(getActivity()).addMovie(picUri);
+//        post.setmId(key);
+//        DatabaseReference dbChild = database.getReference().child("Post").child(key);
+//        dbChild.setValue(post);
+//
+//        //        FirebaseRef.child(id).setValue(picUri); //part of og code
+//
+//        //        Toast.makeText(getActivity().getApplicationContext(), "Added Picture to Real Time Database", Toast.LENGTH_SHORT).show();
+//    }
+
+    void addToFoodPics(String uri)
+    {
+        foodPhotosInPosts.add(uri);
     }
 
 //    /*
