@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -47,9 +53,14 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
     ArrayList<Integer> groupsCount = new ArrayList<>();
     ArrayList<Integer> groupsReadCounter = new ArrayList<>();
+    ArrayList<Integer> groupsMatchCounter = new ArrayList<>();
+
     ArrayList<String> allGroups = new ArrayList<>();
     FirebaseDatabase database;
     DatabaseReference dbRefGroups;
+
+    String ID;
+    String currUserName;
 
     //interface to send data from activity to fragment
     public interface DataFromActivityToFragment {
@@ -69,10 +80,12 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("id","hey");
+
         setContentView(R.layout.activity_main);
         dbRefGroups = database.getInstance().getReference().child(FirebaseReferences.GROUPS);
         listCategories = getResources().getStringArray(R.array.categories);
         groupsReadCounter.add(0);
+        groupsMatchCounter.add(0);
         database = FirebaseDatabase.getInstance();
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -220,6 +233,15 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     public void clickGroups(View v){
         final AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostActivity.this);
         mBuilder.setTitle("Select Group(s)");
+        Intent j = getIntent();
+        ID = j.getStringExtra("ID");
+        currUserName = j.getStringExtra("Name");
+        final TaskCompletionSource<List<Objects>> tcs = new TaskCompletionSource<>();
+        groupsReadCounter = new ArrayList<>();
+        groupsMatchCounter = new ArrayList<>();
+        groupsReadCounter.add(0);
+        groupsMatchCounter.add(0);
+
         dbRefGroups.addChildEventListener(new ChildEventListener(){
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -231,7 +253,24 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
 
                 Group group = dataSnapshot.getValue(Group.class);
-                listGroups[groupsRead-1] = group.getName();
+                System.out.println("GROUP RECEIVED" + group.getName());
+                System.out.println("USER ID IS" + ID);
+
+
+
+                System.out.println("Group reading with users" + group.getmUsers());
+
+                if(group.getmUsers().contains(ID)){
+                    System.out.println("GROUP MATCHED" + group.getName() + " " + ID);
+
+                    listGroups[groupsMatchCounter.get(0)] = group.getName();
+                        int groupsMatched = groupsMatchCounter.get(0);
+                        groupsMatched++;
+                        groupsMatchCounter.clear();
+                        groupsMatchCounter.add(groupsRead);
+                }
+
+
                 groupCheckedItems = new boolean[listGroups.length];
 
 
@@ -241,7 +280,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
                             if(isChecked){
                                 //if current item isn't already part of list, add it to list
 
-                                if(! selectedGroups.contains(listGroups[pos])){
+                                if(!selectedGroups.contains(listGroups[pos])){
                                     Log.d("NOT PART", pos+"");
                                     selectedGroups.add(listGroups[pos]);
                                 }
@@ -277,7 +316,6 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
                             for(int i = 0; i < groupCheckedItems.length; i++){
                                 groupCheckedItems[i] = false;
                                 selectedGroups.clear();
-
                             }
                         }
                     });

@@ -183,15 +183,21 @@ public class CreateGroupFragment extends Fragment implements CreateGroupActivity
 
 
                 HashMap<String, User> mySelectedFriends = new HashMap<String, User>();
-
+                ArrayList<String> mFriends = new ArrayList<String>();
                 for(int i = 0; i < selectedFriends.size(); i++){
                     mySelectedFriends.put(selectedFriends.get(i).getId(), selectedFriends.get(i));
+                    mFriends.add(selectedFriends.get(i).getId());
                 }
 
                 Group groupI = new Group(groupName.getText().toString(), mySelectedFriends);
                 groupI.setmUserAuthorId(ID);
                 groupI.setmGroupMembersList(mySelectedFriends);
                 groupI.setId(key);
+                for(int i = 0; i < mySelectedFriends.size(); i++){
+                    groupI.addFriend(mFriends.get(i));
+
+                }
+                groupI.addFriend(ID);
                 databaseRef.setValue(groupI);
 
                 Intent intent = new Intent(getActivity(), ViewGroupsActivity.class);

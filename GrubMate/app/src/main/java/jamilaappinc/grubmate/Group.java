@@ -17,7 +17,7 @@ public class Group implements Serializable{
     String mId;
     String mUserAuthorId;
     String mKey;
-
+    String mUsers;
 
     public Group(String mName, HashMap<String, User> mGroupMembersList) {
         this.mName = mName;
@@ -84,4 +84,24 @@ public class Group implements Serializable{
     public void setKey(String key) {this.mKey = key;}
 
     public String getKey() {return mKey;}
+
+    public boolean userExists(String userId){
+        if(mUsers.contains(userId)){
+            return true;
+        }
+        else return false;
+    }
+
+    public void addFriend(String userId){
+        if(mUsers != null){
+            mUsers += ",";
+        }
+        else{
+            mUsers = "";
+        }
+        mUsers+=userId;
+    }
+    public String getmUsers(){
+        return mUsers;
+    }
 }

@@ -33,6 +33,7 @@ public class Post implements Serializable {
     boolean homemade;
     String mAuthorPic;
     String mFirebaseKey;
+    String mGroupIds;
 
 //    public Post(String title, int servings){
 //        mTitle = title;
