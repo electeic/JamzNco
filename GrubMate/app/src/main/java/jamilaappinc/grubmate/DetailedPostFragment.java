@@ -2,12 +2,16 @@ package jamilaappinc.grubmate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
@@ -20,7 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.widget.ViewSwitcher.ViewFactory;
+import android.graphics.BitmapFactory;
+import android.view.animation.AnimationUtils;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -62,6 +70,7 @@ public class DetailedPostFragment extends Fragment {
     String ID, currUserName, currPicture;
     ArrayList<String> userFriends;
 
+    private int currImage = 0;
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
     private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
@@ -131,6 +140,13 @@ public class DetailedPostFragment extends Fragment {
         fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fRating = (TextView) v.findViewById(R.id.userRatings);
+
+        if(n.getmAllFoodPics() != null)
+        {
+            setInitialImage(v);
+            setImageRotateListener(v);
+        }
+
         Glide.with(DetailedPostFragment.this)
                 .load("https://graph.facebook.com/"+n.getmAuthorId()+"/picture?type=large&width=1080")
                 .centerCrop()
@@ -313,12 +329,12 @@ public class DetailedPostFragment extends Fragment {
         fStartTime.setText(n.getmStartDate().toString());
         fEndTime.setText(n.getmEndDate().toString());
 
-        Glide.with(DetailedPostFragment.this)
-                .load(n.getmPhotos())
-                .centerCrop()
-                .placeholder(R.drawable.hamburger)
-                .crossFade()
-                .into(fFoodPicture);
+//        Glide.with(DetailedPostFragment.this)
+//                .load(n.getmPhotos())
+//                .centerCrop()
+//                .placeholder(R.drawable.hamburger)
+//                .crossFade()
+//                .into(fFoodPicture);
 
 
         //now update information using the posts information
@@ -360,6 +376,65 @@ public class DetailedPostFragment extends Fragment {
 
             }
         });
+    }
+
+    private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public ImageDownloader(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("MyApp", e.getMessage());
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+
+    private void setImageRotateListener(View v) {
+        final View fv = v;
+        final ImageView rotatebutton = (ImageView) v.findViewById(R.id.foodPhoto);
+        rotatebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                if(n.getmAllFoodPics() != null)
+                {
+                    System.out.println("IVAN CLICKED A BUNCH OF SHIT WITH CURR IMAGE" + currImage);
+                    currImage++;
+                    if (currImage == n.getmAllFoodPics().size()) {
+                        currImage = 0;
+                        setCurrentImage(fv);
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void setInitialImage(View v) {
+        setCurrentImage(v);
+    }
+
+    private void setCurrentImage(View v) {
+        final ImageView imageView = (ImageView) v.findViewById(R.id.foodPhoto);
+        ImageDownloader imageDownLoader = new ImageDownloader(imageView);
+        if(n.getmAllFoodPics() != null)
+        {
+            imageDownLoader.execute(n.getmAllFoodPics().get(currImage));
+        }
     }
 /*
     // TODO: Rename method, update argument and hook method into UI event
