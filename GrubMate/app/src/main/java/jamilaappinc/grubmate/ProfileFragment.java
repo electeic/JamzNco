@@ -33,6 +33,7 @@ import com.facebook.messenger.ShareToMessengerParams;
 import android.net.Uri;
 import com.facebook.FacebookSdk;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class ProfileFragment extends Fragment {
     String friendPic;
 
 
-    private User currUser;
+    private User currUser, profileUser; //profile user is the user whose profile we're lookign at
 
     CallbackManager callbackManager;
 
@@ -192,17 +193,23 @@ public class ProfileFragment extends Fragment {
                 System.out.println(user.getFriends() + user.getId() + user.getName());
                 System.out.println("ID SENT OVER IS " + id);
                 System.out.println("USER's ID IS" + user.getId());
-                if (user.getId().equals(id) && friend == null) {
+                if (user.getId().equals(id)) { //current user
+                    if(friend == null) {
+                        profileUser = user;
+                        nameText.setText(user.getName());
+                        ratingText.setText(new DecimalFormat("#.##").format(user.getAvgRating()));
+                    }
                     currUser = user;
-                    System.out.println("trueee");
-                    nameText.setText(user.getName());
-                    ratingText.setText(String.valueOf(user.getAvgRating()));
-                }
 
-                else if(user.getId().equals(friend)) {
-                    System.out.println("viewing friend's profile");
-                    nameText.setText(user.getName());
-                    ratingText.setText(String.valueOf(user.getAvgRating()));
+                }
+                if(friend != null){ //looking at friend profile
+                    if(user.getId().equals(friend)) {
+                        profileUser = user;
+                        System.out.println("viewing friend's profile");
+                        nameText.setText(user.getName());
+                        ratingText.setText(new DecimalFormat("#.##").format(user.getAvgRating()));
+
+                    }
                 }
             }
 
@@ -333,7 +340,7 @@ public class ProfileFragment extends Fragment {
 
                         Post post = dataSnapshot.getValue(Post.class);
 
-                        if(post.getmAuthorId().equals(currUser.getId())){
+                        if(post.getmAuthorId().equals(profileUser.getId())){
                             mPosts.add(post);
                         }
 

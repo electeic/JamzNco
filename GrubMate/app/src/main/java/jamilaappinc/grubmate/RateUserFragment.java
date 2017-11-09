@@ -263,7 +263,7 @@ public class RateUserFragment extends Fragment {
         dbRefUsers.child(notif.getmFromUser()).child("avgRating").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final double userRating = +dataSnapshot.getValue(Double.class);
+                final double userRating = dataSnapshot.getValue(Double.class);
 
                 dbRefUsers.child(notif.getmFromUser()).child("numRatings").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -281,7 +281,8 @@ public class RateUserFragment extends Fragment {
 
                         }
                         else {
-                            double endRating = (double) (_rating+userRating) / (dataSnapshot.getValue(Integer.class) + 1);
+
+                            double endRating = (double)  ((dataSnapshot.getValue(Integer.class) * userRating)+_rating)/(dataSnapshot.getValue(Integer.class) + 1);
                             Rating rating = new Rating(_review, _rating, _name, notif.getmFromUser(),notif.getmToUser() );
                             System.out.println("meldoy the name is " + _name + " notif user is " + notif.getmFromUser());
                             rating.setRateeID(notif.getmFromUser());

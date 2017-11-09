@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -130,7 +131,7 @@ public class DetailedPostFragment extends Fragment {
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fRating = (TextView) v.findViewById(R.id.userRatings);
         Glide.with(DetailedPostFragment.this)
-                .load(n.getmAuthorPic())
+                .load("https://graph.facebook.com/"+n.getmAuthorId()+"/picture?type=large&width=1080")
                 .centerCrop()
                 .placeholder(R.drawable.gmlogo)
                 .crossFade()
@@ -166,7 +167,6 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
-                System.out.println("meldoy the post is " + n.getmTitle());
                 intent.putExtra(RequestActivity.POST_FROM_DETAILED, n);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Name",currUserName);
@@ -263,7 +263,7 @@ public class DetailedPostFragment extends Fragment {
                     }
 
                     else if(child.getKey().equals("avgRating")) {
-                        fRating.setText("Rating: " + String.valueOf(child.getValue(Double.class)));
+                        fRating.setText("Rating: " +   new DecimalFormat("#.##").format(child.getValue(Double.class)));
                     }
                 }
             }
