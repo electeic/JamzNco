@@ -158,6 +158,12 @@ public class DetailedPostFragment extends Fragment {
         fServings = (TextView) v.findViewById(R.id.num_portions);
         fRating = (TextView) v.findViewById(R.id.userRatings);
 
+        if(!n.getmActive()){
+            fRequestButton.setVisibility(View.INVISIBLE);
+        }
+
+
+
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
