@@ -154,6 +154,7 @@ public class MainFragment extends Fragment {
                                     System.out.println("USER FRIENDS ID IS " + userFriends.get(i));
 
                                     if (post.getmAuthorId().equals(userFriends.get(i))) {
+
                                         myPost.add(post);
                                         System.out.println("I GOT A POST!!" + post);
                                     }

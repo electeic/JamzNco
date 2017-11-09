@@ -233,4 +233,19 @@ public class Post implements Serializable {
         }
         return false;
     }
+
+    public String getmGroupString(){
+        return mGroupIds;
+    }
+
+    public void addGroup(String group){
+        if(mGroupIds != null){
+            mGroupIds += ",";
+        }
+        else{
+            mGroupIds = "";
+        }
+        mGroupIds+=group;
+
+    }
 }
