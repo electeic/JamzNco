@@ -55,7 +55,8 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     ArrayList<Integer> groupsReadCounter = new ArrayList<>();
     ArrayList<Integer> groupsMatchCounter = new ArrayList<>();
 
-    ArrayList<String> allGroups = new ArrayList<>();
+    ArrayList<Group> allGroupObjects = new ArrayList<>();
+    ArrayList<Group> allSelectedGroupObjects = new ArrayList<>();
     FirebaseDatabase database;
     DatabaseReference dbRefGroups;
 
@@ -69,7 +70,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         void sendStartTime(String time);
         void sendEndTime(String time);
         void sendCategories(ArrayList<String>cat);
-        void sendGroups(ArrayList<String> _group);
+        void sendGroups(ArrayList<Group> _group);
     }
 
     /**
@@ -87,23 +88,6 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         groupsReadCounter.add(0);
         groupsMatchCounter.add(0);
         database = FirebaseDatabase.getInstance();
-        database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Log.e(snap.getKey() + " GETTING NUM KEYS",snap.getChildrenCount() + "");
-                    if (snap.getKey().equals("Group")) {
-                        groupsCount.add((int)snap.getChildrenCount());
-                        listGroups = new String[(int)snap.getChildrenCount()];
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
@@ -237,28 +221,129 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         ID = j.getStringExtra("ID");
         currUserName = j.getStringExtra("Name");
         final TaskCompletionSource<List<Objects>> tcs = new TaskCompletionSource<>();
-        groupsReadCounter = new ArrayList<>();
+//        groupsReadCounter = new ArrayList<>();
         groupsMatchCounter = new ArrayList<>();
-        groupsReadCounter.add(0);
+//        groupsReadCounter.add(0);
         groupsMatchCounter.add(0);
 
-        dbRefGroups.addChildEventListener(new ChildEventListener(){
+        dbRefGroups.orderByChild("mUserAuthorId").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                groupsCount.add((int)dataSnapshot.getChildrenCount());
+                listGroups = new String[(int)dataSnapshot.getChildrenCount()];
+                System.out.println("meldoy "+ dataSnapshot.getValue());
+
+                dbRefGroups.orderByChild("mUserAuthorId").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot child : dataSnapshot.getChildren()) {
+
+                            int groupsMatched = groupsMatchCounter.get(0);
+
+
+
+                            Group group = child.getValue(Group.class);
+                            System.out.println("GROUP RECEIVED" + group.getName());
+                            System.out.println("USER ID IS" + ID);
+
+                            allGroupObjects.add(group); //contains all the group objects
+                            listGroups[groupsMatchCounter.get(0)] = group.getName();
+                            groupsMatched++;
+                            groupsMatchCounter.clear();
+                            groupsMatchCounter.add(groupsMatched);
+
+                            if (groupsMatchCounter.get(0) == groupsCount.get(0)) {//all posts read.
+                                mBuilder.setMultiChoiceItems(listGroups, groupCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                                    public void onClick(DialogInterface di, int pos, boolean isChecked) {
+                                        if (isChecked) {
+                                            //if current item isn't already part of list, add it to list
+
+                                            if (!selectedGroups.contains(listGroups[pos])) {
+                                                Log.d("NOT PART", pos + "");
+                                                selectedGroups.add(listGroups[pos]);
+                                                allSelectedGroupObjects.add(allGroupObjects.get(pos));
+                                            }
+
+                                        } else if (selectedGroups.contains(listGroups[pos])) {
+                                            selectedGroups.remove(listGroups[pos]); //user unchecked the item
+                                            allSelectedGroupObjects.remove(allGroupObjects.get(pos));
+                                            Log.d("PART", pos + "");
+
+                                        }
+                                    }
+                                });
+
+                                mBuilder.setCancelable(false);
+
+                                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface di, int which) {
+                                        sendGroups();
+                                    }
+                                });
+
+                                mBuilder.setNeutralButton("Select All", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface di, int which) {
+                                        selectedGroups.clear();
+                                        for (int i = 0; i < groupCheckedItems.length; i++) {
+                                            groupCheckedItems[i] = true;
+                                            selectedGroups.add(listGroups[i]);
+                                        }
+                                        sendGroups();
+                                    }
+                                });
+                                mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface di, int which) {
+                                        for (int i = 0; i < groupCheckedItems.length; i++) {
+                                            groupCheckedItems[i] = false;
+                                            selectedGroups.clear();
+                                        }
+                                    }
+                                });
+
+
+                                AlertDialog mDialog = mBuilder.create();
+                                mDialog.show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        /*dbRefGroups.addChildEventListener(new ChildEventListener(){
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                int groupsRead = groupsReadCounter.get(0);
-                groupsRead++;
-                System.out.println("POSTS READ COUNT " + groupsRead);
-                groupsReadCounter.clear();
-                groupsReadCounter.add(groupsRead);
+                int groupsMatched = groupsMatchCounter.get(0);
+                groupsMatched++;
+                groupsMatchCounter.clear();
+                groupsMatchCounter.add(groupsMatched);
 
 
                 Group group = dataSnapshot.getValue(Group.class);
                 System.out.println("GROUP RECEIVED" + group.getName());
                 System.out.println("USER ID IS" + ID);
+                listGroups[groupsMatchCounter.get(0)] = group.getName();
 
 
 
-                System.out.println("Group reading with users" + group.getmUsers());
+
+            *//*    System.out.println("Group reading with users" + group.getmUsers());
 
                 if(group.getmUsers().contains(ID)){
                     System.out.println("GROUP MATCHED" + group.getName() + " " + ID);
@@ -268,7 +353,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
                         groupsMatched++;
                         groupsMatchCounter.clear();
                         groupsMatchCounter.add(groupsRead);
-                }
+                }*//*
 
 
                 groupCheckedItems = new boolean[listGroups.length];
@@ -345,7 +430,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
 
@@ -381,7 +466,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     }
 
     private void sendGroups(){
-        dataFromActivityToFragment.sendGroups(selectedGroups);
+        dataFromActivityToFragment.sendGroups(allSelectedGroupObjects);
     }
 
 

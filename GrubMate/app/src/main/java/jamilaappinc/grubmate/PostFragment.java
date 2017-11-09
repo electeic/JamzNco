@@ -82,7 +82,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private Date startDateTime, endDateTime;
 
     private ArrayList<String> categories = new ArrayList<>();
-    private ArrayList<String> groups = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<String> tagsVec = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
@@ -1002,9 +1002,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
-    public void sendGroups(ArrayList<String> _group) {
+    public void sendGroups(ArrayList<Group> _group) {
         if (_group != null) {
-            groups = (ArrayList<String>)_group.clone();
+            groups = (ArrayList<Group>)_group.clone();
         }
     }
 
