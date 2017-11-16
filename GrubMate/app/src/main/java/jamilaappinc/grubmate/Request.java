@@ -1,5 +1,7 @@
 package jamilaappinc.grubmate;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
 
 public class Request implements Serializable{
 
-    String mLocation;
+//    String mLocation;
     String mRequestedPostId;
     int mServings;
     String mId;
@@ -18,8 +20,9 @@ public class Request implements Serializable{
     boolean mActive;
     Post mPost;
     String requestedUserName;
+    LatLng mLocation;
 
-    public Request(String mLocation, String mRequestedPost, int mServings,Post post, String muser) {
+    public Request(LatLng mLocation, String mRequestedPost, int mServings,Post post, String muser) {
         this.mLocation = mLocation;
         this.mRequestedPostId = mRequestedPost; //id of the request in the DB
         this.mServings = mServings;
@@ -42,11 +45,11 @@ public class Request implements Serializable{
 
     public String getmRequestUserId(){ return mRequestUserId; }
 
-    public String getmLocation() {
+    public LatLng getmLocation() {
         return mLocation;
     }
 
-    public void setmLocation(String mLocation) {
+    public void setmLocation(LatLng mLocation) {
         this.mLocation = mLocation;
     }
 

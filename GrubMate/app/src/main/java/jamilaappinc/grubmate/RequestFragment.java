@@ -240,7 +240,8 @@ public void onClick(View view) {
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
 
-            final Request request = new Request(location,mPost.getmId(), numOfServings, mPost, ID);
+            System.out.println("meldoy request fragment argument");
+            final Request request = new Request(null,mPost.getmId(), numOfServings, mPost, ID);
 
 
 

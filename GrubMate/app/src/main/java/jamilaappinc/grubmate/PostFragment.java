@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -119,6 +124,9 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     String foodPics = "photos";
 
+    private PlaceAutocompleteFragment autocompleteFragment;
+    private Place myPlace;
+
 
     android.support.design.widget.FloatingActionButton floatButton;
 
@@ -135,7 +143,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
-        System.out.println("IVANS passing from newInstance" + edit);
+//        System.out.println("IVANS passing from newInstance" + edit);
         args.putString(ARG_PARAM2, edit);
         fragment.setArguments(args);
         return fragment;
@@ -167,6 +175,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //            dbNoteToEdit = database.getReferenceFromUrl(FirebaseKey);
 
         }
+
+
     }
 
     @Override
@@ -217,14 +227,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Post n = dataSnapshot.getValue(Post.class);
                     _title.setText(n.getmTitle());
-//                    _dietary.setText(n.get);
-                    _location.setText(n.getmLocation());
+                    autocompleteFragment.setText(n.getmAddress().toString());
+//                    _location.setText(n.getmLocation());
                     _servings.setText(Integer.toString(n.getmServings()));
                     _tags.setText(n.getmTags().toString());
                     _descriptions.setText(n.getmDescription());
                     _homemade.setChecked(n.getHomemade());
-//                    startDateTime.setTime(n.getmStartDate().getTime());
-//                    endDateTime.setTime(n.getmEndDate().getTime());
                     foodPics = n.getmPhotos();
                     Glide.with(PostFragment.this)
                             .load(n.getmPhotos())
@@ -233,28 +241,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                             .crossFade()
                             .into(pImage);
 
-//                    Glide.with(PostFragment.this)
-//                            .load(n.getmPhotos())
-//                            .centerCrop()
-//                            .placeholder(R.drawable.gmlogo)
-//                            .crossFade()
-//                            .into(pImage2);
-//
-//                    Glide.with(PostFragment.this)
-//                            .load(n.getmPhotos())
-//                            .centerCrop()
-//                            .placeholder(R.drawable.gmlogo)
-//                            .crossFade()
-//                            .into(pImage3);
-//
-//                    Glide.with(PostFragment.this)
-//                            .load(n.getmPhotos())
-//                            .centerCrop()
-//                            .placeholder(R.drawable.gmlogo)
-//                            .crossFade()
-//                            .into(pImage4);
-//                }
-                    System.out.println("IVAN" + n);
                 }
 
                 @Override
@@ -263,14 +249,33 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 }
             });
 
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
         }
         addListeners();
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                myPlace = place;
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("meldoy", "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        autocompleteFragment.setText("");
+                        myPlace = null;
+                    }
+                });
 
 
         return v;
@@ -289,12 +294,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         endDateButton = (Button)v.findViewById(R.id.post_endDateButton);
         startTimeButton = (Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
-//        pAddPictureButton = (Button)v.findViewById(R.id.post_add_picture);
-
-
         _title = (EditText)v.findViewById(R.id.post_titleText);
         _dietary = (EditText)v.findViewById(R.id.dietaryText);
-        _location = (EditText)v.findViewById(R.id.locationText);
         _servings = (EditText)v.findViewById(R.id.ServingsText);
         _tags = (EditText)v.findViewById(R.id.tagsText);
         _descriptions = (EditText)v.findViewById(R.id.post_description);
@@ -346,14 +347,14 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         boolean filled = false;
         title = _title.getText().toString().trim();
         dietary = _dietary.getText().toString().trim();
-        location = _location.getText().toString().trim();
         servings = _servings.getText().toString().trim();
-        //        date = _date.getText().toString().trim();
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-        Log.d("error check", "" + dateTime + (title.length()>0) + (location.length()>0) + (servings.length()>0) + (tags.length()>0) + (descriptions.length()>0) + (categories.size() > 0));
-        filled = (groups.size() >0 && dateTime && (title.length()>0) && (location.length()>0) && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+       if(myPlace!=null) {
+           Log.d("meldoy", "" + dateTime + (title.length() > 0) + myPlace.getName() + (servings.length() > 0) + (tags.length() > 0) + (descriptions.length() > 0) + (categories.size() > 0));
+       }
+        filled = (groups.size() >0 && dateTime && (myPlace != null) && (title.length()>0)  && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
 
         return filled;
 
@@ -509,7 +510,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     else
                     {
                         System.out.println("post fragment: " + endDateTime);
-                        final Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+                        System.out.println("meldoy the place is " + myPlace.getName());
+                        final Post post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         for(int i = 0; i < groups.size(); i++){
@@ -522,50 +524,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS); // gets all of the users to update the user's posts information
                         dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts
 
-
-                        // final DatabaseReference ref = database.getReference();
-                        dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener(){
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                /* TERENCE'S STUFF
-
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                ArrayList<String> tempPostList = dataSnapshot.child("Users").child(ID).child("userPosts").getValue(ArrayList.class);
-                                if (tempPostList == null) {
-                                    tempPostList = new ArrayList<String>();
-                                }
-                                int listSize = tempPostList.size() + 1;
-                                System.out.println("CURRENT LISTSIZE " + listSize);
-                                tempPostList.add(Integer.toString(listSize));
-                                dbRefUsers.child(ID).child("userPosts").child(Integer.toString(listSize)).setValue(post.getmId());
-
-                            }
-
-
-                                 */
-
-                               /* Map<String, String> tempPostList = (Map<String, String>)dataSnapshot.child("Users").child(ID).child("userPosts").getValue();
-                                System.out.println("meldoy help");
-                                if (tempPostList == null) {
-                                    tempPostList = new HashMap<String, String>();
-                                }
-                                int listSize = tempPostList.size() + 1;
-                                System.out.println("CURRENT LISTSIZE " + listSize);
-                                tempPostList.put(Integer.toString(listSize), post.getmId());*/
-//                                String key = dbRefUsers.child(ID).child("userPosts").push().getKey();
-
-
-//                                 dbRefUsers.child(ID).child("userPosts").child(key).setValue(post.getmId()); //this line is what adds the post id to the user's userPosts
-
-//   userNewPostRef.setValue(post.getmId());
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
 
                         final DatabaseReference dbRefSubs = database.getInstance().getReference().child("Subscription");
 
@@ -581,9 +539,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                                 boolean matchingSub = true;
 
                                 for (int i = 0; i < categories.size(); i++) {
-                                    System.out.println("POST CATEGORIES CURRENT " + categories.get(i));
                                     for (int j = 0; j < sub.getmCategories().size(); j++) {
-                                        System.out.println("SUB CATEGORIES CURRENT " + sub.getmCategories().get(j));
 
                                         if (categories.get(i).equals(sub.getmCategories().get(j))) {
                                             System.out.println("MATCH");
@@ -1022,7 +978,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         {
             System.out.println("FOOD PIC2" + s);
         }
-        Post post = new Post(title, descriptions, location, startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
+        Post post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
         post.addmAcceptedUsers("initial");
         post.setmAllFoodPics(allPicsTho);
         //        PictureSingleton.get(getActivity()).addMovie(picUri);

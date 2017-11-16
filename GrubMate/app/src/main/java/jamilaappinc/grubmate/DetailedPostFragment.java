@@ -19,6 +19,13 @@ import android.widget.Button;
 import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.common.api.Response;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +34,10 @@ import com.google.firebase.database.ValueEventListener;
 import android.widget.ViewSwitcher.ViewFactory;
 import android.graphics.BitmapFactory;
 import android.view.animation.AnimationUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -39,7 +50,7 @@ import java.util.ArrayList;
  * {@link DetailedPostFragment} interface
  * to handle interaction events.
  */
-public class DetailedPostFragment extends Fragment {
+public class DetailedPostFragment extends Fragment implements OnMapReadyCallback {
 
     TextView fPostName;
     TextView fUsername;
@@ -74,6 +85,11 @@ public class DetailedPostFragment extends Fragment {
 
     private static final String ARG_URL = "itp341.firebase.ARG_URL";
     private static final String ARG_POSTS = "itp341.firebase.ARGPOSTS";
+
+    private String baseURL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    private String mapsApiKey = "AIzaSyBJmhcsJPAAKvCtiCnjgkvWadbf4NNd2wg";
+    private GoogleMap mMap;
+
 
 
 
@@ -112,6 +128,8 @@ public class DetailedPostFragment extends Fragment {
         if(urlToEdit != null) { // NULL if we are adding a new record
             dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
         }
+
+
     }
 
 
@@ -140,6 +158,9 @@ public class DetailedPostFragment extends Fragment {
         fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fRating = (TextView) v.findViewById(R.id.userRatings);
+
+        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.mapView);
+        mapFragment.getMapAsync(this);
 
         if(n.getmAllFoodPics() != null)
         {
@@ -207,6 +228,7 @@ public class DetailedPostFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
 
         //todo read selected note
 //        if(dbNoteToEdit != null) {  // null if urlToEdit is null
@@ -346,6 +368,8 @@ public class DetailedPostFragment extends Fragment {
         return v;
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -377,6 +401,21 @@ public class DetailedPostFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+
+        // Add a marker in Sydney, Australia, and move the camera.
+        LatLng location = new LatLng(n.getmLatitude(), n.getmLongitude());
+        mMap.addMarker(new MarkerOptions().position(location).title(n.getmAddress().toString()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+
+    }
+
+
 
     private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

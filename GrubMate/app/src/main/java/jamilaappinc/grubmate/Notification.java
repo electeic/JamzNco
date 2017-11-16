@@ -16,6 +16,7 @@ public class Notification implements Serializable{
     protected String mType;
     protected String subscriptionMatchingPostsTitles;
 
+
     public Notification(){
 
     }

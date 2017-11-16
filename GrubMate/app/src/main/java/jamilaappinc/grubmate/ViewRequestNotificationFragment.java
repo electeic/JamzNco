@@ -12,6 +12,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewRequestNotificationFragment extends Fragment {
+public class ViewRequestNotificationFragment extends Fragment implements OnMapReadyCallback {
 
     android.support.design.widget.FloatingActionButton floatButton;
     private Notification notification;
@@ -38,7 +42,14 @@ public class ViewRequestNotificationFragment extends Fragment {
     private Request request;
     private DatabaseReference dbRefUsers, dbRefRequests;
     FirebaseDatabase database;
+    private GoogleMap myMap;
+
     //private String status;
+
+    //google maps stuff
+    private String baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
+    private String mapsApiKey = "AIzaSyBJmhcsJPAAKvCtiCnjgkvWadbf4NNd2wg";
+
 
     public ViewRequestNotificationFragment() {
         // Required empty public constructor
@@ -76,11 +87,7 @@ public class ViewRequestNotificationFragment extends Fragment {
         name.setText(request.getRequestedUserName());
         title.setText(request.getmPost().getmTitle());
         size.setText(""+request.getmServings());
-        location.setText(request.getmLocation());
-      /*  name.setText(notification.getmFromUser().getName());
-        title.setText(notification.getmAboutPost().getmTitle());
-        size.setText(notification.getmAboutPost().getmServings()+"");
-        location.setText(notification.getmAboutPost().getmLocation());*/
+        location.setText("LOOK AT LINE 90 of ViewReqNotifFrag");
     }
 
     private void initComponents(View v){
@@ -98,7 +105,33 @@ public class ViewRequestNotificationFragment extends Fragment {
 
         notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
 
+        // Google Maps API - Create instance of map fragment to be embedded in current fragment
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
+        if(mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
+
+
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        myMap = googleMap;
+      /*  LatLng destLatLng = request.getmLocation();
+        LatLng originLatLng = request.getmPost().getmLocation();
+        double destLat = request.getmLocation().latitude;
+        double destLong = request.getmLocation().longitude;
+        double originLat = request.getmPost().getmLocation().latitude;
+        double originLong = request.getmPost().getmLocation().longitude;
+
+        String url = baseURL+originLat+","+originLong+"&destinations="+destLat+","+destLong+"&key="+mapsApiKey;
+
+        LatLng sydney = new LatLng(-34, 151);
+        myMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     private void addListeners() {

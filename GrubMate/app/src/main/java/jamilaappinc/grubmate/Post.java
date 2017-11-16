@@ -3,6 +3,8 @@ package jamilaappinc.grubmate;
 import android.widget.Toast;
 
 import com.facebook.FacebookActivity;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +21,8 @@ import java.util.Vector;
 public class Post implements Serializable {
     String mTitle;
     String mDescription;
-    String mLocation;
+    String mAddress;
+    double mLatitude, mLongitude;
     Date mStartDate, mEndDate;
     ArrayList<String> mCategories;
     ArrayList<String> mTags;
@@ -50,14 +53,16 @@ public class Post implements Serializable {
         this.mAllFoodPics = mAllFoodPics;
     }
 
-    public Post(String mTitle, String mDescription, String mLocation, Date mStart, Date mEnd,
+    public Post(String mTitle, String mDescription, double mLatitude, double mLongitude, String mAddress, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
                 ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId,
                 String authorPicture, String mFirebaseKey, ArrayList<String> allFoodPics) {
         this.mAuthorId = mAuthorId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
-        this.mLocation = mLocation;
+        this.mLatitude = mLatitude;
+        this.mLongitude = mLongitude;
+        this.mAddress = mAddress;
         this.mStartDate = mStart;
         this.mEndDate = mEnd;
         this.mCategories = mCategories;
@@ -138,13 +143,21 @@ public class Post implements Serializable {
         this.mDescription = mDescription;
     }
 
-    public String getmLocation() {
-        return mLocation;
+    public String getmAddress() {
+        return mAddress;
     }
 
-    public void setmLocation(String mLocation) {
-        this.mLocation = mLocation;
+    public void setmAddress(String mAddress) {
+        this.mAddress = mAddress;
     }
+
+    public double getmLatitude(){return mLatitude;}
+
+    public void setmLatitude(double mLatitude){this.mLatitude = mLatitude;}
+
+    public double getmLongitude(){return mLongitude;}
+
+    public void setmLongitude(double mLongitude){this.mLongitude = mLongitude;}
 
     public Date getmStartDate() {
         return mStartDate;
