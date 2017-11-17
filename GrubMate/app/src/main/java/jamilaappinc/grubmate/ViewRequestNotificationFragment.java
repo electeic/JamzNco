@@ -2,8 +2,11 @@ package jamilaappinc.grubmate;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,25 +15,42 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewRequestNotificationFragment extends Fragment implements OnMapReadyCallback {
+public class ViewRequestNotificationFragment extends Fragment implements
+        OnMapReadyCallback,
+        GoogleMap.OnPolylineClickListener,
+        GoogleMap.OnPolygonClickListener {
 
     android.support.design.widget.FloatingActionButton floatButton;
     private Notification notification;
@@ -42,13 +62,15 @@ public class ViewRequestNotificationFragment extends Fragment implements OnMapRe
     private Request request;
     private DatabaseReference dbRefUsers, dbRefRequests;
     FirebaseDatabase database;
-    private GoogleMap myMap;
+    private GoogleMap mMap;
+    private ArrayList<LatLng> markerPoints;
 
     //private String status;
 
     //google maps stuff
-    private String baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
-    private String mapsApiKey = "AIzaSyBJmhcsJPAAKvCtiCnjgkvWadbf4NNd2wg";
+//    private String baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
+    private String baseURL = "https://maps.googleapis.com/maps/api/directions/json?&origin=";
+    private String mapsApiKey = "AIzaSyC48IsyZN5lkXybRzkJJj20BilB9q_xZsY";
 
 
     public ViewRequestNotificationFragment() {
@@ -87,7 +109,7 @@ public class ViewRequestNotificationFragment extends Fragment implements OnMapRe
         name.setText(request.getRequestedUserName());
         title.setText(request.getmPost().getmTitle());
         size.setText(""+request.getmServings());
-        location.setText("LOOK AT LINE 90 of ViewReqNotifFrag");
+        location.setText(request.getAddress());
     }
 
     private void initComponents(View v){
@@ -105,6 +127,7 @@ public class ViewRequestNotificationFragment extends Fragment implements OnMapRe
 
         notifications = (ArrayList<Notification>)getArguments().getSerializable(ViewNotificationsActivity.GET_ALL_NOTIFICATIONS);
 
+        markerPoints = new ArrayList<LatLng>();
         // Google Maps API - Create instance of map fragment to be embedded in current fragment
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
@@ -115,24 +138,173 @@ public class ViewRequestNotificationFragment extends Fragment implements OnMapRe
 
 
 
+
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        myMap = googleMap;
-      /*  LatLng destLatLng = request.getmLocation();
-        LatLng originLatLng = request.getmPost().getmLocation();
-        double destLat = request.getmLocation().latitude;
-        double destLong = request.getmLocation().longitude;
-        double originLat = request.getmPost().getmLocation().latitude;
-        double originLong = request.getmPost().getmLocation().longitude;
+        mMap = googleMap;
+//        mMap.setMyLocationEnabled(true);
 
-        String url = baseURL+originLat+","+originLong+"&destinations="+destLat+","+destLong+"&key="+mapsApiKey;
+        double destLat = request.getLatitude();
+        double destLong = request.getLongitude();
+        double originLat = request.mPost.getmLatitude();
+        double originLong = request.getmPost().getmLongitude();
+        LatLng destLatLng = new LatLng(destLat,destLong);
+        LatLng originLatLng = new LatLng(originLat,originLong);
 
-        LatLng sydney = new LatLng(-34, 151);
+
+        String url = baseURL+originLat+","+originLong+"&destination="+destLat+","+destLong+"&key="+mapsApiKey;
+
+        System.out.println("meldoy the url is " + url);
+
+        DownloadTask downloadTask = new DownloadTask();
+        downloadTask.execute(url);
+
+        mMap.addMarker(new MarkerOptions().position(originLatLng).title("Start: " +request.getmPost().getmAddress()));
+        mMap.addMarker(new MarkerOptions().position(destLatLng).title("End: " +request.getAddress()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originLatLng, 15));
+
+
+
+        /*Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .add( destLatLng,originLatLng));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destLatLng, 15));
+
+
+        // Set listeners for click events.
+        googleMap.setOnPolylineClickListener(this);
+        googleMap.setOnPolygonClickListener(this);*/
+
+
+        /*LatLng sydney = new LatLng(-34, 151);
         myMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+        myMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
+
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try{
+            URL url = new URL(strUrl);
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            // Connecting to url
+            urlConnection.connect();
+
+            // Reading data from url
+            iStream = urlConnection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+            StringBuffer sb  = new StringBuffer();
+
+            String line = "";
+            while( ( line = br.readLine())  != null){
+                sb.append(line);
+            }
+
+            data = sb.toString();
+
+            br.close();
+
+        }catch(Exception e){
+            Log.d("Exception dwnld url", e.toString());
+        }finally{
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+    // Fetches data from url passed
+    private class DownloadTask extends AsyncTask<String, Void, String> {
+
+        // Downloading data in non-ui thread
+        @Override
+        protected String doInBackground(String... url) {
+
+            // For storing data from web service
+            String data = "";
+
+            try{
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
+            }
+            return data;
+        }
+
+        // Executes in UI thread, after the execution of
+        // doInBackground()
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+        }
+    }
+
+
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>> {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try{
+                jObject = new JSONObject(jsonData[0]);
+                DirectionsJSONParser parser = new DirectionsJSONParser();
+
+                // Starts parsing data
+                routes = parser.parse(jObject);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points = new ArrayList<LatLng>();;
+            PolylineOptions lineOptions = new PolylineOptions();;
+            lineOptions.width(5);
+            lineOptions.color(Color.BLUE);
+            MarkerOptions markerOptions = new MarkerOptions();
+            // Traversing through all the routes
+            for(int i=0;i<result.size();i++){
+                // Fetching i-th route
+                List<HashMap<String, String>> path = result.get(i);
+                // Fetching all the points in i-th route
+                for(int j=0;j<path.size();j++){
+                    HashMap<String,String> point = path.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+                // Adding all the points in the route to LineOptions
+                lineOptions.addAll(points);
+
+            }
+            // Drawing polyline in the Google Map for the i-th route
+            if(points.size()!=0)mMap.addPolyline(lineOptions);//to avoid crash
+        }
+    }
+
+
+
+
 
     private void addListeners() {
         floatButton.setOnClickListener(
@@ -233,4 +405,13 @@ public class ViewRequestNotificationFragment extends Fragment implements OnMapRe
     }
 
 
+    @Override
+    public void onPolygonClick(Polygon polygon) {
+
+    }
+
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+
+    }
 }

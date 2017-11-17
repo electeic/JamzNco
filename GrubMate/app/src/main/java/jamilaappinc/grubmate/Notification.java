@@ -15,7 +15,9 @@ public class Notification implements Serializable{
     protected String mId;
     protected String mType;
     protected String subscriptionMatchingPostsTitles;
-
+    protected double destinationLongitude, originLongitude; //origin is the original post's information
+    protected double destinationLatitude, originLatitude;
+    protected String destinationAddress, originAddress;
 
     public Notification(){
 
@@ -32,6 +34,24 @@ public class Notification implements Serializable{
         this.mAboutPost = mAboutPost;
         this.mToUser = mToUser;
     }
+
+    public double getDestinationLongitude(){return destinationLongitude;}
+    public  void setDestinationLongitude(double destinationLongitude){this.destinationLongitude = destinationLongitude;}
+    public double getDestinationLatitude(){return destinationLatitude;}
+    public void setDestinationLatitude(double destinationLatitude){this.destinationLatitude = destinationLatitude;}
+    public String getDestinationAddress(){return destinationAddress;}
+    public void setDestinationAddress(String destinationAddress){this.destinationAddress = destinationAddress;}
+
+    public double getOriginLongitude(){return originLongitude;}
+    public  void setOriginLongitude(double originLongitude){this.originLongitude = originLongitude;}
+    public double getOriginLatitude(){return originLatitude;}
+    public void setOriginLatitude(double originLatitude){this.originLatitude = originLatitude;}
+    public String getOriginAddress(){return originAddress;}
+    public void setOriginAddress(String originAddress){this.originAddress = originAddress;}
+
+
+
+
     public String getmFromUserName(){return mFromUserName;}
     public void setmFromUserName(String name) {mFromUserName = name;}
     public String getmFromUser() {

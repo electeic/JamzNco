@@ -65,6 +65,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
     TextView fStartTime;
     TextView fEndTime;
     TextView fRating;
+    TextView fAddress;
     Button fRequestButton;
     TextView fServings;
     FirebaseDatabase database;
@@ -158,7 +159,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         fFoodPicture = (ImageView) v.findViewById(R.id.foodPhoto);
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fRating = (TextView) v.findViewById(R.id.userRatings);
-
+        fAddress = (TextView) v.findViewById(R.id.LocationText);
         SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
@@ -196,7 +197,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         fServings = (TextView) v.findViewById(R.id.num_portions);
         fRating = (TextView) v.findViewById(R.id.userRatings);
 
-        if(!n.getmActive()){
+        if(!n.getmActive() || (n.getmAuthorId().equals(ID))){
             fRequestButton.setVisibility(View.INVISIBLE);
         }
 
@@ -350,6 +351,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
 
         fStartTime.setText(n.getmStartDate().toString());
         fEndTime.setText(n.getmEndDate().toString());
+        fAddress.setText(n.getmAddress());
 
 //        Glide.with(DetailedPostFragment.this)
 //                .load(n.getmPhotos())

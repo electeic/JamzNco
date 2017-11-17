@@ -20,10 +20,13 @@ public class Request implements Serializable{
     boolean mActive;
     Post mPost;
     String requestedUserName;
-    LatLng mLocation;
+    String address;
+    double latitude, longitude;
 
-    public Request(LatLng mLocation, String mRequestedPost, int mServings,Post post, String muser) {
-        this.mLocation = mLocation;
+    public Request(double latitude,double longitude, String address , String mRequestedPost, int mServings,Post post, String muser) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
         this.mRequestedPostId = mRequestedPost; //id of the request in the DB
         this.mServings = mServings;
         mRequestUserId = muser; //  the id of the user making the request
@@ -45,14 +48,17 @@ public class Request implements Serializable{
 
     public String getmRequestUserId(){ return mRequestUserId; }
 
-    public LatLng getmLocation() {
-        return mLocation;
-    }
+    public double getLatitude(){return latitude;}
 
-    public void setmLocation(LatLng mLocation) {
-        this.mLocation = mLocation;
-    }
+    public void setLatitude(double latitude){this.latitude = latitude;}
 
+    public double getLongitude(){return longitude;}
+
+    public void setLongitude(double longitude){this.longitude = longitude;}
+
+    public String getAddress(){return address;}
+
+    public void setAddress(String address){this.address = address;}
     public String getmRequestedPost() {
         return mRequestedPostId;
     }

@@ -17,6 +17,10 @@ import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,6 +72,8 @@ public class RequestFragment extends Fragment {
 
    // String status;
 
+    private PlaceAutocompleteFragment autocompleteFragment;
+    private Place myPlace;
 
 
 
@@ -118,15 +124,17 @@ public class RequestFragment extends Fragment {
         if(urlToEdit != null) { // NULL if we are adding a new record
             dbNoteToEdit = database.getReferenceFromUrl(urlToEdit);
         }
+
+
     }
 
     private Boolean checkAllFilled(){
         boolean filled = false;
-        location = rLocation.getText().toString().trim();
+//        location = rLocation.getText().toString().trim();
         numOfServings = Integer.parseInt(rNumOfServingsLabel.getText().toString().trim());
 
-        Log.d("error check",""+(location.length()>0)+(numOfServings>0));
-        filled = ((location.length()>0) && (numOfServings>0));
+//        Log.d("error check",""+(location.length()>0)+(numOfServings>0));
+        filled = ((myPlace!=null) && (numOfServings>0));
 
         return filled;
 
@@ -174,7 +182,7 @@ public class RequestFragment extends Fragment {
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
 
-        rLocation = (EditText) v.findViewById(R.id.locationText);
+//        rLocation = (EditText) v.findViewById(R.id.locationText);
         cancelButton = (Button) v.findViewById(R.id.request_cancelButton);
         submitButton = (Button) v.findViewById(R.id.request_submitButton);
         rServingsChosen = (SeekBar) v.findViewById(R.id.possibleServings);
@@ -182,6 +190,31 @@ public class RequestFragment extends Fragment {
         rNumOfServingsLabel = (TextView) v.findViewById(R.id.servingsWanted);
         rNumOfServingsLabel.setText("1");
 
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                myPlace = place;
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("meldoy", "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        autocompleteFragment.setText("");
+                        myPlace = null;
+                    }
+                });
 
         rServingsChosen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -240,8 +273,7 @@ public void onClick(View view) {
             Intent i = getActivity().getIntent();
             final String ID = i.getStringExtra("ID");
 
-            System.out.println("meldoy request fragment argument");
-            final Request request = new Request(null,mPost.getmId(), numOfServings, mPost, ID);
+            final Request request = new Request(myPlace.getLatLng().latitude, myPlace.getLatLng().longitude, myPlace.getAddress().toString(),mPost.getmId(), numOfServings, mPost, ID);
 
 
 
@@ -253,14 +285,30 @@ public void onClick(View view) {
             DatabaseReference databaseRef = database.getReference().child("Request").child(key);
             databaseRef.setValue(request);
 
-            final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+            DatabaseReference databaseNotifRef;
+
+            //make notification to the person who made the post saying that you requested the item
+            Notification notification = new Notification(ID, request.getmPost().getmId() ,request.getmPost().getmAuthorId(),key, NotificationReference.REQUEST);
+            System.out.println("Meldoy the notification post id is "+ notification.getmAboutPost());
+            databaseNotifRef = database.getReference().child("Notification").child(key);
+            notification.setMatchingPostTitle(request.getmPost().getmTitle());
+            notification.setDestinationLatitude(request.getLatitude());
+            notification.setDestinationLongitude(request.getLongitude());
+            notification.setDestinationAddress(request.getAddress());
+            notification.setOriginLatitude(request.getmPost().getmLatitude());
+            notification.setOriginLongitude(request.getmPost().getmLongitude());
+            notification.setOriginAddress(request.getmPost().getmAddress());
+            notification.setmId(key);
+            notification.setmFromUserName(currUserName);
+            databaseNotifRef.setValue(notification);
+
+         /*   final DatabaseReference dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
             // final DatabaseReference ref = database.getReference();
             dbRefUsers.child("Users").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference databaseRef;
-                    DatabaseReference databasePostRef;
 
 //                    key = database.getReference("Notification").push().getKey();
                     //make notification to the person who made the post saying that you requested the item
@@ -268,11 +316,13 @@ public void onClick(View view) {
                     System.out.println("Meldoy the notification post id is "+ notification.getmAboutPost());
                     databaseRef = database.getReference().child("Notification").child(key);
                     notification.setMatchingPostTitle(request.getmPost().getmTitle());
-                    System.out.println("MELDOY the title is "+ notification.getMatchingPostTitle());
+                    notification.setDestinationLatitude(request.getLatitude());
+                    notification.setDestinationLongitude(request.getLongitude());
+                    notification.setDestinationAddress(request.getAddress());
                     notification.setmId(key);
                     notification.setmFromUserName(currUserName);
                     databaseRef.setValue(notification);
-                    dbRefUsers.child(request.getmPost().getmAuthorId()).child("notifications").child(key).setValue(notification.getmId());
+//                    dbRefUsers.child(request.getmPost().getmAuthorId()).child("notifications").child(key).setValue(notification.getmId());
 
 //                    String databasePostRef
                 }
@@ -282,7 +332,7 @@ public void onClick(View view) {
 
                 }
             });
-
+*/
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.putExtra("ID", ID);

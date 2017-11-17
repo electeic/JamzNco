@@ -61,17 +61,19 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
-                <EditText
-                    android:paddingBottom="20dp"
+                <TextView
                     android:id="@+id/locationText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:layout_below="@+id/possibleServings"
-                    android:hint="Location *" />
+                    android:text="Location *" />
 
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
