@@ -114,6 +114,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     String userProfilePic;
     String FirebaseKey;
    // private String status;
+    boolean edit = false;
 
     ArrayList<String> foodPhotosInPosts = new ArrayList<>();
 
@@ -126,7 +127,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
     private PlaceAutocompleteFragment autocompleteFragment;
     private Place myPlace;
-
+    private String locationText;
+    private Post n;
 
     android.support.design.widget.FloatingActionButton floatButton;
 
@@ -188,9 +190,11 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         initGUIComp(v);
         ID = i.getStringExtra("ID");
         currUserName = i.getStringExtra("Name");
+
        // status = i.getStringExtra("Status");
         userFriends = (ArrayList<String>) i.getSerializableExtra("Users");
         userProfilePic = (String) i.getSerializableExtra("MyProfilePicture");
+        edit = (boolean)i.getSerializableExtra("Edit");
 
         subsReadCount.add(0);
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
@@ -209,48 +213,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
             }
         });
-
-        //todo read selected note
-        if(mParam2 != null) {  // null if urlToEdit is null
-            // read from the note to update
-//            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // convert this "data snapshot" to a model class
-//                    Post n = dataSnapshot.getValue(Post.class);
-            DatabaseReference ref = database.getReference().child("Post").child(mParam2);
-
-
-            // Attach a listener to read the data at our posts reference
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Post n = dataSnapshot.getValue(Post.class);
-                    _title.setText(n.getmTitle());
-                    autocompleteFragment.setText(n.getmAddress().toString());
-//                    _location.setText(n.getmLocation());
-                    _servings.setText(Integer.toString(n.getmServings()));
-                    _tags.setText(n.getmTags().toString());
-                    _descriptions.setText(n.getmDescription());
-                    _homemade.setChecked(n.getHomemade());
-                    foodPics = n.getmPhotos();
-                    Glide.with(PostFragment.this)
-                            .load(n.getmPhotos())
-                            .centerCrop()
-                            .placeholder(R.drawable.gmlogo)
-                            .crossFade()
-                            .into(pImage);
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.out.println("The read failed: " + databaseError.getCode());
-                }
-            });
-
-        }
-        addListeners();
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -274,8 +236,54 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     public void onClick(View view) {
                         autocompleteFragment.setText("");
                         myPlace = null;
+                        locationText = null;
                     }
                 });
+
+
+        //todo read selected note
+        if(mParam2 != null) {  // null if urlToEdit is null
+            // read from the note to update
+//            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // convert this "data snapshot" to a model class
+//                    Post n = dataSnapshot.getValue(Post.class);
+            DatabaseReference ref = database.getReference().child("Post").child(mParam2);
+
+
+            // Attach a listener to read the data at our posts reference
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    n = dataSnapshot.getValue(Post.class);
+                    _title.setText(n.getmTitle());
+                    autocompleteFragment.setText(n.getmAddress().toString());
+                    locationText = n.getmAddress().toString();
+
+//                    _location.setText(n.getmLocation());
+                    _servings.setText(Integer.toString(n.getmServings()));
+                    _tags.setText(n.getmTags().toString());
+                    _descriptions.setText(n.getmDescription());
+                    _homemade.setChecked(n.getHomemade());
+                    foodPics = n.getmPhotos();
+                    Glide.with(PostFragment.this)
+                            .load(n.getmPhotos())
+                            .centerCrop()
+                            .placeholder(R.drawable.gmlogo)
+                            .crossFade()
+                            .into(pImage);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+
+        }
+        addListeners();
 
 
         return v;
@@ -351,12 +359,24 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
         boolean dateTime = checkDateTime();
-       if(myPlace!=null) {
-           Log.d("meldoy", "" + dateTime + (title.length() > 0) + myPlace.getName() + (servings.length() > 0) + (tags.length() > 0) + (descriptions.length() > 0) + (categories.size() > 0));
-       }
-        filled = (groups.size() >0 && dateTime && (myPlace != null) && (title.length()>0)  && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+       if(myPlace==null) { //if myplace is empty then check if you're editing
+           if(edit){//if locationText is null then there's no place set in
+               filled = (groups.size() >0 && dateTime && (locationText!=null) && (title.length()>0)  && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+               Log.d("meldoy edit 1", "" + (locationText!=null)+dateTime + (title.length() > 0) + (servings.length() > 0) + (tags.length() > 0) + (descriptions.length() > 0) + (categories.size() > 0));
+               return filled;
+           }
+           Log.d("meldoy edit 2", "" + (locationText!=null)+dateTime + (title.length() > 0) + (servings.length() > 0) + (tags.length() > 0) + (descriptions.length() > 0) + (categories.size() > 0));
 
-        return filled;
+           return false;
+       }else{
+           Log.d("meldoy edit 3", "" + (locationText!=null)+(myPlace != null)+dateTime + (title.length() > 0) + (servings.length() > 0) + (tags.length() > 0) + (descriptions.length() > 0) + (categories.size() > 0));
+
+           filled = (groups.size() >0 && dateTime && (myPlace != null) && (title.length()>0)  && (servings.length()>0) && (tags.length()>0) && (descriptions.length()>0) && (categories.size() > 0));
+           return filled;
+
+       }
+
+
 
     }
 
@@ -509,9 +529,23 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         new MyAsyncTask().execute(key);
                     else
                     {
-                        System.out.println("post fragment: " + endDateTime);
-                        System.out.println("meldoy the place is " + myPlace.getName());
-                        final Post post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+//                        System.out.println("post fragment: " + endDateTime);
+//                        System.out.println("meldoy the place is " + myPlace.getName());
+                        final Post post;
+                        if(!edit){
+                            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+
+                        }else{
+                            if(myPlace!=null){
+                                post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+
+                            }
+                            else{
+                                post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+
+                            }
+
+                        }
                         post.setmId(key);
                         post.addmAcceptedUsers("initial");
                         for(int i = 0; i < groups.size(); i++){

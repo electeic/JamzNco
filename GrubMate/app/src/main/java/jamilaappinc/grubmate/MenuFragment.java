@@ -196,6 +196,7 @@ public class MenuFragment extends Fragment {
                 intent.putExtra("Users", userFriends);
                 intent.putExtra("Name", currUserName);
                 intent.putExtra("MyProfilePicture", currPicture);
+                intent.putExtra("Edit",false);
                 //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
             }
