@@ -141,12 +141,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     }
 
     // TODO: Rename and change types and number of parameters
-    public static PostFragment newInstance(int pos, String edit) {
+    public static PostFragment newInstance(int pos, String edit2) {
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, pos);
 //        System.out.println("IVANS passing from newInstance" + edit);
-        args.putString(ARG_PARAM2, edit);
+        args.putString(ARG_PARAM2, edit2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -260,6 +260,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     _title.setText(n.getmTitle());
                     autocompleteFragment.setText(n.getmAddress().toString());
                     locationText = n.getmAddress().toString();
+                    if(n.getmAllFoodPics() != null)
+                    foodPhotosInPosts = n.getmAllFoodPics();
 
 //                    _location.setText(n.getmLocation());
                     _servings.setText(Integer.toString(n.getmServings()));
@@ -270,10 +272,49 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                     Glide.with(PostFragment.this)
                             .load(n.getmPhotos())
                             .centerCrop()
-                            .placeholder(R.drawable.gmlogo)
+                            .placeholder(R.drawable.hamburger)
                             .crossFade()
                             .into(pImage);
 
+                    if(n.getmAllFoodPics() != null) {
+                        int liimtSizeforPics = n.getmAllFoodPics().size();
+                        if (n.getmAllFoodPics().get(0) != null) {
+                            Glide.with(PostFragment.this)
+                                    .load(n.getmAllFoodPics().get(0))
+                                    .centerCrop()
+                                    .placeholder(R.drawable.gmlogo)
+                                    .crossFade()
+                                    .into(pImage);
+
+                        }
+                        if (liimtSizeforPics >= 2) {
+                            Glide.with(PostFragment.this)
+                                    .load(n.getmAllFoodPics().get(1))
+                                    .centerCrop()
+                                    .placeholder(R.drawable.gmlogo)
+                                    .crossFade()
+                                    .into(pImage2);
+
+                        }
+                        if (liimtSizeforPics >= 3) {
+                            Glide.with(PostFragment.this)
+                                    .load(n.getmAllFoodPics().get(2))
+                                    .centerCrop()
+                                    .placeholder(R.drawable.gmlogo)
+                                    .crossFade()
+                                    .into(pImage3);
+
+                        }
+                        if (liimtSizeforPics == 4) {
+                            Glide.with(PostFragment.this)
+                                    .load(n.getmAllFoodPics().get(3))
+                                    .centerCrop()
+                                    .placeholder(R.drawable.gmlogo)
+                                    .crossFade()
+                                    .into(pImage4);
+
+                        }
+                    }
                 }
 
                 @Override
@@ -303,7 +344,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         startTimeButton = (Button)v.findViewById(R.id.post_startTimeButton);
         endTimeButton = (Button)v.findViewById(R.id.post_endTimeButton);
         _title = (EditText)v.findViewById(R.id.post_titleText);
-        _dietary = (EditText)v.findViewById(R.id.dietaryText);
+//        _dietary = (EditText)v.findViewById(R.id.dietaryText);
         _servings = (EditText)v.findViewById(R.id.ServingsText);
         _tags = (EditText)v.findViewById(R.id.tagsText);
         _descriptions = (EditText)v.findViewById(R.id.post_description);
@@ -354,7 +395,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private Boolean checkAllFilled() {
         boolean filled = false;
         title = _title.getText().toString().trim();
-        dietary = _dietary.getText().toString().trim();
+//        dietary = _dietary.getText().toString().trim();
         servings = _servings.getText().toString().trim();
         tags = _tags.getText().toString().trim();
         descriptions = _descriptions.getText().toString().trim();
@@ -388,7 +429,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                 e.printStackTrace();
             }
         }
-        if(title.equals("") || dietary.equals("") || location.equals("") || servings.equals("") || tags.equals("") || startTime == null || endTime == null){
+        if(title.equals("") || location.equals("") || servings.equals("") || tags.equals("") || startTime == null || endTime == null){
             return false;
         }
         else{
@@ -654,6 +695,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
             {
                 System.out.println("FOOD PIC" + s);
             }
+            try {
+                Thread.sleep(3000);
+//                Thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             uploadMeta(result, foodPhotosInPosts);
         }
     }
@@ -819,51 +866,6 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //        uploadMeta(key, foodPhotosInPosts);
     }
 
-//    private void uploadFile2(String key)
-//    {
-//        if (filePath2 != null) {
-//
-//            //            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-//            //            progressDialog.setMessage("Uploading...");
-//            //            progressDialog.show();
-//            final String key2 = key;
-//
-//            StorageReference riversRef2 = mStorageRef.child("images/" + key + 2 + ".jpg");
-//
-//            riversRef2.putFile(filePath2)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // Get a URL to the uploaded content
-//                            //                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                            //                            progressDialog.dismiss();
-//                            @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
-//                            //                            Toast.makeText(getActivity().getApplicationContext(), "Uploaded Success", Toast.LENGTH_SHORT).show();
-////                            uploadMeta(downloadUri.toString(), key2);
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener(){
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            // Handle unsuccessful uploads
-//                            // ...
-//                            //                            Toast.makeText(getActivity().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-//                            //                            progressDialog.dismiss();
-//                        }
-//                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//                    //                    progressDialog.setMessage(((int)progress) + "% uploaded");
-//                }
-//            });
-//        }
-//        else
-//        {
-//
-//        }
-//    }
-
 
     public void showFileChooser()
     {
@@ -1012,7 +1014,16 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         {
             System.out.println("FOOD PIC2" + s);
         }
-        Post post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
+        Post post;
+        if(myPlace!=null){
+            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
+//            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
+
+        }
+        else{
+            post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+
+        }
         post.addmAcceptedUsers("initial");
         post.setmAllFoodPics(allPicsTho);
         //        PictureSingleton.get(getActivity()).addMovie(picUri);
