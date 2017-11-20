@@ -188,7 +188,7 @@ public class MainFragment extends Fragment {
 
                                     public void shuffle(){
                                         System.out.println("shuffling the posts!");
-                                        Collections.shuffle(myPost, new Random(System.currentTimeMillis()));
+                                       // Collections.shuffle(myPost, new Random(System.currentTimeMillis()));
                                         mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
                                         mListView.setAdapter(mAdapter);
                                     }
@@ -238,9 +238,10 @@ public class MainFragment extends Fragment {
 
                 public void shuffle(){
                     System.out.println("shuffling the posts!");
-                    Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
+                    //Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
                     mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
                     mListView.setAdapter(mAdapter);
+                    
                 }
             });
         }
