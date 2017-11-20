@@ -275,10 +275,7 @@ public class ViewNotificationsFragment extends Fragment {
                                    // i.putExtra("Status", status);
                                     startActivity(i);
                                 }
-
-
                             }
-
                         }
 
                         @Override
@@ -316,14 +313,9 @@ public class ViewNotificationsFragment extends Fragment {
 
                     Log.d("Damn", "it didn't recognize the type");
                 }
-
             }
         });
-
-
     }
-
-
 
 
     private class NotifAdapter extends ArrayAdapter<Notification> {
