@@ -353,7 +353,7 @@ public class ViewRequestNotificationFragment extends Fragment implements
                                     notification.setmId(key);
                                     notification.setmFromUserName(currUserName);
                                     databaseRef.setValue(notification);
-                                    dbRefRequests.child(request.getmId()).setValue(null);
+//                                    dbRefRequests.child(request.getmId()).setValue(null);
                                     dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
                                     DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
                                     String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();

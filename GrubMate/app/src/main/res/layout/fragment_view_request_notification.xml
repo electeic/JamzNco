@@ -10,179 +10,185 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-
-            <TextView
-                android:id="@+id/requestNotif_Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Request"
-                android:textAlignment="center"
-                android:textSize="25dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/requestNotif_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="User: "
-                    android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/requestNotif_userName"
+                    android:id="@+id/requestNotif_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="FName LName"
-                    android:textSize="20dp" />
-            </LinearLayout>
+                    android:text="Request"
+                    android:textAlignment="center"
+                    android:textSize="25dp" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/requestNotif_post"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Post: "
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/requestNotif_postTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Post Title"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/requestNotif_serving"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Serving Size: "
-                    android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/requestNotif_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="User: "
+                        android:textSize="20dp" />
 
-                <TextView
-                    android:id="@+id/requestNotif_servingAmt"
+                    <TextView
+                        android:id="@+id/requestNotif_userName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="FName LName"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="10"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/requestNotif_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Location: "
-                    android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/requestNotif_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Post: "
+                        android:textSize="20dp" />
 
-                <TextView
-                    android:id="@+id/requestNotif_locationAddr"
+                    <TextView
+                        android:id="@+id/requestNotif_postTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Post Title"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="123 Address Pl. Los Angeles"
-                    android:textSize="20dp" />
-            </LinearLayout>
+                    android:orientation="horizontal">
 
-            <fragment
-                android:id="@+id/mapView"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/helpLocation"
-                android:layout_centerInParent="true" />
+                    <TextView
+                        android:id="@+id/requestNotif_serving"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Serving Size: "
+                        android:textSize="20dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/requestNotif_servingAmt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="10"
+                        android:textSize="20dp" />
+                </LinearLayout>
 
-                <Button
-                    android:id="@+id/requestNotif_acceptButton"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="80dp"
-                    android:text="Accept" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/requestNotif_denyButton"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/requestNotif_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Location: "
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/requestNotif_locationAddr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="123 Address Pl. Los Angeles"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <fragment
+                    android:id="@+id/mapView"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/helpLocation"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Deny" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/requestNotif_acceptButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:text="Accept" />
+
+                    <Button
+                        android:id="@+id/requestNotif_denyButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Deny" />
+                </LinearLayout>
+
+
             </LinearLayout>
-
-
-
-
-        </LinearLayout>
+        </ScrollView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu_from_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="23dp"
-
-            android:src="@drawable/gmlogo"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="26dp" />
+
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="23dp"
+            android:layout_marginEnd="26dp"
+            android:src="@drawable/gmlogo" />
 
     </RelativeLayout>
 </FrameLayout>
