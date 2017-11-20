@@ -60,7 +60,7 @@ public class ViewRequestNotificationFragment extends Fragment implements
     private ArrayList<Notification> notifications = new ArrayList<Notification>();
     private ArrayList<String> userFriends = new ArrayList<>();
     private Request request;
-    private DatabaseReference dbRefUsers, dbRefRequests;
+    private DatabaseReference dbRefUsers, dbRefRequests, dbRefTransactions;
     FirebaseDatabase database;
     private GoogleMap mMap;
     private ArrayList<LatLng> markerPoints;
@@ -329,6 +329,7 @@ public class ViewRequestNotificationFragment extends Fragment implements
                         final FirebaseDatabase database = FirebaseDatabase.getInstance();
                         final DatabaseReference databasePostActiveRef, databasePostServingRef;
                         dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+                        dbRefTransactions = database.getInstance().getReference().child(FirebaseReferences.PASTTRANSACTIONS);
                         databasePostServingRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mServings");
                         databasePostActiveRef = database.getReference().child("Post").child(request.getmPost().getmId()).child("mActive");
                         databasePostServingRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -341,14 +342,34 @@ public class ViewRequestNotificationFragment extends Fragment implements
                                 }else{
                                     String key;
                                     DatabaseReference databaseRef;
+                                    DatabaseReference databaseRef2;
+                                    DatabaseReference databaseRef3;
 
                                     if(newServing == 0) databasePostActiveRef.setValue(false);
 
                                     databasePostServingRef.setValue(newServing);
 
                                     key = database.getReference("Notification").push().getKey();
+                                    String keytransations = database.getReference(FirebaseReferences.PASTTRANSACTIONS).push().getKey();
+                                    String keytransations2 = database.getReference(FirebaseReferences.PASTTRANSACTIONS).push().getKey();
+
                                     Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                                     databaseRef = database.getReference().child("Notification").child(key);
+
+                                    Transactions myTransaction = new Transactions(currUserName, request.getmPost().getmAuthorId() , ID, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations);
+                                    Transactions myTransaction2 = new Transactions(currUserName, request.getmPost().getmAuthorId() , request.mRequestUserId, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations2);
+
+                                    myTransaction2.setmAddress(request.getmPost().getmAddress());
+                                    myTransaction.setmAddress(request.getmPost().getmAddress());
+                                    myTransaction2.setTransactionID(keytransations2);
+                                    myTransaction.setTransactionID(keytransations);
+                                    //String mFromUser, String mToUser, String mId, double mLatitude, double mLongitude, String mAddress, String transactionID)
+                                    databaseRef2 = database.getReference().child(FirebaseReferences.PASTTRANSACTIONS).child(keytransations);
+                                    databaseRef3 = database.getReference().child(FirebaseReferences.PASTTRANSACTIONS).child(keytransations2);
+
+                                    databaseRef2.setValue(myTransaction);
+                                    databaseRef3.setValue(myTransaction2);
+
                                     notification.setMatchingPostTitle(request.getmPost().getmTitle());
                                     notification.setmId(key);
                                     notification.setmFromUserName(currUserName);
@@ -356,6 +377,7 @@ public class ViewRequestNotificationFragment extends Fragment implements
                                     dbRefRequests.child(request.getmId()).setValue(null);
                                     dbRefUsers.child(request.getmRequestUserId()).child("notifications").child(notification.getmId()).setValue(notification.getmId());
                                     DatabaseReference dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+
                                     String key2 = dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").push().getKey();
                                     dbRefPosts.child(request.getmPost().getmId()).child("mAcceptedUsers").child(key2).setValue(request.getmRequestUserId());
                                     request.getmPost().addmAcceptedUsers(request.getmRequestUserId());
@@ -367,9 +389,6 @@ public class ViewRequestNotificationFragment extends Fragment implements
                                     startActivity(i);
 
                                 }
-
-
-
                             }
 
                             @Override

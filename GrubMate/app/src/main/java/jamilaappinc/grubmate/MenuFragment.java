@@ -52,6 +52,7 @@ public class MenuFragment extends Fragment {
     TextView fLogout;
     TextView fCreateSubscription;
     TextView fMyPosts;
+    TextView fMyTransactions;
 
     User myUser;
 
@@ -91,6 +92,7 @@ public class MenuFragment extends Fragment {
         fLogout = (TextView)v.findViewById(R.id.logout);
         fCreateSubscription = (TextView)v.findViewById(R.id.createSubscription);
         fMyPosts = (TextView)v.findViewById(R.id.myPosts);
+        fMyTransactions = (TextView)v.findViewById(R.id.transactions);
 
         // DATABASE REFERENCING STUFF
         database = FirebaseDatabase.getInstance();
@@ -245,6 +247,19 @@ public class MenuFragment extends Fragment {
                 FacebookSdk.sdkInitialize(FacebookSdk.getApplicationContext());
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        fMyTransactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PastTransactionsActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name", currUserName);
+                // intent.putExtra("Status", status);
+                //                intent.putExtra(MyPostsActivity.GET_POSTS,  myUser.getUserPosts());
                 startActivityForResult(intent, 0);
             }
         });

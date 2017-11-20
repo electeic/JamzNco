@@ -14,5 +14,5 @@ public class FirebaseReferences {
     public static final String MYPOSTS = "userPosts";
     public static final String MYSUBS = "Subscription";
     public static final String REQUEST = "Request";
-
+    public static final String PASTTRANSACTIONS = "Pasttransactions";
 }
