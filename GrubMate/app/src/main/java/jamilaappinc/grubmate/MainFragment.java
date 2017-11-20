@@ -39,6 +39,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Adapter;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,23 +122,25 @@ public class MainFragment extends Fragment {
 //        System.out.println("IN MAIN FRAGMENT CONST, USER ID IS" + currUserId + currUserName);
 
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
         //find views
 
         postsReadCounter.add(0);
 
-        if(receivedPosts == null){
-            database.getReference().addListenerForSingleValueEvent(new ValueEventListener(){
+        if (receivedPosts == null) {
+            database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
 
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
                         if (snap.getKey().equals("Post")) {
-                            postCount.add((int)snap.getChildrenCount());
+                            postCount.add((int) snap.getChildrenCount());
                         }
                     }
-                    dbRefPosts.addChildEventListener(new ChildEventListener(){
+                    dbRefPosts.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             int postsRead = postsReadCounter.get(0);
@@ -145,16 +149,14 @@ public class MainFragment extends Fragment {
                             postsReadCounter.add(postsRead);
 
                             Post post = dataSnapshot.getValue(Post.class);
-                            if(userFriends != null)
-                            {
+                            if (userFriends != null) {
                                 for (int i = 0; i < userFriends.size(); i++) {
                                     if (post.getmAuthorId().equals(userFriends.get(i))) {
-                                        if(post.getTargetUsersString() != null && post.getTargetUsersString() != ""){//if have a group, then find the groups and see if user is a part of them
-                                            if(post.getTargetUsersString().contains(currUserId)){
+                                        if (post.getTargetUsersString() != null && post.getTargetUsersString() != "") {//if have a group, then find the groups and see if user is a part of them
+                                            if (post.getTargetUsersString().contains(currUserId)) {
                                                 myPost.add(post);
                                             }
-                                        }
-                                        else{
+                                        } else {
                                             myPost.add(post);
                                         }
                                     }
@@ -165,13 +167,32 @@ public class MainFragment extends Fragment {
 //                        System.out.println("POSTS COUNTER" + postCount.get(0));
 
                             if (postsReadCounter.get(0) == postCount.get(0)) {
-                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                                mListView = (ListView)v.findViewById(R.id.active_post_list);
+//                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+//                                mListView = (ListView) v.findViewById(R.id.active_post_list);
                                 //        postList = PostSingleton.get(getActivity()).getMovies();
                                 //        postAdapter = new PostListAdapter(getActivity(), Post.class,
                                 //                R.layout.list_active_posts_item,
                                 //                dbRefPosts);
+//                                mListView.setAdapter(mAdapter);
+
+                                mListView = (ListView) v.findViewById(R.id.active_post_list);
+                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
                                 mListView.setAdapter(mAdapter);
+                                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                    @Override
+                                    public void onRefresh() {
+                                        System.out.println("you pulled to refresh");
+                                        shuffle();
+                                        mSwipeRefreshLayout.setRefreshing(false);
+                                    }
+
+                                    public void shuffle(){
+                                        System.out.println("shuffling the posts!");
+                                        Collections.shuffle(myPost, new Random(System.currentTimeMillis()));
+                                        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+                                        mListView.setAdapter(mAdapter);
+                                    }
+                                });
                             }
                         }
 
@@ -203,24 +224,26 @@ public class MainFragment extends Fragment {
                 }
             });
 
-        }
-        else{
-//            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-//            mListView = (ListView)v.findViewById(R.id.active_post_list);
-//            mListView.setAdapter(mAdapter);
-
-            mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+        } else {
             mListView = (ListView) v.findViewById(R.id.active_post_list);
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
             mListView.setAdapter(mAdapter);
-//            mListView.setAdapter(new ArrayAdapter<String>(){
-//                String[] fakeTweets = getResources().getStringArray(R.array.categories);
-//                mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fakeTweets);
-//                mListview.setAdapter(mAdapter);
-//            });
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    System.out.println("you pulled to refresh");
+                    shuffle();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                public void shuffle(){
+                    System.out.println("shuffling the posts!");
+                    Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
+                    mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+                    mListView.setAdapter(mAdapter);
+                }
+            });
         }
-
-
 
 
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -242,6 +265,15 @@ public class MainFragment extends Fragment {
 
         return v;
     }
+
+
+//    public void shuffle(){
+//        System.out.println("shuffling the posts!");
+//        Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
+//        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+//        mListView.setAdapter(mAdapter);
+//    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
