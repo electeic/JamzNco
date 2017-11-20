@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import java.util.Collections ;
 
 /**
  * Created by ericajung on 10/16/17.
@@ -77,7 +78,10 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
     EditText title, tags;
     Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
+    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton;
     CheckBox homeMade;
+
+    boolean sortByTitleTrue, sortByEndTimeTrue, sortByStartTimeTrue = false;
 
     SimpleDateFormat sdf;
 
@@ -217,6 +221,9 @@ CheckBox homeMade;
         searchButton = (Button)v.findViewById(R.id.search_submit);
         cancelButton = (Button)v.findViewById(R.id.search_cancel);
         homeMade = (CheckBox)v.findViewById(R.id.post_homemadeCheck);
+        sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
+        sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
+        sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
 
         sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         sdf.setLenient(false);
@@ -234,6 +241,36 @@ CheckBox homeMade;
                 //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
+            }
+        });
+
+        sortByTitleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByTitleTrue = true;
+                sortByEndTimeTrue = false;
+                sortByStartTimeTrue = false;
+
+            }
+        });
+
+        sortByEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByTitleTrue = false;
+                sortByEndTimeTrue = true;
+                sortByStartTimeTrue = false;
+
+            }
+        });
+
+        sortByStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByTitleTrue = false;
+                sortByEndTimeTrue = false;
+                sortByStartTimeTrue = true;
+
             }
         });
 
@@ -359,6 +396,34 @@ CheckBox homeMade;
                             System.out.println("CATEGORIES MATCH DONE");
 
                             System.out.println("SIZE OF ALL MATCHING POSTS AFTER REMOVING IS " + allMatchingPosts.size());
+
+                            if(sortByTitleTrue){
+                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post1, Post post2)
+                                    {
+                                        return  post1.getmTitle().compareToIgnoreCase(post2.getmTitle());
+                                    }
+                                });
+                            }
+                            if(sortByEndTimeTrue){
+                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post1, Post post2)
+                                    {
+                                        return  post1.getmEndDate().compareTo(post2.getmEndDate());
+                                    }
+                                });
+                            }
+                            if(sortByStartTimeTrue){
+                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post1, Post post2)
+                                    {
+                                        return  post1.getmStartDate().compareTo(post2.getmStartDate());
+                                    }
+                                });
+                            }
 
 
                             for(int i = 0; i < allMatchingPosts.size(); i++){
