@@ -37,7 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.Adapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +52,7 @@ public class MainFragment extends Fragment {
     android.support.design.widget.FloatingActionButton floatButton;
     ListView mListView;
     public static final String IDString = "fuck";
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
     MovieAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
@@ -67,6 +68,7 @@ public class MainFragment extends Fragment {
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
     ArrayList<Post> receivedPosts = new ArrayList<>();
+
 
 
     public MainFragment() {
@@ -203,9 +205,19 @@ public class MainFragment extends Fragment {
 
         }
         else{
+//            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+//            mListView = (ListView)v.findViewById(R.id.active_post_list);
+//            mListView.setAdapter(mAdapter);
+
+            mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+            mListView = (ListView) v.findViewById(R.id.active_post_list);
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-            mListView = (ListView)v.findViewById(R.id.active_post_list);
             mListView.setAdapter(mAdapter);
+//            mListView.setAdapter(new ArrayAdapter<String>(){
+//                String[] fakeTweets = getResources().getStringArray(R.array.categories);
+//                mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fakeTweets);
+//                mListview.setAdapter(mAdapter);
+//            });
         }
 
 
@@ -227,10 +239,6 @@ public class MainFragment extends Fragment {
                 //                getActivity().finish();
             }
         });
-
-
-
-
 
         return v;
     }

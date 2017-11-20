@@ -9,11 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/active_post_list"
-            ></ListView>
+        <!--<ListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/active_post_list">-->
+        <!--</ListView>-->
 
 
     </LinearLayout>
@@ -26,5 +26,19 @@
         android:layout_gravity="bottom|end"
         android:src="@drawable/gmlogo"
         />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/active_post_list">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </FrameLayout>
