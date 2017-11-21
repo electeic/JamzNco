@@ -130,36 +130,6 @@
                         android:text="End Time: *" />
                 </LinearLayout>
 
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/orderByTitle"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Order By Post Title" />
-                    <Button
-                        android:id="@+id/orderByStartTime"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Order By Post Start Time" />
-                    <Button
-                        android:id="@+id/orderByEndTime"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Order By Post End Time" />
-                </LinearLayout>
-
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

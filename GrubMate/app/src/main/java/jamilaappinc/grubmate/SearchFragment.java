@@ -78,11 +78,7 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
 
     EditText title, tags;
     Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
-    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton;
     CheckBox homeMade;
-
-    boolean sortByTitleTrue, sortByEndTimeTrue, sortByStartTimeTrue = false;
-
     SimpleDateFormat sdf;
 
     private String ID;
@@ -221,9 +217,6 @@ CheckBox homeMade;
         searchButton = (Button)v.findViewById(R.id.search_submit);
         cancelButton = (Button)v.findViewById(R.id.search_cancel);
         homeMade = (CheckBox)v.findViewById(R.id.post_homemadeCheck);
-        sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
-        sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
-        sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
 
         sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         sdf.setLenient(false);
@@ -241,36 +234,6 @@ CheckBox homeMade;
                 //intent.putExtra("Status", status);
                 startActivityForResult(intent, 0);
                 getActivity().finish();
-            }
-        });
-
-        sortByTitleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortByTitleTrue = true;
-                sortByEndTimeTrue = false;
-                sortByStartTimeTrue = false;
-
-            }
-        });
-
-        sortByEndTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortByTitleTrue = false;
-                sortByEndTimeTrue = true;
-                sortByStartTimeTrue = false;
-
-            }
-        });
-
-        sortByStartTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortByTitleTrue = false;
-                sortByEndTimeTrue = false;
-                sortByStartTimeTrue = true;
-
             }
         });
 
@@ -397,33 +360,8 @@ CheckBox homeMade;
 
                             System.out.println("SIZE OF ALL MATCHING POSTS AFTER REMOVING IS " + allMatchingPosts.size());
 
-                            if(sortByTitleTrue){
-                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
-                                    @Override
-                                    public int compare(Post post1, Post post2)
-                                    {
-                                        return  post1.getmTitle().compareToIgnoreCase(post2.getmTitle());
-                                    }
-                                });
-                            }
-                            if(sortByEndTimeTrue){
-                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
-                                    @Override
-                                    public int compare(Post post1, Post post2)
-                                    {
-                                        return  post1.getmEndDate().compareTo(post2.getmEndDate());
-                                    }
-                                });
-                            }
-                            if(sortByStartTimeTrue){
-                                Collections.sort(allMatchingPosts, new Comparator<Post>() {
-                                    @Override
-                                    public int compare(Post post1, Post post2)
-                                    {
-                                        return  post1.getmStartDate().compareTo(post2.getmStartDate());
-                                    }
-                                });
-                            }
+
+                        }
 
 
                             for(int i = 0; i < allMatchingPosts.size(); i++){
@@ -439,7 +377,7 @@ CheckBox homeMade;
                             getActivity().finish();
 
                         }
-                    }
+
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
