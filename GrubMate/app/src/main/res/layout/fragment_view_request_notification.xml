@@ -14,10 +14,6 @@
         android:visibility="visible">
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +136,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:text="123 Address Pl. Los Angeles"
-                        android:textSize="20dp" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <fragment
@@ -176,7 +172,6 @@
 
 
             </LinearLayout>
-        </ScrollView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu_from_main"

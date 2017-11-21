@@ -385,6 +385,8 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                         tempNotifList = new ArrayList<String>();
                                     }*/
                                     String notifIndex;
+                                    System.out.println("meldoy the subscription size is "+ subscription.getmPosts().size());
+
                                     for (int j = 0; j< subscription.getmPosts().size(); j++) {
                                        /* if(tempNotifList.size() == 0){
                                             notifIndex = Integer.toString(tempNotifList.size() + 1+j);

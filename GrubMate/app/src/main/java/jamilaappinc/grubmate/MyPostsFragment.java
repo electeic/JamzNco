@@ -127,9 +127,9 @@ public class MyPostsFragment extends Fragment {
                         Post post = dataSnapshot.getValue(Post.class);
 
                         if(post.getmAuthorId().equals(ID)){
-                            if(post.getmActive()){
+//                            if(post.getmActive()){
                                 mPosts.add(post);
-                            }
+//                            }
                         }
 
 
