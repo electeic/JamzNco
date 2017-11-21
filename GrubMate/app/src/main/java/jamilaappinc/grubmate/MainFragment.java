@@ -246,7 +246,7 @@ public class MainFragment extends Fragment {
                     //Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
                     mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
                     mListView.setAdapter(mAdapter);
-                    
+
                 }
             });
         }
