@@ -133,8 +133,8 @@ public class Subscription implements Serializable {
     public boolean isActive() {
         mActive = Boolean.FALSE;
         Date date = Calendar.getInstance().getTime();
-        System.out.println("END DATE IS " + mEndDate);
-        if (this.mEndDate.after(date)) {
+       // System.out.println("END DATE IS " + mEndDate);
+        if (this.mEndDate.before(date)) {
             mActive = Boolean.TRUE;
         }
         return mActive;

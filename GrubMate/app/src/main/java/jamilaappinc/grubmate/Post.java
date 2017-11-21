@@ -95,8 +95,8 @@ public class Post implements Serializable {
     }
 
     public boolean isActive(){
-        if(!mActive) return mActive;
-        else {
+        //if(!mActive) return mActive;
+        //else {
             mActive = Boolean.FALSE;
             Date date = Calendar.getInstance().getTime();
             System.out.println(mEndDate);
@@ -106,7 +106,7 @@ public class Post implements Serializable {
                 }
             }
             return mActive;
-        }
+        //}
     }
 
     public boolean getmActive(){
