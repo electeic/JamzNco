@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import java.util.Collections ;
 
 /**
  * Created by ericajung on 10/16/17.
@@ -78,7 +79,6 @@ public class SearchFragment extends Fragment implements SearchActivity.DataFromA
     EditText title, tags;
     Button categoryButton,startDateButton, startTimeButton, endDateButton, endTimeButton,searchButton,cancelButton, groupButton;
     CheckBox homeMade;
-
     SimpleDateFormat sdf;
 
     private String ID;
@@ -361,6 +361,9 @@ CheckBox homeMade;
                             System.out.println("SIZE OF ALL MATCHING POSTS AFTER REMOVING IS " + allMatchingPosts.size());
 
 
+                        }
+
+
                             for(int i = 0; i < allMatchingPosts.size(); i++){
                                 System.out.println("PRINTING ALL POSTS THAT MATCH NOW " + allMatchingPosts.get(i).getmId());
                             }
@@ -374,7 +377,7 @@ CheckBox homeMade;
                             getActivity().finish();
 
                         }
-                    }
+
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {

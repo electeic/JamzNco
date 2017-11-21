@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
@@ -71,6 +72,7 @@ public class MainFragment extends Fragment {
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
     ArrayList<Post> receivedPosts = new ArrayList<>();
 
+    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton;
 
 
     public MainFragment() {
@@ -125,6 +127,9 @@ public class MainFragment extends Fragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
 
         floatButton = (android.support.design.widget.FloatingActionButton) v.findViewById(R.id.menu_from_main);
+        sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
+        sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
+        sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
         //find views
 
         postsReadCounter.add(0);
@@ -261,6 +266,48 @@ public class MainFragment extends Fragment {
 
                 startActivityForResult(intent, 0);
                 //                getActivity().finish();
+            }
+        });
+
+        sortByTitleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmTitle().compareToIgnoreCase(post2.getmTitle());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        sortByStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmStartDate().compareTo(post2.getmStartDate());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        sortByEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmEndDate().compareTo(post2.getmEndDate());
+                    }
+                });
+                refresh();
             }
         });
 

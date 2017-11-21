@@ -3,11 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="jamilaappinc.grubmate.MainFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+    ````<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/orderByTitle"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order By Post Title" />
+            <Button
+                android:id="@+id/orderByStartTime"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order By Post Start Time" />
+            <Button
+                android:id="@+id/orderByEndTime"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order By Post End Time" />
 
         <!--<ListView-->
             <!--android:layout_width="match_parent"-->
@@ -15,6 +40,21 @@
             <!--android:id="@+id/active_post_list">-->
         <!--</ListView>-->
 
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/active_post_list">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
@@ -26,19 +66,5 @@
         android:layout_gravity="bottom|end"
         android:src="@drawable/gmlogo"
         />
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/active_post_list">
-        </ListView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </FrameLayout>
