@@ -39,6 +39,7 @@ public class Post implements Serializable {
     String mGroupIds;
     String allTargetedUsers = "";
     ArrayList<String> mAllFoodPics;
+    int priority;
 
 //    public Post(String title, int servings){
 //        mTitle = title;
@@ -291,5 +292,13 @@ public class Post implements Serializable {
 
     public String getTargetUsersString(){
         return allTargetedUsers;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

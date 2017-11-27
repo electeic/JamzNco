@@ -59,20 +59,24 @@ public class MainFragment extends Fragment {
     MovieAdapter mAdapter;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
-    DatabaseReference databaseRef;
     DatabaseReference dbRefUsers;
+
+    DatabaseReference databaseRef;
     String currUserId;
     String currUserName;
     String currPicture;
     String friendPic;
     ArrayList<String> userFriends;
     List<Post> myPost = new ArrayList<>();
+    List<User> myUser = new ArrayList<>();
 
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
     ArrayList<Post> receivedPosts = new ArrayList<>();
+    ArrayList<Integer> userCount = new ArrayList<>();
+    ArrayList<Integer> userReadCounter = new ArrayList<>();
 
-    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton;
+    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton, sortByRatingButton;
 
 
     public MainFragment() {
@@ -95,6 +99,8 @@ public class MainFragment extends Fragment {
         //        //todo get database
         database = FirebaseDatabase.getInstance();
         dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
+        dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
+
         databaseRef = database.getReference();
         // dbRefUsers = database.getInstance().getReference().child(FirebaseReferences.USERS);
         //todo get database reference paths
@@ -130,9 +136,12 @@ public class MainFragment extends Fragment {
         sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
         sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
         sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
+        sortByRatingButton = (Button) v.findViewById(R.id.orderByRating);
+
         //find views
 
         postsReadCounter.add(0);
+        userReadCounter.add(0);
 
         if (receivedPosts == null) {
             database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,6 +152,9 @@ public class MainFragment extends Fragment {
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
                         if (snap.getKey().equals("Post")) {
                             postCount.add((int) snap.getChildrenCount());
+                        }
+                        else if(snap.getKey().equals("Users")){
+                            userCount.add((int) snap.getChildrenCount());
                         }
                     }
                     dbRefPosts.addChildEventListener(new ChildEventListener() {
@@ -308,6 +320,71 @@ public class MainFragment extends Fragment {
                     }
                 });
                 refresh();
+            }
+        });
+
+        sortByRatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("in sort by rating button");
+                dbRefUsers.addChildEventListener(new ChildEventListener(){
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        int usersRead = userReadCounter.get(0);
+                        usersRead++;
+                        userReadCounter.clear();
+                        userReadCounter.add(usersRead);
+                        System.out.println("users read is " + usersRead);
+                        User user = dataSnapshot.getValue(User.class);
+                        myUser.add(user);
+                        if (userReadCounter.get(0) == userCount.get(0)) {//all users read
+                            Collections.sort(myUser, new Comparator<User>() {//sorts all user by order of rating
+                                @Override
+                                public int compare(User user1, User user2)
+                                {
+                                    return Double.compare(user1.getAvgRating(),user2.getAvgRating());
+                                }
+                            });
+                            for(int i = 0; i < myPost.size(); i++){
+                                for(int j = 0; j < myUser.size(); j++){//goes through all users (in order of rating)
+                                    if(myPost.get(i).getmAuthorId().equals(myUser.get(j).getId())){
+                                        myPost.get(i).setPriority(j);//sets post's priority according to the index of author (sorted by rating)
+                                    }
+                                }
+                            }
+
+                            Collections.sort(myPost, new Comparator<Post>() {//resort posts by priority
+                                @Override
+                                public int compare(Post post2, Post post1)
+                                {
+                                    return Integer.compare(post1.getPriority(), post2.getPriority());
+                                }
+                            });
+                            refresh();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
