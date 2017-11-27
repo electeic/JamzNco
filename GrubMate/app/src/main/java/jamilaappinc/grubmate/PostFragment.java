@@ -602,7 +602,66 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                         final DatabaseReference dbRefSubs = database.getInstance().getReference().child("Subscription");
 
-                        dbRefSubs.addChildEventListener(new ChildEventListener(){
+                        System.out.println("meldoy 1");
+                        dbRefSubs.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snap : dataSnapshot.getChildren()){
+                                    System.out.println("meldoy 2");
+
+                                Subscription sub = (Subscription) snap.getValue(Subscription.class);
+                                System.out.println("meldoy 3");
+
+                                boolean matchingSub = false;
+
+                                System.out.println("meldoy the author of sub is " + sub.getmUserAuthorId());
+
+                                if (sub.getmUserAuthorId().equals(ID)) {
+                                    for (int i = 0; i < categories.size(); i++) {
+                                        if (!matchingSub && sub.getmCategories() != null) {
+                                            for (int j = 0; j < sub.getmCategories().size(); j++) {
+
+                                                if (categories.get(i).equals(sub.getmCategories().get(j))) {
+                                                    System.out.println("MATCH");
+                                                    if (sub.isActive() == true) {
+                                                        System.out.println(" meldoy MATCH + ACTIVE");
+                                                        ArrayList<String> tempPostList = dataSnapshot.child("Subscriptions").child(sub.getmId()).child("mPosts").getValue(ArrayList.class);
+                                                        if (tempPostList == null) {
+                                                            tempPostList = new ArrayList<String>();
+                                                        }
+                                                        int listSize = tempPostList.size() + 1;
+                                                        System.out.println("CURRENT LISTSIZE1 " + listSize);
+                                                        System.out.println("CURRENT SUB IS1" + sub.getmId());
+                                                        tempPostList.add(Integer.toString(listSize));
+
+                                                        dbRefSubs.child(sub.getmId()).child("mPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+                                                        String key = database.getReference("Notification").push().getKey();
+                                                        Notification notification = new Notification(ID, sub.getmId(), ID, key, NotificationReference.SUBSCRIPTION);
+                                                        DatabaseReference databaseRef = database.getReference().child("Notification").child(key);
+                                                        notification.setMatchingPostTitle(title);
+                                                        notification.setmId(key);
+                                                        notification.setmFromUserName(currUserName);
+                                                        databaseRef.setValue(notification);
+                                                        dbRefUsers.child(ID).child("notifications").child(notification.getmId()).setValue(notification.getmId());
+                                                        matchingSub = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                       /* dbRefSubs.addChildEventListener(new ChildEventListener(){
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                                 Subscription sub = dataSnapshot.getValue(Subscription.class);
@@ -611,25 +670,38 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                                 subsReadCount.clear();
                                 subsReadCount.add(counter);
 
-                                boolean matchingSub = true;
+
+                                boolean matchingSub = false;
 
                                 for (int i = 0; i < categories.size(); i++) {
-                                    for (int j = 0; j < sub.getmCategories().size(); j++) {
+                                    if(!matchingSub) {
+                                        for (int j = 0; j < sub.getmCategories().size(); j++) {
 
-                                        if (categories.get(i).equals(sub.getmCategories().get(j))) {
-                                            System.out.println("MATCH");
-                                            if (sub.isActive() == true) {
-                                                System.out.println("MATCH + ACTIVE");
-                                                ArrayList<String> tempPostList = dataSnapshot.child("Subscriptions").child(sub.getmId()).child("mPosts").getValue(ArrayList.class);
-                                                if (tempPostList == null) {
-                                                    tempPostList = new ArrayList<String>();
+                                            if (categories.get(i).equals(sub.getmCategories().get(j))) {
+                                                System.out.println("MATCH");
+                                                if (sub.isActive() == true) {
+                                                    System.out.println("MATCH + ACTIVE");
+                                                    ArrayList<String> tempPostList = dataSnapshot.child("Subscriptions").child(sub.getmId()).child("mPosts").getValue(ArrayList.class);
+                                                    if (tempPostList == null) {
+                                                        tempPostList = new ArrayList<String>();
+                                                    }
+                                                    int listSize = tempPostList.size() + 1;
+                                                    System.out.println("CURRENT LISTSIZE1 " + listSize);
+                                                    System.out.println("CURRENT SUB IS1" + sub.getmId());
+                                                    tempPostList.add(Integer.toString(listSize));
+
+                                                    dbRefSubs.child(sub.getmId()).child("mPosts").child(Integer.toString(listSize)).setValue(post.getmId());
+                                                    String key = database.getReference("Notification").push().getKey();
+                                                    Notification notification = new Notification(ID, sub.getmId(), ID, key, NotificationReference.SUBSCRIPTION);
+                                                    DatabaseReference databaseRef = database.getReference().child("Notification").child(key);
+                                                    notification.setMatchingPostTitle(title);
+                                                    notification.setmId(key);
+                                                    notification.setmFromUserName(currUserName);
+                                                    databaseRef.setValue(notification);
+                                                    dbRefUsers.child(ID).child("notifications").child(notification.getmId()).setValue(notification.getmId());
+                                                    matchingSub = true;
+                                                    break;
                                                 }
-                                                int listSize = tempPostList.size() + 1;
-                                                System.out.println("CURRENT LISTSIZE1 " + listSize);
-                                                System.out.println("CURRENT SUB IS1" + sub.getmId());
-                                                tempPostList.add(Integer.toString(listSize));
-
-                                                dbRefSubs.child(sub.getmId()).child("mPosts").child(Integer.toString(listSize)).setValue(post.getmId());
                                             }
                                         }
                                     }
@@ -649,7 +721,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}
-                        });
+                        });*/
 
                     }
                     intent.putExtra("ID", ID);
