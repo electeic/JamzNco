@@ -5,6 +5,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="facebook_app_id">140229246720277</string>
     <string name="fb_login_protocol_scheme">fb165020910744675</string>
+    <string name="post_title">"Order By Post Title</string>
+    <string name="post_start">Order By Start Time</string>
+    <string name="post_end">Order By End Time</string>
+    <string name="post_rating">Order By Author Rating</string>
+    <string name="post_popularity">Order By Num Ratings</string>
 
     <string-array name="categories">
         <item>Asian</item>
