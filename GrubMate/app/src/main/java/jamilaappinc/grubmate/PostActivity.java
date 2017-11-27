@@ -53,6 +53,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
     public static final String EXTRA_POSITION = "main_position";
     public static final String EDIT_POSITION = "edit_position";
+    public static final String GET_ALL_FRIENDS = "get friends";
     String[] listCategories,listGroups;
 
     boolean [] checkedItems, groupCheckedItems;
@@ -76,6 +77,15 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     String ID;
     String currUserName;
 
+    String[] listFriends;
+    boolean[] checkedFriends;
+    DatabaseReference dbRefUsers;
+    private ArrayList<String> friends; //Contains the ID's of the friends
+    private ArrayList<String> selectedFriends = new ArrayList<>(); // contains the names of the friend's selected
+    private ArrayList<User> myFriends = new ArrayList<>(); // contains all of your friend's in user forms
+    private ArrayList<User> finalSelectedFriends = new ArrayList<>();
+    private ArrayList<String> myFriendsNames = new ArrayList<>(); // contains all of the names of the friends
+
     //interface to send data from activity to fragment
     public interface DataFromActivityToFragment {
         void sendStartDate(String data);
@@ -84,6 +94,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         void sendEndTime(String time);
         void sendCategories(ArrayList<String>cat);
         void sendGroups(ArrayList<Group> _group);
+        void sendFriends(ArrayList<User>finalList);
     }
 
     /**
@@ -113,6 +124,7 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         //TODO modify for id
         int pos = i.getIntExtra(EXTRA_POSITION, -1);
         String s = i.getStringExtra(EDIT_POSITION);
+        friends = (ArrayList<String>) i.getSerializableExtra("Users");
         System.out.println("POSTACTIVITY Post firebase is " + s);
 //        //Create fragment
         FragmentManager fm = getSupportFragmentManager();
@@ -130,8 +142,46 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
         //this is how you initialize the connection bt fragment and activity
         dataFromActivityToFragment = (DataFromActivityToFragment)f;
 
-    }
+        // DATABASE REFERENCING STUFF
+        dbRefUsers = database.getInstance().getReference().child("Users");
 
+        dbRefUsers.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                User user = dataSnapshot.getValue(User.class);
+
+                for(String s: friends)
+                {
+                    if(s.equals(user.getId()))
+                    {
+                        myFriends.add(user);
+                        myFriendsNames.add(user.getName());
+                    }
+                }
+
+                listFriends = new String[myFriendsNames.size()];
+                for(int j =0; j<myFriendsNames.size(); j++){
+                    listFriends[j] = myFriendsNames.get(j);
+                }
+                checkedFriends = new boolean[listFriends.length];
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+    }
 
 
 
@@ -331,10 +381,6 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
                     }
                 });
-
-
-
-
             }
 
             @Override
@@ -458,6 +504,72 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
 
     }
 
+    public void clickFriend(View v){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostActivity.this);
+        mBuilder.setTitle("Select Friends");
+        mBuilder.setMultiChoiceItems(listFriends,checkedFriends, new DialogInterface.OnMultiChoiceClickListener(){
+            public void onClick(DialogInterface di, int pos, boolean isChecked){
+                if(isChecked){
+                    //if current item isn't already part of list, add it to list
+
+                    if(! selectedFriends.contains(listFriends[pos])){
+                        selectedFriends.add(listFriends[pos]);
+                    }
+                }else if(selectedFriends.contains(listFriends[pos])){
+                    selectedFriends.remove(listFriends[pos]); //user unchecked the item
+
+                }
+            }
+        });
+
+        mBuilder.setCancelable(false);
+
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface di, int which){
+                getAllSelectedUsers();
+                sendFriends();
+            }
+        });
+
+        mBuilder.setNeutralButton("Select All", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface di, int which){
+                selectedFriends.clear();
+                for(int i = 0; i < checkedFriends.length; i++){
+                    checkedFriends[i] = true;
+                    selectedFriends.add(listFriends[i]);
+                }
+                sendFriends();
+            }
+        });
+        mBuilder.setNegativeButton("Clear All", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface di, int which){
+                for(int i = 0; i < checkedFriends.length; i++){
+                    checkedFriends[i] = false;
+                    selectedFriends.clear();
+
+                }
+            }
+        });
+
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+
+    private void getAllSelectedUsers(){
+        for(String name:selectedFriends){
+            for(User friend:myFriends){
+                if(friend.getName().equals(name)){
+                    finalSelectedFriends.add(friend);
+                }
+            }
+        }
+    }
+
+    private void sendFriends(){
+        dataFromActivityToFragment.sendFriends(finalSelectedFriends);
+    }
+
     /**
      * Sends information to the Fragment, aka interface method calls
      *
@@ -487,8 +599,6 @@ public class PostActivity extends AppCompatActivity implements TimeStartPickerFr
     private void sendGroups(){
         dataFromActivityToFragment.sendGroups(allSelectedGroupObjects);
     }
-
-
 
 
 }

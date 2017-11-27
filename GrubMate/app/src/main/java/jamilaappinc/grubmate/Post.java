@@ -27,6 +27,7 @@ public class Post implements Serializable {
     ArrayList<String> mCategories;
     ArrayList<String> mTags;
     ArrayList <Group> mGroups;
+    ArrayList<User> mSelectedFriends;
     Map<String, String> mAcceptedUsers;
     String id;
     String mPhotos;
@@ -57,7 +58,7 @@ public class Post implements Serializable {
     public Post(String mTitle, String mDescription, double mLatitude, double mLongitude, String mAddress, Date mStart, Date mEnd,
                 ArrayList<String> mCategories, ArrayList<String> mTags,
                 ArrayList<Group> mGroups, String photos, int servings, boolean homemade, String mAuthorId,
-                String authorPicture, String mFirebaseKey, ArrayList<String> allFoodPics) {
+                String authorPicture, String mFirebaseKey, ArrayList<String> allFoodPics, ArrayList<User> mSelectedFriends) {
         this.mAuthorId = mAuthorId;
         this.mTitle = mTitle;
         this.mDescription = mDescription;
@@ -77,6 +78,7 @@ public class Post implements Serializable {
         this.mAcceptedUsers = new HashMap<>();
         this.mFirebaseKey = mFirebaseKey;
         this.mAllFoodPics = allFoodPics;
+        this.mSelectedFriends = mSelectedFriends;
     }
 
 //    public Post(String mTitle, String mDescription){
@@ -283,9 +285,10 @@ public class Post implements Serializable {
 
     public void userTargetedOrAdd(String userId){
         if(!allTargetedUsers.contains(userId)){
-            if(allTargetedUsers.equals("")){
+            //if(allTargetedUsers.equals("")){
                 allTargetedUsers+=",";
-            }
+            //}
+
             allTargetedUsers+=userId;
         }
     }

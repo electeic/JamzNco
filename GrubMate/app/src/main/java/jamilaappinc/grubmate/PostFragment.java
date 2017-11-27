@@ -87,7 +87,7 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     private Date startDateTime, endDateTime;
 
     private ArrayList<String> categories = new ArrayList<>();
-    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>(); //everyone who can see the post
     private ArrayList<String> tagsVec = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
@@ -133,6 +133,8 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
     android.support.design.widget.FloatingActionButton floatButton;
 
     private DatabaseReference dbNoteToEdit;
+
+    ArrayList<User> selectedFriends;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -574,15 +576,15 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
 //                        System.out.println("meldoy the place is " + myPlace.getName());
                         final Post post;
                         if(!edit){
-                            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+                            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null, selectedFriends);
 
                         }else{
                             if(myPlace!=null){
-                                post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+                                post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null, selectedFriends);
 
                             }
                             else{
-                                post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+                                post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null, selectedFriends);
 
                             }
 
@@ -591,6 +593,10 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
                         post.addmAcceptedUsers("initial");
                         for(int i = 0; i < groups.size(); i++){
                             post.userTargetedOrAdd(groups.get(i).getmUsers());
+                        }
+
+                        for(int i =0; i<selectedFriends.size(); i++) {
+                            post.userTargetedOrAdd(selectedFriends.get(i).getId());
                         }
 
                         databaseRef.setValue(post); //adds the value (the post) to the key post
@@ -1006,6 +1012,13 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
     }
 
+    @Override
+    public void sendFriends(ArrayList<User> _finalList) {
+        if(_finalList != null) {
+            selectedFriends = (ArrayList<User>) _finalList.clone();
+        }
+    }
+
     void uploadMeta(String key, ArrayList<String> allPicsTho)
     {
         //        if()
@@ -1016,12 +1029,12 @@ public class PostFragment extends Fragment implements PostActivity.DataFromActiv
         }
         Post post;
         if(myPlace!=null){
-            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
+            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho, selectedFriends);
 //            post = new Post(title, descriptions, myPlace.getLatLng().latitude, myPlace.getLatLng().longitude,myPlace.getAddress().toString(), startDateTime, endDateTime, categories, getTags(), null, null, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, allPicsTho);
 
         }
         else{
-            post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null);
+            post = new Post(title, descriptions, n.getmLatitude(), n.getmLongitude(),n.getmAddress(), startDateTime, endDateTime, categories, getTags(), groups, foodPics, Integer.parseInt(servings), _homemade.isChecked(), ID, userProfilePic, key, null, selectedFriends);
 
         }
         post.addmAcceptedUsers("initial");

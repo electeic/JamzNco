@@ -274,6 +274,7 @@ public class MyPostsFragment extends Fragment {
                         i.putExtra(PostActivity.EDIT_POSITION, post.getmFirebaseKey());
                         i.putExtra("Status",status);
                         i.putExtra("Edit", true);
+                        i.putExtra("Users", userFriends);
                         startActivity(i);
 
                     }
