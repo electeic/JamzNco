@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
     ArrayList<Integer> userCount = new ArrayList<>();
     ArrayList<Integer> userReadCounter = new ArrayList<>();
 
-    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton, sortByRatingButton;
+    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton, sortByRatingButton, sortByPopularityButton;
 
 
     public MainFragment() {
@@ -137,6 +137,7 @@ public class MainFragment extends Fragment {
         sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
         sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
         sortByRatingButton = (Button) v.findViewById(R.id.orderByRating);
+        sortByPopularityButton = (Button) v.findViewById(R.id.orderByPopularity);
 
         //find views
 
@@ -330,13 +331,15 @@ public class MainFragment extends Fragment {
                 dbRefUsers.addChildEventListener(new ChildEventListener(){
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        int usersRead = userReadCounter.get(0);
-                        usersRead++;
-                        userReadCounter.clear();
-                        userReadCounter.add(usersRead);
-                        System.out.println("users read is " + usersRead);
-                        User user = dataSnapshot.getValue(User.class);
-                        myUser.add(user);
+                        if (userReadCounter.get(0) != userCount.get(0)) {
+                            int usersRead = userReadCounter.get(0);
+                            usersRead++;
+                            userReadCounter.clear();
+                            userReadCounter.add(usersRead);
+                            System.out.println("users read is " + usersRead);
+                            User user = dataSnapshot.getValue(User.class);
+                            myUser.add(user);
+                        }
                         if (userReadCounter.get(0) == userCount.get(0)) {//all users read
                             Collections.sort(myUser, new Comparator<User>() {//sorts all user by order of rating
                                 @Override
@@ -361,6 +364,91 @@ public class MainFragment extends Fragment {
                                 }
                             });
                             refresh();
+
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+        sortByEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmEndDate().compareTo(post2.getmEndDate());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        sortByPopularityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("in sort by popularity button");
+                dbRefUsers.addChildEventListener(new ChildEventListener(){
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        if (userReadCounter.get(0) != userCount.get(0)) {
+                            int usersRead = userReadCounter.get(0);
+                            usersRead++;
+                            userReadCounter.clear();
+                            userReadCounter.add(usersRead);
+                            System.out.println("users read is " + usersRead);
+                            User user = dataSnapshot.getValue(User.class);
+                            myUser.add(user);
+                        }
+
+                        if (userReadCounter.get(0) == userCount.get(0)) {//all users read
+                            Collections.sort(myUser, new Comparator<User>() {//sorts all user by order of rating
+                                @Override
+                                public int compare(User user1, User user2)
+                                {
+                                    return Double.compare(user1.getNumRatings(),user2.getNumRatings());
+                                }
+                            });
+                            for(int i = 0; i < myPost.size(); i++){
+                                for(int j = 0; j < myUser.size(); j++){//goes through all users (in order of rating)
+                                    if(myPost.get(i).getmAuthorId().equals(myUser.get(j).getId())){
+                                        myPost.get(i).setPriority(j);//sets post's priority according to the index of author (sorted by rating)
+                                    }
+                                }
+                            }
+
+                            Collections.sort(myPost, new Comparator<Post>() {//resort posts by priority
+                                @Override
+                                public int compare(Post post2, Post post1)
+                                {
+                                    return Integer.compare(post1.getPriority(), post2.getPriority());
+                                }
+                            });
+                            refresh();
+
+
                         }
                     }
 

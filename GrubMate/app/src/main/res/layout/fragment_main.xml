@@ -8,47 +8,54 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/orderByTitle"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Order By Post Title" />
-            <Button
-                android:id="@+id/orderByStartTime"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Order By Post Start Time" />
-            <Button
-                android:id="@+id/orderByEndTime"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Order By Post End Time" />
-            <Button
-                android:id="@+id/orderByRating"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Order By Author Rating" />
+            android:layout_height="wrap_content">
 
-        <!--<ListView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/active_post_list">-->
-        <!--</ListView>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/orderByTitle"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/post_title" />
+                <Button
+                    android:id="@+id/orderByStartTime"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/post_start" />
+                <Button
+                    android:id="@+id/orderByEndTime"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/post_end" />
+                <Button
+                    android:id="@+id/orderByRating"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/post_rating" />
 
+                <Button
+                    android:id="@+id/orderByPopularity"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/post_popularity" />
 
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
