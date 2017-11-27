@@ -212,7 +212,7 @@ public class MainFragment extends Fragment {
 //                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
 //                mAdapter.notifyDataSetChanged();
 //                mListView.setAdapter(mAdapter);
-
+                databaseCall(v);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -274,8 +274,8 @@ public class MainFragment extends Fragment {
 //                                else {
                                 mListView = (ListView) v.findViewById(R.id.active_post_list);
                                 mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                                mListView.setAdapter(mAdapter);
                                 mAdapter.notifyDataSetChanged();
+                                mListView.setAdapter(mAdapter);
 //                                }
                             }
                         }
@@ -311,8 +311,8 @@ public class MainFragment extends Fragment {
         } else {
             mListView = (ListView) v.findViewById(R.id.active_post_list);
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-            mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
+            mListView.setAdapter(mAdapter);
         }
 
         floatButton.setOnClickListener(new View.OnClickListener() {
