@@ -66,7 +66,7 @@ public class MainFragment extends Fragment {
     String currPicture;
     String friendPic;
     ArrayList<String> userFriends;
-    List<Post> myPost = new ArrayList<>();
+    ArrayList<Post> myPost = new ArrayList<>();
 
     ArrayList<Integer> postCount = new ArrayList<>();
     ArrayList<Integer> postsReadCounter = new ArrayList<>();
@@ -130,126 +130,12 @@ public class MainFragment extends Fragment {
         sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
         sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
         sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
+       // mListView = (ListView) v.findViewById(R.id.active_post_list);
         //find views
 
         postsReadCounter.add(0);
 
-        if (receivedPosts == null) {
-            database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                    for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        if (snap.getKey().equals("Post")) {
-                            postCount.add((int) snap.getChildrenCount());
-                        }
-                    }
-                    dbRefPosts.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            int postsRead = postsReadCounter.get(0);
-                            postsRead++;
-                            postsReadCounter.clear();
-                            postsReadCounter.add(postsRead);
-
-                            Post post = dataSnapshot.getValue(Post.class);
-                            if (userFriends != null) {
-                                for (int i = 0; i < userFriends.size(); i++) {
-                                    if (post.getmAuthorId().equals(userFriends.get(i))) {
-                                        if (post.getTargetUsersString() != null && post.getTargetUsersString() != "") {//if have a group, then find the groups and see if user is a part of them
-                                            if (post.getTargetUsersString().contains(currUserId)) {
-                                                myPost.add(post);
-                                            }
-                                        } else {
-                                            myPost.add(post);
-                                        }
-                                    }
-                                }
-                            }
-
-//                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
-//                        System.out.println("POSTS COUNTER" + postCount.get(0));
-
-                            if (postsReadCounter.get(0) == postCount.get(0)) {
-//                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-//                                mListView = (ListView) v.findViewById(R.id.active_post_list);
-                                //        postList = PostSingleton.get(getActivity()).getMovies();
-                                //        postAdapter = new PostListAdapter(getActivity(), Post.class,
-                                //                R.layout.list_active_posts_item,
-                                //                dbRefPosts);
-//                                mListView.setAdapter(mAdapter);
-
-                                mListView = (ListView) v.findViewById(R.id.active_post_list);
-                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                                mListView.setAdapter(mAdapter);
-                                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                    @Override
-                                    public void onRefresh() {
-                                        System.out.println("you pulled to refresh");
-                                        shuffle();
-                                        mSwipeRefreshLayout.setRefreshing(false);
-                                    }
-
-                                    public void shuffle(){
-                                        System.out.println("shuffling the posts!");
-                                       // Collections.shuffle(myPost, new Random(System.currentTimeMillis()));
-                                        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                                        mListView.setAdapter(mAdapter);
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        } else {
-            mListView = (ListView) v.findViewById(R.id.active_post_list);
-            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-            mListView.setAdapter(mAdapter);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    System.out.println("you pulled to refresh");
-                    shuffle();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-
-                public void shuffle(){
-                    System.out.println("shuffling the posts!");
-                    //Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
-                    mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-                    mListView.setAdapter(mAdapter);
-
-                }
-            });
-        }
+        databaseCall(v);
 
 
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -311,16 +197,137 @@ public class MainFragment extends Fragment {
             }
         });
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+                mAdapter.notifyDataSetChanged();
+                mListView.setAdapter(mAdapter);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return v;
     }
 
+    public void databaseCall(final View v) {
+        if (receivedPosts == null) {
+            database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-//    public void shuffle(){
-//        System.out.println("shuffling the posts!");
-//        Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
-//        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-//        mListView.setAdapter(mAdapter);
-//    }
+                    for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                        if (snap.getKey().equals("Post")) {
+                            postCount.add((int) snap.getChildrenCount());
+                        }
+                    }
+                    dbRefPosts.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            int postsRead = postsReadCounter.get(0);
+                            postsRead++;
+                            postsReadCounter.clear();
+                            postsReadCounter.add(postsRead);
+
+                            Post post = dataSnapshot.getValue(Post.class);
+                            if (userFriends != null) {
+                                for (int i = 0; i < userFriends.size(); i++) {
+                                    if (post.getmAuthorId().equals(userFriends.get(i))) {
+                                        if (post.getTargetUsersString() != null && post.getTargetUsersString() != "") {//if have a group, then find the groups and see if user is a part of them
+                                            if (post.getTargetUsersString().contains(currUserId)) {
+                                                myPost.add(post);
+                                            }
+                                        } else {
+                                            myPost.add(post);
+                                        }
+                                    }
+                                }
+
+                                //receivedPosts = myPost;
+                            }
+
+//                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
+//                        System.out.println("POSTS COUNTER" + postCount.get(0));
+
+                            if (postsReadCounter.get(0) == postCount.get(0)) {
+//                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+//                                mListView = (ListView) v.findViewById(R.id.active_post_list);
+                                //        postList = PostSingleton.get(getActivity()).getMovies();
+                                //        postAdapter = new PostListAdapter(getActivity(), Post.class,
+                                //                R.layout.list_active_posts_item,
+                                //                dbRefPosts);
+//                                mListView.setAdapter(mAdapter);
+
+                               // mListView = (ListView) v.findViewById(R.id.active_post_list);
+                                //final ArrayList<Post> newPosts = myPost;
+//                                if(mAdapter != null) {
+//                                    System.out.println("clear the adapter");
+//                                    mAdapter.clear();
+//                                    System.out.println("SIZE OF NEWPOSTS: " + newPosts);
+//                                    mAdapter.addAll(newPosts);
+//                                    System.out.println("notify changed data");
+//                                    mAdapter.notifyDataSetChanged();
+//                                }
+//
+//                                else {
+                                mListView = (ListView) v.findViewById(R.id.active_post_list);
+                                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+                                mListView.setAdapter(mAdapter);
+//                                }
+
+                                //databaseHandler.close();
+                                //refresh();
+//                                mAdapter.clear();
+//                                mAdapter.addAll(myPost);
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
+            mListView = (ListView) v.findViewById(R.id.active_post_list);
+            mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+            mListView.setAdapter(mAdapter);
+//            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//                @Override
+//                public void onRefresh() {
+//                    refresh();
+//                    System.out.println("IN ELSE: REFRESH ");
+//                    mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+//                    System.out.println("IN ELSE: SET ADAPTER NOW ");
+//                    mListView.setAdapter(mAdapter);
+//                    mSwipeRefreshLayout.setRefreshing(false);
+//                }
+//            });
+        }
+    }
+
 
 
     @Override
@@ -364,7 +371,9 @@ public class MainFragment extends Fragment {
     }
 
     public void refresh() {
-        mAdapter.notifyDataSetChanged();
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public class MovieAdapter extends ArrayAdapter<Post> {
@@ -375,6 +384,9 @@ public class MainFragment extends Fragment {
             super(context, resource, objects);
             this.context = context;
             this.Posts = objects;
+           // this.Posts.clear();
+            //this.Posts.addAll(Posts);
+            //notifyDataSetChanged();
         }
 
         @Override
