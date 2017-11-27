@@ -209,9 +209,10 @@ public class MainFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                mAdapter.notifyDataSetChanged();
-                mListView.setAdapter(mAdapter);
+//                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+//                mAdapter.notifyDataSetChanged();
+//                mListView.setAdapter(mAdapter);
+
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -269,28 +270,13 @@ public class MainFragment extends Fragment {
                                 //                R.layout.list_active_posts_item,
                                 //                dbRefPosts);
 //                                mListView.setAdapter(mAdapter);
-
-                               // mListView = (ListView) v.findViewById(R.id.active_post_list);
-                                //final ArrayList<Post> newPosts = myPost;
-//                                if(mAdapter != null) {
-//                                    System.out.println("clear the adapter");
-//                                    mAdapter.clear();
-//                                    System.out.println("SIZE OF NEWPOSTS: " + newPosts);
-//                                    mAdapter.addAll(newPosts);
-//                                    System.out.println("notify changed data");
-//                                    mAdapter.notifyDataSetChanged();
-//                                }
 //
 //                                else {
                                 mListView = (ListView) v.findViewById(R.id.active_post_list);
                                 mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
                                 mListView.setAdapter(mAdapter);
+                                mAdapter.notifyDataSetChanged();
 //                                }
-
-                                //databaseHandler.close();
-                                //refresh();
-//                                mAdapter.clear();
-//                                mAdapter.addAll(myPost);
                             }
                         }
 
@@ -326,17 +312,7 @@ public class MainFragment extends Fragment {
             mListView = (ListView) v.findViewById(R.id.active_post_list);
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
             mListView.setAdapter(mAdapter);
-//            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//                @Override
-//                public void onRefresh() {
-//                    refresh();
-//                    System.out.println("IN ELSE: REFRESH ");
-//                    mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-//                    System.out.println("IN ELSE: SET ADAPTER NOW ");
-//                    mListView.setAdapter(mAdapter);
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                }
-//            });
+            mAdapter.notifyDataSetChanged();
         }
 
         floatButton.setOnClickListener(new View.OnClickListener() {
