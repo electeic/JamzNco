@@ -136,6 +136,7 @@ public class MainFragment extends Fragment {
         sortByTitleButton = (Button) v.findViewById(R.id.orderByTitle);
         sortByEndTimeButton = (Button) v.findViewById(R.id.orderByEndTime);
         sortByStartTimeButton = (Button) v.findViewById(R.id.orderByStartTime);
+       // mListView = (ListView) v.findViewById(R.id.active_post_list);
         sortByRatingButton = (Button) v.findViewById(R.id.orderByRating);
         sortByPopularityButton = (Button) v.findViewById(R.id.orderByPopularity);
 
@@ -144,11 +145,87 @@ public class MainFragment extends Fragment {
         postsReadCounter.add(0);
         userReadCounter.add(0);
 
+        databaseCall(v);
+
+
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                System.out.println("IN MAIN FRAGMENT, USER ID IS" + currUserId);
+                intent.putExtra("ID", currUserId);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name", currUserName);
+                System.out.println("meldoy tge currusername on main is "+ currUserName);
+                intent.putExtra("MyProfilePicture", currPicture);
+//                intent.putExtra("Status",status);
+
+                startActivityForResult(intent, 0);
+                //                getActivity().finish();
+            }
+        });
+
+        sortByTitleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmTitle().compareToIgnoreCase(post2.getmTitle());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        sortByStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmStartDate().compareTo(post2.getmStartDate());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        sortByEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(myPost, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post post1, Post post2)
+                    {
+                        return  post1.getmEndDate().compareTo(post2.getmEndDate());
+                    }
+                });
+                refresh();
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+//                mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+//                mAdapter.notifyDataSetChanged();
+//                mListView.setAdapter(mAdapter);
+                databaseCall(v);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        return v;
+    }
+
+    public void databaseCall(final View v) {
         if (receivedPosts == null) {
             database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
                         if (snap.getKey().equals("Post")) {
@@ -179,6 +256,8 @@ public class MainFragment extends Fragment {
                                         }
                                     }
                                 }
+
+                                //receivedPosts = myPost;
                             }
 
 //                        System.out.println("POSTS READ COUNTER" + postsReadCounter.get(0));
@@ -192,25 +271,13 @@ public class MainFragment extends Fragment {
                                 //                R.layout.list_active_posts_item,
                                 //                dbRefPosts);
 //                                mListView.setAdapter(mAdapter);
-
+//
+//                                else {
                                 mListView = (ListView) v.findViewById(R.id.active_post_list);
                                 mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
+                                mAdapter.notifyDataSetChanged();
                                 mListView.setAdapter(mAdapter);
-                                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                    @Override
-                                    public void onRefresh() {
-                                        System.out.println("you pulled to refresh");
-                                        shuffle();
-                                        mSwipeRefreshLayout.setRefreshing(false);
-                                    }
-
-                                    public void shuffle(){
-                                        System.out.println("shuffling the posts!");
-                                       // Collections.shuffle(myPost, new Random(System.currentTimeMillis()));
-                                        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, myPost);
-                                        mListView.setAdapter(mAdapter);
-                                    }
-                                });
+//                                }
                             }
                         }
 
@@ -245,25 +312,9 @@ public class MainFragment extends Fragment {
         } else {
             mListView = (ListView) v.findViewById(R.id.active_post_list);
             mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
+            mAdapter.notifyDataSetChanged();
             mListView.setAdapter(mAdapter);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    System.out.println("you pulled to refresh");
-                    shuffle();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-
-                public void shuffle(){
-                    System.out.println("shuffling the posts!");
-                    //Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
-                    mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-                    mListView.setAdapter(mAdapter);
-
-                }
-            });
         }
-
 
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -476,16 +527,9 @@ public class MainFragment extends Fragment {
             }
         });
 
-        return v;
+        //return v;
     }
 
-
-//    public void shuffle(){
-//        System.out.println("shuffling the posts!");
-//        Collections.shuffle(receivedPosts, new Random(System.currentTimeMillis()));
-//        mAdapter = new MovieAdapter(getActivity(), R.layout.list_active_posts_item, receivedPosts);
-//        mListView.setAdapter(mAdapter);
-//    }
 
 
     @Override
@@ -529,7 +573,9 @@ public class MainFragment extends Fragment {
     }
 
     public void refresh() {
-        mAdapter.notifyDataSetChanged();
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public class MovieAdapter extends ArrayAdapter<Post> {
@@ -540,6 +586,9 @@ public class MainFragment extends Fragment {
             super(context, resource, objects);
             this.context = context;
             this.Posts = objects;
+           // this.Posts.clear();
+            //this.Posts.addAll(Posts);
+            //notifyDataSetChanged();
         }
 
         @Override

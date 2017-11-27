@@ -358,7 +358,7 @@ public class createsSubscriptionFragment extends Fragment implements createsSubs
                                 Intent i = getActivity().getIntent();
                                 final String ID = i.getStringExtra("ID");
                                 final Subscription subscription = new Subscription(title,descriptions,startDateTime,endDateTime,categories,getTags(), ID, _homemade.isChecked(), "1", allMatchingPosts, allMatchingPostsTitle);
-
+                                subscription.setmCategories(categories);
 
 
                                     ArrayList<String> tempSubList = (ArrayList<String>) dataSnapshot.child("Users").child(ID).child("subscriptions").getValue();

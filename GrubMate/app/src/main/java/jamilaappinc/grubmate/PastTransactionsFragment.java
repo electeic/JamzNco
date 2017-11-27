@@ -316,8 +316,7 @@ public class PastTransactionsFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getActivity().getLayoutInflater().inflate(
-                        R.layout.transaction_view, null);
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.transaction_view, null);
             }
 
             TextView textDescription = (TextView) convertView.findViewById(R.id.mytransation_info_title);
