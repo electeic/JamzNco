@@ -1,5 +1,6 @@
 package jamilaappinc.grubmate;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageSwitcher;
@@ -31,6 +34,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 import android.graphics.BitmapFactory;
 import android.view.animation.AnimationUtils;
@@ -66,7 +71,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
     TextView fEndTime;
     TextView fRating;
     TextView fAddress;
-    Button fRequestButton;
+    Button fRequestButton, fReportButton;
     TextView fServings;
     FirebaseDatabase database;
     DatabaseReference dbRefPosts;
@@ -160,6 +165,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         fProfilePicture = (ImageView) v.findViewById(R.id.profilePicture);
         fRating = (TextView) v.findViewById(R.id.userRatings);
         fAddress = (TextView) v.findViewById(R.id.LocationText);
+        //fReportButton = (Button) v.findViewById(R.id.spamButton);
         SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
@@ -190,6 +196,14 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
                 getActivity().finish();
             }
         });
+
+        fReportButton = (Button) v.findViewById(R.id.spamButton);
+        fReportButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                new DetailedPostFragment.SendMail().execute("");
+            }
+        });
+
         fTags = (TextView) v.findViewById(R.id.tags);
         fHomeOrRestuarant = (TextView) v.findViewById(R.id.homeOrRestaurant);
         fRequestButton = (Button) v.findViewById(R.id.requestButton);
@@ -201,6 +215,17 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
             fRequestButton.setVisibility(View.INVISIBLE);
         }
 
+
+/*        fReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","abuomarj1786@gmail.com", null));
+
+                intent.putExtra(Intent.EXTRA_SUBJECT, "spamReport");
+                intent.putExtra(Intent.EXTRA_TEXT, "the post " + n.getmId() + " was reported as spam.");
+                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+            }
+        });*/
 
 
         fRequestButton.setOnClickListener(new View.OnClickListener() {
@@ -539,4 +564,59 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }*/
+
+
+    private class SendMail extends AsyncTask<String, Integer, Void> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show( getContext(), "Please wait", "Sending mail", true, false);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+        }
+
+        protected Void doInBackground(String... params) {
+            Mail m = new Mail("abuomarj1786@gmail.com", "froggy19");
+
+            String[] toArr = {"abuomarj1786@gmail.com", "abuomarj1786@gmail.com"};
+            m.setTo(toArr);
+            m.setFrom("abuomarj1786@gmail.com");
+            m.setSubject("Reported As Spam");
+            m.setBody("a post was marked as being spam, the ID is " + n.getmId());
+
+            try {
+                if(m.send()) {
+                    Toast.makeText(getContext(), "Email was sent successfully.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Email was not sent.", Toast.LENGTH_LONG).show();
+                }
+            } catch(Exception e) {
+                Log.e("MailApp", "Could not send email", e);
+            }
+            return null;
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+// Handle action bar item clicks here. The action bar will
+// automatically handle clicks on the Home/Up button, so long
+// as you specify a parent activity in AndroidManifest.xml.
+        // int id = item.getItemId();
+
+//noinspection SimplifiableIfStatement
+        //  if (id == R.id.action_settings) {
+        // return true;
+        // }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

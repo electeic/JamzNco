@@ -8,6 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,6 +32,10 @@ public class DetailedPostActivity extends AppCompatActivity {
     public static final String EXTRA_URL = "firebase.EXTRA_URL";
     public static final String EXTRA_POSITION = "main_position";
     public static final String EXTRA_POST = "DetailedPostActivityPosts";
+    Button fReportButton;
+    Post post;
+
+
 
 
     @Override
@@ -30,6 +46,7 @@ public class DetailedPostActivity extends AppCompatActivity {
 
         //get intent data
         Intent i = getIntent();
+        post = (Post) i.getSerializableExtra(DetailedPostActivity.EXTRA_POST);
 
         //TODO modify for id
         String reference = i.getStringExtra(EXTRA_URL);
@@ -51,6 +68,5 @@ public class DetailedPostActivity extends AppCompatActivity {
 
 
     }
-
-
 }
+

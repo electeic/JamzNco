@@ -3,6 +3,7 @@
     package="jamilaappinc.grubmate">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <intent-filter>
