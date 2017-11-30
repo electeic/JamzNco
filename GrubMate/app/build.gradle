@@ -51,9 +51,9 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:25.3.1'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
-    compile files('build/generated/activation.jar')
-    compile files('build/generated/additionnal.jar')
-    compile files('build/generated/mail.jar')
+    compile files('activation.jar')
+    compile files('additionnal.jar')
+    compile files('mail.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'
