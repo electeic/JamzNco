@@ -4,9 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +26,16 @@ import android.widget.Button;
 import com.bumptech.glide.Glide;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Response;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,7 +63,9 @@ import java.util.ArrayList;
  * {@link DetailedPostFragment} interface
  * to handle interaction events.
  */
-public class DetailedPostFragment extends Fragment implements OnMapReadyCallback {
+public class DetailedPostFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     TextView fPostName;
     TextView fUsername;
@@ -95,6 +105,13 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
     private String baseURL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     private String mapsApiKey = "AIzaSyBJmhcsJPAAKvCtiCnjgkvWadbf4NNd2wg";
     private GoogleMap mMap;
+
+    SupportMapFragment mapFrag;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    Marker mCurrLocationMarker;
+
 
 
 
@@ -215,19 +232,6 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
             fRequestButton.setVisibility(View.INVISIBLE);
         }
 
-
-/*        fReportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","abuomarj1786@gmail.com", null));
-
-                intent.putExtra(Intent.EXTRA_SUBJECT, "spamReport");
-                intent.putExtra(Intent.EXTRA_TEXT, "the post " + n.getmId() + " was reported as spam.");
-                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
-            }
-        });*/
-
-
         fRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,69 +258,6 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
                 getActivity().finish();
             }
         });
-
-
-        //todo read selected note
-//        if(dbNoteToEdit != null) {  // null if urlToEdit is null
-//            // read from the note to update
-//            dbNoteToEdit.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    // convert this "data snapshot" to a model class
-//                    n = dataSnapshot.getValue(Post.class);
-//                    System.out.println("FUCK THIS: " + n);
-//                    fPostName.setText(n.getmTitle());
-////                    fCategories.setText(n.getmCategories());
-//                    String desc = "Description: " + n.getmDescription();
-//                    fDescription.setText(desc);
-//
-//                    String s = Integer.toString(n.getmServings()) + " Shares Left";
-//                    fServings.setText(s);
-////                    String s2 = "Rating " + Float.toString();
-////                    fProfilePicture
-//
-//                    String Tags = "Tags: ";
-//                    for(String sw: n.getmTags())
-//                    {
-//                        Tags += sw + ", ";
-//                    }
-//                    fTags.setText(Tags); //passes in an array so o.o
-////                    fDietaryInfo.setText(n);
-//
-//                    String Cates = "Categories: ";
-//                    for(String sw: n.getmCategories())
-//                    {
-//                        Cates += sw + ", ";
-//                    }
-//                    fCategories.setText(Cates);
-//
-//                    if(n.getHomemade())
-//                    {
-//                        fHomeOrRestuarant.setText("Homemade");
-//                    }
-//                    else
-//                    {
-//                        fHomeOrRestuarant.setText("Resturaunt");
-//                    }
-//
-//                    fStartTime.setText(n.getmStartDate().toString());
-//                    fEndTime.setText(n.getmEndDate().toString());
-//
-//                    Glide.with(DetailedPostFragment.this)
-//                            .load(n.getmPhotos())
-//                            .centerCrop()
-//                            .placeholder(R.drawable.hamburger)
-//                            .crossFade()
-//                            .into(fFoodPicture);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
-
 
         fPostName.setText(n.getmTitle());
         DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("Users").child(n.getmAuthorId());
@@ -378,20 +319,6 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         fEndTime.setText(n.getmEndDate().toString());
         fAddress.setText(n.getmAddress());
 
-//        Glide.with(DetailedPostFragment.this)
-//                .load(n.getmPhotos())
-//                .centerCrop()
-//                .placeholder(R.drawable.hamburger)
-//                .crossFade()
-//                .into(fFoodPicture);
-
-
-        //now update information using the posts information
-
-        //database = FirebaseDatabase.getInstance();
-        //dbRefPosts = database.getInstance().getReference().child(FirebaseReferences.POSTS);
-
-
         return v;
     }
 
@@ -429,6 +356,7 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
         });
     }
 
+    //BEGIN MAP SHIT
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -442,6 +370,40 @@ public class DetailedPostFragment extends Fragment implements OnMapReadyCallback
 
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        System.out.println("LOCATION CHANGED " + location);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 
 
     private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {

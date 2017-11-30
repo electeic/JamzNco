@@ -54,6 +54,7 @@ dependencies {
     compile files('build/generated/activation.jar')
     compile files('build/generated/additionnal.jar')
     compile files('build/generated/mail .jar')
+    compile 'com.google.android.gms:play-services-location:11.0.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
