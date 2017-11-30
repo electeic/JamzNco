@@ -24,12 +24,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:25.3.1'
-    androidTestCompile 'com.android.support.test:runner:0.5'
     //    androidTestCompile 'com.android.support.test:runner:0.4'
     //    androidTestCompile 'com.android.support.test:rules:0.4'
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    //    compile 'com.google.firebase:firebase-database:9.0.0' //testing delete this later
+    //    compile 'com.google.android.gms:play-services:9.0.0'
+    //    compile 'com.google.android.gms:play-services-location:11.0.4'
+    //    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    // add this for intent mocking support
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'
@@ -37,23 +39,21 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.firebase:firebase-database:11.0.4'
-    //    compile 'com.google.firebase:firebase-database:9.0.0' //testing delete this later
     compile 'com.firebaseui:firebase-ui-database:0.6.2'
     compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.firebase:firebase-storage:11.0.4'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
-    //    compile 'com.google.android.gms:play-services:9.0.0'
     compile 'com.google.android.gms:play-services-places:11.0.4'
-    //    compile 'com.google.android.gms:play-services-location:11.0.4'
-    //    compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.android.support:support-core-utils:25.3.1'
     compile 'com.android.support:multidex:1.0.0'
-    // add this for intent mocking support
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     compile files('build/generated/activation.jar')
     compile files('build/generated/additionnal.jar')
-    compile files('build/generated/mail .jar')
+    compile files('build/generated/mail.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'
