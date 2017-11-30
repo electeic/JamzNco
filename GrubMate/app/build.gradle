@@ -53,6 +53,7 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     compile 'com.sun.mail:android-mail:1.5.5'
     compile 'com.sun.mail:android-activation:1.5.5'
+    compile 'com.google.code.gson:gson:2.8.2'
 //    compile files('build/generated/activation.jar')
 //    compile files('build/generated/additionnal.jar')
 //    compile files('build/generated/mail.jar')

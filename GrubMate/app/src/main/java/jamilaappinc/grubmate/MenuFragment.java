@@ -1,8 +1,11 @@
 package jamilaappinc.grubmate;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import com.facebook.AccessToken;
@@ -36,6 +40,8 @@ import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -245,6 +251,10 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FacebookSdk.sdkInitialize(FacebookSdk.getApplicationContext());
+
+
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("INTERNALSTORAGE", Context.MODE_PRIVATE).edit();
+                editor.putBoolean("LOGGEDIN", false);
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivityForResult(intent, 0);
