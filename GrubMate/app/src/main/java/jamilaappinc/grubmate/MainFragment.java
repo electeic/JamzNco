@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
     ArrayList<Integer> userCount = new ArrayList<>();
     ArrayList<Integer> userReadCounter = new ArrayList<>();
 
-    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton, sortByRatingButton, sortByPopularityButton;
+    Button sortByTitleButton, sortByEndTimeButton, sortByStartTimeButton, sortByRatingButton, sortByPopularityButton, mapButton;
 
 
     public MainFragment() {
@@ -139,6 +139,7 @@ public class MainFragment extends Fragment {
        // mListView = (ListView) v.findViewById(R.id.active_post_list);
         sortByRatingButton = (Button) v.findViewById(R.id.orderByRating);
         sortByPopularityButton = (Button) v.findViewById(R.id.orderByPopularity);
+        mapButton = (Button) v.findViewById(R.id.mapButton);
 
         //find views
 
@@ -146,6 +147,26 @@ public class MainFragment extends Fragment {
         userReadCounter.add(0);
 
         databaseCall(v);
+
+        mapButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MapViewActivity.class);
+                intent.putExtra("ID", currUserId);
+                intent.putExtra("Users", userFriends);
+                intent.putExtra("Name", currUserName);
+                ArrayList<Post> sendPosts = new ArrayList<Post>();
+                for(int i=0; i < myPost.size(); i++){
+                    sendPosts.add(myPost.get(i));
+                }
+                System.out.println("meldoy received post size is "+ myPost.size()+" "+sendPosts.size());
+
+                intent.putExtra("Posts", sendPosts);
+                startActivityForResult(intent, 0);
+
+            }
+        });
 
 
         floatButton.setOnClickListener(new View.OnClickListener() {
