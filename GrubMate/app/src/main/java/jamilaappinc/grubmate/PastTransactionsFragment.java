@@ -111,7 +111,7 @@ public class PastTransactionsFragment extends Fragment {
 
                         if(transactionsReadCounter.get(0) == transactionsCount.get(0)){
                             System.out.println("IN IF, SETTING ADAPTER NOW");
-                            mAdapter = new PastTransactionsFragment.PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
+                            mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
                             list.setAdapter(mAdapter);
                             mAdapter.notifyDataSetChanged();
                         }

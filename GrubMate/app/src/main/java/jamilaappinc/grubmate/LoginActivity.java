@@ -2,6 +2,7 @@ package jamilaappinc.grubmate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
@@ -34,11 +35,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,6 +124,8 @@ public class LoginActivity extends AppCompatActivity {
                 final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
                 System.out.println("BEFORE FIRST TASK");
+                SharedPreferences.Editor editor = getSharedPreferences("INTERNALSTORAGE", MODE_PRIVATE).edit();
+
 
                 final GraphRequest graphRequestAsyncTask = new GraphRequest(
                         loginResult.getAccessToken(),
@@ -141,6 +146,13 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.putExtra("Users", currUsers);//places users vector in intent and passes to main screen
                                     writeNewUser(userInfo.get(1), userInfo.get(0),
                                             userInfo.get(2), currUsers);
+
+                                    //ivans edits --this saves to locally---
+                                    SharedPreferences.Editor editor = getSharedPreferences("INTERNALSTORAGE", MODE_PRIVATE).edit();
+                                    Gson gson = new Gson();
+                                    String json = gson.toJson(currUsers);
+                                    editor.putString("INTERNALFRIENDS", json);
+                                    editor.commit();
 
                                     startActivity(intent);
                                     finish();
@@ -164,6 +176,19 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("MyProfilePicture","https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
                         //intent.putExtra("Status",status);
                         //System.out.println("LOGIN ACTIVITY STATUS: " + user.optString("alreadyLoggedIn"));
+
+                        //ivans edits --this saves to locally---
+                        SharedPreferences.Editor editor = getSharedPreferences("INTERNALSTORAGE", MODE_PRIVATE).edit();
+                        String internalName = user.optString("name");
+                        String internalID = user.optString("id");
+                        String internalProfilePic = "https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080";
+                        editor.putString("INTERNALNAME", internalName);
+                        editor.putString("INTERNALID", internalID);
+                        editor.putString("INTERNALPROFILEPIC", internalProfilePic);
+                        editor.putBoolean("LOGGEDIN", true);
+                        editor.commit();
+
+
                         userInfo.add(user.optString("name"));
                         userInfo.add(user.optString("id"));
                         userInfo.add("https://graph.facebook.com/" + user.optString("id") + "/picture?type=large&width=1080");
