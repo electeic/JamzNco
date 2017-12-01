@@ -356,8 +356,8 @@ public class ViewRequestNotificationFragment extends Fragment implements
                                     Notification notification = new Notification(ID, request.getmPost().getmId() ,request.mRequestUserId,key, NotificationReference.ACCEPT);
                                     databaseRef = database.getReference().child("Notification").child(key);
 
-                                    Transactions myTransaction = new Transactions(currUserName, request.getmPost().getmAuthorId() , ID, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations);
-                                    Transactions myTransaction2 = new Transactions(currUserName, request.getmPost().getmAuthorId() , request.mRequestUserId, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations2);
+                                    Transactions myTransaction = new Transactions(currUserName, request.mRequestUserId , ID, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations);
+                                    Transactions myTransaction2 = new Transactions(currUserName + " the deliverer", request.mRequestUserId, request.mRequestUserId, request.getmPost().getmLatitude(), request.getmPost().getmLongitude(), request.getmPost().getmAddress(), keytransations2); //requestor
 
                                     myTransaction2.setmAddress(request.getmPost().getmAddress());
                                     myTransaction.setmAddress(request.getmPost().getmAddress());

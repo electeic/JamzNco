@@ -108,17 +108,12 @@ public class PastTransactionsFragment extends Fragment {
                             mPosts.add(post);
                         }
 
-                        System.out.println("IN IF, SETTING ADAPTER NOW");
-                        mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
-                        list.setAdapter(mAdapter);
-                        mAdapter.notifyDataSetChanged();
-
-//                        if(transactionsReadCounter.get(0) == transactionsCount.get(0)){
-//                            System.out.println("IN IF, SETTING ADAPTER NOW");
-//                            mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
-//                            list.setAdapter(mAdapter);
-//                            mAdapter.notifyDataSetChanged();
-//                        }
+                        if(transactionsReadCounter.get(0) == transactionsCount.get(0)){
+                            System.out.println("IN IF, SETTING ADAPTER NOW");
+                            mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
+                            list.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -333,7 +328,7 @@ public class PastTransactionsFragment extends Fragment {
 //            LatLng location = new LatLng(mv.getmLatitude(), mv.getmLongitude());
 //            mMap.addMarker(new MarkerOptions().position(location).title(mv.getmAddress().toString()));
 
-            textDescription.setText("Delivery from " + mv.getmFromUser() + " to " + mv.getmToUser() + " at " + mv.getmAddress());
+            textDescription.setText(mv.getmFromUser() + " delivered food to " + mv.getmToUser() + " at " + mv.getmAddress());
             return convertView;
         }
     }
