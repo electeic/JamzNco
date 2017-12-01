@@ -108,13 +108,17 @@ public class PastTransactionsFragment extends Fragment {
                             mPosts.add(post);
                         }
 
+                        System.out.println("IN IF, SETTING ADAPTER NOW");
+                        mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
+                        list.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
 
-                        if(transactionsReadCounter.get(0) == transactionsCount.get(0)){
-                            System.out.println("IN IF, SETTING ADAPTER NOW");
-                            mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
-                            list.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
-                        }
+//                        if(transactionsReadCounter.get(0) == transactionsCount.get(0)){
+//                            System.out.println("IN IF, SETTING ADAPTER NOW");
+//                            mAdapter = new PastTransactionsAdapter(getActivity(), R.layout.transaction_view, mPosts);
+//                            list.setAdapter(mAdapter);
+//                            mAdapter.notifyDataSetChanged();
+//                        }
                     }
 
                     @Override
@@ -297,21 +301,23 @@ public class PastTransactionsFragment extends Fragment {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
-//            Thread t = new Thread();
-//            try {
-//                t.wait(3000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            Thread t = new Thread();
+            try {
+                t.wait(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.print("TEREENCES THE BEST LONGITUDE: " + mv.getmLongitude());
             mMap = googleMap;
             // Add a marker in Sydney, Australia, and move the camera.
+            System.out.print("PASTTRANSACTIONS LONGITUDE: " + mv.getmLongitude());
+            System.out.print("PASTTRANSACTIONS LATITUDE: " + mv.getmLatitude());
             LatLng location = new LatLng(mv.getmLatitude(), mv.getmLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(mv.getmAddress().toString()));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 
         }
-
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -322,8 +328,12 @@ public class PastTransactionsFragment extends Fragment {
             TextView textDescription = (TextView) convertView.findViewById(R.id.mytransation_info_title);
 
             mv = Posts.get(position);
+            System.out.print("IVANS THE BEST LONGITUDE: " + mv.getmLongitude());
+            System.out.print("IVANS THE BEST LATITUDE: " + mv.getmLatitude());
+//            LatLng location = new LatLng(mv.getmLatitude(), mv.getmLongitude());
+//            mMap.addMarker(new MarkerOptions().position(location).title(mv.getmAddress().toString()));
 
-            textDescription.setText("Delivery from " + mv.getmFromUser() + " to " + mv.getmToUser());
+            textDescription.setText("Delivery from " + mv.getmFromUser() + " to " + mv.getmToUser() + " at " + mv.getmAddress());
             return convertView;
         }
     }
